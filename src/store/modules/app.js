@@ -7,6 +7,7 @@ const app = {
     loginUrl:Cookies.get('loginUrl')||'',
     // 中英文
     language: Cookies.get('language') || 'zh',
+    languagezh: '',
   },
   mutations: {
     setwsData(state,wsData){
@@ -25,6 +26,9 @@ const app = {
       state.language = language
       Cookies.set('language', language)
     },
+    SET_LANGUAGEZH: (state, language) => {
+      state.languagezh = language
+    },
   },
   actions: {
     setwsData({commit},wsData){
@@ -39,6 +43,9 @@ const app = {
     // 中英文
     setLanguage({ commit }, language) {
       commit('SET_LANGUAGE', language)
+    },
+    setLanguagezh({ commit }, language) {
+      commit('SET_LANGUAGEZH', language)
     },
   }
 

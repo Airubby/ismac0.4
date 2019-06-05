@@ -1,8 +1,14 @@
 export default {
     navbar: {
-        Home: 'Home',
-        About: 'About',
-        Test: 'Test'
+      index: 'index',
+      control: 'control',
+      controlDevState: 'DevState',
+      controlAlarmRecord:'AlarmRecord',
+      controlControlConfig:'ControlConfig',
+      access:'access',
+      accessAccessState:'AccessState',
+      accessCardImpower:'CardImpower',
+      accessAccessConfig:'AccessConfig'
     },
     skin: {
       Black: 'Black Skin',

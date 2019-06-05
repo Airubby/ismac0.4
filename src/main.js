@@ -3,7 +3,7 @@ import App from './App.vue'
 import {router} from './router/index'
 import store from './store/index'
 import axios from 'axios'
-import request from './utils/request';
+import request from './utils/request'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import ElSearchTablePagination from 'el-table-pagination'
@@ -44,6 +44,8 @@ function getServerConfig() {
       let ajaxUrl = process.env.NODE_ENV == 'production' ? config.production:config.develop;
       Vue.prototype.$ajaxUrl=ajaxUrl;
       store.dispatch('setAjaxUrl',ajaxUrl);
+      store.dispatch('setLanguage',config.language);
+      // store.dispatch('setLanguagezh',config.languagezh);
       Vue.prototype.$theme = config.theme || 'default';
       resolve();
     }).catch((error) => {

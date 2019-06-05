@@ -1,38 +1,29 @@
 import {syncRouter, asyncRouter,router } from '@/router/index'
 import Cookies from 'js-cookie'
 /**
- * 递归过滤异步路由表，返回符合用户角色权限的路由表
+ * 递归过滤异步路由表，生成router数据结构
  * @param asyncRouterMap
- * @param roles
+ * @param data
  */
-function filterAsyncRouter(asyncRouter, roles) {
-  asyncRouter.map((item)=>{
-    roles.forEach((inItem)=>{
-      if(item.path==inItem.path){
-        if(item.redirect){
-          for(let i=0;i<inItem.children.length;i++){
-            if(inItem.children[i].meta.show){
-              item.redirect=inItem.children[i].path;
-              break;
-            }
-          }
+function filterAsyncRouter(data) {
+    data.map((item)=>{
+        let addr=item.component;
+        item.component = () => import(`@/views/${addr}`);
+        if(item.children){
+            item["redirect"]=item.children[0].path;
+            item.children=filterAsyncRouter(item.children);
         }
-        if(item.children&&inItem.children){
-          item.children=filterAsyncRouter(item.children,inItem.children)
-        }
-        item.meta=inItem.meta;
-      }
     })
-  })
-  return asyncRouter;
+    return data;
 }
 
 const user = {
   state: {
-    token:Cookies.get('token')||'',
+    token:Cookies.get('token')||'token888',
     routers: syncRouter,
     addRouters: [],
     limits:[],
+    navList:[],
   },
   mutations: {
     setToken(state,token){
@@ -40,12 +31,23 @@ const user = {
       Cookies.set('token', token)
     },
     setAuthInfo(state,data){
-      let theAsyncRouter = filterAsyncRouter(asyncRouter,data)
-      state.addRouters = theAsyncRouter
-      for(let i=0;i<theAsyncRouter.length;i++){
-        router.options.routes.push(theAsyncRouter[i]);
-      }
-      router.addRoutes(theAsyncRouter);
+        state.navList=data; //导航用
+        let newRouter={
+            path: '/loncom',
+            name:'loncom',
+            meta: { title: '首页'},
+            component: () => import('@/views/home.vue'),
+            redirect:'/loncom/index',
+            children:[]
+        }
+        let theAsyncRouter = filterAsyncRouter(data);
+        if(theAsyncRouter){
+            newRouter.redirect=theAsyncRouter[0].path;
+            newRouter.children=theAsyncRouter;
+        }
+        router.options.routes.push(newRouter)
+        router.addRoutes([newRouter]);
+        
     },
     setLimits(state,data){
       state.limits=data;

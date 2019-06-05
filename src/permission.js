@@ -3,7 +3,8 @@ import { Message } from 'element-ui'
 import store from '@/store/index'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
-import Cookies from 'js-cookie'
+import request from './utils/request'
+import './utils/mock.js'  //测试接口 
 
 routerGo();
 function filterAsyncRouter(url, roles) {
@@ -19,14 +20,14 @@ function filterAsyncRouter(url, roles) {
   }
 function getInfo(){  //刷新页面重新获取权限
     return new Promise(function(resolve, reject){
-        this.$api.getInfo({"token":Cookies.get('token')}).then((res) => {
-        if(res.code==200){
-            store.dispatch('setAuthInfo',res.data);
-            let url=window.document.URL.split("#")[1];
-            filterAsyncRouter(url,res.data)
-        }else{
-            Message.warning("权限获取失败");
-        }
+        request.get('/getInfo',{"token":store.getters.token},res=>{
+            if(res.code==200){
+                store.dispatch('setAuthInfo',res.data);
+                let url=window.document.URL.split("#")[1];
+                filterAsyncRouter(url,res.data)
+            }else{
+                Message.warning("权限获取失败");
+            }
             resolve()
         }).catch(error => {
             reject(error)
@@ -35,7 +36,7 @@ function getInfo(){  //刷新页面重新获取权限
 }
 
 async function routerGo(){
-    if(Cookies.get('token')){
+    if(store.getters.token){
         await getInfo();
     }
     router.beforeEach((to, from, next) => {
