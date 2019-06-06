@@ -22,14 +22,16 @@ const getdata = function(){
         datalist.push(o)
     }
 	return{
-        code:200,
+        err_code:0,
+        err_msg:"成功",
         data:datalist
     }
 }
 //后台给出导航菜单时，自己可以任意更改导航子栏目所在栏目下；但name,component,是固定的不可变
 const getinfo = function(){
 	return{
-        code:200,
+        err_code:0,
+        err_msg:"成功",
         data:[
             {
                 path:'/loncom/index',

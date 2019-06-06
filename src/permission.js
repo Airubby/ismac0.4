@@ -21,7 +21,7 @@ function filterAsyncRouter(url, roles) {
 function getInfo(){  //刷新页面重新获取权限
     return new Promise(function(resolve, reject){
         request.get('/getInfo',{"token":store.getters.token},res=>{
-            if(res.code==200){
+            if(res.err_code=="0"){
                 store.dispatch('setAuthInfo',res.data);
                 let url=window.document.URL.split("#")[1];
                 filterAsyncRouter(url,res.data)

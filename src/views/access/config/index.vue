@@ -7,7 +7,7 @@
             </el-breadcrumb>
         </div>
         <div class="public_content">
-            门禁配置
+            <div class="aaa">门禁配置</div>
         </div>
     </div>
 </template>
