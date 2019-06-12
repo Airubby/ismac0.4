@@ -9,7 +9,7 @@ function filterAsyncRouter(data) {
     data.map((item)=>{
         let addr=item.component;
         item.component = () => import(`@/views/${addr}`);
-        if(item.children){
+        if(item.children&&item.children.length>0){
             item["redirect"]=item.children[0].path;
             item.children=filterAsyncRouter(item.children);
         }

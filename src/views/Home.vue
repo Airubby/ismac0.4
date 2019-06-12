@@ -14,7 +14,7 @@
                     <ul class="loncom_nav_ul">
                         <li v-for="item in navList" v-if="navList.length>0" class="navli">
                             <div class="loncom_nav" @click="change($event)">
-                                <div class="loncom_nav_con" v-if="item.children">
+                                <div class="loncom_nav_con" v-if="item.children&&item.children.length>0">
                                     <em v-if="navbtn=='close'">
                                         <router-link :to="{'name':item.name}" class="aem">
                                             <img :src="'images/'+$theme+'/'+item.meta.icon" v-if="$theme">
@@ -35,7 +35,7 @@
                                     </router-link>
                                 </div>
                             </div>
-                            <template v-if="item.children">
+                            <template v-if="item.children&&item.children.length>0">
                                 <dl class="loncom_morenav showhide">
                                     <template v-for="initem in item.children">
                                         <dd v-if="initem.meta.type=='nav'">

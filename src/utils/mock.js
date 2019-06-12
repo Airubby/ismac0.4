@@ -101,6 +101,12 @@ const getinfo = function(){
                         meta: {show:"true",type:'nav',limits: ""},
                         component: 'access/config/index.vue'
                     },
+                    {
+                        path: '/loncom/access/config/add',
+                        name:'accessConfigAdd',
+                        meta: { show:"true",type:'fun',limits: ""},
+                        component: 'access/config/add.vue'
+                    },
                 ]
             },
             {
@@ -228,6 +234,7 @@ const getinfo = function(){
                 ]
             },
         ]
+    
     }
 }
 
@@ -236,8 +243,16 @@ const gettable=function(){
         err_code:0,
         err_msg:"成功",
         data:[
-            {id:'1',code:'12',type:'普通卡',user:"小呆",indate:'2019-23-21',timegroup:'时间1'},
-            {id:'2',code:'12',type:'普通卡',user:"小呆2",indate:'2019-23-21',timegroup:'时间2'}
+            {id:'1',code:'12',type:'普通',user:"小呆",indate:'2019-23-21',timegroup:'时间1',jieru:'323',zw:'123',zl:'234'},
+            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
+            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
+            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
+            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
+            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
+            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
+            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
+            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
+            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间332',jieru:'232',zw:'123',zl:'234'}
         ]
     }
 }

@@ -21,6 +21,9 @@ body,
     height: 100%;
     background: #fff;
 }
+.prelative{
+    position: relative;
+}
 a{
     text-decoration: none;
 }
@@ -255,9 +258,10 @@ em{
         span{
             padding: 0 6px;
             cursor: pointer;
+            border-right: 1px solid #D7DFE9;
         }
-        span:nth-of-type(2){
-            border-left: 1px solid #D7DFE9;
+        span:nth-last-of-type(1){
+            border: none;
         }
     }
     .table_btn{
@@ -279,6 +283,22 @@ em{
             margin: 0 5px;
         }
     }
+    .lc-data-con{
+        text-align: center;
+        margin: 20px 0;
+        border-right: 1px solid #e9e9e9;
+        .lc-data-value{
+            font-size: 24px;
+            margin-top: 10px;
+        }
+        &.last-con{
+            border-right: none;
+        }
+    }
+    .color-mg20{
+        height: 20px;
+        background: #EFF1F6;
+    }
 }
 .public_addcontent{
     width: 100%;
@@ -292,6 +312,13 @@ em{
     border-top: 1px solid #ccc;
     padding: 0 20px;
     text-align: right;
+}
+.form_item{
+    position: absolute;
+    top: -42px;
+    left: 70px;
+    color: #4A78FF;
+    cursor: pointer;
 }
 @import './black/basic.less';
 @import './default/basic.less';

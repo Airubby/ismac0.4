@@ -36,6 +36,7 @@ export default {
     },
     access:{
       card:"卡",
+      dev:"设备",
     },
     skin: {
       Black: "酷黑风格",

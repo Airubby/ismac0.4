@@ -126,9 +126,7 @@ export default {
     },
     data(){
         return{
-            search:false,
             hint:'add',
-            changeInfo:'展开',
             initParams:{
                 code:'',
                 type:'',
@@ -171,6 +169,11 @@ export default {
             console.log(id)
             this.$r.get("/getInfo",{model:{id:id}},r=>{
                 console.log(r)
+                if(r.err_code=='0'){
+                    this.initParams=r.data;
+                }else{
+                    this.$message.warning(r.err_msg);
+                }
             })
         },
         handleCheckChange:function(){
