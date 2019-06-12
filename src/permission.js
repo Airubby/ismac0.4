@@ -10,7 +10,7 @@ routerGo();
 function filterAsyncRouter(url, roles) {
     roles.forEach(element => {
         if(url==element.path){
-            store.dispatch('setLimits',element.meta.limits);
+            store.dispatch('setLimits',element.meta.limits.split(","));
             return;
         }
         if(element.children&&element.children.length>0){
@@ -48,9 +48,9 @@ async function routerGo(){
                 next()
             } else {
                 if(JSON.stringify(to.meta)!="{}"){
-                    if(to.meta.show){
-                        if(to.meta.limits&&to.meta.limits.length>0){
-                            store.dispatch('setLimits',to.meta.limits);
+                    if(to.meta.show&&to.meta.show=="true"){
+                        if(to.meta.limits&&to.meta.limits!=""){
+                            store.dispatch('setLimits',to.meta.limits.split(","));
                         }
                         next() 
                     }else{

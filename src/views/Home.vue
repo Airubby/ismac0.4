@@ -137,20 +137,6 @@ export default {
         },
         init:function(){
             this.initnav();
-            console.log(this.navbtn)
-            // let theChild=this.$el.querySelector(".loncom_sidebar_list .router-link-active");
-            // while(theChild.parentNode!=null){
-            //     if(theChild.parentNode.className&&theChild.parentNode.className.indexOf("navli")!=-1){
-            //         theChild.parentNode.classList.add("active");
-            //         if(theChild.parentNode.querySelector(".loncom_morenav")){
-            //             theChild.parentNode.querySelector(".loncom_menui")&&theChild.parentNode.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-up");
-            //         }else{
-            //             theChild.parentNode.classList.add("onlyactive");
-            //         }
-            //         break;
-            //     }
-            //     theChild=theChild.parentNode;
-            // }
             if(this.navbtn==='open'){
                 this.$el.querySelector("#sidebar").style.width="250px";
                 this.$el.querySelector("#content").style.paddingLeft="250px";
@@ -181,8 +167,11 @@ export default {
                 this.initnav();
                 this.navbtn='open';
             }
-            while(theChild.className&&theChild.className.indexOf("loncom_nav_ul")!=-1){
-                theChild.setAttribute("class","loncom_nav_ul "+this.navbtn)
+            while(theChild.parentNode!=null){
+                if(theChild.className&&theChild.className.indexOf("loncom_nav_ul")!=-1){
+                    theChild.setAttribute("class","loncom_nav_ul "+this.navbtn+"active")
+                    break;
+                }
                 theChild=theChild.parentNode;
             }
             

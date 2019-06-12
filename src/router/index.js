@@ -10,6 +10,12 @@ export const syncRouter=[
         component: () => import('@/views/home.vue'),
         redirect:'/loncom',
     },
+    {
+      path: '/login',
+      name: 'login',
+      meta: { title: 'login'},
+      component: () => import('@/views/login.vue'),
+  },
     { path: '/404',name:'404',meta: { title: '404'}, component: () => import('@/views/errorPage/404') },
     { path: '/401',name:'401',meta: { title: '401'}, component: () => import('@/views/errorPage/401') },
 ];

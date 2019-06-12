@@ -27,6 +27,15 @@ a{
 ul,li{
     list-style: none;
 }
+.pd20{
+    padding: 20px;
+}
+em{
+    font-style: normal;
+}
+.md20{
+    margin-bottom: 20px;
+}
 
 /**侧边导航**/
 .loncom_sidebar {
@@ -167,6 +176,15 @@ ul,li{
                 }
             }
         }
+        .closeactive{
+            li:hover{
+                a{
+                    background: #4A78FF;
+                    color: #fff;
+                    transition: all 0.4s ease-in;
+                }
+            }
+        }
     } 
 }
 .loncom_sidebar_right{
@@ -220,6 +238,33 @@ ul,li{
 .public_content{
     width: 100%;
     height: calc(100% - 50px);
+    .table_search{
+        max-height: 50px;
+        overflow: hidden;
+        transition: all 0.4s ease-in;
+        &.active{
+            max-height: 500px;
+        }
+    }
+    .table_btn{
+        margin-bottom: 20px;
+    }
+    .table_hint{
+        border: 1px solid #078FEA;
+        background: #E6F7FF;
+        padding: 8px 12px;
+        vertical-align: middle;
+        color: #078FEA;
+        font-size: 14px;
+        border-radius: 5px;
+        span{
+            color: #51575A;
+        }
+        em{
+            color: #078FEA;
+            margin: 0 5px;
+        }
+    }
 }
 
 

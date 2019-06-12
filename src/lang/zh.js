@@ -29,6 +29,9 @@ export default {
         assetsInassets:"在架资产",
         assetsConfig:"资产配置"
     },
+    hint:{
+        select:"请选择",
+    },
     skin: {
       Black: "酷黑风格",
       Default: "亮白风格"

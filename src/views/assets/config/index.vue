@@ -7,7 +7,7 @@
             </el-breadcrumb>
         </div>
         <div class="public_content">
-            告警记录
+            
         </div>
     </div>
 </template>
