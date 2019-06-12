@@ -90,6 +90,12 @@ const getinfo = function(){
                         component: 'access/cardImpower/index.vue'
                     },
                     {
+                        path: '/loncom/access/cardImpower/add',
+                        name:'accessCardImpowerAdd',
+                        meta: { show:"true",type:'fun',limits: ""},
+                        component: 'access/cardImpower/add.vue'
+                    },
+                    {
                         path: '/loncom/access/config',
                         name:'accessConfig',
                         meta: {show:"true",type:'nav',limits: ""},
@@ -225,8 +231,15 @@ const getinfo = function(){
     }
 }
 
-const gettable=function(pageIndex,pageSize){
-    
+const gettable=function(){
+    return {
+        err_code:0,
+        err_msg:"成功",
+        data:[
+            {id:'1',code:'12',type:'普通卡',user:"小呆",indate:'2019-23-21',timegroup:'时间1'},
+            {id:'2',code:'12',type:'普通卡',user:"小呆2",indate:'2019-23-21',timegroup:'时间2'}
+        ]
+    }
 }
 
 Mock.mock(store.getters.AjaxUrl+'/getMockData', /post/i,getdata) //调用模拟数据方法

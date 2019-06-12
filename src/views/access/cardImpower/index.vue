@@ -18,13 +18,13 @@
                         <el-col :span="8">
                             <el-form-item label="类型">
                                 <el-select v-model="initParams.type" placeholder="请选择">
-                                    <el-option label="区域一" value="shanghai"></el-option>
-                                    <el-option label="区域二" value="beijing"></el-option>
+                                    <el-option label="超级卡" value="shanghai"></el-option>
+                                    <el-option label="普通卡" value="beijing"></el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <div class="md20">
+                            <div class="mb20">
                                 <el-button type="primary">查询</el-button>
                                 <el-button>重置</el-button>
                                 <el-button type="text" @click="changeSearch">{{changeInfo}}</el-button>
@@ -47,7 +47,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="领卡人">
+                            <el-form-item label="时间组">
                                 <el-input v-model="initParams.timegroup"></el-input>
                             </el-form-item>
                         </el-col>
@@ -56,7 +56,7 @@
                 </el-form>
             </div>
             <div class="table_btn">
-                <el-button type="primary" icon="el-icon-plus">新建</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="add">新建</el-button>
                 <el-button>批量删除</el-button>
                 <el-button @click="assignment">权限分配</el-button>
                 <el-button>权限清除</el-button>
@@ -72,7 +72,8 @@
                 :columns="table_columns" ref="thisRef">   
                 <el-table-column slot="prepend" type="selection"></el-table-column>
                 <template slot-scope="scope" slot="preview-handle">
-                    <span @click="postFn">post提交</span>
+                    <p class="table_handle"><span @click="edit(scope.row)">编辑</span><span>删除</span></p>
+                    <p class="table_handle"><span>权限分配</span><span>清除权限</span></p>
                 </template>
             </el-search-table-pagination>
         </div>
@@ -106,7 +107,7 @@ export default {
               { prop: 'user', label: '领卡人',minWidth:10},
               { prop: 'indate', label: '有效期',minWidth:10},
               { prop: 'timegroup', label: '时间组',minWidth:10},
-              { prop: 'handle', label: '操作',slotName:'preview-handle',width:100},
+              { prop: 'handle', label: '操作',slotName:'preview-handle',width:150},
             ],
             table_data:[],
             assignmentInfo:{
@@ -123,6 +124,15 @@ export default {
         assignment:function(){
             this.assignmentInfo.visible=true;
         },
+        //新建
+        add:function(){
+            this.$router.push({name:'accessCardImpowerAdd'});
+        },
+        edit:function(row){
+            this.$router.push({name:'accessCardImpowerAdd',query:{
+                params:JSON.stringify({"id":row.id})
+            }});
+        }
 	},
     components: {
         assignment

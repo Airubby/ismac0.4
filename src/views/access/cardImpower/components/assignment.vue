@@ -107,6 +107,9 @@ export default {
         dialogCancel:function(){
             this.dialogInfo.visible=false;
         },
+        handleCheckChange:function(){
+            
+        }
 	},
     components: {
         dialogBtnInfo

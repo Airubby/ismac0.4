@@ -31,6 +31,11 @@ export default {
     },
     hint:{
         select:"请选择",
+        add:"添加",
+        edit:"编辑"
+    },
+    access:{
+      card:"卡",
     },
     skin: {
       Black: "酷黑风格",
