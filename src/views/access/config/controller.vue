@@ -21,7 +21,7 @@
                             <div class="mb20">
                                 <el-button type="primary" @click="searchFN">查询</el-button>
                                 <el-button class="reset">重置</el-button>
-                                <el-button type="text" @click="changeSearch">{{changeInfo}}</el-button>
+                                <el-button type="text" @click="changeSearch">{{$t("hint."+changeInfo)}}</el-button>
                             </div>
                         </el-col>
                         <el-col :span="8">
@@ -75,7 +75,7 @@ export default {
     data(){
         return{
             search:false,
-            changeInfo:'展开',
+            changeInfo:'unfold',
             initParams:{
                 code:'',
                 type:'',
@@ -98,7 +98,7 @@ export default {
     },
 	methods: {
         changeSearch:function(){
-            this.changeInfo=this.search?'展开':'收缩';
+            this.changeInfo=this.search?'unfold':'shrink';
             this.search=!this.search;
         },
         //查询

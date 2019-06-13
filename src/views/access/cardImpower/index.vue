@@ -28,7 +28,7 @@
                                 <div class="mb20">
                                     <el-button type="primary" @click="searchFN">查询</el-button>
                                     <el-button class="reset">重置</el-button>
-                                    <el-button type="text" @click="changeSearch">{{changeInfo}}</el-button>
+                                    <el-button type="text" @click="changeSearch">{{$t("hint."+changeInfo)}}</el-button>
                                 </div>
                             </el-col>
                             <el-col :span="8">
@@ -95,7 +95,7 @@ export default {
     data(){
         return{
             search:false,
-            changeInfo:'展开',
+            changeInfo:'unfold',
             initParams:{
                 code:'',
                 type:'',
@@ -145,6 +145,11 @@ export default {
             }
             this.$r.post("/delete",{model:{ids:ids}},r=>{
                 console.log(r)
+                if(r.err_code=='0'){
+                    this.$message.success(r.err_msg);
+                }else{
+                    this.$message.warning(r.err_msg);
+                }
             })
         },
         //清除权限
@@ -162,10 +167,15 @@ export default {
             }
             this.$r.post("/remove",{model:{ids:ids}},r=>{
                 console.log(r)
+                if(r.err_code=='0'){
+                    this.$message.success(r.err_msg);
+                }else{
+                    this.$message.warning(r.err_msg);
+                }
             })
         },
         changeSearch:function(){
-            this.changeInfo=this.search?'展开':'收缩';
+            this.changeInfo=this.search?'unfold':'shrink';
             this.search=!this.search;
         },
         //权限分配

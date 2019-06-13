@@ -32,7 +32,9 @@ export default {
     hint:{
         select:"请选择",
         add:"添加",
-        edit:"编辑"
+        edit:"编辑",
+        unfold:"展开",
+        shrink:"收缩",
     },
     access:{
       card:"卡",

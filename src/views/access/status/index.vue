@@ -30,29 +30,27 @@
                 </el-row>
                 <div class="color-mg20"></div>
                 <div class="pd20 ">
-                    <el-card class="box-card">
-                        <div slot="header" class="clearfix">
-                            <span>门状态</span>
-                            <div style="width:150px" class="fr">
-                                <el-select v-model="initParams.type" :placeholder='$t("hint.select")'>
-                                    <el-option label="23" value="shanghai"></el-option>
-                                    <el-option label="234" value="beijing"></el-option>
-                                </el-select>
-                            </div>
+                    <div class="card_title">
+                        <span>门状态</span>
+                        <div style="width:150px" class="fr">
+                            <el-select v-model="initParams.type" :placeholder='$t("hint.select")'>
+                                <el-option label="23" value="shanghai"></el-option>
+                                <el-option label="234" value="beijing"></el-option>
+                            </el-select>
                         </div>
-                        <el-search-table-pagination
-                            :url="$ajaxUrl+'/getTable'"
-                            list-field="data" 
-                            total-field="total"
-                            method='get' 
-                            :showPagination="true"
-                            :params="initParams"
-                            :columns="table_columns" ref="thisRef">   
-                            <template slot-scope="scope" slot="preview-handle">
-                                <p class="table_handle"><span @click="openDoor(scope.row)">开门</span><span @click="closeDoor(scope.row)">关门</span></p>
-                            </template>
-                        </el-search-table-pagination>
-                    </el-card>
+                    </div>
+                    <el-search-table-pagination
+                        :url="$ajaxUrl+'/getTable'"
+                        list-field="data" 
+                        total-field="total"
+                        method='get' 
+                        :showPagination="true"
+                        :params="initParams"
+                        :columns="table_columns" ref="thisRef">   
+                        <template slot-scope="scope" slot="preview-handle">
+                            <p class="table_handle"><span @click="openDoor(scope.row)">开门</span><span @click="closeDoor(scope.row)">关门</span></p>
+                        </template>
+                    </el-search-table-pagination>
                     <el-tabs v-model="activeName">
                         <el-tab-pane label="进出记录" name="first">
                             <record></record>
