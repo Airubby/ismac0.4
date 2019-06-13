@@ -242,6 +242,7 @@ const gettable=function(){
     return {
         err_code:0,
         err_msg:"成功",
+        total:6,
         data:[
             {id:'1',code:'12',type:'普通',user:"小呆",indate:'2019-23-21',timegroup:'时间1',jieru:'323',zw:'123',zl:'234'},
             {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
@@ -249,10 +250,6 @@ const gettable=function(){
             {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
             {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
             {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
-            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
-            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
-            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
-            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间332',jieru:'232',zw:'123',zl:'234'}
         ]
     }
 }
