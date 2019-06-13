@@ -7,10 +7,10 @@
                 <el-breadcrumb-item>{{$t("hint."+hint)}}{{$t("access.card")}}</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <div class="public_addcontent pd20">
+        <div class="public_addcontent">
             <el-scrollbar class="scrollbar">
                 <el-form ref="form" :model="initParams" :rules="rules" label-width="80px" label-position="top">
-                    <el-card class="box-card mb20">
+                    <el-card class="box-card">
                         <div slot="header" class="clearfix">
                             <span>基本信息</span>
                         </div>
@@ -38,38 +38,7 @@
                             </el-col>
                         </el-row>
                     </el-card>
-                    <el-card class="box-card">
-                        <div slot="header" class="clearfix">
-                            <span>权限分配</span>
-                        </div>
-                        <el-row :gutter="40">
-                            <el-col :span="8">
-                                <el-form-item label="类型">
-                                    <el-select v-model="initParams.type" placeholder="请选择">
-                                        <el-option label="超级卡" value="shanghai"></el-option>
-                                        <el-option label="普通卡" value="beijing"></el-option>
-                                    </el-select>
-                                </el-form-item>
-                                <el-form-item label="时间组">
-                                    <el-input v-model="initParams.timegroup"></el-input>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="16">
-                                <el-form-item label="开门范围" prop="range">
-                                    <el-tree
-                                    props="{
-                                        label: 'name',
-                                        children: 'children'
-                                    }"
-                                    :data="data"
-                                    node-key="id"
-                                    show-checkbox
-                                    @check-change="handleCheckChange">
-                                    </el-tree>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                    </el-card>
+                    <div class="color-mg20"></div>
                     <el-card class="box-card">
                         <div slot="header" class="clearfix">
                             <span>权限分配</span>

@@ -52,6 +52,12 @@ const getinfo = function(){
                         component: 'control/devState/index.vue'
                     },
                     {
+                        path: '/loncom/control/devState/detail',
+                        name:'controlDevStateDetail',
+                        meta: { show:"true",type:'fun',limits: ""},
+                        component: 'control/devState/detail.vue'
+                    },
+                    {
                         path: '/loncom/control/devState/add',
                         name:'controlDevStateAdd',
                         meta: { show:"true",type:'fun',limits: ""},

@@ -29,7 +29,7 @@
                     </el-col>
                 </el-row>
                 <div class="color-mg20"></div>
-                <div class="pd20 ">
+                <div class="pd20">
                     <div class="card_title">
                         <span>设备列表</span>
                         <div class="fr">
@@ -61,6 +61,9 @@
                         :showPagination="true"
                         :params="initParams"
                         :columns="table_columns" ref="thisRef">   
+                        <template slot-scope="scope" slot="preview-name">
+                            <p class="table_handle"><span @click="detail(scope.row)">{{scope.row.code}}</span></p>
+                        </template>
                         <template slot-scope="scope" slot="preview-handle">
                             <p class="table_handle"><span @click="eyeon(scope.row)">关注</span><span @click="maintain(scope.row)">维护</span></p>
                         </template>
@@ -89,7 +92,7 @@ export default {
                 name:'',
             },
             table_columns:[
-              { prop: 'code', label: '设备名称',minWidth:10},
+              { prop: 'code', label: '设备名称',slotName:'preview-name',minWidth:10},
               { prop: 'type', label: '设备类型',minWidth:10},
               { prop: 'indate', label: '位置',minWidth:10},
               { prop: 'timegroup', label: '监控状态',minWidth:10},
@@ -112,6 +115,11 @@ export default {
         },
         searchFn:function(){
             this.$refs.thisRef.searchHandler(false);
+        },
+        detail:function(row){
+            this.$router.push({name:'controlDevStateDetail',query:{
+                params:JSON.stringify({"id":row.id})
+            }});
         },
 
 	},

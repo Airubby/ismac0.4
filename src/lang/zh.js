@@ -40,6 +40,9 @@ export default {
       card:"卡",
       dev:"设备",
     },
+    control:{
+      devDetail:'设备详情',
+    },
     skin: {
       Black: "酷黑风格",
       Default: "亮白风格"

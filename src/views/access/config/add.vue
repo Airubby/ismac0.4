@@ -7,10 +7,10 @@
                 <el-breadcrumb-item>{{$t("hint."+hint)}}{{$t("access.dev")}}</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <div class="public_addcontent pd20">
+        <div class="public_addcontent">
             <el-scrollbar class="scrollbar">
                 <el-form ref="form" :model="initParams" :rules="rules" label-width="80px" label-position="top">
-                    <el-card class="box-card mb20">
+                    <el-card class="box-card">
                         <div slot="header" class="clearfix">
                             <span>基本信息</span>
                         </div>
@@ -59,6 +59,7 @@
                             </el-col>
                         </el-row>
                     </el-card>
+                    <div class="color-mg20"></div>
                     <el-card class="box-card">
                         <div slot="header" class="clearfix">
                             <span>通讯参数</span>
