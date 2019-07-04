@@ -125,9 +125,7 @@ export default {
         },
         //重置
         reset:function(){
-            for(let item in this.initParams){
-                this.initParams[item]="";
-            }
+            this.$refs['form'].resetFields();
             this.searchFN();
         },
         //批量删除

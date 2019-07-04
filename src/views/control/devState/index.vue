@@ -59,8 +59,10 @@
                         total-field="total"
                         method='get' 
                         :showPagination="true"
+                        :showSelectAll="true"
                         :params="initParams"
                         :columns="table_columns" ref="thisRef">   
+                        <el-table-column slot="prepend" type="selection"></el-table-column>
                         <template slot-scope="scope" slot="preview-name">
                             <p class="table_handle"><span @click="detail(scope.row)">{{scope.row.code}}</span></p>
                         </template>

@@ -3,10 +3,13 @@
         <div class="loncom_sidebar" id="sidebar">
             <div class="loncom_sidebar_top">
                 <div class="loncom_fl">
-                    <router-link to="/" class="loncom_logo"><img :src="'images/'+$theme+'/logo.png'" v-if="$theme"></router-link>
+                    <div class='prelative'>
+                    <router-link to="/" id="smalllogo" class="smalllogo"><img :src="'images/'+$theme+'/smallLogo.png'" v-if="$theme"></router-link>
+                    <router-link to="/" id="logo" class="logo"><img :src="'images/'+$theme+'/logo.png'" v-if="$theme"></router-link>
+                    </div>
                 </div>
                 <span class="loncom_fr loncom_navbtn" @click="navclick" ref="navbtn">
-                    <img :src="'images/'+$theme+'/top_change.svg'" v-if="$theme">
+                    <i class="icon-ic_xitong" ></i>
                 </span>
             </div>
             <div class="loncom_sidebar_list" ref="sidebar_list">
@@ -17,10 +20,10 @@
                                 <div class="loncom_nav_con" v-if="item.children&&item.children.length>0">
                                     <em v-if="navbtn=='close'">
                                         <router-link :to="{'name':item.name}" class="aem">
-                                            <img :src="'images/'+$theme+'/'+item.meta.icon" v-if="$theme">
+                                            <i class="icon-ic_xitong" ></i>
                                         </router-link>
                                     </em>
-                                    <em v-else class="aem"><img :src="'images/'+$theme+'/'+item.meta.icon" v-if="$theme"></em>
+                                    <em v-else class="aem"><i class="icon-ic_xitong" ></i></em>
                                     <div class="loncom_menu showhide">
                                         <span>{{$t("navbar."+item.name)}}</span>
                                         <i class="loncom_menui el-icon-arrow-down"></i>
@@ -28,7 +31,7 @@
                                 </div>
                                 <div class="loncom_nav_con" v-else>
                                     <router-link :to="{'name':item.name}">
-                                        <em class="aem"><img :src="'images/'+$theme+'/'+item.meta.icon" v-if="$theme"></em>
+                                        <em class="aem"><i class="icon-ic_xitong" ></i></em>
                                         <div class="loncom_menu showhide">
                                             <span>{{$t("navbar."+item.name)}}</span>
                                         </div>
@@ -66,8 +69,29 @@
                 <div class="loncom_right_top_box">
                     <div class="box_con">
                         <el-badge :value="200" :max="99" class="item">
-                            <i class="el-icon-bell"></i>
+                            <i class="el-icon-bell el-icon-color"></i>
                         </el-badge>
+                    </div>
+                </div>
+                <div class="loncom_right_top_box">
+                    <div class="box_con">
+                        <el-dropdown>
+                            <i class="el-icon-magic-stick el-icon-color" style="font-size:30px;"></i>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item :class="{'themeActive':$theme=='default'}"><span @click="changeTheme('default')">优雅白</span></el-dropdown-item>
+                                <el-dropdown-item :class="{'themeActive':$theme=='black'}"><span @click="changeTheme('black')">炫酷黑</span></el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </div>
+                </div>
+                <div class="loncom_right_top_box">
+                    <div class="box_con">
+                        <i class="el-icon-full-screen el-icon-color" style="font-size:30px;" @click="switcFullScreen"></i>
+                    </div>
+                </div>
+                <div class="loncom_right_top_box">
+                    <div class="box_con">
+                        <i class="el-icon-view el-icon-color" style="font-size:30px;" @click="enterFullScreen"></i>
                     </div>
                 </div>
                 
@@ -111,13 +135,16 @@ export default {
                 while(theChild.className!="loncom_nav"){
                     theChild=theChild.parentNode;
                 }
-                if(theChild.nextSibling.getAttribute("class")&&theChild.nextSibling.getAttribute("class").indexOf("active")!=-1){
-                    theChild.nextSibling.classList.remove("active");
-                    theChild.querySelector(".loncom_menui")&&theChild.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-down");
-                }else{
-                    theChild.nextSibling.classList.add("active");
-                    theChild.querySelector(".loncom_menui")&&theChild.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-up");
+                if(theChild.nextSibling instanceof HTMLElement){
+                    if(theChild.nextSibling.getAttribute("class")&&theChild.nextSibling.getAttribute("class").indexOf("active")!=-1){
+                        theChild.nextSibling.classList.remove("active");
+                        theChild.querySelector(".loncom_menui")&&theChild.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-down");
+                    }else{
+                        theChild.nextSibling.classList.add("active");
+                        theChild.querySelector(".loncom_menui")&&theChild.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-up");
+                    }
                 }
+                
             }
         },
         initnav:function(){
@@ -140,9 +167,11 @@ export default {
             if(this.navbtn==='open'){
                 this.$el.querySelector("#sidebar").style.width="250px";
                 this.$el.querySelector("#content").style.paddingLeft="250px";
+                this.$el.querySelector("#smalllogo").style.left="-60px";
             }else{
                 this.$el.querySelector("#sidebar").style.width="60px";
                 this.$el.querySelector("#content").style.paddingLeft="60px";
+                this.$el.querySelector("#smalllogo").style.left="0px";
             }
         },
 		//展开收缩
@@ -158,12 +187,20 @@ export default {
                 this.$el.querySelector("#sidebar").style.transition="all 0.4s ease-in";
                 this.$el.querySelector("#content").style.paddingLeft="60px";
                 this.$el.querySelector("#content").style.transition="all 0.4s ease-in";
+                this.$el.querySelector("#smalllogo").style.left="0";
+                this.$el.querySelector("#smalllogo").style.transition="all 0.4s ease-in";
+                this.$el.querySelector("#logo").style.left="-250px";
+                this.$el.querySelector("#logo").style.transition="all 0.4s ease-in";
                 this.navbtn='close';
             }else{
                 this.$el.querySelector("#sidebar").style.width="250px";
                 this.$el.querySelector("#sidebar").style.transition="all 0.4s ease-in";
                 this.$el.querySelector("#content").style.paddingLeft="250px";
                 this.$el.querySelector("#content").style.transition="all 0.4s ease-in";
+                this.$el.querySelector("#smalllogo").style.left="-60px";
+                this.$el.querySelector("#smalllogo").style.transition="all 0.4s ease-in";
+                this.$el.querySelector("#logo").style.left="0";
+                this.$el.querySelector("#logo").style.transition="all 0.4s ease-in";
                 this.initnav();
                 this.navbtn='open';
             }
@@ -174,8 +211,17 @@ export default {
                 }
                 theChild=theChild.parentNode;
             }
-            
         },
+        changeTheme:function(theme){
+            this.$store.dispatch('setTheme',theme);
+        },
+        switcFullScreen:function(){
+			this.$tool.switcFullScreen();
+		},
+        enterFullScreen:function(){
+            this.$router.push({path:'/bigHome'});
+        }
+
 	},
     components: {
         

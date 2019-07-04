@@ -259,7 +259,18 @@ const gettable=function(){
         ]
     }
 }
+const getedittable=function(){
+    return {
+        err_code:0,
+        err_msg:"成功",
+        total:6,
+        data:[
+            {id:'1',inputname:'12',radioname:'普通',selectname:"小呆",datename:'2019-23-21',timename:'时间1',dialogname:'323'},
+        ]
+    }
+}
 
 Mock.mock(store.getters.AjaxUrl+'/getMockData', /post/i,getdata) //调用模拟数据方法
 Mock.mock(RegExp(store.getters.AjaxUrl+'/getInfo' + ".*"), /get/i,getinfo) 
 Mock.mock(RegExp(store.getters.AjaxUrl+'/getTable' + ".*"), /get/i,gettable) 
+Mock.mock(RegExp(store.getters.AjaxUrl+'/getEditTable' + ".*"), /get/i,getedittable) 

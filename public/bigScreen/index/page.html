@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>主页面</title>
+<link rel="stylesheet" type="text/css" href="css/new_index.css" />
+<link rel="stylesheet" type="text/css" href="css/new_basic.css" />
+</head>
+
+<body>
+    <div class="loncom_content">
+	    <div class="loncom-index-body">
+	        <div class="header">
+	            <div class="header-con">
+	                <div class="row-side">
+	                    <div class="wk-xz">
+	                        <div class="wk-sj-right"></div>
+	                        <em class="wk-sbx"></em>
+	                        <em class="wk-sbx" style="right:-68px"></em>
+	                        <em class="wk-tix"></em>
+	                        <a class="header-home"><img src="images/logo.png"></a>
+	                    </div>
+	                </div>
+	                <div class="row-cen">
+	                    <div class="title">
+	                        <em class="title-left"></em>
+	                        <div class="title-con">微模块设施监控系统<span class="title-bg"></span></div>
+	                        <em class="title-right"></em>
+	                    </div>
+	                </div>
+	                <div class="row-side" style="padding: 0 0 0 50px">
+	                    <div class="wk-xz" style="transform:scalex(-1)">
+	                        <div class="wk-sj-right"></div>
+	                        <em class="wk-sbx"></em>
+	                        <em class="wk-sbx" style="right:-68px"></em>
+	                        <em class="wk-tix"></em>
+	                        <ul>
+	                            <li id="fullscreen" onclick="switcFullScreen()"><img src="images/fullscreen.png"></li>
+	                            <li><img src="images/alarm.png"></li>
+	                            <li><img src="images/account.png"></li>
+	                        	<li onclick="enterOld()"><img src="images/manage.png"></li>
+	                        </ul>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="main">
+	            <div class="main-left">
+	                <div class="loncom-index-box loncom-index-box-left">
+	                    <div class="loncom-title">
+	                        <div class="loncom-title-con">PUE</div>
+	                        <div class="loncom-title-line">
+	                            <em class="loncom-line-em"></em>
+	                        </div>
+	                    </div>
+	                    <div class="loncom-index-con loncom-index-con-left">
+	                        <div class="loncom-box">
+	                            <em class="topleft"></em>
+	                            <em class="topright"><em class="line"></em></em>
+	                            <em class="bottomleft"><em class="line"></em></em>
+	                            <em class="bottomright"></em>
+	                            <div class="loncom-box-con" id="optionsPUE" style="width:100%; height: 100%"></div>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="loncom-index-box loncom-index-box-left">
+	                    <div class="loncom-title">
+	                        <div class="loncom-title-con">能效分布占比</div>
+	                        <div class="loncom-title-line">
+	                            <em class="loncom-line-em"></em>
+	                        </div>
+	                    </div>
+	                    <div class="loncom-index-con loncom-index-con-left">
+	                        <div class="loncom-box">
+	                            <em class="topleft"></em>
+	                            <em class="topright"><em class="line"></em></em>
+	                            <em class="bottomleft"><em class="line"></em></em>
+	                            <em class="bottomright"></em>
+	                            <div class="loncom-box-con" id="optionsNX" style="width:100%; height: 100%"></div>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="loncom-index-box">
+	                    <div class="loncom-title">
+	                        <div class="loncom-title-con">机柜功耗排行</div>
+	                        <div class="loncom-title-line">
+	                            <em class="loncom-line-em"></em>
+	                        </div>
+	                    </div>
+	                    <div class="loncom-index-con" style="height:210px;">
+	                        <div class="loncom-box" style="border-radius: 0;">
+	                        	<ul class="loncom-index-gh loncom-index-gh-title">
+	                        		<li>
+	                                    <div class="name">机柜</div><div class="value">功耗</div>
+	                                </li>
+	                        	</ul>
+	                        	<div class="loncom-index-gh-con scroll_con">
+	                        		<ul class="loncom-index-gh" id="devPower">
+		                                <li>
+		                                    <div class="name">机柜01</div>
+		                                    <div class="value">
+		                                        <div class="loncom-progress">
+		                                            <div class="loncom-progress-con" style="width: 65%;"></div>
+		                                        </div>
+		                                        <span>65%</span>
+		                                    </div>
+		                                </li>
+		                                <li>
+		                                    <div class="name">机柜02</div>
+		                                    <div class="value">
+		                                        <div class="loncom-progress">
+		                                            <div class="loncom-progress-con" style="width: 85%;"></div>
+		                                        </div>
+		                                        <span>85%</span>
+		                                    </div>
+		                                </li>
+		                                <li>
+		                                    <div class="name">机柜03</div>
+		                                    <div class="value">
+		                                        <div class="loncom-progress">
+		                                            <div class="loncom-progress-con" style="width: 35%;"></div>
+		                                        </div>
+		                                        <span>35%</span>
+		                                    </div>
+		                                </li>
+		                                <li>
+		                                    <div class="name">机柜04</div>
+		                                    <div class="value">
+		                                        <div class="loncom-progress">
+		                                            <div class="loncom-progress-con" style="width: 45%;"></div>
+		                                        </div>
+		                                        <span>45%</span>
+		                                    </div>
+		                                </li>
+		                                <li>
+		                                    <div class="name">机柜05</div>
+		                                    <div class="value">
+		                                        <div class="loncom-progress">
+		                                            <div class="loncom-progress-con" style="width: 90%;"></div>
+		                                        </div>
+		                                        <span>90%</span>
+		                                    </div>
+		                                </li>
+		                                <li>
+		                                    <div class="name">机柜06</div>
+		                                    <div class="value">
+		                                        <div class="loncom-progress">
+		                                            <div class="loncom-progress-con" style="width: 95%;"></div>
+		                                        </div>
+		                                        <span>95%</span>
+		                                    </div>
+		                                </li>
+		                            </ul>
+	                        	</div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="main-cen">
+	                <div class="cen-img"><div class="cen-img-con"><img src="images/home.png"></div></div>
+	                <div class="cen-bottom">
+	                    <ul id="sysMenu">
+	                        <li onclick="enterPage('url1')"><img src="images/home-hj.png"><div>环境系统</div></li>
+	                        <li onclick="enterPage('url2')"><img src="images/home-kt.png"><div>空调系统</div></li>
+	                        <li onclick="enterPage('url3')"><img src="images/home-pd.png"><div>配电系统</div></li>
+	                        <li onclick="enterPage('url4')"><img src="images/home-it.png"><div>安防系统</div></li>
+	                    </ul>
+	                </div>
+	            </div>
+	            <div class="main-right">
+	                <div class="loncom-index-box loncom-index-box-right">
+	                    <div class="loncom-title">
+	                        <div class="loncom-title-con">告警状态</div>
+	                        <div class="loncom-title-line">
+	                            <em class="loncom-line-em"></em>
+	                        </div>
+	                    </div>
+	                    <div class="loncom-index-con loncom-index-con-right">
+	                        <div class="loncom-box-con" id="loncom-box-radar" style="width:100%; height: 100%">
+	                        	<div class="loncom-radar" id="loncom-radar">
+	                        		<div class="radar" id="radar"></div>
+	                        		<em class="one alarm_em"></em>
+	                        		<em class="two alarm_em"></em>
+	                        	</div>
+	                        	<div style="width:100%;height:35px;line-height:30px;text-align:center;color:#5B6A93;font-size:12px">正在扫描中...</div>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="loncom-index-box">
+	                    <div class="loncom-boxpic">
+	                        <ul id="devIsAlarm">
+	                            <li>
+	                                <img src="images/wenshidu_alarm.png">
+	                                <div>温湿度</div>
+	                            </li>
+	                            <li>
+	                                <img src="images/loushui.png">
+	                                <div>漏水</div>
+	                            </li>
+	                            <li>
+	                                <img src="images/kongtiao.png">
+	                                <div>空调</div>
+	                            </li>
+	                            <li>
+	                                <img src="images/ups_alarm.png">
+	                                <div>UPS</div>
+	                            </li>
+	                            <li>
+	                                <img src="images/dianchi.png">
+	                                <div>电池</div>
+	                            </li>
+	                        </ul>
+	                    </div>
+	                </div>
+	                <div class="loncom-index-box" style="margin-bottom: 20px;">
+	                    <div class="loncom-index-con" style="height: 200px;">
+	                        <div class="loncom-box">
+	                            <em class="topleft"></em>
+	                            <em class="topright"><em class="line"></em></em>
+	                            <em class="bottomleft"><em class="line"></em></em>
+	                            <em class="bottomright"></em>
+	                            <div class="loncom-alarmbox scroll_con">
+	                                <ul id="devAlarm">
+	                                    <li class="loncom-pdlr20"><span>2019-01-10 10:10:00</span>环境温度过高</li>
+	                                    <li class="loncom-pdlr20"><span>2019-01-10 10:10:00</span>室内环境温度过高</li>
+	                                    <li class="loncom-pdlr20"><span>2019-01-10 10:10:00</span>空调环境温度过高</li>
+	                                    <li class="loncom-pdlr20"><span>2019-01-10 10:10:00</span>设备管道漏水严重</li>
+	                                    <li class="loncom-pdlr20"><span>2019-01-10 10:10:00</span>环境温度过高环境温度过高</li>
+	                                    <li class="loncom-pdlr20"><span>2019-01-10 10:10:00</span>环境温度过低</li>
+	                                    <li class="loncom-pdlr20"><span>2019-01-10 10:10:00</span>环境温度过高</li>
+	                                    <li class="loncom-pdlr20"><span>2019-01-10 10:10:00</span>室内环境温度过高</li>
+	                                    <li class="loncom-pdlr20"><span>2019-01-10 10:10:00</span>空调环境温度过高</li>
+	                                    <li class="loncom-pdlr20"><span>2019-01-10 10:10:00</span>设备管道漏水严重</li>
+	                                    <li class="loncom-pdlr20"><span>2019-01-10 10:10:00</span>环境温度过高环境温度过高</li>
+	                                    <li class="loncom-pdlr20"><span>2019-01-10 10:10:00</span>环境温度过低</li>
+	                                </ul>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="loncom-index-box">
+	                    <div class="loncom-index-con">
+	                        <div class="loncom-box">
+	                            <em class="topleft"></em>
+	                            <em class="topright"><em class="line"></em></em>
+	                            <em class="bottomleft"><em class="line"></em></em>
+	                            <em class="bottomright"></em>
+	                            <div class="loncom-numbox">
+	                                <ul>
+	                                    <li>
+	                                        <div class="loncom-block">
+	                                        	<div class="loncom-block-con">
+	                                        		<div class="num mainwd"><span class="numspan" id="mainwd">22.5</span></div>
+	                                        		<div>温度</div>
+	                                        	</div>
+	                                        </div>
+	                                    </li>
+	                                    <li>
+	                                    	<div class="loncom-block">
+	                                        	<div class="loncom-block-con">
+	                                        		<div class="num mainsd"><span class="numspan" id="mainsd">30.5</span></div>
+	                                        		<div>湿度</div>
+	                                        	</div>
+	                                        </div>
+	                                    </li>
+	                                    <li>
+	                                    	<div class="loncom-block">
+	                                        	<div class="loncom-block-con">
+	                                        		<div class="num" id="szwd">23.5</div>
+	                                        		<div>空调设定温度</div>
+	                                        	</div>
+	                                        </div>
+	                                    </li>
+	                                    <li>
+	                                    	<div class="loncom-block">
+	                                        	<div class="loncom-block-con">
+	                                        		<div class="num" id="szsd">22.5</div>
+                                        			<div>空调设定湿度</div>
+	                                        	</div>
+	                                        </div>
+	                                    </li>
+	                                </ul>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/echarts4.min.js"></script>
+	<script type="text/javascript">
+		Date.prototype.Format = function (fmt) { //author: meizz 
+			var o = {
+				"M+": this.getMonth() + 1, //月份 
+				"d+": this.getDate(), //日 
+				"h+": this.getHours(), //小时 
+				"m+": this.getMinutes(), //分 
+				"s+": this.getSeconds(), //秒 
+				"q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+				"S": this.getMilliseconds() //毫秒 
+			};
+			if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+			for (var k in o)
+				if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+			return fmt;
+		}
+		function open_ajax(url, parameter, request,type, error, async) {
+			type = type ? type : "Get";
+			$.ajax({
+				type: type,
+				url: url,
+				data: parameter,
+				dataType: 'JSON',
+				async: async ? async : true,
+				cache:false,
+				error: function () {
+					if (error != null && error != "") {
+						error();
+					}
+				},
+				success: function (msg) {
+					if (request){
+						request(msg);
+					}
+				}
+			});
+		}
+		open_ajax('package.json',{},function(result){
+			console.log(result)
+			resultData=result
+		});
+		let resultData={};
+		let isFullScreen=false;//是否是全屏状态
+		function switcFullScreen(){
+			if(isFullScreen){//是全屏就退出全屏
+				if(document.exitFullscreen) {
+					document.exitFullscreen();
+				} else if(document.mozCancelFullScreen) {
+					document.mozCancelFullScreen();
+				} else if(document.webkitExitFullscreen) {
+					document.webkitExitFullscreen();
+				}
+			}else{//不是就全屏
+				var element=document.documentElement;
+				if(element.requestFullscreen) {
+					element.requestFullscreen();
+				} else if(element.mozRequestFullScreen) {
+					element.mozRequestFullScreen();
+				} else if(element.webkitRequestFullscreen) {
+					element.webkitRequestFullscreen();
+				} else if(element.msRequestFullscreen) {
+					element.msRequestFullscreen();
+				}
+			}
+			isFullScreen=!isFullScreen;
+		}
+		
+    	var timer=setInterval(function(){
+    		radarSize();
+    		getPue();
+    		getEnergy();
+	  	},10000);
+	    	
+    	radarSize();
+	    var oPUE;
+		var oNX;
+		var radar=radarChar("radar")
+		radarChar("radar");
+		$(window).resize(function () {
+			console.log(oPUE)
+			radarSize();
+			if(oPUE){
+				oPUE.resize();
+			}
+			if(oNX){
+				oNX.resize();
+			}
+			if(radar){
+				radar.resize();
+			}
+		})
+		//设置雷达图的宽高
+		function radarSize(){
+			var radarW=$("#loncom-box-radar").width();
+			var radarH=$("#loncom-box-radar").height();
+			var radarSize=radarW>radarH?(radarH-35):(radarW-35);
+			$("#loncom-radar").width(radarSize);
+			$("#loncom-radar").height(radarSize);
+		}
+		//进入旧界面
+		function enterOld(){
+			let location=top.window.document.location;
+			location.href=location.origin;
+		}
+
+		function enterPage(url){
+			parent.document.getElementById("myIframe").src=resultData[url];	
+		}
+		//获取历史PUE
+		getPue();
+		function getPue(){
+	    	var xData=[],yData=[];
+			for(var i=0;i<6;i++){
+				xData.push(new Date().Format('hh:mm'));
+				yData.push(i+i*Math.random());
+			}	
+			oPUE=optionsPUE("optionsPUE",xData,yData);
+	    }
+		
+		
+		//获取能效分布
+		getEnergy();
+		function getEnergy(){
+			var data=[
+					{value:56, name:'总负载'},
+					{value:49, name:'IT负载'},
+				];
+			oNX=optionsNX("optionsNX",data);
+		}
+		function optionsPUE(ID,xData,yData) {
+			/* var xData=["03/08","03/09","03/10","03/11","03/12","03/13","03/14"];
+			var yData=[1.5, 1.8, 1.3, 1.2, 2.0, 1.3, 1.9]; */
+		    var myChart = echarts.init(document.getElementById(ID));
+		    var option={
+		            color:["#0082FB"],
+		            tooltip : {
+		                trigger: 'axis'
+		            },
+		            grid: {
+		                left: '15px',
+		                right: '25px',
+		                top:'15%',
+		                bottom: '15%',
+		                containLabel: true
+		            },
+		            xAxis : [
+		                {
+		                    type : 'category',
+		                    boundaryGap : false,
+		                    axisLine:{
+		                        lineStyle:{
+		                            color:"#13254F",
+		                            width:1,
+		                        }
+		                    },
+		                    axisTick:{
+		                        show:false
+		                    },
+		                    axisLabel:{
+		                        color:"#4B5880",
+		                        formatter: function (value, index) {
+		                            // 格式化成月/日，只在第一个刻度显示年份
+		                            return value;
+		                        }
+		                    },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+		                    data :xData
+		                }
+		            ],
+		            yAxis : [
+		                {
+		                    type : 'value',
+		                    axisLine:{
+		                        lineStyle:{
+		                            color:"#13254F",
+		                            width:1,
+		                        }
+		                    },
+		                    splitLine:{
+		                        show:true,
+		                        lineStyle:{
+		                            color:"#1c3042",
+		                            width:1,
+		                            type:"dashed",
+		                        }
+		                    },
+		                    axisTick:{
+		                        show:false
+		                    },
+		                    axisLabel:{
+		                        color:"#4B5880",
+		                        formatter: '{value}'
+		                    }
+		                }
+		            ],
+		            series : [
+		              {
+		                  name:'PUE',
+		                  type:'line',
+		                  areaStyle: {
+		                    color:{
+		                      type: 'linear',
+		                      x: 0,
+		                      y: 0,
+		                      x2: 0,
+		                      y2: 1,
+		                      colorStops: [{
+		                          offset: 0, color: '#033072' // 0% 处的颜色
+		                      }, {
+		                          offset: 1, color: '#021143' // 100% 处的颜色
+		                      }],
+		                    }
+		                  },
+		                  smooth:"true", //平滑
+		                  //symbol:"line", //不要圆圈
+		                  symbolSize:4, //平滑的时候设置为0
+		                  data:yData
+		              },
+		          ]
+	        };
+		    myChart.setOption(option, true);
+		    return myChart; 
+		}
+		function optionsNX(ID,data) {
+		    var myChart = echarts.init(document.getElementById(ID));
+		    var option={
+    	      color:["#0077E9","#7B2DD8","#2BBBCE","#108912"],
+    	      tooltip: {
+    	          trigger: 'item',
+    	          formatter: "{b}: {c} ({d}%)"
+    	      },
+    	      series: [
+    	          {
+    	              type:'pie',
+    	              radius: ['80%', '85%'],
+    	              silent:true,  //不触发鼠标事件，及鼠标放上去无效果
+    	              // tooltip:{textStyle:{color:"transparent"},backgroundColor:"transparent"},
+    	              data:[
+    	                  {value:1, name:'one'},
+    	                  {value:1, name:'two'},
+    	                  {value:1, name:'three'},
+    	                  {value:1, name:'four'},
+    	                  {value:1, name:'five'},
+    	                  {value:1, name:'six'}
+    	              ],
+    	              label: {
+    	                  normal: {
+    	                      show: false,
+    	                      position: 'center'
+    	                  },
+    	              },
+    	              itemStyle:{
+    	                  normal:{
+    	                      color: function(params){
+    	                          var index_color = params.name;
+    	                          if(index_color=="one"||index_color=='three'||index_color=='five'){
+    	                              return 'transparent';
+    	                          }else if(index_color=='two'||index_color=='four'||index_color=='six') {
+    	                              return '#1E4F79';
+    	                          }
+    	                      } 
+    	                  }
+    	              }
+    	          },
+    	          {
+    	              type:'pie',
+    	              radius: ['50%', '65%'],
+    	              label: {
+    	                  normal: {
+    	                      formatter: '{b|{b}}{per|{d}%} ',
+    	                      rich: {
+    	                          b: {
+    	                              fontSize: 12,
+    	                              lineHeight: 33
+    	                          },
+    	                          per: {
+    	                              color: '#fff',
+    	                              fontSize: 14,
+    	                              padding: [2, 4],
+    	                              borderRadius: 2
+    	                          }
+    	                      }
+    	                  }
+    	              },
+    	              data:data
+    	          }
+    	      ]
+    	    }
+		    myChart.setOption(option, true);
+		    return myChart; 
+		}
+		
+		function radarChar(ID){
+		    var myChart = echarts.init(document.getElementById(ID));
+		    var option={
+		        tooltip: {
+		            trigger: 'item',
+		            formatter: "{b}: {c} ({d}%)"
+		        },
+		        series: [
+		                {
+		                    type:'pie',
+		                    radius: ['25%', '26%'],
+		                    silent:true,  
+		                    data:[
+		                        {value:1, name:'one'},
+		                    ],
+		                    label: {
+		                        normal: {
+		                            show: false,
+		                            position: 'center'
+		                        },
+		                    },
+		                    itemStyle:{
+		                        normal:{
+		                            color: '#1E4F79'
+		                        }
+		                    }
+		                },
+		                {
+		                    type:'pie',
+		                    radius: ['45%', '46%'],
+		                    silent:true,  
+		                    data:[
+		                        {value:1, name:'one'},
+		                    ],
+		                    label: {
+		                        normal: {
+		                            show: false,
+		                            position: 'center'
+		                        },
+		                    },
+		                    itemStyle:{
+		                        normal:{
+		                            color: '#1E4F79'
+		                        }
+		                    }
+		                },
+		                {
+		                    type:'pie',
+		                    radius: ['65%', '66%'],
+		                    silent:true,  
+		                    data:[
+		                        {value:1, name:'one'},
+		                    ],
+		                    label: {
+		                        normal: {
+		                            show: false,
+		                            position: 'center'
+		                        },
+		                    },
+		                    itemStyle:{
+		                        normal:{
+		                            color: '#1E4F79'
+		                        }
+		                    }
+		                },
+		                {
+		                    type:'pie',
+		                    radius: ['85%', '86%'],
+		                    silent:true,  
+		                    data:[
+		                        {value:1, name:'one'},
+		                    ],
+		                    label: {
+		                        normal: {
+		                            show: false,
+		                            position: 'center'
+		                        },
+		                    },
+		                    itemStyle:{
+		                        normal:{
+		                            color: '#1E4F79'
+		                        }
+		                    }
+		                },
+		                {
+		                    type:'pie',
+		                    radius: ['89%', '91%'],
+		                    silent:true,  
+		                    data:[
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'three'},
+		                        {value:1, name:'four'},
+		                        {value:1, name:'five'},
+		                        {value:1, name:'six'},
+		                        {value:1, name:'seven'},
+		                        {value:1, name:'eight'}
+		                    ],
+		                    label: {
+		                        normal: {
+		                            show: false,
+		                            position: 'center'
+		                        },
+		                    },
+		                    itemStyle:{
+		                        normal:{
+		                            color: function(params){
+		                                var index_color = params.name;
+		                                if(index_color=="one"||index_color=='three'||index_color=='five'||index_color=='seven'){
+		                                    return '#1E4F79';
+		                                }else if(index_color=='two'||index_color=='four'||index_color=='six'||index_color=='eight') {
+		                                    return 'transparent';
+		                                }
+		                            } 
+		                        }
+		                    }
+		                },
+		                {
+		                    type:'pie',
+		                    radius: ['94%', '95%'],
+		                    silent:true,  
+		                    data:[
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        
+		                    ],
+		                    label: {
+		                        normal: {
+		                            show: false,
+		                            position: 'center'
+		                        },
+		                    },
+		                    itemStyle:{
+		                        normal:{
+		                            color: function(params){
+		                                var index_color = params.name;
+		                                if(index_color=="one"){
+		                                    return '#092A50';
+		                                }else if(index_color=='two') {
+		                                    return 'transparent';
+		                                }
+		                            } 
+		                        }
+		                    }
+		                },
+		                
+		            ]
+		        }
+		        myChart.setOption(option, true);
+		        return myChart;
+		}
+		
+		
+	</script>
+</body>
+
+</html>
