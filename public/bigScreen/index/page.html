@@ -398,7 +398,11 @@
 		}
 
 		function enterPage(url){
+			console.log(parent.document.getElementById("myBackUrl"))
+			debugger;
+			parent.document.getElementById("myBackUrl").value=resultData[url];
 			parent.document.getElementById("myIframe").src=resultData[url];	
+			
 		}
 		//获取历史PUE
 		getPue();

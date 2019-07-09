@@ -28,6 +28,7 @@ const getdata = function(){
     }
 }
 //后台给出导航菜单时，自己可以任意更改导航子栏目所在栏目下；但name,component,是固定的不可变
+//limits 存vuex中  为数组： limits:["add","delete","detail"]
 const getinfo = function(){
 	return{
         err_code:0,
@@ -36,13 +37,13 @@ const getinfo = function(){
             {
                 path:'/loncom/index',
                 name:'index',
-                meta: { show:"true", type:'nav',limits:"add,delete,detail",icon:'control.png'},
+                meta: { show:"true", type:'nav',limits:"add,delete,detail",icon:'icon-ic_zhuye'},
                 component: 'home/index.vue',
             },
             {
                 path: '/loncom/control',
                 name:'control',
-                meta: { type:'nav',show:"true",limits:"",icon:'control.png'},
+                meta: { type:'nav',show:"true",limits:"",icon:'icon-ic_jiankong'},
                 component: 'control/index.vue',
                 children:[
                     {
@@ -80,7 +81,7 @@ const getinfo = function(){
             {
                 path: '/loncom/access',
                 name:'access',
-                meta: {show:"true",type:'nav',limits: "",icon:'control.png'},
+                meta: {show:"true",type:'nav',limits: "",icon:'icon-ic_menjin'},
                 component: 'access/index.vue',
                 children:[
                     {
@@ -118,7 +119,7 @@ const getinfo = function(){
             {
                 path: '/loncom/video',
                 name:'video',
-                meta: {show:"true",type:'nav',limits: "",icon:'control.png'},
+                meta: {show:"true",type:'nav',limits: "",icon:'icon-ic_shipin'},
                 component: 'video/index.vue',
                 children:[
                     {
@@ -144,7 +145,7 @@ const getinfo = function(){
             {
                 path: '/loncom/energy',
                 name:'energy',
-                meta: {show:"true",type:'nav',limits: "",icon:'control.png'},
+                meta: {show:"true",type:'nav',limits: "",icon:'icon-ic_nengxiao'},
                 component: 'energy/index.vue',
                 children:[
                     {
@@ -164,7 +165,7 @@ const getinfo = function(){
             {
                 path: '/loncom/statement',
                 name:'statement',
-                meta: {show:"true",type:'nav',limits: "",icon:'control.png'},
+                meta: {show:"true",type:'nav',limits: "",icon:'icon-ic_baobiao'},
                 component: 'statement/index.vue',
                 children:[
                     {
@@ -190,7 +191,7 @@ const getinfo = function(){
             {
                 path: '/loncom/system',
                 name:'system',
-                meta: {show:"true",type:'nav',limits: "",icon:'control.png'},
+                meta: {show:"true",type:'nav',limits: "",icon:'icon-ic_xitong'},
                 component: 'system/index.vue',
                 children:[
                     {
@@ -216,7 +217,7 @@ const getinfo = function(){
             {
                 path: '/loncom/assets',
                 name:'assets',
-                meta: {show:"true",type:'nav',limits: "",icon:'control.png'},
+                meta: {show:"true",type:'nav',limits: "",icon:'icon-ic_zichan'},
                 component: 'assets/index.vue',
                 children:[
                     {
@@ -270,7 +271,18 @@ const getedittable=function(){
     }
 }
 
+
+
 Mock.mock(store.getters.AjaxUrl+'/getMockData', /post/i,getdata) //调用模拟数据方法
 Mock.mock(RegExp(store.getters.AjaxUrl+'/getInfo' + ".*"), /get/i,getinfo) 
 Mock.mock(RegExp(store.getters.AjaxUrl+'/getTable' + ".*"), /get/i,gettable) 
 Mock.mock(RegExp(store.getters.AjaxUrl+'/getEditTable' + ".*"), /get/i,getedittable) 
+
+const getCheck=function(){
+    return {
+        err_code:0,
+        err_msg:"成功",
+        data:true
+    }
+}
+Mock.mock(store.getters.AjaxUrl+'/getCheck', /post/i,getCheck) //调用模拟数据方法

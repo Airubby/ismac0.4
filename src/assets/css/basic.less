@@ -78,7 +78,7 @@ em{
         height: 64px;
         padding: 5px;
         position: relative;
-        background: #13171F;
+        background: #8f9bc0;
         .smalllogo,.logo{
             position: absolute;
         }
@@ -110,10 +110,11 @@ em{
     .loncom_sidebar_list{
         width: 100%;
         height: calc(100% - 64px);
+        background: #fff;
         li {
             width: 100%;
             color: #8F9BC0;
-            border-bottom: 1px solid #1B212C;
+            border-bottom: 1px solid #ddd;
             a{
                 display: block;
                 height: auto;
@@ -121,7 +122,7 @@ em{
                 width: 100%;
                 color: #8F9BC0;
             }
-            .loncom_nav {
+            .loncom_navmenu {
                 width: 100%;
                 height: 60px;
                 line-height: 16px;
@@ -140,16 +141,6 @@ em{
                     width: 100%;
                     height: 100%;
                 }
-                a.router-link-active{
-                    background: #4A78FF;
-                    color: #fff;
-                    transition: all 0.4s ease-in;
-                }
-                .router-link-exact-active{
-                    .aem{
-                        background: #4A78FF;
-                    }
-                }
                 .aem{
                     height: 60px;
                     width: 60px;
@@ -159,7 +150,7 @@ em{
                     padding: 22px;
                     position: relative;
                     z-index: 9;
-                    background: #1b212c;
+                    background: #fff;
                     img{
                         max-width:16px;
                         max-height: 16px;
@@ -178,6 +169,16 @@ em{
                         margin: 0 10px 0 0;
                     }
                 }
+                &.active,&:hover{
+                    .aem{
+                        i:before{
+                            color: #4A78FF;
+                        }
+                    }
+                    .loncom_menu{
+                        color: #4A78FF;
+                    }
+                }
             }
             .loncom_morenav {
                 width: 100%;
@@ -185,7 +186,7 @@ em{
                 overflow: hidden;
                 font-size: 14px;
                 top: 0;
-                background: #000C17;
+                background: #fff;
                 transition: all .5s ease;
                 &.active{
                     max-height: 500px;
@@ -200,18 +201,37 @@ em{
                     }
                     a.router-link-active,
                     a:hover{
-                        background: #4A78FF;
-                        color: #fff;
+                        background: none;
+                        color: #4A78FF;
                     }
                 }
             }
         }
         .closeactive{
-            li:hover{
-                a{
+            .loncom_navmenu:hover,
+            .loncom_navmenu.active{
+                .aem{
                     background: #4A78FF;
                     color: #fff;
                     transition: all 0.4s ease-in;
+                    i:before{
+                        color: #fff;
+                    }
+                }
+            }
+            li{
+                a.router-link-active{
+                    background: #4A78FF;
+                    color: #fff;
+                    transition: all 0.4s ease-in;
+                    i:before{
+                        color: #fff;
+                    }
+                }
+                .router-link-exact-active{
+                    .aem{
+                        background: #4A78FF;
+                    }
                 }
             }
         }

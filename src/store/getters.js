@@ -4,6 +4,7 @@ const getters = {
   getWSData: state => state.app.wsData,
   AjaxUrl: state => state.app.AjaxUrl,
   loginUrl: state => state.app.loginUrl,
+  isview:state=>state.app.viewState,
   
   token: state => state.user.token,
   addRouters: state => state.user.addRouters,

@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import md5 from 'js-md5';
 export default {
 	created () {
 	
@@ -61,6 +62,7 @@ export default {
       loginIn:function(){
 			this.$refs['form'].validate((valid) => {
 				if(valid){
+					console.log(md5(this.user.psword))
 					this.$api.post('/user/login', {"obj":this.user}, r => {
 						console.log(r);
 						if(r.err_code=="0"){

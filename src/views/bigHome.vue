@@ -1,5 +1,7 @@
 <template>
-    <iframe :src="url" class="content" frameborder="0" scrolling="yes" id="myIframe"></iframe> 
+    <div class="content">
+        <iframe :src="url" class="content" frameborder="0" scrolling="yes" id="myIframe"></iframe> 
+    </div>
 </template>
 
 <script>
@@ -23,7 +25,9 @@ export default {
        
 	},
     watch: {
-        
+        url:function(val){
+            console.log(val)
+        }
     },
     components: {
         

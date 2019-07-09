@@ -9,39 +9,39 @@
                     </div>
                 </div>
                 <span class="loncom_fr loncom_navbtn" @click="navclick" ref="navbtn">
-                    <i class="icon-ic_xitong" ></i>
+                    <i class="icon-top_unfold" ></i>
                 </span>
             </div>
             <div class="loncom_sidebar_list" ref="sidebar_list">
                 <el-scrollbar class="scrollbar">
                     <ul class="loncom_nav_ul">
                         <li v-for="item in navList" v-if="navList.length>0" class="navli">
-                            <div class="loncom_nav" @click="change($event)">
+                            <div class="loncom_navmenu" @click="change($event)">
                                 <div class="loncom_nav_con" v-if="item.children&&item.children.length>0">
                                     <em v-if="navbtn=='close'">
                                         <router-link :to="{'name':item.name}" class="aem">
-                                            <i class="icon-ic_xitong" ></i>
+                                            <i :class="item.meta.icon" ></i>
                                         </router-link>
                                     </em>
-                                    <em v-else class="aem"><i class="icon-ic_xitong" ></i></em>
-                                    <div class="loncom_menu showhide">
+                                    <em v-else class="aem"><i :class="item.meta.icon" ></i></em>
+                                    <div class="loncom_menu">
                                         <span>{{$t("navbar."+item.name)}}</span>
-                                        <i class="loncom_menui el-icon-arrow-down"></i>
+                                        <i class="loncom_menui el-icon-arrow-right"></i>
                                     </div>
                                 </div>
                                 <div class="loncom_nav_con" v-else>
                                     <router-link :to="{'name':item.name}">
-                                        <em class="aem"><i class="icon-ic_xitong" ></i></em>
-                                        <div class="loncom_menu showhide">
+                                        <em class="aem"><i :class="item.meta.icon" ></i></em>
+                                        <div class="loncom_menu">
                                             <span>{{$t("navbar."+item.name)}}</span>
                                         </div>
                                     </router-link>
                                 </div>
                             </div>
                             <template v-if="item.children&&item.children.length>0">
-                                <dl class="loncom_morenav showhide">
+                                <dl class="loncom_morenav">
                                     <template v-for="initem in item.children">
-                                        <dd v-if="initem.meta.type=='nav'">
+                                        <dd v-if="initem.meta.type=='nav'" @click="changeNav($event)">
                                             <router-link :to="{'name':initem.name}">
                                                 <span>{{$t("navbar."+initem.name)}}</span>
                                             </router-link>
@@ -89,7 +89,7 @@
                         <i class="el-icon-full-screen el-icon-color" style="font-size:30px;" @click="switcFullScreen"></i>
                     </div>
                 </div>
-                <div class="loncom_right_top_box">
+                <div class="loncom_right_top_box" v-if="check">
                     <div class="box_con">
                         <i class="el-icon-view el-icon-color" style="font-size:30px;" @click="enterFullScreen"></i>
                     </div>
@@ -106,6 +106,7 @@
 <script>
 export default {
     created() {
+        this.getCheck();
     },
     mounted() {
         // this.$r.post("/getMockData",{},r=>{
@@ -126,36 +127,67 @@ export default {
             get() {
                 return this.$store.getters.navList
             },
+        },
+        check:{
+            get(){
+                return this.$store.getters.isview
+            },
         }
     },
 	methods: {
-        change:function(event){
-            if(this.navbtn=='open'){
-                let theChild=event.target;
-                while(theChild.className!="loncom_nav"){
-                    theChild=theChild.parentNode;
+        getCheck:function(){
+            this.$r.post('/getCheck',{},r=>{
+                console.log(r)
+                if(r.err_code=='0'){
+                    this.$store.dispatch('setIsview',r.data);
                 }
+            })
+        },
+        change:function(event){
+            console.log(event)
+            let theChild=event.target;
+            while(theChild.className.indexOf("loncom_navmenu")==-1){
+                theChild=theChild.parentNode;
+            }
+            if(this.navbtn=='open'){
                 if(theChild.nextSibling instanceof HTMLElement){
                     if(theChild.nextSibling.getAttribute("class")&&theChild.nextSibling.getAttribute("class").indexOf("active")!=-1){
                         theChild.nextSibling.classList.remove("active");
-                        theChild.querySelector(".loncom_menui")&&theChild.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-down");
+                        theChild.classList.add("active");
+                        theChild.querySelector(".loncom_menui")&&theChild.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-right");
                     }else{
                         theChild.nextSibling.classList.add("active");
-                        theChild.querySelector(".loncom_menui")&&theChild.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-up");
+                        theChild.classList.remove("active");
+                        theChild.querySelector(".loncom_menui")&&theChild.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-down");
                     }
+                }else{
+                    this.changeNav();
+                    theChild.classList.add("active");
                 }
-                
+            }else{
+                this.changeNav();
+                theChild.classList.add("active");
             }
         },
-        initnav:function(){
+        //去掉loncom_navmenu上的active状态
+        changeNav:function(event){
+            let nav=this.$el.querySelectorAll(".loncom_navmenu");
+            for(let i=0;i<nav.length;i++){
+                nav[i].classList.remove("active");
+            }
+        },
+        initnav:function(flag){
             let doms=this.$el.querySelectorAll(".loncom_sidebar_list .router-link-active");
+            console.log(doms)
             for(let i=0;i<doms.length;i++){
                 let theChild=doms[i];
                 while(theChild.parentNode!=null){
-                    if(theChild.parentNode.className&&theChild.parentNode.className.indexOf("loncom_morenav")!=-1){
+                    if(theChild.parentNode.className&&theChild.parentNode.className.indexOf("loncom_morenav")!=-1){ //有子菜单active状态
                         theChild.parentNode.classList.add("active");
-                        theChild.parentNode.previousSibling.querySelector(".loncom_menui")&&theChild.parentNode.previousSibling.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-up")
-                        break;
+                        theChild.parentNode.previousSibling.querySelector(".loncom_menui")&&theChild.parentNode.previousSibling.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-down");
+                    }
+                    if(theChild.parentNode.className&&theChild.parentNode.className.indexOf("loncom_navmenu")!=-1&&flag){ //没有子菜单active状态
+                        theChild.parentNode.classList.add("active");
                     }
                     theChild=theChild.parentNode;
                 }
@@ -163,7 +195,7 @@ export default {
             
         },
         init:function(){
-            this.initnav();
+            this.initnav(true);
             if(this.navbtn==='open'){
                 this.$el.querySelector("#sidebar").style.width="250px";
                 this.$el.querySelector("#content").style.paddingLeft="250px";
@@ -181,7 +213,7 @@ export default {
                 let morenav=this.$el.querySelectorAll(".loncom_morenav");
                 for(let i=0;i<morenav.length;i++){
                     morenav[i].classList.remove("active");
-                    morenav[i].previousSibling.querySelector(".loncom_menui")&&morenav[i].previousSibling.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-down")
+                    morenav[i].previousSibling.querySelector(".loncom_menui")&&morenav[i].previousSibling.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-right")
                 }
                 this.$el.querySelector("#sidebar").style.width="60px";
                 this.$el.querySelector("#sidebar").style.transition="all 0.4s ease-in";
@@ -201,13 +233,19 @@ export default {
                 this.$el.querySelector("#smalllogo").style.transition="all 0.4s ease-in";
                 this.$el.querySelector("#logo").style.left="0";
                 this.$el.querySelector("#logo").style.transition="all 0.4s ease-in";
-                this.initnav();
+                this.initnav(false);
                 this.navbtn='open';
             }
             while(theChild.parentNode!=null){
+                //增加closeactive,收缩的时候active状态用
                 if(theChild.className&&theChild.className.indexOf("loncom_nav_ul")!=-1){
                     theChild.setAttribute("class","loncom_nav_ul "+this.navbtn+"active")
-                    break;
+                }
+                //有子菜单的去掉loncom_navmenu上的active状态
+                if(theChild.className&&theChild.className.indexOf("loncom_navmenu")!=-1){
+                    if(theChild.nextSibling instanceof HTMLElement){
+                        theChild.classList.remove("active");
+                    }
                 }
                 theChild=theChild.parentNode;
             }

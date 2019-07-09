@@ -8,6 +8,7 @@ const app = {
     // 中英文
     language: Cookies.get('language') || 'zh',
     languagezh: '',
+    viewState:'',
   },
   mutations: {
     setwsData(state,wsData){
@@ -29,6 +30,11 @@ const app = {
     SET_LANGUAGEZH: (state, language) => {
       state.languagezh = language
     },
+
+    SET_VIEW: (state, viewState) => {
+      state.viewState = viewState
+    },
+
   },
   actions: {
     setwsData({commit},wsData){
@@ -47,6 +53,11 @@ const app = {
     setLanguagezh({ commit }, language) {
       commit('SET_LANGUAGEZH', language)
     },
+
+    setIsview({commit},viewState){
+      commit('SET_VIEW', viewState)
+    }
+
   }
 
 }
