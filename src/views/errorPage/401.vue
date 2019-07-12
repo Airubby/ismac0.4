@@ -20,7 +20,7 @@
       </el-col>
     </el-row>
     <el-dialog title="随便看" :visible.sync="dialogVisible">
-      <img class="pan-img" :src="ewizardClap">
+      <img class="pan-img" src="images/look.gif">
     </el-dialog>
   </div>
 </template>
@@ -30,7 +30,6 @@ export default {
   name: 'page401',
   data() {
     return {
-      ewizardClap: 'https://wpimg.wallstcn.com/007ef517-bafd-4066-aae4-6883632d9646',
       dialogVisible: false
     }
   },

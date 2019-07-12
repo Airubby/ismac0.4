@@ -197,8 +197,8 @@ export default {
         init:function(){
             this.initnav(true);
             if(this.navbtn==='open'){
-                this.$el.querySelector("#sidebar").style.width="250px";
-                this.$el.querySelector("#content").style.paddingLeft="250px";
+                this.$el.querySelector("#sidebar").style.width="200px";
+                this.$el.querySelector("#content").style.paddingLeft="200px";
                 this.$el.querySelector("#smalllogo").style.left="-60px";
             }else{
                 this.$el.querySelector("#sidebar").style.width="60px";
@@ -221,13 +221,13 @@ export default {
                 this.$el.querySelector("#content").style.transition="all 0.4s ease-in";
                 this.$el.querySelector("#smalllogo").style.left="0";
                 this.$el.querySelector("#smalllogo").style.transition="all 0.4s ease-in";
-                this.$el.querySelector("#logo").style.left="-250px";
+                this.$el.querySelector("#logo").style.left="-200px";
                 this.$el.querySelector("#logo").style.transition="all 0.4s ease-in";
                 this.navbtn='close';
             }else{
-                this.$el.querySelector("#sidebar").style.width="250px";
+                this.$el.querySelector("#sidebar").style.width="200px";
                 this.$el.querySelector("#sidebar").style.transition="all 0.4s ease-in";
-                this.$el.querySelector("#content").style.paddingLeft="250px";
+                this.$el.querySelector("#content").style.paddingLeft="200px";
                 this.$el.querySelector("#content").style.transition="all 0.4s ease-in";
                 this.$el.querySelector("#smalllogo").style.left="-60px";
                 this.$el.querySelector("#smalllogo").style.transition="all 0.4s ease-in";
@@ -252,6 +252,7 @@ export default {
         },
         changeTheme:function(theme){
             this.$store.dispatch('setTheme',theme);
+            sessionStorage.setItem("theme", theme);
         },
         switcFullScreen:function(){
 			this.$tool.switcFullScreen();

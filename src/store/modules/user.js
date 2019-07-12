@@ -1,4 +1,4 @@
-import {syncRouter, asyncRouter,router } from '@/router/index'
+import {syncRouter, resetRouter,router } from '@/router/index'
 import Cookies from 'js-cookie'
 /**
  * 递归过滤异步路由表，生成router数据结构
@@ -31,21 +31,26 @@ const user = {
       Cookies.set('token', token)
     },
     setAuthInfo(state,data){
+        resetRouter(); //重置初始路由
         state.navList=data; //导航用
+        let redirect=data.length>0?data[0].path:'/401';
         let newRouter={
             path: '/loncom',
             name:'loncom',
             meta: { title: '首页'},
             component: () => import('@/views/home.vue'),
-            redirect:'/loncom/index',
+            redirect:redirect,
             children:[]
         }
-        let theAsyncRouter = filterAsyncRouter(data);
-        if(theAsyncRouter){
-            newRouter.redirect=theAsyncRouter[0].path;
-            newRouter.children=theAsyncRouter;
+        if(data.length>0){
+          let theAsyncRouter = filterAsyncRouter(data);
+          if(theAsyncRouter){
+              newRouter.redirect=theAsyncRouter[0].path;
+              newRouter.children=theAsyncRouter;
+          }
         }
-        router.options.routes.push(newRouter)
+        
+        // router.options.routes.push(newRouter)
         router.addRoutes([newRouter]);
         
     },

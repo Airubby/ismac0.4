@@ -26,12 +26,24 @@ export const syncRouter=[
     { path: '/401',name:'401',meta: { title: '401'}, component: () => import('@/views/errorPage/401') },
 ];
 
-export const asyncRouter=[
+// export const asyncRouter=[
     
-]
-export const router= new Router({
-  //mode: 'history',
-  mode:'hash',
-  base: process.env.BASE_URL,
-  routes:syncRouter
-})
+// ]
+// export const router= new Router({
+//   //mode: 'history',
+//   mode:'hash',
+//   base: process.env.BASE_URL,
+//   routes:syncRouter
+// })
+
+const createRouter = () => new Router({
+    mode: 'hash',
+    base: process.env.BASE_URL,
+    routes: syncRouter
+ })
+ 
+ export function resetRouter () {
+    const newRouter = createRouter()
+    router.matcher = newRouter.matcher
+ }
+ export const router = createRouter()

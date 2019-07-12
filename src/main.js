@@ -49,7 +49,7 @@ function getServerConfig() {
       store.dispatch('setAjaxUrl',ajaxUrl);
       store.dispatch('setLanguage',config.language);
       // store.dispatch('setLanguagezh',config.languagezh);
-      Vue.prototype.$theme = config.theme || 'default';
+      Vue.prototype.$theme = sessionStorage.getItem("theme") || config.theme || 'default';
       resolve();
     }).catch((error) => {
       console.log(error)
