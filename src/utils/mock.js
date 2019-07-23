@@ -286,3 +286,14 @@ const getCheck=function(){
     }
 }
 Mock.mock(store.getters.AjaxUrl+'/getCheck', /post/i,getCheck) //调用模拟数据方法
+
+const getTemp=function(){
+    return {
+        err_code:0,
+        err_msg:"成功",
+        data:[
+            {type:'1',name:"大屏首页",url:'bigScreen/index/page.html'}
+        ]
+    }
+}
+Mock.mock(store.getters.AjaxUrl+'/getTemp', /post/i,getTemp) //调用模拟数据方法

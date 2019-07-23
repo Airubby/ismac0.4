@@ -58,8 +58,8 @@
                         list-field="data" 
                         total-field="total"
                         method='get' 
-                        :showPagination="true"
-                        :showSelectAll="true"
+                        :show-pagination="true"
+                        :show-select-all="true"
                         :params="initParams"
                         :columns="table_columns" ref="thisRef">   
                         <el-table-column slot="prepend" type="selection"></el-table-column>

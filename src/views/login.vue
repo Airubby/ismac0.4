@@ -62,8 +62,10 @@ export default {
       loginIn:function(){
 			this.$refs['form'].validate((valid) => {
 				if(valid){
-					console.log(md5(this.user.psword))
-					this.$api.post('/user/login', {"obj":this.user}, r => {
+					let a="tKb634uLRuFdugF0P01eKw=="
+					console.log(this.$tool.Decrypt(a))
+					this.user.psword=this.$tool.Encrypt(this.user.psword);
+					this.$r.post('/user/login', {"obj":this.user}, r => {
 						console.log(r);
 						if(r.err_code=="0"){
 							this.$message.success(r.err_msg);
@@ -87,15 +89,7 @@ export default {
       
   },
   watch:{
-        'user.psword':function(val,oldval){
-			if(val.length>16){
-				this.user.psword="";
-				this.$nextTick(() => {
-					this.user.psword=val.slice(0,16)
-				})
-				console.log(this.user.psword)
-			}
-        }
+        
    },
 }
 </script>

@@ -150,10 +150,13 @@ export default {
                 theChild=theChild.parentNode;
             }
             if(this.navbtn=='open'){
+                console.log(theChild)
                 if(theChild.nextSibling instanceof HTMLElement){
                     if(theChild.nextSibling.getAttribute("class")&&theChild.nextSibling.getAttribute("class").indexOf("active")!=-1){
                         theChild.nextSibling.classList.remove("active");
-                        theChild.classList.add("active");
+                        if(theChild.nextSibling.querySelectorAll(".router-link-active").length>0){
+                            theChild.classList.add("active");
+                        }
                         theChild.querySelector(".loncom_menui")&&theChild.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-right");
                     }else{
                         theChild.nextSibling.classList.add("active");

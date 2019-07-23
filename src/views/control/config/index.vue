@@ -7,15 +7,19 @@
             </el-breadcrumb>
         </div>
         <div class="public_content">
+            <el-scrollbar class="scrollbar">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
                     <span>测点</span>
                 </div>
                 <el-search-table-pagination
-                    type="local"
-                    :page-sizes="[1000]"
+                    class="table-add"
+                    :url="$ajaxUrl+'/syslog/query'"
+                    list-field="data.items" 
+                    total-field="data.count"
+                    method='post'
                     :data="table_data"
-                    :showPagination="false"
+                    :showPagination="true"
                     :columns="table_columns" ref="thisRef">   
                     <template slot-scope="scope" slot="preview-handle">
                         <p class="table_handle"><span @click="edit(scope.row)">编辑</span><span @click="moreDelete(scope.row)">删除</span></p>
@@ -25,6 +29,7 @@
                     <i class="el-icon-plus"></i>新增时间段
                 </div>
             </el-card>
+            </el-scrollbar>
         </div>
     </div>
 </template>
@@ -33,7 +38,7 @@
 
 export default {
     created() {
-        this.getInfo()
+        // this.getInfo()
     },
     mounted() {
         
@@ -41,7 +46,7 @@ export default {
     data(){
         return{
             table_columns:[
-                { prop: 'inputname', label: '文本框',slotName:'preview-input',minWidth:10,type:"input"},
+                { prop: 'details', label: '文本框',slotName:'preview-input',minWidth:10,type:"input"},
                 { prop: 'selectname', label: '下拉框',slotName:'preview-select',minWidth:10,type:"select"},
                 { prop: 'radioname', label: '单选框',slotName:'preview-radio',minWidth:10,type:"radio"},
                 { prop: 'datename', label: '日期',slotName:'preview-date',minWidth:10,type:"date"},
