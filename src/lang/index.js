@@ -3,12 +3,14 @@ import VueI18n from 'vue-i18n'
 import Cookies from 'js-cookie'
 import elementEnLocale from 'element-ui/lib/locale/lang/en' // element-ui lang
 import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
-import enLocale from './en'
-import zhLocale from './zh'
+// import enLocale from './en'
+// import zhLocale from './zh'
 import store from '../store/index'
 
 Vue.use(VueI18n)
-
+const enLocale=store.getters.languageen
+const zhLocale=store.getters.languagezh
+console.log(zhLocale)
 const messages = {
   en: {
     ...enLocale,

@@ -59,15 +59,17 @@
                         total-field="total"
                         method='get' 
                         :show-pagination="true"
-                        :show-select-all="true"
+                        :show-select-all="false"
                         :params="initParams"
+                        @selection-change="selectChange"
+                        @select-all="selectAll"
                         :columns="table_columns" ref="thisRef">   
                         <el-table-column slot="prepend" type="selection"></el-table-column>
                         <template slot-scope="scope" slot="preview-name">
                             <p class="table_handle"><span @click="detail(scope.row)">{{scope.row.code}}</span></p>
                         </template>
                         <template slot-scope="scope" slot="preview-handle">
-                            <p class="table_handle"><span @click="eyeon(scope.row)">关注</span><span @click="maintain(scope.row)">维护</span></p>
+                            <p class="table_handle"><span @click="eyeon(scope.row,scope.$index)">关注</span><span @click="maintain(scope.row)">维护</span></p>
                         </template>
                     </el-search-table-pagination>
                 </div>
@@ -83,7 +85,7 @@ export default {
         
     },
     mounted() {
-        
+        this.$refs.thisRef.setSelect([{id:'2'}])
     },
     data(){
         return{
@@ -102,10 +104,12 @@ export default {
               { prop: 'handle', label: '操作',slotName:'preview-handle',width:120},
             ],
             table_data:[],
+            backSelect:{},
         }
     },
 	methods: {
         eyeon:function(row){
+            this.$refs.thisRef.setSelect([this.backSelect])
             this.$r.post("/eyeon",{model:{id:row.id}},r=>{
                 console.log(r)
             })
@@ -123,6 +127,27 @@ export default {
                 params:JSON.stringify({"id":row.id})
             }});
         },
+        selectChange:function(selection){
+            if(selection.length>0){
+                if(this.backSelect&&JSON.stringify(this.backSelect)!="{}"){
+                    for(let i=0;i<selection.length;i++){
+                        if(this.backSelect.id!=selection[i].id){
+                            this.$refs.thisRef.clearSelect();
+                            this.$refs.thisRef.setRowSelection(selection[i],true)
+                            this.backSelect=selection[i];
+                        }
+                    }
+                }else{
+                    this.backSelect=selection[0];
+                }
+                
+            }else{
+                this.backSelect={};
+            }
+        },
+        selectAll:function(selection){
+            console.log(selection)
+        }
 
 	},
     components: {

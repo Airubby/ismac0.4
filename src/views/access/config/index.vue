@@ -7,7 +7,7 @@
             </el-breadcrumb>
         </div>
         <div class="public_content pd20">
-            <el-tabs v-model="activeName" class="content">
+            <el-tabs v-model="activeName" class="content" @tab-click="tabClick">
                 <el-tab-pane label="控制器" name="first" class="content">
                     <controller></controller>
                 </el-tab-pane>
@@ -29,7 +29,7 @@ import timeGroup from './timeGroup.vue'
 import limitsGroup from './limitsGroup.vue'
 export default {
     created() {
-        
+        this.activeName=sessionStorage.getItem("tabIndex")?sessionStorage.getItem("tabIndex"):'first';
     },
     mounted() {
         
@@ -40,7 +40,9 @@ export default {
         }
     },
 	methods: {
-        
+        tabClick:function(tab){
+            sessionStorage.setItem("tabIndex", tab.name); 
+        }
 	},
     components: {
         limitsGroup,timeGroup,controller

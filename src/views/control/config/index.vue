@@ -10,24 +10,24 @@
             <el-scrollbar class="scrollbar">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
-                    <span>测点</span>
+                    <el-input
+                        style="width:300px;"
+                        size="small"
+                        class="loncom_mr10"
+                        :params="initParams"
+                        placeholder="请输入教室名称"
+                        prefix-icon="el-icon-search"
+                        v-model="initParams.classname">
+                    </el-input>
+                    <el-button type="primary" size="small" @click="search">搜索</el-button>
                 </div>
                 <el-search-table-pagination
-                    class="table-add"
-                    :url="$ajaxUrl+'/syslog/query'"
-                    list-field="data.items" 
-                    total-field="data.count"
-                    method='post'
+                    type="local" 
+                    :params="initParams"
                     :data="table_data"
                     :showPagination="true"
                     :columns="table_columns" ref="thisRef">   
-                    <template slot-scope="scope" slot="preview-handle">
-                        <p class="table_handle"><span @click="edit(scope.row)">编辑</span><span @click="moreDelete(scope.row)">删除</span></p>
-                    </template>
                 </el-search-table-pagination>
-                <div class="time_group_add" @click="timesectionAdd()">
-                    <i class="el-icon-plus"></i>新增时间段
-                </div>
             </el-card>
             </el-scrollbar>
         </div>
@@ -45,19 +45,24 @@ export default {
     },
     data(){
         return{
-            table_columns:[
-                { prop: 'details', label: '文本框',slotName:'preview-input',minWidth:10,type:"input"},
-                { prop: 'selectname', label: '下拉框',slotName:'preview-select',minWidth:10,type:"select"},
-                { prop: 'radioname', label: '单选框',slotName:'preview-radio',minWidth:10,type:"radio"},
-                { prop: 'datename', label: '日期',slotName:'preview-date',minWidth:10,type:"date"},
-                { prop: 'timename', label: '时间',slotName:'preview-time',minWidth:10,type:"time"},
-                { prop: 'dialogname', label: '弹窗',slotName:'preview-dialog',minWidth:10,type:"dialog"},
-                { prop: 'handle', label: '操作',slotName:'preview-handle',width:120},
+            initParams:{
+                classname:''
+            },
+            table_data:[
+                {classname:"教室一",createTime:"2017-12-12 12:23:22",desc:"123"},
+                {classname:"教室二",createTime:"2017-12-12 12:23:22",desc:"123"}
             ],
-            table_data:[],
+            table_columns:[
+                { prop: 'classname', label: '名称',minWidth:10},
+                { prop: 'createTime', label: '告警时间',minWidth:15},
+                { prop: 'desc', label: '告警内容',minWidth:30},
+            ],
         }
     },
 	methods: {
+        search:function(){
+            this.$refs.thisRef.searchHandler(true);
+        },
         getInfo:function(){
             this.$r.get("/getEditTable",{},r=>{
                 console.log(r)

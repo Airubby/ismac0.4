@@ -7,7 +7,7 @@
             </el-breadcrumb>
         </div>
         <div class="public_content">
-            录像回放
+            <video src="http://172.18.47.162:8060/hls/11.m3u8" style="width:200px;height:200px;"></video>
         </div>
     </div>
 </template>

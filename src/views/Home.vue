@@ -67,7 +67,7 @@
                     </div>
                 </div>
                 <div class="loncom_right_top_box">
-                    <div class="box_con">
+                    <div class="box_con" @click="enterAlarm()">
                         <el-badge :value="200" :max="99" class="item">
                             <i class="el-icon-bell el-icon-color"></i>
                         </el-badge>
@@ -105,6 +105,7 @@
 
 <script>
 export default {
+    inject:['reload'],
     created() {
         this.getCheck();
     },
@@ -174,6 +175,7 @@ export default {
         },
         //去掉loncom_navmenu上的active状态
         changeNav:function(event){
+            sessionStorage.setItem("tabIndex", ""); //点击切换 去除 tabs 的状态，这样进去 带有tabs 的页面 就是 默认的 first
             let nav=this.$el.querySelectorAll(".loncom_navmenu");
             for(let i=0;i<nav.length;i++){
                 nav[i].classList.remove("active");
@@ -262,7 +264,12 @@ export default {
 		},
         enterFullScreen:function(){
             this.$router.push({path:'/bigHome'});
-        }
+        },
+        enterAlarm:function(){
+            sessionStorage.setItem("tabIndex", "");
+            this.$router.push({name:'controlAlarmRecord'});
+            this.reload();
+        },
 
 	},
     components: {

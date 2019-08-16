@@ -7,7 +7,8 @@ const app = {
     loginUrl:Cookies.get('loginUrl')||'',
     // 中英文
     language: Cookies.get('language') || 'zh',
-    languagezh: '',
+    languagezh: {},
+    languageen: {},
     viewState:'',
   },
   mutations: {
@@ -29,6 +30,9 @@ const app = {
     },
     SET_LANGUAGEZH: (state, language) => {
       state.languagezh = language
+    },
+    SET_LANGUAGEEN: (state, language) => {
+      state.languageen = language
     },
 
     SET_VIEW: (state, viewState) => {
@@ -52,6 +56,9 @@ const app = {
     },
     setLanguagezh({ commit }, language) {
       commit('SET_LANGUAGEZH', language)
+    },
+    setLanguageen({ commit }, language) {
+      commit('SET_LANGUAGEEN', language)
     },
 
     setIsview({commit},viewState){

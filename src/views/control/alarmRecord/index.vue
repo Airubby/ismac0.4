@@ -12,7 +12,7 @@
                 <el-col :span="12"><el-button type="primary" @click="copy">复制</el-button></el-col>
             </el-row>
             <el-checkbox v-model="check">测试computed属性写入store</el-checkbox>
-
+            <el-button type="primary" @click="treeInfo.visible=true">弹窗</el-button>
             <el-tree
             :data="treedata"
             show-checkbox
@@ -23,17 +23,22 @@
             :default-checked-keys="checkedKeys"
             :props="defaultProps">
             </el-tree>
+            <div style="width:200px;height:200px;" id="echart"></div>
         </div>
+        <treeShow v-if="treeInfo.visible" :dialogInfo="treeInfo"></treeShow>
     </div>
 </template>
 
 <script>
+import treeShow from '@/components/dialogShow.vue'
+import echarts from 'echarts';
+import 'echarts-liquidfill';
 export default {
     created() {
         
     },
     mounted() {
-        
+        this.initEchart()
     },
     computed: {
         check: {
@@ -90,10 +95,64 @@ export default {
             },
             checkedKeys:[5],
             checkRadio:true,  //单选
+            treeInfo:{
+                visible:false,
+            }
         }
     },
 	methods: {
-        
+        initEchart:function(){
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('echart'));
+            // 绘制图表
+            var option = {
+                series: [{
+                    type: 'liquidFill',
+                    radius: '95%',
+                    waveAnimation: true,
+                    backgroundStyle: {
+                        color: 'transparent',
+                        borderColor: '#709CFD',
+                        borderWidth: 5,
+                    },
+                    itemStyle: {
+                        normal: {
+                            shadowBlur: 0
+                        }
+                    },
+                    outline: {
+                        borderDistance: 0,
+                        itemStyle: {
+                            borderWidth: 10,
+                            borderColor: "transparent",
+                        }
+                    },
+                    label: {
+                        normal: {
+                            show: true,
+                            textStyle: {
+                                color: "#709CFD",
+                                fontSize: 12,
+                                align: 'center',
+                                baseline: 'middle'
+                            },
+                            position: 'inside'
+                        }
+                    },
+                    data: [
+                    {
+                        value: 0.7,
+                        itemStyle: {
+                            normal: {
+                                color: "#709CFD"
+                            }
+                        }
+                    }
+                    ]
+                }]
+            };
+            myChart.setOption(option);
+        },
         copy:function(){
             this.$refs.inp.select();
             let flag=document.execCommand("copy");
@@ -127,7 +186,7 @@ export default {
         },
 	},
     components: {
-        
+        treeShow
     }
 }
 </script>
