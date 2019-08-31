@@ -252,11 +252,11 @@ const gettable=function(){
         total:6,
         data:[
             {id:'1',code:'12',type:'普通',user:"小呆",indate:'2019-23-21',timegroup:'时间1',jieru:'323',zw:'123',zl:'234'},
-            {id:'2',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
-            {id:'3',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
-            {id:'4',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
-            {id:'5',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
-            {id:'6',code:'12',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
+            {id:'2',code:'122',type:'普通',user:"小呆2",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
+            {id:'3',code:'123',type:'普通',user:"小呆3",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
+            {id:'4',code:'124',type:'普通',user:"小呆4",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
+            {id:'5',code:'125',type:'普通',user:"小呆5",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
+            {id:'6',code:'126',type:'普通',user:"小呆6",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
         ]
     }
 }

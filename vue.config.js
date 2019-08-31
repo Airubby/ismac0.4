@@ -1,3 +1,5 @@
+const path = require("path");
+const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
     // 基本路径
     baseUrl: './',
@@ -14,14 +16,29 @@ module.exports = {
     // webpack配置
     // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
     chainWebpack: config => {
-         //移出预加载模块prefetch
-        config.plugins.delete('prefetch')  
+        // config
+        //     .entry('index')
+        //     .add('babel-polyfill')
+        //     .end();
+         // 配置别名
+        config.resolve.alias.set("@", path.join(__dirname, "src"))
+        if(isProduction){
+            // 删除预加载
+            config.plugins.delete('preload');
+            config.plugins.delete('prefetch');
+            // 压缩代码
+            config.optimization.minimize(true);
+            // 分割代码
+            config.optimization.splitChunks({
+                chunks: 'all'
+            })
+        }
     },
     configureWebpack: config => {
-        if (process.env.NODE_ENV === 'production') {
+        if (isProduction) {
             // 为生产环境修改配置...
             config.mode = 'production';
-            // 将每个依赖包打包成单独的js文件
+            // 将每个依赖包打包成单独的js文件,含有视频的时候，会有错误......
             let optimization = {
                 runtimeChunk: 'single',
                 splitChunks: {
@@ -91,6 +108,11 @@ module.exports = {
     // webpack-dev-server 相关配置
     devServer: {
         open: true, 
+        compress: false, // 开启压缩
+        overlay: {
+            warnings: true,
+            errors: true
+        },
         host: '0.0.0.0',
         port: 8081,
         https: false,

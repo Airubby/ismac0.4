@@ -25,8 +25,15 @@
                     type="local" 
                     :params="initParams"
                     :data="table_data"
+                    :page-sizes="[4]"
                     :showPagination="true"
+                    :show-select-all="true"
+                    select-id="code"
                     :columns="table_columns" ref="thisRef">   
+                    <el-table-column slot="prepend" type="selection"></el-table-column>
+                    <template slot-scope="scope" slot="preview-handle">
+                            <p class="table_handle"><span @click="del(scope.row,scope.$index)">删除</span></p>
+                        </template>
                 </el-search-table-pagination>
             </el-card>
             </el-scrollbar>
@@ -38,7 +45,7 @@
 
 export default {
     created() {
-        // this.getInfo()
+        this.getInfo()
     },
     mounted() {
         
@@ -49,13 +56,14 @@ export default {
                 classname:''
             },
             table_data:[
-                {classname:"教室一",createTime:"2017-12-12 12:23:22",desc:"123"},
-                {classname:"教室二",createTime:"2017-12-12 12:23:22",desc:"123"}
             ],
             table_columns:[
-                { prop: 'classname', label: '名称',minWidth:10},
-                { prop: 'createTime', label: '告警时间',minWidth:15},
-                { prop: 'desc', label: '告警内容',minWidth:30},
+               { prop: 'user', label: '设备名称',minWidth:10},
+              { prop: 'type', label: '设备类型',minWidth:10},
+              { prop: 'indate', label: '位置',minWidth:10},
+              { prop: 'timegroup', label: '监控状态',minWidth:10},
+              { prop: 'jieru', label: '告警状态',minWidth:10},
+              { prop: 'handle', label: '操作',slotName:'preview-handle',width:120},
             ],
         }
     },
@@ -64,14 +72,36 @@ export default {
             this.$refs.thisRef.searchHandler(true);
         },
         getInfo:function(){
-            this.$r.get("/getEditTable",{},r=>{
-                console.log(r)
+            // this.$r.get("/getEditTable",{},r=>{
+            //     console.log(r)
+            //     if(r.err_code=="0"){
+            //         this.table_data=r.data;
+            //     }else{
+            //         this.$message.warning(r.err_msg);
+            //     }
+            // })
+            this.$r.get("/getTable",{},r=>{
                 if(r.err_code=="0"){
                     this.table_data=r.data;
                 }else{
                     this.$message.warning(r.err_msg);
                 }
             })
+        },
+        del:function(row,index){
+            // console.log(row)
+            // console.log(index);
+            // this.table_data=this.table_data.filter((item)=>{
+            //     return item !="";
+            // })
+            this.table_data.forEach((item, index, arr)=> {
+                let flag=this.$tool.equalsObj(item,row)
+                if(flag){
+                    this.table_data.splice(index, 1);
+                    console.log(this.table_data)
+                    this.$refs.thisRef.searchHandler(true);
+                }
+            });
         },
         timesectionAdd:function(){
 

@@ -248,6 +248,18 @@ function checkPasspord(obj) {
         }
     } 
 }
+//判断两个对象是否相等
+function equalsObj(objOne,objTwo){
+    if(Object.keys(objOne).length!=Object.keys(objTwo).length){
+        return false;
+    }
+    for (let key in objOne) {
+        if(objOne[key]!==objTwo[key]){
+            return false;
+        }
+    }
+    return true;
+}
 export default {
     Encrypt,
     Decrypt,
@@ -261,5 +273,6 @@ export default {
     checkEMAIL,
     checkPHONE,
     checkNumber,
-    checkPasspord
+    checkPasspord,
+    equalsObj
 }

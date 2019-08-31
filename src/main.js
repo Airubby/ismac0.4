@@ -23,14 +23,19 @@ import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
 
 import './utils/directive'  //自定义指令
 
-import './utils/mock.js'  //测试接口
+// import './utils/mock.js'  //测试接口
 
 import 'vue-transition.css'
 
 import './assets/css/index.less'
 
 
-
+import VueVideoPlayer from 'vue-video-player'
+import 'video.js/dist/video-js.css'
+import 'vue-video-player/src/custom-theme.css'
+import 'videojs-flash'
+import 'videojs-contrib-hls/dist/videojs-contrib-hls'
+Vue.use(VueVideoPlayer)
 
 
 // // 将API方法绑定到全局

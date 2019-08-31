@@ -14,36 +14,40 @@
                 </el-button-group>
             </div>
             <div style="width:100%;height:calc(100% - 60px);display:flex;">
-                <template v-for="(item,index) in playerOptions">
-                    <div :class="'video'+videoIndex" class="video">
-                        <em class="vem">2342</em>
-                        <video-player class="vjs-custom-skin" style="width:100%;height:100%" ref="videoPlayer" :options="item">
-                        </video-player>
-                    </div>
-                </template>
+                <video-player class="vjs-custom-skin" style="width:100%;height:100%" ref="videoPlayer" 
+                :options="playerOptions"
+                @play="onPlayerPlay($event)"
+                @pause="onPlayerPause($event)"
+                @ended="onPlayerEnded($event)"
+                @loadeddata="onPlayerLoadeddata($event)"
+                @waiting="onPlayerWaiting($event)"
+                @playing="onPlayerPlaying($event)"
+                @timeupdate="onPlayerTimeupdate($event)"
+                @canplay="onPlayerCanplay($event)"
+                @canplaythrough="onPlayerCanplaythrough($event)"
+                @ready="playerReadied"
+                @statechanged="playerStateChanged($event)"> 
+                 </video-player>
             </div>
-            <!--
-            <div style="width:400px;height:400px;" @click="play()">
-            <video-player class="vjs-custom-skin" ref="videoPlayer" :options="playerOptions" 
-            @play="onPlayerPlay($event)"
-            @pause="onPlayerPause($event)"
-            @ended="onPlayerEnded($event)"
-            >
-            </video-player>
-            </div>
-            -->
         </div>
     </div>
 </template>
 
 <script>
-import {videoPlayer} from 'vue-video-player'
-import 'video.js/dist/video-js.css'
-import 'vue-video-player/src/custom-theme.css'
-import 'videojs-flash'
+// import {videoPlayer} from 'vue-video-player'
+// import 'video.js/dist/video-js.css'
+// import 'vue-video-player/src/custom-theme.css'
+// import 'videojs-flash'
+// import 'videojs-contrib-hls/dist/videojs-contrib-hls'
+// import 'videojs-contrib-hls.js/src/videojs.hlsjs'
+// import VueVideoPlayer from 'vue-video-player'
+// import 'video.js/dist/video-js.css'
+// import 'vue-video-player/src/custom-theme.css'
+// import 'videojs-flash'
+// import 'videojs-contrib-hls/dist/videojs-contrib-hls'
 export default {
     created() {
-        this.hasUsableFlash();
+        //this.hasUsableFlash();
     },
     mounted() {
         
@@ -56,21 +60,28 @@ export default {
     data(){
         return{
             videoIndex:1,
-            playerOptions: [{
+            playerOptions: {
                 overNative: true,
                 autoplay: false,
                 controls: true,
                 // saspectRatio : '4:3',
                 fluid : false,  // 当true时它将按比例(4:3;16:9)缩放以适应其容器。
-                techOrder: ['flash'],
+                techOrder: ['html5'],
                 flash: {
-                    hls: { withCredentials: false },
+                    hls: { withCredentials: false },  // flash for flash hls  设置true
                     swf: 'media/video-js.swf'
                 },
+                html5: { hls: { withCredentials: false } },  //html5 for html hls  设置true
                 sources: [
                     {
                         type: "rtmp/mp4",
                         src: "rtmp://172.18.47.162/live/11"
+                    },
+                    {
+                        withCredentials: false,
+                        type: 'application/x-mpegURL',
+                        src: 'http://172.18.47.162:8060/hls/11.m3u8'
+                        // src: 'http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8'
                     }
                 ],
                 controlBar: {
@@ -84,57 +95,7 @@ export default {
                   fullscreenToggle: true // 全屏按钮
                 },
                 // poster: 'media/logo.png'
-            }],
-            option:{
-                overNative: true,
-                autoplay: false,
-                controls: true,
-                // aspectRatio : '4:3',
-                fluid : false,  // 当true时它将按比例(4:3;16:9)缩放以适应其容器。
-                techOrder: ['flash'],
-                flash: {
-                    hls: { withCredentials: false },
-                    swf: 'media/video-js.swf'
-                },
-                sources: [
-                    {
-                        type: "rtmp/mp4",
-                        src: "rtmp://172.18.47.162/live/11"
-                    }
-                ],
-                // poster: 'media/logo.png'
             },
-            playerOptions1: {
-                overNative: true,
-                autoplay: true,
-                controls: true,
-                // aspectRatio : '16:9',
-                fluid : false, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
-                techOrder: ['flash'],
-                sourceOrder: true,
-                flash: {
-                    hls: { withCredentials: false },
-                    swf: 'media/video-js.swf'
-                },
-                // html5: { hls: { withCredentials: false } },
-                sources: [
-                    {
-                        type: "rtmp/mp4",
-                        src: "rtmp://172.18.47.162/live/11"
-                    }
-                ],
-                // poster: 'media/logo.png',
-                controlBar: {
-                  timeDivider: false,  //当前时间和持续时间的分隔符
-                  durationDisplay: false,  //显示持续时间
-                  remainingTimeDisplay: false,  //是否显示剩余时间功能
-                  currentTimeDisplay: false, // 当前时间
-                  volumeControl: false, // 声音控制键
-                  playToggle: false, // 暂停和播放键
-                  progressControl: false, // 进度条
-                  fullscreenToggle: true // 全屏按钮
-                },
-            }
         }
     },
 	methods: {
@@ -163,32 +124,53 @@ export default {
                 this.$message.warning("未安装flash插件，获取安装了未启用！");
             }
         },
-        onPlayerPlay:function(event){
-            console.log(event)
-            this.hasUsableFlash();
-        },
-        onPlayerPause:function(event){
-
-        },
-        onPlayerEnded:function(event){
-
-        },
-        enterStream() {
-            this.playerOptions.sources[1].src = this.streams.hls
-            this.playerOptions.sources[0].src = this.streams.rtmp
-            this.playerOptions.autoplay = true
-        },
-        changeTech() {
-            if (this.currentTech === 'Html5') {
-                this.playerOptions.techOrder = ['html5']
-            } else if (this.currentTech === 'Flash') {
-                this.playerOptions.techOrder = ['flash']
-            }
-            this.playerOptions.autoplay = true
+        // listen event
+      onPlayerPlay(player) {
+        // console.log('player play!', player)
+      },
+      onPlayerPause(player) {
+        // console.log('player pause!', player)
+      },
+      onPlayerEnded(player) {
+        // console.log('player ended!', player)
+      },
+      onPlayerLoadeddata(player) {
+        console.log('player Loadeddata!', player)
+      },
+      onPlayerWaiting(player) {
+        // console.log('player Waiting!', player)
+      },
+      onPlayerPlaying(player) {
+        // console.log('player Playing!', player)
+      },
+      onPlayerTimeupdate(player) {
+        // console.log('player Timeupdate!', player.currentTime())
+      },
+      onPlayerCanplay(player) {
+        // console.log('player Canplay!', player)
+      },
+      onPlayerCanplaythrough(player) {
+        // console.log('player Canplaythrough!', player)
+      },
+      // or listen state event
+      playerStateChanged(playerCurrentState) {
+        console.log('player current update state', playerCurrentState)
+        if(playerCurrentState.waiting){
+            console.log(13132)
+            this.$refs.videoPlayer.player.play();
         }
+      },
+      // player is ready
+      playerReadied(player) {
+        // seek to 10s
+        console.log('example player 1 readied', player)
+        player.currentTime(10)
+        // console.log('example 01: the player is readied', player)
+      }
 	},
     components: {
-        videoPlayer
+        // videoPlayer,
+        // VueVideoPlayer
     }
 }
 </script>
