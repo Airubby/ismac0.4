@@ -1,6 +1,7 @@
 import axios from "axios";
 import Qs from "querystring";
 import { Message } from 'element-ui'
+import {router} from '@/router/index'
 import store from '@/store/index'
 let service = axios.create({
   // baseURL: 'http://www.javasoft.top:9090/service',
@@ -58,22 +59,31 @@ service.interceptors.response.use(
      */
     
     const res = response.data;
-    if (res.code == 200 || res.code == 900 || !res.code) {
-      return response.data;
-    } else {
-      let errorMsg = "抱歉，出错啦~~~";
-      if (res.code === 10003) {
-        errorMsg = "长时间未登录，请重新登陆！";
-        location.reload()
-      }
-
-      Message.error(errorMsg);
-      return Promise.reject("error");
+    if(res.data.err_code=="-1"&&sessionStorage.loginInfo){
+        Message.warning("请登录系统");
+        router.push({path:'/login'});
+        sessionStorage.removeItem('loginInfo');
     }
+    if(res.data.err_code!="-1"){
+      return response.data;
+    }
+    // if (res.code == 200 || res.code == 900 || !res.code) {
+    //   return response.data;
+    // } else {
+    //   let errorMsg = "抱歉，出错啦~~~";
+    //   if (res.code === 10003) {
+    //     errorMsg = "长时间未登录，请重新登陆！";
+    //     location.reload()
+    //   }
+
+    //   Message.error(errorMsg);
+    //   return Promise.reject("error");
+    // }
   },
   error => {
     console.log("err" + error); // for debug
     Message.error('服务器错误，请联系管理人员！');
+    router.push({path:'/login'});
     return Promise.reject("重新登录");
   }
 );

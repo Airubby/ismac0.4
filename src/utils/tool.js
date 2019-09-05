@@ -240,7 +240,7 @@ function checkPasspord(obj) {
         }
     } else {
         let regPos = /^[A-Za-z0-9]{6,20}$/; 
-        // reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&amp;*()_+`\-={}:";'&lt;&gt;?,.\/]).{8,64}$/; 包含数字字母大小写  
+        ///[a-z]/.test(value) && /[A-Z]/.test(value) && /[0-9]/.test(value)&& value.length>7    包含数字字母大小写，且至少8位
         if(regPos.test(obj.value)){
             obj.callback()
         }else{
