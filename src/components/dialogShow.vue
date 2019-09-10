@@ -97,16 +97,20 @@ export default {
             this.$refs['ruleForm'].validate((valid) => {
                 if(valid){ //验证通过
                     this.loading=true;
-                    this.$api.post('',this.ruleForm, r => {
-                        
-                    });
+                    // this.$api.post('',this.ruleForm, r => {});
+                    console.log(this.$refs.tree.getCheckedNodes())
+                    let node=this.$refs.tree.getCheckedNodes()[0];
+                    let obj={
+                        times:this.ruleForm.times,
+                        treeid:node.id,
+                        treename:node.label
+                    }
+                    this.$emit('backInfo',obj); 
+                    this.dialogInfo.visible=false;
                 }
             })
         },
         checkChange:function(node,flag,data){
-            console.log(node)
-            console.log(flag)
-            console.log(this.$refs.tree.getCheckedNodes())
             if(this.$refs.tree.getCheckedNodes().length%2===0){
                 if(flag){
                     this.$refs.tree.setCheckedNodes([node]);

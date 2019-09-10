@@ -120,7 +120,7 @@ export default {
             })
         },
         searchFn:function(){
-            this.$refs.thisRef.searchHandler(false);
+            this.$refs.thisRef.searchHandler(true);
         },
         detail:function(row){
             this.$router.push({name:'controlDevStateDetail',query:{

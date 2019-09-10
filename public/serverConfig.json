@@ -39,7 +39,10 @@
             "add":"添加",
             "edit":"编辑",
             "unfold":"展开",
-            "shrink":"收缩"
+            "shrink":"收缩",
+            "noEmpty":"非空项",
+            "isInteger":"必须为整数数字",
+            "rangeInteger":"端口范围在1-65535之间"
         },
         "access":{
           "card":"卡",

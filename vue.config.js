@@ -2,7 +2,7 @@ const path = require("path");
 const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
     // 基本路径
-    baseUrl: './',
+    publicPath: './',
     //baseUrl: process.env.NODE_ENV === "production" ? "./" : "/"
     // 输出文件目录
     outputDir: 'dist',

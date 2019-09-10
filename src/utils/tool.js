@@ -145,19 +145,35 @@ function wsConnection(sendMsg, callback) {
 }
 function checkPORT(obj) {
     console.log(obj);
+    // if (!obj.value) {
+    //     if(obj.rules.required){
+    //         obj.callback(new Error('不能为空'))
+    //     }else{
+    //         obj.callback()
+    //     }
+    // } else if (Math.round(Number(obj.value)) !== Number(obj.value)) {
+    //     obj.callback(new Error('必须为整数数字'))
+    // } else {
+    //     if(Number(obj.value)>65535||Number(obj.value)<1){
+    //         obj.callback("端口范围在1-65535之间")
+    //     }else{
+    //         obj.callback()
+    //     }
+    // }
+    //双语验证问题
     if (!obj.value) {
         if(obj.rules.required){
-            obj.callback(new Error('不能为空'))
+            return 'hint.noEmpty';
         }else{
-            obj.callback()
+            return '';
         }
     } else if (Math.round(Number(obj.value)) !== Number(obj.value)) {
-        obj.callback(new Error('必须为整数数字'))
+        return 'hint.isInteger';
     } else {
         if(Number(obj.value)>65535||Number(obj.value)<1){
-            obj.callback("端口范围在1-65535之间")
+            return 'hint.rangeInteger';
         }else{
-            obj.callback()
+            return '';
         }
     }
 }

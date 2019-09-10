@@ -8,50 +8,33 @@
                     <router-link to="/" id="logo" class="logo"><img :src="'images/'+$theme+'/logo.png'" v-if="$theme"></router-link>
                     </div>
                 </div>
-                <span class="loncom_fr loncom_navbtn" @click="navclick" ref="navbtn">
-                    <i class="icon-top_unfold" ></i>
+                <span class="loncom_fr loncom_navbtn" @click="navclick()" ref="navbtn">
+                    <i class="icon-top_unfold top-icon-color" id="top_fold"></i>
                 </span>
             </div>
             <div class="loncom_sidebar_list" ref="sidebar_list">
-                <el-scrollbar class="scrollbar">
-                    <ul class="loncom_nav_ul">
-                        <li v-for="item in navList" v-if="navList.length>0" class="navli">
-                            <div class="loncom_navmenu" @click="change($event)">
-                                <div class="loncom_nav_con" v-if="item.children&&item.children.length>0">
-                                    <em v-if="navbtn=='close'">
-                                        <router-link :to="{'name':item.name}" class="aem">
-                                            <i :class="item.meta.icon" ></i>
-                                        </router-link>
-                                    </em>
-                                    <em v-else class="aem"><i :class="item.meta.icon" ></i></em>
-                                    <div class="loncom_menu">
-                                        <span>{{$t("navbar."+item.name)}}</span>
-                                        <i class="loncom_menui el-icon-arrow-right"></i>
-                                    </div>
-                                </div>
-                                <div class="loncom_nav_con" v-else>
-                                    <router-link :to="{'name':item.name}">
-                                        <em class="aem"><i :class="item.meta.icon" ></i></em>
-                                        <div class="loncom_menu">
-                                            <span>{{$t("navbar."+item.name)}}</span>
-                                        </div>
-                                    </router-link>
-                                </div>
+                <ul class="loncom_nav_ul">
+                    <li v-for="item in navList" v-if="navList.length>0" class="navli">
+                        <router-link :to="{'name':item.name}" class="loncom_navmenu" @click.native="change($event,item.path)">
+                            <em class="aem"><i :class="item.meta.icon" ></i></em>
+                            <div class="loncom_menu">
+                                <span>{{$t("navbar."+item.name)}}</span>
+                                <i class="loncom_menui el-icon-arrow-right" v-if="item.children&&item.children.length>0"></i>
                             </div>
-                            <template v-if="item.children&&item.children.length>0">
-                                <dl class="loncom_morenav">
-                                    <template v-for="initem in item.children">
-                                        <dd v-if="initem.meta.type=='nav'" @click="changeNav($event)">
-                                            <router-link :to="{'name':initem.name}">
-                                                <span>{{$t("navbar."+initem.name)}}</span>
-                                            </router-link>
-                                        </dd>
-                                    </template>
-                                </dl>
-                            </template>
-                        </li>
-                    </ul>
-                </el-scrollbar>
+                        </router-link>
+                        <template v-if="item.children&&item.children.length>0">
+                            <dl class="loncom_morenav">
+                                <template v-for="initem in item.children">
+                                    <dd v-if="initem.meta.type=='nav'">
+                                        <router-link :to="{'name':initem.name}" class="childRouter">
+                                            <span>{{$t("navbar."+initem.name)}}</span>
+                                        </router-link>
+                                    </dd>
+                                </template>
+                            </dl>
+                        </template>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="loncom_sidebar_right" id="content">
@@ -69,14 +52,14 @@
                 <div class="loncom_right_top_box">
                     <div class="box_con" @click="enterAlarm()">
                         <el-badge :value="200" :max="99" class="item">
-                            <i class="el-icon-bell el-icon-color"></i>
+                            <i class="el-icon-bell top-icon-color"></i>
                         </el-badge>
                     </div>
                 </div>
                 <div class="loncom_right_top_box">
                     <div class="box_con">
                         <el-dropdown>
-                            <i class="el-icon-magic-stick el-icon-color" style="font-size:30px;"></i>
+                            <i class="el-icon-magic-stick top-icon-color"></i>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item :class="{'themeActive':$theme=='default'}"><span @click="changeTheme('default')">优雅白</span></el-dropdown-item>
                                 <el-dropdown-item :class="{'themeActive':$theme=='black'}"><span @click="changeTheme('black')">炫酷黑</span></el-dropdown-item>
@@ -86,18 +69,18 @@
                 </div>
                 <div class="loncom_right_top_box">
                     <div class="box_con">
-                        <i class="el-icon-full-screen el-icon-color" style="font-size:30px;" @click="switcFullScreen"></i>
+                        <i class="el-icon-full-screen top-icon-color" @click="switcFullScreen"></i>
                     </div>
                 </div>
                 <div class="loncom_right_top_box" v-if="check">
                     <div class="box_con">
-                        <i class="el-icon-view el-icon-color" style="font-size:30px;" @click="enterFullScreen"></i>
+                        <i class="el-icon-view top-icon-color" @click="enterFullScreen"></i>
                     </div>
                 </div>
                 
             </div>
             <div class="loncom_content">
-                <router-view />
+                <router-view v-if="isRouterAlive"/>
             </div>
         </div>
     </div>
@@ -105,9 +88,10 @@
 
 <script>
 export default {
-    inject:['reload'],
+    // inject:['reload'],  点击刷新的时候右侧主体框刷新就可以，不用整个刷新，
     created() {
         this.getCheck();
+        this.setBaseUrl();
     },
     mounted() {
         // this.$r.post("/getMockData",{},r=>{
@@ -117,10 +101,16 @@ export default {
         //     console.log(r)
         // })
         this.init();
+        //加载完成了去掉根节点的loading;
+        this.$nextTick(function(){
+            this.$emit("routerLoading")
+        })
     },
     data(){
         return{
             navbtn:'open',
+            baseURI:'',
+            isRouterAlive:true,
         }
     },
     computed: {
@@ -144,82 +134,79 @@ export default {
                 }
             })
         },
-        change:function(event){
-            console.log(event)
-            let theChild=event.target;
-            while(theChild.className.indexOf("loncom_navmenu")==-1){
-                theChild=theChild.parentNode;
-            }
-            if(this.navbtn=='open'){
-                console.log(theChild)
-                if(theChild.nextSibling instanceof HTMLElement){
-                    if(theChild.nextSibling.getAttribute("class")&&theChild.nextSibling.getAttribute("class").indexOf("active")!=-1){
-                        theChild.nextSibling.classList.remove("active");
-                        if(theChild.nextSibling.querySelectorAll(".router-link-active").length>0){
-                            theChild.classList.add("active");
-                        }
-                        theChild.querySelector(".loncom_menui")&&theChild.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-right");
-                    }else{
-                        theChild.nextSibling.classList.add("active");
-                        theChild.classList.remove("active");
-                        theChild.querySelector(".loncom_menui")&&theChild.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-down");
-                    }
-                }else{
-                    this.changeNav();
-                    theChild.classList.add("active");
-                }
-            }else{
-                this.changeNav();
-                theChild.classList.add("active");
-            }
+        reload(){
+            this.isRouterAlive=false;
+            this.$nextTick(function(){
+                this.isRouterAlive=true;
+            })
         },
-        //去掉loncom_navmenu上的active状态
-        changeNav:function(event){
-            sessionStorage.setItem("tabIndex", ""); //点击切换 去除 tabs 的状态，这样进去 带有tabs 的页面 就是 默认的 first
-            let nav=this.$el.querySelectorAll(".loncom_navmenu");
-            for(let i=0;i<nav.length;i++){
-                nav[i].classList.remove("active");
-            }
+         //点击导航收缩时判断用
+        setBaseUrl:function(){
+            this.baseURI=window.document.location.href.split("#")[1]; 
         },
-        initnav:function(flag){
-            let doms=this.$el.querySelectorAll(".loncom_sidebar_list .router-link-active");
-            console.log(doms)
-            for(let i=0;i<doms.length;i++){
-                let theChild=doms[i];
-                while(theChild.parentNode!=null){
-                    if(theChild.parentNode.className&&theChild.parentNode.className.indexOf("loncom_morenav")!=-1){ //有子菜单active状态
-                        theChild.parentNode.classList.add("active");
-                        theChild.parentNode.previousSibling.querySelector(".loncom_menui")&&theChild.parentNode.previousSibling.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-down");
-                    }
-                    if(theChild.parentNode.className&&theChild.parentNode.className.indexOf("loncom_navmenu")!=-1&&flag){ //没有子菜单active状态
-                        theChild.parentNode.classList.add("active");
-                    }
+        //控制展开收缩用，如果默认一直展开一个导航就不需要判断change
+        change:function(event,path){
+            console.log(path)
+            console.log(this.baseURI)
+            if(this.baseURI.indexOf(path)!=-1){//用包含关系判断
+                console.log("=======")
+                let theChild=event.target;
+                while(theChild.className.indexOf("loncom_navmenu")==-1){
                     theChild=theChild.parentNode;
                 }
+                if(theChild.getAttribute("class")&&theChild.getAttribute("class").indexOf("childHidden")!=-1){
+                    theChild.classList.remove("childHidden");
+                }else{
+                    theChild.classList.add("childHidden");
+                }
+            }else{
+                console.log("!==!==!==!==")
+                this.changeNav();
+                this.baseURI=path;
             }
             
         },
+        //去掉loncom_navmenu上的active状态
+        changeNav:function(){
+            let nav=this.$el.querySelectorAll(".loncom_navmenu");
+            for(let i=0;i<nav.length;i++){
+                nav[i].classList.remove("childHidden");
+            }
+        },
         init:function(){
-            this.initnav(true);
+            if(sessionStorage.navInfo){
+                this.navbtn=sessionStorage.navInfo;
+            }else{
+                sessionStorage.navInfo = "open";
+            }
             if(this.navbtn==='open'){
+                this.$el.querySelector(".loncom_nav_ul").setAttribute("class","loncom_nav_ul openactive");
                 this.$el.querySelector("#sidebar").style.width="200px";
                 this.$el.querySelector("#content").style.paddingLeft="200px";
                 this.$el.querySelector("#smalllogo").style.left="-60px";
+                this.$el.querySelector("#logo").style.left="0px";
             }else{
+                this.$el.querySelector(".loncom_nav_ul").setAttribute("class","loncom_nav_ul closeactive");
                 this.$el.querySelector("#sidebar").style.width="60px";
                 this.$el.querySelector("#content").style.paddingLeft="60px";
                 this.$el.querySelector("#smalllogo").style.left="0px";
+                this.$el.querySelector("#logo").style.left="-200px";
             }
+            this.$nextTick(function(){
+                let anode=this.$refs.sidebar_list.querySelectorAll(".childRouter");
+                for(let i=0;i<anode.length;i++){
+                    anode[i].onclick=()=>{
+                        this.reload();
+                    }
+                }
+            })
+            
         },
 		//展开收缩
         navclick:function(){
-            let theChild=this.$el.querySelector(".loncom_sidebar_list .router-link-active");
             if(this.navbtn=='open'){
-                let morenav=this.$el.querySelectorAll(".loncom_morenav");
-                for(let i=0;i<morenav.length;i++){
-                    morenav[i].classList.remove("active");
-                    morenav[i].previousSibling.querySelector(".loncom_menui")&&morenav[i].previousSibling.querySelector(".loncom_menui").setAttribute("class","loncom_menui el-icon-arrow-right")
-                }
+                this.$el.querySelector("#top_fold").setAttribute("class","icon-top_fold top-icon-color");
+                this.$el.querySelector(".loncom_nav_ul").setAttribute("class","loncom_nav_ul closeactive");
                 this.$el.querySelector("#sidebar").style.width="60px";
                 this.$el.querySelector("#sidebar").style.transition="all 0.4s ease-in";
                 this.$el.querySelector("#content").style.paddingLeft="60px";
@@ -230,6 +217,8 @@ export default {
                 this.$el.querySelector("#logo").style.transition="all 0.4s ease-in";
                 this.navbtn='close';
             }else{
+                this.$el.querySelector("#top_fold").setAttribute("class","icon-top_unfold top-icon-color");
+                this.$el.querySelector(".loncom_nav_ul").setAttribute("class","loncom_nav_ul openactive");
                 this.$el.querySelector("#sidebar").style.width="200px";
                 this.$el.querySelector("#sidebar").style.transition="all 0.4s ease-in";
                 this.$el.querySelector("#content").style.paddingLeft="200px";
@@ -238,22 +227,10 @@ export default {
                 this.$el.querySelector("#smalllogo").style.transition="all 0.4s ease-in";
                 this.$el.querySelector("#logo").style.left="0";
                 this.$el.querySelector("#logo").style.transition="all 0.4s ease-in";
-                this.initnav(false);
                 this.navbtn='open';
+                this.setBaseUrl();
             }
-            while(theChild.parentNode!=null){
-                //增加closeactive,收缩的时候active状态用
-                if(theChild.className&&theChild.className.indexOf("loncom_nav_ul")!=-1){
-                    theChild.setAttribute("class","loncom_nav_ul "+this.navbtn+"active")
-                }
-                //有子菜单的去掉loncom_navmenu上的active状态
-                if(theChild.className&&theChild.className.indexOf("loncom_navmenu")!=-1){
-                    if(theChild.nextSibling instanceof HTMLElement){
-                        theChild.classList.remove("active");
-                    }
-                }
-                theChild=theChild.parentNode;
-            }
+            sessionStorage.navInfo = this.navbtn;
         },
         changeTheme:function(theme){
             this.$store.dispatch('setTheme',theme);
@@ -266,12 +243,15 @@ export default {
             this.$router.push({path:'/bigHome'});
         },
         enterAlarm:function(){
-            sessionStorage.setItem("tabIndex", "");
             this.$router.push({name:'controlAlarmRecord'});
-            this.reload();
         },
 
 	},
+    watch: {
+        $route(to,from){
+            sessionStorage.setItem("tabIndex", ""); //点击切换 去除 tabs 的状态，这样进去 带有tabs 的页面 就是 默认的 first
+        },
+    },
     components: {
         
     }

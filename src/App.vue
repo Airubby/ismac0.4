@@ -1,7 +1,13 @@
 <template>
-  <div id="app" ref="app">
-    <router-view v-if="isRouterAlive"/>
-  </div>
+    <div id="app" ref="app">
+        <div id="loader-wrapper" v-if="loading">
+            <div id="loader"></div>
+            <div class="loader-section section-left"></div>
+            <div class="loader-section section-right"></div>
+            <div class="load_title">正在加载 小微产品,请耐心等待<br><span>V0.4</span></div>
+        </div>
+        <router-view v-if="isRouterAlive" v-on:routerLoading="routerLoading" />
+    </div>
 </template>
 <script>
 // import store from './store'
@@ -30,29 +36,34 @@ import { mapGetters } from 'vuex'
         //   // store.commit('setwsData',eval(result.data));
         //   store.dispatch('setwsData',eval(result.data));
         // })
-
+        
+      
     },
     data(){
       return{
         isRouterAlive:true,
+        loading:true,
       }
     },
     methods:{
-      reload(){
-        this.isRouterAlive=false;
-        this.$nextTick(function(){
-          this.isRouterAlive=true;
-        })
-      },
-      switchTheme:function(themeName){
-        this.$refs.app.className=themeName+"_theme";
-        document.body.className=themeName+"_theme";
-        Vue.prototype.$theme=themeName;
-        this.$nextTick(function(){
-          this.reload();
-        })
-        
-      },
+        routerLoading:function(){
+            this.loading=false;
+        },
+        reload(){
+            this.isRouterAlive=false;
+            this.$nextTick(function(){
+              this.isRouterAlive=true;
+            })
+        },
+        switchTheme:function(themeName){
+            this.$refs.app.className=themeName+"_theme";
+            document.body.className=themeName+"_theme";
+            Vue.prototype.$theme=themeName;
+            this.$nextTick(function(){
+            this.reload();
+            })
+            
+        },
     },
     watch:{
       getTheme:function(val){

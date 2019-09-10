@@ -25,7 +25,7 @@
             </el-tree>
             <div style="width:200px;height:200px;" id="echart"></div>
         </div>
-        <treeShow v-if="treeInfo.visible" :dialogInfo="treeInfo"></treeShow>
+        <treeShow v-if="treeInfo.visible" :dialogInfo="treeInfo" v-on:backInfo="backTreeInfo"></treeShow>
     </div>
 </template>
 
@@ -183,6 +183,9 @@ export default {
         },
         setCheckedKeys() {
             this.$refs.tree.setCheckedKeys([3]);
+        },
+        backTreeInfo:function(info){
+            this.input=info.times+"--"+info.treeid+"--"+info.treename;
         },
 	},
     components: {
