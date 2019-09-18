@@ -95,7 +95,6 @@ export default {
                         if(r.err_code=="0"){
                             this.$message.success(r.err_msg);
                             this.dialogInfo.visible=false;
-                            this.$parent.getList();
                         }else{
                             this.$message.warning(r.err_msg);
                         }

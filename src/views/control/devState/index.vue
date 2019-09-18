@@ -18,13 +18,13 @@
                     <el-col :span="8">
                         <div class="lc-data-con">
                             <span class="lc-data-title">告警中的设备</span>
-                            <div class="lc-data-value"><span class="dataValue">8</span>个</div>
+                            <div class="lc-data-value"><span class="dataValue test">8</span>个</div>
                         </div>
                     </el-col>
                     <el-col :span="8">
                         <div class="lc-data-con last-con">
                             <span class="lc-data-title">通讯不上的设备</span>
-                            <div class="lc-data-value"><span class="dataValue">8</span>个</div>
+                            <div class="lc-data-value"><span class="dataValue test">8</span>个</div>
                         </div>
                     </el-col>
                 </el-row>

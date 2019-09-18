@@ -14,7 +14,6 @@
                         style="width:300px;"
                         size="small"
                         class="loncom_mr10"
-                        :params="initParams"
                         placeholder="请输入名称"
                         prefix-icon="el-icon-search"
                         v-model="initParams.user">

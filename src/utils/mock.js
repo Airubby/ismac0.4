@@ -298,3 +298,16 @@ const getTemp=function(){
     }
 }
 Mock.mock(store.getters.AjaxUrl+'/getTemp', /post/i,getTemp) //调用模拟数据方法
+
+
+const getLogin=function(){
+    return {
+        err_code:0,
+        err_msg:"成功",
+        data:{
+            roleid:"quan_xian_id",
+            userid:"admin"
+        }
+    }
+}
+Mock.mock(store.getters.AjaxUrl+'/login', /post/i,getLogin) //调用模拟登录

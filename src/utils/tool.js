@@ -48,7 +48,7 @@ function Format(fmt,value){
   let o = {
       "M+": date.getMonth() + 1, //月份 
       "d+": date.getDate(), //日 
-      "h+": date.getHours(), //小时 
+      "H+": date.getHours(), //小时 
       "m+": date.getMinutes(), //分 
       "s+": date.getSeconds(), //秒 
       "q+": Math.floor((date.getMonth() + 3) / 3), //季度 
@@ -116,12 +116,12 @@ function echartfn(ID,xData,yData){
     });
     return myChart;
 }
-function wsConnection(sendMsg, callback) {
+function wsConnection(sendMsg, callback,addr) {
   try {
       //var SOCKECT_ADDR = "ws://" + url +":"+ port;
       //let host=window.document.location.host;
-      //let SOCKECT_ADDR="ws://"+host+"/ws"
-      let SOCKECT_ADDR="ws://192.168.16.6:8088/ws"
+      //let SOCKECT_ADDR=addr?addr:"ws://"+host+"/ws"
+      let SOCKECT_ADDR=addr?addr:"ws://192.168.16.6:8088/ws"
       let ws = new WebSocket(SOCKECT_ADDR);
       Vue.prototype.$ws=ws;
       ws.onopen = function (event) {
@@ -177,19 +177,36 @@ function checkPORT(obj) {
         }
     }
 }
+// function checkIP(obj) {
+//     if (!obj.value) {
+//         if(obj.rules.required){
+//             obj.callback(new Error('不能为空'))
+//         }else{
+//             obj.callback()
+//         }
+//     } else {
+//       var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
+//         if(reg.test(obj.value)){
+//             obj.callback()
+//         }else{
+//             obj.callback("ip格式错误")
+//         }
+//     }
+    
+// }
 function checkIP(obj) {
     if (!obj.value) {
         if(obj.rules.required){
-            obj.callback(new Error('不能为空'))
+            return 'hint.noEmpty';
         }else{
-            obj.callback()
+            return '';
         }
     } else {
       var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
         if(reg.test(obj.value)){
-            obj.callback()
+            return '';
         }else{
-            obj.callback("ip格式错误")
+            return 'hint.formatErr';
         }
     }
     

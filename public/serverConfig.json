@@ -1,6 +1,7 @@
 {
     "production":"https://www.easy-mock.com/mock/5bd2d48f3e503e20f0011196/testUrl",
     "develop":"/ISmac/ismacsite",
+    "wsAddr":"ws://192.168.16.6:8088/ws",
     "theme":"black",
     "language":"zh",
     "zhLang":{
@@ -42,7 +43,8 @@
             "shrink":"收缩",
             "noEmpty":"非空项",
             "isInteger":"必须为整数数字",
-            "rangeInteger":"端口范围在1-65535之间"
+            "rangeInteger":"端口范围在1-65535之间",
+            "formatErr":"格式错误"
         },
         "access":{
           "card":"卡",

@@ -2,9 +2,9 @@
     <div class="content">
         <el-input v-model="value" placeholder="请输入播放内容内容"></el-input>
         <el-button type="primary" @click="play()">语音播放内容</el-button>
-        <div class="test">测试从public引入css</div>
+        <hr>
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-            <el-form-item label="端口号" prop="port">
+            <el-form-item label="IP" prop="port">
                 <el-input v-model="form.port"></el-input>
             </el-form-item>
             <el-form-item>
@@ -15,6 +15,7 @@
         <el-checkbox-group v-model="checkboxGroup">
             <el-checkbox-button v-for="item in alarmOptions" :label="item.id" :key="item.id">{{item.name}}{{item.number}}</el-checkbox-button>
         </el-checkbox-group>
+        <hr>
     </div>
 </template>
 
@@ -27,8 +28,14 @@ export default {
     },
     data(){
         let validatePass = (rules, value, callback) => {
-            let info=this.$tool.checkPORT({rules, value});
-            callback(this.$t(info));
+            // this.$tool.checkIP({rules, value,callback});
+            let info=this.$tool.checkIP({rules, value});
+            if(info){
+                callback(new Error(this.$t(info)));
+            }else{
+                callback();
+            }
+            
         };
         return{
             value:'',

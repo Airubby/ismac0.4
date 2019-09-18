@@ -43,19 +43,23 @@ export default {
     },
     data() {
         return {
-            
+            sendFlag:true,
        }
+    },
+    destroyed() {
+        this.sendFlag=false;
     },
     methods:{
        send:function(){
-            let _this=this;
-            if(this.$ws.readyState==1){
+            if(this.$ws&&this.$ws.readyState==1){
                 console.log(JSON.stringify(this.sendInfo))
                 this.$ws.send(JSON.stringify(this.sendInfo))
             }else{
-                setTimeout(function(){
-                    _this.send();
-                },500)
+                setTimeout(()=>{
+                    if(this.sendFlag){
+                        this.send();
+                    }
+                },1000)
             }
             
         }

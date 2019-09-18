@@ -39,16 +39,20 @@
         </div>
         <div class="loncom_sidebar_right" id="content">
             <div class="loncom_right_top">
-                <div class="loncom_right_top_box">
-                    <div class="box_con">
-                        <el-dropdown>
-                            <div class="box_con_me"><img src="images/me.png"><span>admin</span></div>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item> 退 出 </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
+                <el-tooltip placement="bottom" effect="light">
+                    <div slot="content" style="width:250px;height:100px;">
+                        <p>用户名：admin</p>
+                        <p>上次登录时间：2019-07-03 12:00:00</p>
+                        <el-divider></el-divider>
+                        <span>退出登录</span>
                     </div>
-                </div>
+                    <div class="loncom_right_top_box">
+                        <div class="box_con">
+                            <div class="box_con_me"><img src="images/me.png"><span>admin</span></div>
+                        </div>
+                    </div>
+                </el-tooltip>
+                
                 <div class="loncom_right_top_box">
                     <div class="box_con" @click="enterAlarm()">
                         <el-badge :value="200" :max="99" class="item">
@@ -108,6 +112,7 @@ export default {
     },
     data(){
         return{
+            visible:false,
             navbtn:'open',
             baseURI:'',
             isRouterAlive:true,

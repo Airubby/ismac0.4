@@ -60,6 +60,7 @@ function getServerConfig() {
       let config = result.data;
       let ajaxUrl = process.env.NODE_ENV == 'production' ? config.production:config.develop;
       Vue.prototype.$ajaxUrl=ajaxUrl;
+      Vue.prototype.$wsAddr=config.wsAddr;
       store.dispatch('setAjaxUrl',ajaxUrl);
       store.dispatch('setLanguage',config.language);
       Vue.prototype.$theme = sessionStorage.getItem("theme") || config.theme || 'default';

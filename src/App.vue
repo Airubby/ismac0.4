@@ -31,11 +31,8 @@ import { mapGetters } from 'vuex'
     },
     mounted() {
         this.switchTheme(this.$theme)
-        // this.$tool.wsConnection("",function(result){
-        //   console.log(result)
-        //   // store.commit('setwsData',eval(result.data));
-        //   store.dispatch('setwsData',eval(result.data));
-        // })
+        this.getWebSocket()
+        
         
       
     },
@@ -46,6 +43,18 @@ import { mapGetters } from 'vuex'
       }
     },
     methods:{
+        getWebSocket:function(){
+            if(!(this.$ws&&this.$ws.readyState==1)){
+                this.$tool.wsConnection("",function(result){
+                    console.log(result)
+                    // store.dispatch('setwsData',eval(result.data));
+                })
+            }
+            //每隔一段时间检测一下是否连上webSocket
+            setTimeout(()=>{
+                this.getWebSocket();
+            },10000)
+        },
         routerLoading:function(){
             this.loading=false;
         },

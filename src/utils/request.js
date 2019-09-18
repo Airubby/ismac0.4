@@ -34,11 +34,12 @@ service.interceptors.request.use(
   config => {
     // 让每个请求携带自定义token 请根据实际情况自行修改
     if(config.method=="post"){
-      config.data=Qs.stringify(filterNull(config.data))
+      config.data=Qs.stringify(filterNull(Object.assign({},config.data)))
       config.headers['Content-Type']='application/x-www-form-urlencoded';
     }
+    console.log(config)
     if(config.method=="get"){
-      config.params=filterNull(config.params)
+      config.params=filterNull(Object.assign({},config.params))
     }
     if (store.getters.token) {
       config.headers['X-Token'] =store.getters.token // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
