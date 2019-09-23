@@ -1,5 +1,5 @@
 <template>
-	<div class="content" v-loading="loading">
+	<div class="content" v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.8)">
 		<div class="loncom_login">
 			<div class="loncom_login_con loncom_public_shadow">
 				<div class="loncom_logo_img"></div>
@@ -68,6 +68,7 @@ export default {
 		loginIn:function(){
 			this.$refs['form'].validate((valid) => {
 				if(valid){
+					debugger
 					this.loading=true;
 					let a="tKb634uLRuFdugF0P01eKw=="
 					console.log(this.$tool.Decrypt(a))
@@ -105,8 +106,8 @@ export default {
 				}
 			});
 		},
-		getLimit:function(roleid){
-			this.$r.get('/getInfo', {roleid:roleid}, r => {
+		getLimit:function(id){
+			this.$r.get('/getInfo', {roleid:id}, r => {
 				console.log(r);
 				this.loading=false;
 				if(r.err_code=="0"){

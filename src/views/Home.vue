@@ -39,20 +39,38 @@
         </div>
         <div class="loncom_sidebar_right" id="content">
             <div class="loncom_right_top">
-                <el-tooltip placement="bottom" effect="light">
-                    <div slot="content" style="width:250px;height:100px;">
-                        <p>用户名：admin</p>
-                        <p>上次登录时间：2019-07-03 12:00:00</p>
-                        <el-divider></el-divider>
-                        <span>退出登录</span>
-                    </div>
-                    <div class="loncom_right_top_box">
-                        <div class="box_con">
+                <div class="loncom_right_top_box">
+                    <el-popover
+                        placement="bottom"
+                        trigger="hover">
+                        <div class="loncom_index_user_info" style="width:200px;height: 150px;">
+                            <h2>
+                                <span>账户信息</span>
+                            </h2>
+                            <ul>
+                                <li>
+                                    <label>账号：</label><div class="loncom_dis_inline">{{loginInfo.userid}}</div>
+                                </li>
+                                <li>
+                                    <label>电话：</label><div class="loncom_dis_inline">{{loginInfo.phone}}</div>
+                                </li>
+                                <li>
+                                    <label>邮箱：</label><div class="loncom_dis_inline">{{loginInfo.email}}</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="box_con" slot="reference">
                             <div class="box_con_me"><img src="images/me.png"><span>admin</span></div>
                         </div>
+                    </el-popover>
+                </div>
+                <!--
+                <div class="loncom_right_top_box">
+                    <div class="box_con">
+                        <div class="box_con_me"><img src="images/me.png"><span>admin</span></div>
                     </div>
-                </el-tooltip>
-                
+                </div>
+                -->
                 <div class="loncom_right_top_box">
                     <div class="box_con" @click="enterAlarm()">
                         <el-badge :value="200" :max="99" class="item">
@@ -116,6 +134,11 @@ export default {
             navbtn:'open',
             baseURI:'',
             isRouterAlive:true,
+            loginInfo:{
+                userid:"admin",
+                phone:"15252525252",
+                email:"123@qq.com"
+            }
         }
     },
     computed: {

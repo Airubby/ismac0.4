@@ -6,7 +6,6 @@ export const syncRouter=[
     {
         path: '/',
         name: 'home',
-        meta: { title: '首页'},
         component: () => import('@/views/home.vue'),
         redirect:'/loncom',
     },

@@ -17,15 +17,20 @@ function toType (obj) {
 function filterNull (o) {
   for (var key in o) {
     if (o[key] === null) {
-      delete o[key]
+        delete o[key]
     }
-    if (toType(o[key]) === 'string') {
-      o[key] = o[key].trim()
-    } else if (toType(o[key]) === 'object') {
-      o[key]=JSON.stringify(o[key]);
-    } else if (toType(o[key]) === 'array') {
-      o[key]=JSON.stringify(o[key]);
+    if(typeof o[key] === "string"){
+        o[key] = o[key].trim()
+    }else if(typeof o[key] === "object"){  //数组和对象typeof都为object
+        o[key]=JSON.stringify(o[key]);
     }
+    // if (toType(o[key]) === 'string') {
+    //   o[key] = o[key].trim()
+    // } else if (toType(o[key]) === 'object') {
+    //   o[key]=JSON.stringify(o[key]);
+    // } else if (toType(o[key]) === 'array') {
+    //   o[key]=JSON.stringify(o[key]);
+    // }
   }
   return o
 }
@@ -37,7 +42,6 @@ service.interceptors.request.use(
       config.data=Qs.stringify(filterNull(Object.assign({},config.data)))
       config.headers['Content-Type']='application/x-www-form-urlencoded';
     }
-    console.log(config)
     if(config.method=="get"){
       config.params=filterNull(Object.assign({},config.params))
     }

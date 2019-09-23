@@ -1,6 +1,7 @@
 import echarts from 'echarts'
 import CryptoJS from 'crypto-js/crypto-js'
 import Vue from 'vue'
+import axios from 'axios'
 
 // 默认的 KEY 与 iv 如果没有给
 const KEY = "loncom";//""中与后台一样  密码
@@ -115,6 +116,34 @@ function echartfn(ID,xData,yData){
         },0)
     });
     return myChart;
+}
+function exportFile(fileUrl,name){
+    //fileUrl 是给的流文件接口地址；"/export/hisalarm?level="+level;
+    let link = document.createElement('a')
+    link.style.display = 'none'
+    link.href = fileUrl
+    link.setAttribute('download', name)
+
+    document.body.appendChild(link)
+    link.click();
+    window.URL.revokeObjectURL(link.href); // 释放URL 对象
+    document.body.removeChild(link);
+}
+function downFile(fileUrl){
+    //fileUrl:/static/test.pdf
+    axios.post(fileUrl, {
+        responseType: 'blob', //重要
+    }).then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        let fname = fileUrl.split("/").length>1?fileUrl.split("/")[fileUrl.split("/").length-1]:fileUrl;
+        link.href = url;
+        link.setAttribute('download', fname);
+        document.body.appendChild(link);
+        link.click();
+        window.URL.revokeObjectURL(link.href); // 释放URL 对象
+        document.body.removeChild(link);
+    })
 }
 function wsConnection(sendMsg, callback,addr) {
   try {
@@ -300,6 +329,8 @@ export default {
     Format,
     switcFullScreen,
     echartfn,
+    exportFile,
+    downFile,
     wsConnection,
     checkPORT,
     checkIP,
