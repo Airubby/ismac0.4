@@ -44,7 +44,7 @@ import { mapGetters } from 'vuex'
     },
     methods:{
         getWebSocket:function(){
-            if(!(this.$ws&&this.$ws.readyState==1)){
+            if(!this.$ws){
                 this.$tool.wsConnection("",function(result){
                     console.log(result)
                     // store.dispatch('setwsData',eval(result.data));

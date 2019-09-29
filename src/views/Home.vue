@@ -15,18 +15,18 @@
             <div class="loncom_sidebar_list" ref="sidebar_list">
                 <ul class="loncom_nav_ul">
                     <li v-for="item in navList" v-if="navList.length>0" class="navli">
-                        <router-link :to="{'name':item.name}" class="loncom_navmenu" @click.native="change($event,item.path)">
+                        <a class="loncom_navmenu" @click="change($event,item.path)" :data-path="item.path">
                             <em class="aem"><i :class="item.meta.icon" ></i></em>
                             <div class="loncom_menu">
                                 <span>{{$t("navbar."+item.name)}}</span>
                                 <i class="loncom_menui el-icon-arrow-right" v-if="item.children&&item.children.length>0"></i>
                             </div>
-                        </router-link>
+                        </a>
                         <template v-if="item.children&&item.children.length>0">
                             <dl class="loncom_morenav">
                                 <template v-for="initem in item.children">
                                     <dd v-if="initem.meta.type=='nav'">
-                                        <router-link :to="{'name':initem.name}" class="childRouter">
+                                        <router-link :to="{'name':initem.name}" class="childRouter" @click.native="changeChild($event,initem.path)">
                                             <span>{{$t("navbar."+initem.name)}}</span>
                                         </router-link>
                                     </dd>
@@ -172,33 +172,44 @@ export default {
         setBaseUrl:function(){
             this.baseURI=window.document.location.href.split("#")[1]; 
         },
+        changeChild:function(event,path){
+            sessionStorage.setItem("tabIndex", ""); //选项卡用
+            this.baseURI=path;
+            this.reload();  //刷新效果
+        },
         //控制展开收缩用，如果默认一直展开一个导航就不需要判断change
         change:function(event,path){
-            console.log(path)
-            console.log(this.baseURI)
+            let theChild=event.target;
+            while(theChild.className.indexOf("loncom_navmenu")==-1){
+                theChild=theChild.parentNode;
+            }
             if(this.baseURI.indexOf(path)!=-1){//用包含关系判断
                 console.log("=======")
-                let theChild=event.target;
-                while(theChild.className.indexOf("loncom_navmenu")==-1){
-                    theChild=theChild.parentNode;
+                if(this.$route.path!=this.baseURI){  //仍然跳转到原来的页面
+                    this.$router.push({path:this.baseURI});
                 }
                 if(theChild.getAttribute("class")&&theChild.getAttribute("class").indexOf("childHidden")!=-1){
                     theChild.classList.remove("childHidden");
                 }else{
                     theChild.classList.add("childHidden");
                 }
+                
             }else{
                 console.log("!==!==!==!==")
-                this.changeNav();
+                sessionStorage.setItem("tabIndex", ""); //选项卡用
+                this.changeNav("childHidden");
+                this.changeNav("router-link-active");
+                theChild.classList.add("router-link-active");
+                this.$router.push({path:path});
                 this.baseURI=path;
             }
             
         },
         //去掉loncom_navmenu上的active状态
-        changeNav:function(){
+        changeNav:function(className){
             let nav=this.$el.querySelectorAll(".loncom_navmenu");
             for(let i=0;i<nav.length;i++){
-                nav[i].classList.remove("childHidden");
+                nav[i].classList.remove(className);
             }
         },
         init:function(){
@@ -220,17 +231,15 @@ export default {
                 this.$el.querySelector("#smalllogo").style.left="0px";
                 this.$el.querySelector("#logo").style.left="-200px";
             }
-            this.$nextTick(function(){
-                let anode=this.$refs.sidebar_list.querySelectorAll(".childRouter");
-                for(let i=0;i<anode.length;i++){
-                    anode[i].onclick=()=>{
-                        this.reload();
-                    }
+            //初始化active状态
+            let nav=this.$el.querySelectorAll(".loncom_navmenu");
+            for(let i=0;i<nav.length;i++){
+                if(this.baseURI.indexOf(nav[i].getAttribute("data-path"))!=-1){
+                    nav[i].classList.add("router-link-active");
                 }
-            })
-            
+            }
         },
-		//展开收缩
+		//大小导航切换
         navclick:function(){
             if(this.navbtn=='open'){
                 this.$el.querySelector("#top_fold").setAttribute("class","icon-top_fold top-icon-color");
@@ -256,7 +265,10 @@ export default {
                 this.$el.querySelector("#logo").style.left="0";
                 this.$el.querySelector("#logo").style.transition="all 0.4s ease-in";
                 this.navbtn='open';
-                this.setBaseUrl();
+                this.setBaseUrl();  //小导航的时候切换到了其它子导航时，大导航的时候重置为当前导航baseURI 
+                //大导航为收缩状态切换到小导航的时候，如果再展开到大导航的时候，如果要大导航为展开状态就去掉childHidden样式，如果还是保留原来的收缩状态就不使用这个
+                this.changeNav("childHidden");  
+                
             }
             sessionStorage.navInfo = this.navbtn;
         },
@@ -275,11 +287,11 @@ export default {
         },
 
 	},
-    watch: {
-        $route(to,from){
-            sessionStorage.setItem("tabIndex", ""); //点击切换 去除 tabs 的状态，这样进去 带有tabs 的页面 就是 默认的 first
-        },
-    },
+    // watch: {
+    //     $route(to,from){
+    //         sessionStorage.setItem("tabIndex", ""); //点击切换 去除 tabs 的状态，这样进去 带有tabs 的页面 就是 默认的 first，到新增页面 返回来就在first中，不符合
+    //     },
+    // },
     components: {
         
     }

@@ -8,11 +8,12 @@
         </div>
         <div class="public_content pd20">
             <el-tabs v-model="activeName" class="content" @tab-click="tabClick">
-                <el-tab-pane label="控制器" name="first" class="content">
-                    <controller></controller>
-                </el-tab-pane>
-                <el-tab-pane label="时间组" name="second" class="content">
+                <el-tab-pane label="时间组" name="first" class="content">
                     <time-group></time-group>
+                </el-tab-pane>
+                <el-tab-pane label="控制器" name="second" class="content">
+                    
+                    <controller></controller>
                 </el-tab-pane>
                 <el-tab-pane label="权限组" name="third" class="content">
                     <limits-group></limits-group>

@@ -156,7 +156,10 @@ function wsConnection(sendMsg, callback,addr) {
       ws.onopen = function (event) {
           console.log(event)
           console.log("已经与服务器建立了连接\r\n当前连接状态：" + event);
-          ws.send(sendMsg);
+          if(sendMsg!=""){
+            ws.send(sendMsg);
+          }
+          
       };
     
       ws.onmessage = callback;

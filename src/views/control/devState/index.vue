@@ -63,6 +63,8 @@
                         :params="initParams"
                         @selection-change="selectChange"
                         @select-all="selectAll"
+                        :webSocketInfo="table_data"
+                        @resultData="resultData"
                         :columns="table_columns" ref="thisRef">   
                         <el-table-column slot="prepend" type="selection"></el-table-column>
                         <template slot-scope="scope" slot="preview-name">
@@ -75,11 +77,12 @@
                 </div>
             </el-scrollbar>
         </div>
-        
+        <webSocket :wsInfo="table_data" :sendInfo="{cmd:'alarm',changeSend:true}" :matchInfo="['value:state','isalarm:alarmstyle']"></webSocket>
     </div>
 </template>
 
 <script>
+import webSocket from '@/components/webSocket.vue'
 export default {
     created() {
         
@@ -147,11 +150,14 @@ export default {
         },
         selectAll:function(selection){
             console.log(selection)
-        }
+        },
+        resultData:function(info){
+            this.table_data=info.data;
+        },
 
 	},
     components: {
-        
+        webSocket
     },
     watch: {
         'initParams.type':function(val){

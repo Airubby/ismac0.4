@@ -1,13 +1,16 @@
 import {router} from '@/router/index'
 import { Message } from 'element-ui'
 import store from '@/store/index'
-import NProgress from 'nprogress' // Progress 进度条
-import 'nprogress/nprogress.css'// Progress 进度条样式
+// import NProgress from 'nprogress' // Progress 进度条
+// import 'nprogress/nprogress.css'// Progress 进度条样式
+import { Loading } from 'element-ui'
 import request from './utils/request'
 import tool from './utils/tool'
 import './utils/mock.js'  //测试接口 
 
 routerGo();
+//定义得写上服务，不然刷新，close()找不到
+let loadingInstance=Loading.service({text:"拼命加载中",spinner:"el-icon-loading",background:"rgba(0, 0, 0, 0.8)"});
 function filterAsyncRouter(url, roles) {
     roles.forEach(element => {
         if(url==element.path){
@@ -46,7 +49,8 @@ async function routerGo(){
         await getInfo();
     }
     router.beforeEach((to, from, next) => {
-        NProgress.start()
+        loadingInstance = Loading.service({text:"拼命加载中",spinner:"el-icon-loading",background:"rgba(0, 0, 0, 0.8)"});
+        // NProgress.start()
         const whiteList = ['/login','/401','/404','/bigHome'] // 不重定向白名单
         // let token=store.getters.token;
         if(sessionStorage.userid){
@@ -82,7 +86,8 @@ async function routerGo(){
     router.afterEach((to,from) => {
         let title=to.meta.title?`${to.meta.title}`:'小微产品0.4';
         window.document.title = title;
-        NProgress.done() // 结束Progress
+        loadingInstance.close();
+        // NProgress.done() // 结束Progress
     })
 }
 
