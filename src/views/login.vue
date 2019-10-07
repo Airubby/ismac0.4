@@ -68,7 +68,6 @@ export default {
 		loginIn:function(){
 			this.$refs['form'].validate((valid) => {
 				if(valid){
-					debugger
 					this.loading=true;
 					let a="tKb634uLRuFdugF0P01eKw=="
 					console.log(this.$tool.Decrypt(a))

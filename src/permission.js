@@ -10,7 +10,8 @@ import './utils/mock.js'  //测试接口
 
 routerGo();
 //定义得写上服务，不然刷新，close()找不到
-let loadingInstance=Loading.service({text:"拼命加载中",spinner:"el-icon-loading",background:"rgba(0, 0, 0, 0.8)"});
+let loadingInstance=null;
+
 function filterAsyncRouter(url, roles) {
     roles.forEach(element => {
         if(url==element.path){
@@ -23,6 +24,7 @@ function filterAsyncRouter(url, roles) {
     });
 }
 function getInfo(){  //刷新页面重新获取权限
+    loadingInstance.close();
     return new Promise(function(resolve, reject){
         request.get('/getInfo',{"roleid":tool.Encrypt(sessionStorage.userid)},res=>{
             if(res.err_code=="0"){
@@ -45,6 +47,7 @@ function getInfo(){  //刷新页面重新获取权限
 }
 
 async function routerGo(){
+    loadingInstance=Loading.service({text:"拼命加载中",spinner:"el-icon-loading",background:"rgba(0, 0, 0, 0.8)"})
     if(sessionStorage.userid){
         await getInfo();
     }
