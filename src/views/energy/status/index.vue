@@ -8,7 +8,7 @@
         </div>
         <div class="public_content">
             <div class="pd20">
-                <h2>form表单中循环展示的验证问题</h2>
+                <h2>form表单中循环展示的验证问题及监听问题</h2>
                 <el-form :model="dynamicValidateForm" :rules="rules" ref="ValidateForm" label-width="100px" class="demo-dynamic">
                     <el-form-item prop="obj.email" label="邮箱">
                         <el-input v-model="dynamicValidateForm.obj.email"></el-input>
@@ -38,6 +38,11 @@ export default {
     },
     mounted() {
         
+    },
+    computed:{
+        email:function(){
+            return this.dynamicValidateForm.other.domains[0].value;
+        }
     },
     data(){
         return{
@@ -83,6 +88,12 @@ export default {
 	},
     components: {
         
-    }
+    },
+    watch:{
+        //computed 中的email函数的值变化
+        email:function(val){
+            this.dynamicValidateForm.other.domains[1].value=val;
+        }
+    },
 }
 </script>

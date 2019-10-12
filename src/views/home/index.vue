@@ -2,7 +2,6 @@
     <div class="content">
         <el-input v-model="value" placeholder="请输入播放内容内容"></el-input>
         <el-button type="primary" @click="play()">语音播放内容</el-button>
-        <hr>
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item label="IP" prop="port">
                 <el-input v-model="form.port"></el-input>
@@ -11,11 +10,9 @@
                 <el-button type="primary" @click="onSubmit">测试双语提交验证问题</el-button>
             </el-form-item>
         </el-form>
-        <hr>
         <el-checkbox-group v-model="checkboxGroup">
             <el-checkbox-button v-for="item in alarmOptions" :label="item.id" :key="item.id">{{item.name}}{{item.number}}</el-checkbox-button>
         </el-checkbox-group>
-        <hr>
     </div>
 </template>
 
@@ -85,7 +82,7 @@ export default {
                 if(val[val.length-1]=="all"||val.length==this.alarmOptions.length-1){
                     this.checkboxGroup=["all"];
                 }else if(val[0]=="all"){
-                    this.checkboxGroup.splice(i,1);
+                    this.checkboxGroup.splice(0,1);
                 }
             }else if(val.length==0){
                 this.checkboxGroup=["all"];

@@ -22,7 +22,11 @@ import { mapGetters } from 'vuex'
       }
     },
     created () {
-        
+        if(/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)){
+          // store.dispatch('setDevType',true);
+        }else{
+          // store.dispatch('setDevType',false);
+        }
     },
     computed:{
         ...mapGetters([

@@ -89,7 +89,7 @@ async function routerGo(){
     router.afterEach((to,from) => {
         let title=to.meta.title?`${to.meta.title}`:'小微产品0.4';
         window.document.title = title;
-        loadingInstance.close();
+        loadingInstance&&loadingInstance.close();
         // NProgress.done() // 结束Progress
     })
 }

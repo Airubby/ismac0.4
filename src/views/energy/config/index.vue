@@ -7,7 +7,11 @@
             </el-breadcrumb>
         </div>
         <div class="public_content">
-            能效配置
+            <div class="wrapper">
+                <div class="content">
+                    <p v-for="item in 100">{{item}}</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>
