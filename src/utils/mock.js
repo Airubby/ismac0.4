@@ -189,32 +189,6 @@ const getinfo = function(){
                 ]
             },
             {
-                path: '/loncom/system',
-                name:'system',
-                meta: {show:"true",type:'nav',limits: "",icon:'icon-ic_xitong'},
-                component: 'system/index.vue',
-                children:[
-                    {
-                        path: '/loncom/system/user',
-                        name:'systemUser',
-                        meta: {show:"true",type:'nav',limits: ""},
-                        component: 'system/user/index.vue'
-                    },
-                    {
-                        path: '/loncom/system/information',
-                        name:'systemInformation',
-                        meta: {show:"true",type:'nav',limits: ""},
-                        component: 'system/information/index.vue'
-                    },
-                    {
-                        path: '/loncom/system/config',
-                        name:'systemConfig',
-                        meta: {show:"true",type:'nav',limits: ""},
-                        component: 'system/config/index.vue'
-                    },
-                ]
-            },
-            {
                 path: '/loncom/assets',
                 name:'assets',
                 meta: {show:"true",type:'nav',limits: "",icon:'icon-ic_zichan'},
@@ -237,6 +211,32 @@ const getinfo = function(){
                         name:'assetsConfig',
                         meta: {show:"true",type:'nav',limits: ""},
                         component: 'assets/config/index.vue'
+                    },
+                ]
+            },
+            {
+                path: '/loncom/system',
+                name:'system',
+                meta: {show:"true",type:'nav',limits: "",icon:'icon-ic_xitong'},
+                component: 'system/index.vue',
+                children:[
+                    {
+                        path: '/loncom/system/user',
+                        name:'systemUser',
+                        meta: {show:"true",type:'nav',limits: ""},
+                        component: 'system/user/index.vue'
+                    },
+                    {
+                        path: '/loncom/system/information',
+                        name:'systemInformation',
+                        meta: {show:"true",type:'nav',limits: ""},
+                        component: 'system/information/index.vue'
+                    },
+                    {
+                        path: '/loncom/system/config',
+                        name:'systemConfig',
+                        meta: {show:"true",type:'nav',limits: ""},
+                        component: 'system/config/index.vue'
                     },
                 ]
             },
