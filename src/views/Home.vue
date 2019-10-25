@@ -1,44 +1,19 @@
 <template>
-    <div class="content">
-        <div class="loncom_sidebar" id="sidebar">
+    <div class="app-wrapper" :class="classObj">
+        <div class="sidebar-container">
             <div class="loncom_sidebar_top">
-                <div class="loncom_fl">
-                    <div class='prelative'>
-                    <router-link to="/" id="smalllogo" class="smalllogo"><img :src="'images/'+$theme+'/smallLogo.png'" v-if="$theme"></router-link>
-                    <router-link to="/" id="logo" class="logo"><img :src="'images/'+$theme+'/logo.png'" v-if="$theme"></router-link>
-                    </div>
-                </div>
-                <span class="loncom_fr loncom_navbtn" @click="navclick()" ref="navbtn">
-                    <i class="icon-top_unfold top-icon-color" id="top_fold"></i>
-                </span>
+                <router-link to="/"><img :src="'images/'+$theme+'/smallLogo.png'" v-if="$theme&&sidebarStatus" style="width:54px;"></router-link>
+                <router-link to="/"><img :src="'images/'+$theme+'/logo.png'" v-if="$theme&&!sidebarStatus"></router-link>
             </div>
-            <div class="loncom_sidebar_list" ref="sidebar_list">
-                <ul class="loncom_nav_ul">
-                    <li v-for="item in navList" v-if="navList.length>0" class="navli">
-                        <a class="loncom_navmenu" @click="change($event,item.path)" :data-path="item.path">
-                            <em class="aem"><i :class="item.meta.icon" ></i></em>
-                            <div class="loncom_menu">
-                                <span>{{$t("navbar."+item.name)}}</span>
-                                <i class="loncom_menui el-icon-arrow-right" v-if="item.children&&item.children.length>0"></i>
-                            </div>
-                        </a>
-                        <template v-if="item.children&&item.children.length>0">
-                            <dl class="loncom_morenav">
-                                <template v-for="initem in item.children">
-                                    <dd v-if="initem.meta.type=='nav'">
-                                        <router-link :to="{'name':initem.name}" class="childRouter" @click.native="changeChild($event,initem.path)">
-                                            <span>{{$t("navbar."+initem.name)}}</span>
-                                        </router-link>
-                                    </dd>
-                                </template>
-                            </dl>
-                        </template>
-                    </li>
-                </ul>
+            <div class="loncom_sidebar_list">
+                <sidebar />
             </div>
         </div>
-        <div class="loncom_sidebar_right" id="content">
+        <div class="main-container loncom_sidebar_right">
             <div class="loncom_right_top">
+                <div class="loncom_fl loncom_navbtn" @click="toggleClick()">
+                    <i class="top-icon-color" :class="{'icon-top_unfold':!sidebarStatus,'icon-top_fold':sidebarStatus}"></i>
+                </div>
                 <div class="loncom_right_top_box">
                     <el-popover
                         placement="bottom"
@@ -106,14 +81,37 @@
             </div>
         </div>
     </div>
+    
 </template>
-
+<style lang="less" scoped>
+    .loncom_sidebar_top{
+        width: 100%;
+        height: 64px;
+        display: table;
+        a{
+            display: table-cell;
+            vertical-align: middle;
+        }
+    }
+    .loncom_sidebar_list{
+        width: 100%;
+        height: calc(100% - 64px);
+    }
+    .loncom_navbtn{
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        left: 10px;
+        top: 15px;
+    }
+</style>
 <script>
+import  Sidebar from '@/components/sidebar/index.vue'
+import { mapGetters } from 'vuex'
 export default {
     // inject:['reload'],  点击刷新的时候右侧主体框刷新就可以，不用整个刷新，
     created() {
         this.getCheck();
-        this.setBaseUrl();
     },
     mounted() {
         // this.$r.post("/getMockData",{},r=>{
@@ -122,7 +120,6 @@ export default {
         // this.$r.get("/getInfo",{},r=>{
         //     console.log(r)
         // })
-        this.init();
         //加载完成了去掉根节点的loading;
         this.$nextTick(function(){
             this.$emit("routerLoading")
@@ -142,6 +139,15 @@ export default {
         }
     },
     computed: {
+        ...mapGetters([
+            'sidebarStatus'
+        ]),
+        classObj() {
+            return {
+                hideSidebar: this.sidebarStatus,
+                openSidebar: !this.sidebarStatus,
+            }
+        },
         navList: {
             get() {
                 return this.$store.getters.navList
@@ -154,6 +160,9 @@ export default {
         }
     },
 	methods: {
+        toggleClick() {
+            this.$store.dispatch('toggleSideBar')
+        },
         getCheck:function(){
             this.$r.post('/getCheck',{},r=>{
                 console.log(r)
@@ -168,116 +177,7 @@ export default {
                 this.isRouterAlive=true;
             })
         },
-         //点击导航收缩时判断用
-        setBaseUrl:function(){
-            this.baseURI=window.document.location.href.split("#")[1]; 
-        },
-        setActive:function(){
-            let nav=this.$el.querySelectorAll(".loncom_navmenu");
-            for(let i=0;i<nav.length;i++){
-                nav[i].classList.remove("router-link-active");
-                if(this.baseURI.indexOf(nav[i].getAttribute("data-path"))!=-1){
-                    nav[i].classList.add("router-link-active");
-                }
-            }
-        },
-        //去掉loncom_navmenu上的active状态
-        removeActive:function(className){
-            let nav=this.$el.querySelectorAll(".loncom_navmenu");
-            for(let i=0;i<nav.length;i++){
-                nav[i].classList.remove(className);
-            }
-        },
-        changeChild:function(event,path){
-            sessionStorage.setItem("tabIndex", ""); //选项卡用
-            this.baseURI=path;
-            this.reload();  //刷新效果
-            if(this.navbtn!='open'){
-                this.setActive();
-            }
-        },
-        //控制展开收缩用，如果默认一直展开一个导航就不需要判断change
-        change:function(event,path){
-            let theChild=event.target;
-            while(theChild.className.indexOf("loncom_navmenu")==-1){
-                theChild=theChild.parentNode;
-            }
-            if(this.baseURI.indexOf(path)!=-1){//用包含关系判断
-                console.log("=======")
-                if(this.$route.path!=this.baseURI){  //仍然跳转到原来的页面
-                    this.$router.push({path:this.baseURI});
-                }
-                if(theChild.getAttribute("class")&&theChild.getAttribute("class").indexOf("childHidden")!=-1){
-                    theChild.classList.remove("childHidden");
-                }else{
-                    theChild.classList.add("childHidden");
-                }
-                
-            }else{
-                console.log("!==!==!==!==")
-                sessionStorage.setItem("tabIndex", ""); //选项卡用
-                this.removeActive("childHidden");
-                this.removeActive("router-link-active");
-                theChild.classList.add("router-link-active");
-                this.$router.push({path:path});
-                this.baseURI=path;
-            }
-            
-        },
-        init:function(){
-            if(sessionStorage.navInfo){
-                this.navbtn=sessionStorage.navInfo;
-            }else{
-                sessionStorage.navInfo = "open";
-            }
-            if(this.navbtn==='open'){
-                this.$el.querySelector(".loncom_nav_ul").setAttribute("class","loncom_nav_ul openactive");
-                this.$el.querySelector("#sidebar").style.width="200px";
-                this.$el.querySelector("#content").style.paddingLeft="200px";
-                this.$el.querySelector("#smalllogo").style.left="-60px";
-                this.$el.querySelector("#logo").style.left="0px";
-            }else{
-                this.$el.querySelector(".loncom_nav_ul").setAttribute("class","loncom_nav_ul closeactive");
-                this.$el.querySelector("#sidebar").style.width="60px";
-                this.$el.querySelector("#content").style.paddingLeft="60px";
-                this.$el.querySelector("#smalllogo").style.left="0px";
-                this.$el.querySelector("#logo").style.left="-200px";
-            }
-            //初始化active状态
-            this.setActive();
-        },
-		//大小导航切换
-        navclick:function(){
-            if(this.navbtn=='open'){
-                this.$el.querySelector("#top_fold").setAttribute("class","icon-top_fold top-icon-color");
-                this.$el.querySelector(".loncom_nav_ul").setAttribute("class","loncom_nav_ul closeactive");
-                this.$el.querySelector("#sidebar").style.width="60px";
-                this.$el.querySelector("#sidebar").style.transition="all 0.4s ease-in";
-                this.$el.querySelector("#content").style.paddingLeft="60px";
-                this.$el.querySelector("#content").style.transition="all 0.4s ease-in";
-                this.$el.querySelector("#smalllogo").style.left="0";
-                this.$el.querySelector("#smalllogo").style.transition="all 0.4s ease-in";
-                this.$el.querySelector("#logo").style.left="-200px";
-                this.$el.querySelector("#logo").style.transition="all 0.4s ease-in";
-                this.navbtn='close';
-            }else{
-                this.$el.querySelector("#top_fold").setAttribute("class","icon-top_unfold top-icon-color");
-                this.$el.querySelector(".loncom_nav_ul").setAttribute("class","loncom_nav_ul openactive");
-                this.$el.querySelector("#sidebar").style.width="200px";
-                this.$el.querySelector("#sidebar").style.transition="all 0.4s ease-in";
-                this.$el.querySelector("#content").style.paddingLeft="200px";
-                this.$el.querySelector("#content").style.transition="all 0.4s ease-in";
-                this.$el.querySelector("#smalllogo").style.left="-60px";
-                this.$el.querySelector("#smalllogo").style.transition="all 0.4s ease-in";
-                this.$el.querySelector("#logo").style.left="0";
-                this.$el.querySelector("#logo").style.transition="all 0.4s ease-in";
-                this.navbtn='open';
-                //大导航为收缩状态切换到小导航的时候，如果再展开到大导航的时候，如果要大导航为展开状态就去掉childHidden样式，如果还是保留原来的收缩状态就不使用这个
-                this.removeActive("childHidden");  
-                
-            }
-            sessionStorage.navInfo = this.navbtn;
-        },
+       
         changeTheme:function(theme){
             this.$store.dispatch('setTheme',theme);
             sessionStorage.setItem("theme", theme);
@@ -305,7 +205,7 @@ export default {
     //     },
     // },
     components: {
-        
+        Sidebar
     }
 }
 </script>

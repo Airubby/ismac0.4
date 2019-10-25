@@ -132,29 +132,84 @@ export default {
             let ydom=domHeight/mapHeight;
             let rate=mapHeight/height;  ////宽度有多的 按高度缩放比例
             let number=domWidth-mapWidth;
-            if(xdom<ydom){   //高度有多的 
-                let rate=mapWidth/width;  ////高度有多的 按宽度缩放比例
+            if(xdom<ydom){   //高度有多的 ,宽度填满了dom元素
+                rate=mapWidth/width;  ////高度有多的 按宽度缩放比例
                 number=domHeight-mapHeight;
             }
             console.log("imgk:"+width+";imgh:"+height+";domk:"+domWidth+";domh:"+domHeight+";mapk:"+mapWidth+";maph:"+mapHeight+";rate:"+rate)
-            for(let i=0;i<maplist.length;i++){
-                let oldCoords = maplist[i].getAttribute("coords"); //定义一个初始化的coords 改变浏览器用这个值去计算
-                let newcoords = this.adjustPosition(oldCoords,rate);  
-                maplist[i].querySelector(".maparea").setAttribute("coords", newcoords.toString());  
-                if(xdom>ydom){  //宽度有多的
-                    maplist[i].style.left=number/2+parseFloat(newcoords[0])+"px";
-                    maplist[i].style.top=newcoords[1]+"px";
-                }else{  //高度有多的
-                    maplist[i].style.left=newcoords[0]+"px";
-                    maplist[i].style.top=number/2+parseFloat(newcoords[1])+"px";
+            if(width<=domWidth&&height<=domHeight){
+                for(let i=0;i<maplist.length;i++){
+                    let oldCoords = maplist[i].getAttribute("coords"); //定义一个初始化的coords 改变浏览器用这个值去计算
+                    let newcoords = this.adjustPosition(oldCoords,rate);  
+                    maplist[i].querySelector(".maparea").setAttribute("coords", newcoords.toString());  
+                    maplist[i].style.left=(domWidth-width)/2+parseFloat(newcoords[0])+"px";
+                    maplist[i].style.top=(domHeight-height)/2+parseFloat(newcoords[1])+"px";
                 }
-                
+            }else{
+                for(let i=0;i<maplist.length;i++){
+                    let oldCoords = maplist[i].getAttribute("coords"); //定义一个初始化的coords 改变浏览器用这个值去计算
+                    let newcoords = this.adjustPosition(oldCoords,rate);  
+                    maplist[i].querySelector(".maparea").setAttribute("coords", newcoords.toString());  
+                    if(xdom>ydom){  //宽度有多的
+                        maplist[i].style.left=number/2+parseFloat(newcoords[0])+"px";
+                        maplist[i].style.top=newcoords[1]+"px";
+                    }else{  //高度有多的
+                        maplist[i].style.left=newcoords[0]+"px";
+                        maplist[i].style.top=number/2+parseFloat(newcoords[1])+"px";
+                    }
+                    
+                }
             }
+            
 
         },
         adjustPosition:function(position,rate){
             let each = position.split(",");  
             for (let i = 0; i < each.length; i++) { 
+                each[i] = Math.round(parseFloat(each[i]) * rate).toString();//坐标  
+            }  
+            return each;  
+        },
+        //如果图片宽高拉伸填充满dom；
+        adjust1:function(){
+            let maplist=document.getElementById("map").childNodes;
+            let mapimg=document.getElementById("mapimg");
+            let centermap=document.getElementById("centermap");
+            let domWidth=centermap.offsetWidth;
+            let domHeight=centermap.offsetHeight;
+            let img=new Image();
+            img.src=mapimg.getAttribute("src");
+            let width=img.width;
+            let height=img.height;
+
+            let xrate=domWidth/width;
+            let yrate=domHeight/height;
+
+            for(let i=0;i<maplist.length;i++){
+                let oldCoords = maplist[i].getAttribute("coords"); //定义一个初始化的coords 改变浏览器用这个值去计算
+                let newcoords = this.adjustPosition(oldCoords,xrate,yrate); 
+                maplist[i].style.left=parseFloat(newcoords[0])+"px";
+                maplist[i].style.top=parseFloat(newcoords[1])+"px";
+                if(newcoords.length>4){  //1栋311,704,806；2栋603-604有异形多边形的
+                    maplist[i].querySelector(".maparea").style.width=parseFloat(newcoords[8])-parseFloat(newcoords[0])+"px";
+                    maplist[i].querySelector(".maparea").style.height=parseFloat(newcoords[9])-parseFloat(newcoords[1])+"px";
+                    maplist[i].querySelector(".othermap-top").style.width=parseFloat(newcoords[2])-parseFloat(newcoords[0])+"px";
+                    maplist[i].querySelector(".othermap-top").style.height=parseFloat(newcoords[5])-parseFloat(newcoords[1])+"px";
+                    maplist[i].querySelector(".othermap-bottom").style.width=parseFloat(newcoords[6])-parseFloat(newcoords[0])+"px";
+                    maplist[i].querySelector(".othermap-bottom").style.height=parseFloat(newcoords[9])-parseFloat(newcoords[7])+"px";
+                }else{
+                    maplist[i].querySelector(".maparea").style.width=parseFloat(newcoords[2])-parseFloat(newcoords[0])+"px";
+                    maplist[i].querySelector(".maparea").style.height=parseFloat(newcoords[3])-parseFloat(newcoords[1])+"px";
+                }
+            }
+        },
+        adjustPosition1:function(position,xrate,yrate){
+            let each = position.split(",");  
+            for (let i = 0; i < each.length; i++) {
+                let rate=xrate; 
+                if(i%2==1){
+                    rate=yrate;
+                }
                 each[i] = Math.round(parseFloat(each[i]) * rate).toString();//坐标  
             }  
             return each;  

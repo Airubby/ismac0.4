@@ -76,7 +76,7 @@ export default {
 						console.log(r);
 						if(r.err_code=="0"){
 							this.$message.success(r.err_msg);
-							sessionStorage.userid=this.$tool.Encrypt(r.data.roleid);  //刷新页面的时候用userid获取权限问题；
+							sessionStorage.roleid=this.$tool.Encrypt(r.data.roleid);  //刷新页面的时候用userid获取权限问题；
 							this.getLimit(r.data.roleid)  //获取权限
 							// sessionStorage.loginInfo= JSON.stringify(r.data);
 							// var date=new Date();

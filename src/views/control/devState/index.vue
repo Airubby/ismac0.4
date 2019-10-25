@@ -65,6 +65,7 @@
                         @select-all="selectAll"
                         :webSocketInfo="table_data"
                         @resultData="resultData"
+                        select-id="id"
                         :columns="table_columns" ref="thisRef">   
                         <el-table-column slot="prepend" type="selection"></el-table-column>
                         <template slot-scope="scope" slot="preview-name">

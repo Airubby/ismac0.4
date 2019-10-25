@@ -10,6 +10,7 @@ const app = {
     languagezh: {},
     languageen: {},
     viewState:'',
+    sidebarStatus:Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
   },
   mutations: {
     setwsData(state,wsData){
@@ -38,6 +39,14 @@ const app = {
     SET_VIEW: (state, viewState) => {
       state.viewState = viewState
     },
+    TOGGLE_SIDEBAR: state => {
+      state.sidebarStatus = !state.sidebarStatus
+      if (state.sidebarStatus) {
+        Cookies.set('sidebarStatus', 1)
+      } else {
+        Cookies.set('sidebarStatus', 0)
+      }
+    },
 
   },
   actions: {
@@ -63,7 +72,12 @@ const app = {
 
     setIsview({commit},viewState){
       commit('SET_VIEW', viewState)
-    }
+    },
+
+    toggleSideBar({ commit }) {
+      commit('TOGGLE_SIDEBAR')
+    },
+
 
   }
 

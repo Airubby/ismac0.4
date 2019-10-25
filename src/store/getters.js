@@ -6,6 +6,7 @@ const getters = {
   AjaxUrl: state => state.app.AjaxUrl,
   loginUrl: state => state.app.loginUrl,
   isview:state=>state.app.viewState,
+  sidebarStatus:state=>state.app.sidebarStatus,
   
   token: state => state.user.token,
   addRouters: state => state.user.addRouters,

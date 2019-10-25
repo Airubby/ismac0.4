@@ -26,7 +26,8 @@ function filterAsyncRouter(url, roles) {
 function getInfo(){  //刷新页面重新获取权限
     loadingInstance.close();
     return new Promise(function(resolve, reject){
-        request.get('/getInfo',{"roleid":tool.Encrypt(sessionStorage.userid)},res=>{
+        console.log(tool.Decrypt(sessionStorage.roleid))
+        request.get('/getInfo',{"roleid":tool.Decrypt(sessionStorage.roleid)},res=>{
             if(res.err_code=="0"){
                 if(res.data.length>0){
                     store.dispatch('setAuthInfo',res.data);
@@ -40,15 +41,13 @@ function getInfo(){  //刷新页面重新获取权限
                 Message.warning("权限获取失败");
             }
             resolve()
-        }).catch(error => {
-            reject(error)
         })
     })
 }
 
 async function routerGo(){
     loadingInstance=Loading.service({text:"拼命加载中",spinner:"el-icon-loading",background:"rgba(0, 0, 0, 0.8)"})
-    if(sessionStorage.userid){
+    if(sessionStorage.roleid){
         await getInfo();
     }
     router.beforeEach((to, from, next) => {
@@ -56,7 +55,7 @@ async function routerGo(){
         // NProgress.start()
         const whiteList = ['/login','/401','/404','/bigHome'] // 不重定向白名单
         // let token=store.getters.token;
-        if(sessionStorage.userid){
+        if(sessionStorage.roleid){
             if (to.path!=="/"&&whiteList.indexOf(to.path) !== -1) {
                 next()
             } else {
