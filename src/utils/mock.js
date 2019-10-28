@@ -55,13 +55,13 @@ const getinfo = function(){
                     {
                         path: '/loncom/control/devState/detail',
                         name:'controlDevStateDetail',
-                        meta: { show:"true",type:'fun',limits: ""},
+                        meta: { show:"true",type:'fun',limits: "",activePath:"/loncom/control/devState",activeName:"controlDevState"},
                         component: 'control/devState/detail.vue'
                     },
                     {
                         path: '/loncom/control/devState/add',
                         name:'controlDevStateAdd',
-                        meta: { show:"true",type:'fun',limits: ""},
+                        meta: { show:"true",type:'fun',limits: "",activePath:"/loncom/control/devState",activeName:"controlDevState"},
                         component: 'control/devState/add.vue'
                     },
                     {
@@ -99,7 +99,7 @@ const getinfo = function(){
                     {
                         path: '/loncom/access/cardImpower/add',
                         name:'accessCardImpowerAdd',
-                        meta: { show:"true",type:'fun',limits: ""},
+                        meta: { show:"true",type:'fun',limits: "",activePath:"/loncom/access/cardImpower",activeName:"accessCardImpower"},
                         component: 'access/cardImpower/add.vue'
                     },
                     {
@@ -111,7 +111,7 @@ const getinfo = function(){
                     {
                         path: '/loncom/access/config/add',
                         name:'accessConfigAdd',
-                        meta: { show:"true",type:'fun',limits: ""},
+                        meta: { show:"true",type:'fun',limits: "",activePath:"/loncom/access/config",activeName:"accessConfig"},
                         component: 'access/config/add.vue'
                     },
                 ]

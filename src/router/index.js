@@ -8,7 +8,7 @@ export const syncRouter=[
         name: 'home',
         meta: { title: 'home'},
         component: () => import('@/views/home.vue'),
-        redirect:'/loncom',
+        redirect:'/login',
     },
     {
       path: '/login',
@@ -35,6 +35,14 @@ export const syncRouter=[
 //   base: process.env.BASE_URL,
 //   routes:syncRouter
 // })
+
+/**
+ * 重写路由的push方法  解决 Navigating to current location ("url") is not allowed
+ */
+const routerPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return routerPush.call(this, location).catch(error=> error)
+}
 
 const createRouter = () => new Router({
     mode: 'hash',

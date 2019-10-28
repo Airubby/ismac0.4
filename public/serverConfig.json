@@ -9,6 +9,7 @@
             "index": "主页",
             "control": "监控管理",
             "controlDevState": "设备状态",
+            "controlDevStateDetail":"设备详情",
             "controlAlarmRecord":"告警记录",
             "controlConfig":"监控配置",
             "access":"门禁管理",

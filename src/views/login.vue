@@ -114,7 +114,7 @@ export default {
 						this.$store.dispatch('setAuthInfo',r.data);
 						let url=window.document.URL.split("#")[1];
 						this.filterAsyncRouter(url,r.data);
-						this.$router.push({path:'/'});
+						this.$router.push({path:'/loncom'});
 					}else{
 						console.log("没有任何权限，跳转到没有任何权限的页面")
 						router.push({path:'/login'});

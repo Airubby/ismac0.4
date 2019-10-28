@@ -3,6 +3,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
     // 基本路径
     publicPath: './',
+    // 输出主文件名称
+    indexPath: './index.html',
     //baseUrl: process.env.NODE_ENV === "production" ? "./" : "/"
     // 输出文件目录
     outputDir: 'dist',

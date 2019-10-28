@@ -1,11 +1,7 @@
 <template>
     <div class="bgfffcontent">
         <div class="breadcrumb">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{$t("navbar.control")}}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{$t("navbar.controlDevState")}}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{$t("control.devDetail")}}</el-breadcrumb-item>
-            </el-breadcrumb>
+            <breadcrumb class="breadcrumb-container" />
         </div>
         <div class="public_content pd20">
             <el-scrollbar class="scrollbar">

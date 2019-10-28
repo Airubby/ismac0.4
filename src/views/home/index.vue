@@ -1,5 +1,6 @@
 <template>
     <div class="content">
+        <breadcrumb class="breadcrumb-container" />
         <el-input v-model="value" placeholder="请输入播放内容内容"></el-input>
         <el-button type="primary" @click="play()">语音播放内容</el-button>
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
