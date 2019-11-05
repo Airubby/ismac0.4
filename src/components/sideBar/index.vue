@@ -1,7 +1,6 @@
 <template>
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
-        v-if="show"
         :default-active="activePath"
         :collapse="sidebarStatus"
         :router="true"
@@ -23,7 +22,7 @@ export default {
     data(){
         return{
             baseURI:'',
-            show:true,
+            changeOpen:false,
         }
     },
     mounted(){
@@ -34,8 +33,23 @@ export default {
             'sidebarStatus','navList'
         ]),
         activePath() {
+            this.$forceUpdate();
             const route = this.$route
             const { meta, path } = route
+            if(this.baseURI==""){
+                for(let i=0;i<route.matched.length;i++){
+                    if(route.matched[i].path==path){
+                        if(route.matched[i].parent){
+                            this.baseURI=route.matched[i].parent.path;
+                        }
+                    }
+                }
+            }else{
+                if(this.changeOpen){
+                    this.$refs.navmenu.open(this.baseURI);
+                    this.changeOpen=false;
+                }
+            }
             if (meta.activePath) {  //详情页等添加activePath
                 return meta.activePath
             }
@@ -44,17 +58,13 @@ export default {
     },
     methods:{
         backInfo:function(path){
+            console.log(path)
             if(this.baseURI.indexOf(path)==-1){//用包含关系判断
                 console.log("!==!==!==!==")
                 sessionStorage.setItem("tabIndex", ""); //选项卡用
                 this.$router.push({path:path});
                 this.baseURI=path;
-                if(!this.sidebarStatus){ //小导航的时候就不执行下面的操作
-                    this.show=false;
-                    this.$nextTick(()=>{
-                        this.show=true;
-                    })
-                }
+                this.changeOpen=true;
             }
         },
         select:function(index,indexpath){

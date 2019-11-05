@@ -10,7 +10,7 @@ const app = {
     languagezh: {},
     languageen: {},
     viewState:'',
-    sidebarStatus:Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
+    sidebarStatus:Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : false,
   },
   mutations: {
     setwsData(state,wsData){

@@ -154,7 +154,7 @@ function wsConnection(sendMsg, callback,addr) {
       let ws = new WebSocket(SOCKECT_ADDR);
       Vue.prototype.$ws=ws;
       ws.onopen = function (event) {
-          console.log(event)
+        //   console.log(event)
           console.log("已经与服务器建立了连接\r\n当前连接状态：" + event);
           if(sendMsg!=""){
             ws.send(sendMsg);
@@ -164,7 +164,7 @@ function wsConnection(sendMsg, callback,addr) {
     
       ws.onmessage = callback;
       ws.onclose = function (event) {
-        console.log(event)
+        // console.log(event)
       };
       ws.onerror = function (event) {
         console.log("WebSocket异常！" + event.toString());
