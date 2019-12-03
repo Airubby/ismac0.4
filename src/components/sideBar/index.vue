@@ -22,7 +22,6 @@ export default {
     data(){
         return{
             baseURI:'',
-            changeOpen:false,
         }
     },
     mounted(){
@@ -44,11 +43,6 @@ export default {
                         }
                     }
                 }
-            }else{
-                if(this.changeOpen){
-                    this.$refs.navmenu.open(this.baseURI);
-                    this.changeOpen=false;
-                }
             }
             if (meta.activePath) {  //详情页等添加activePath
                 return meta.activePath
@@ -64,7 +58,10 @@ export default {
                 sessionStorage.setItem("tabIndex", ""); //选项卡用
                 this.$router.push({path:path});
                 this.baseURI=path;
-                this.changeOpen=true;
+                this.$nextTick(function(){
+                    this.$refs.navmenu.close(this.baseURI);
+                    this.$refs.navmenu.open(this.baseURI);
+                })
             }
         },
         select:function(index,indexpath){

@@ -11,6 +11,7 @@ const app = {
     languageen: {},
     viewState:'',
     sidebarStatus:Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : false,
+    baseURI:'',
   },
   mutations: {
     setwsData(state,wsData){
@@ -47,6 +48,9 @@ const app = {
         Cookies.set('sidebarStatus', 0)
       }
     },
+    SET_BASEURL:(state,path)=>{
+      state.baseURI=path;
+    }
 
   },
   actions: {
@@ -77,7 +81,9 @@ const app = {
     toggleSideBar({ commit }) {
       commit('TOGGLE_SIDEBAR')
     },
-
+    setBaseUrl({ commit },path) {
+      commit('SET_BASEURL',path)
+    },
 
   }
 

@@ -9,6 +9,7 @@ function filterAsyncRouter(data) {
     data.map((item)=>{
         let addr=item.component;
         item.component = () => import(`@/views/${addr}`);
+        // item.component = resolve => require([`@/views/${addr}`], resolve);
         if(item.children&&item.children.length>0){
             item["redirect"]=item.children[0].path;
             item.children=filterAsyncRouter(item.children);
@@ -39,6 +40,7 @@ const user = {
             name:'loncom',
             meta: { title: '首页'},
             component: () => import('@/views/home.vue'),
+            // component:resolve => require(['@/views/home.vue'], resolve),
             redirect:redirect,
             children:[]
         }

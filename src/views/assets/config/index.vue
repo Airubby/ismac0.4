@@ -15,7 +15,7 @@
                         placement="top"
                         width="260"
                         trigger="hover">
-                        <area shape="circle" slot="reference" coords="675,405,50" class="maparea" @click="enterInfo"></area>
+                        <div slot="reference" coords="675,405,50" class="maparea openair" @click="enterInfo"></div>
                         <div class="mapcon loncom_index_publicbox">
                             <h2>1#楼</h2>
                             <div class="info">
@@ -115,7 +115,7 @@ export default {
     },
 	methods: {
         adjust:function(){
-            let maplist=document.getElementById("map").childNodes;
+            let maplist=document.getElementById("map").children;
             let mapimg=document.getElementById("mapimg");
             let centermap=document.getElementById("centermap");
             let domWidth=centermap.offsetWidth;
@@ -144,6 +144,10 @@ export default {
                     maplist[i].querySelector(".maparea").setAttribute("coords", newcoords.toString());  
                     maplist[i].style.left=(domWidth-width)/2+parseFloat(newcoords[0])+"px";
                     maplist[i].style.top=(domHeight-height)/2+parseFloat(newcoords[1])+"px";
+                    
+                    //多边形的可以设置背景块展示
+                    // maplist[i].querySelector(".maparea").style.width=parseFloat(newcoords[2])-parseFloat(newcoords[0])+"px";
+                    // maplist[i].querySelector(".maparea").style.height=parseFloat(newcoords[3])-parseFloat(newcoords[1])+"px";
                 }
             }else{
                 for(let i=0;i<maplist.length;i++){
@@ -157,7 +161,6 @@ export default {
                         maplist[i].style.left=newcoords[0]+"px";
                         maplist[i].style.top=number/2+parseFloat(newcoords[1])+"px";
                     }
-                    
                 }
             }
             
@@ -172,7 +175,7 @@ export default {
         },
         //如果图片宽高拉伸填充满dom；
         adjust1:function(){
-            let maplist=document.getElementById("map").childNodes;
+            let maplist=document.getElementById("map").children;
             let mapimg=document.getElementById("mapimg");
             let centermap=document.getElementById("centermap");
             let domWidth=centermap.offsetWidth;
@@ -247,6 +250,9 @@ export default {
                 position: absolute;
                 bottom: 36px;
                 left: -11px;
+                &.openair{
+                    background: rgba(138, 110, 35, 0.6);
+                }
                 &:before{
                     content: "";
                     width: 0;

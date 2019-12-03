@@ -7,6 +7,7 @@ const getters = {
   loginUrl: state => state.app.loginUrl,
   isview:state=>state.app.viewState,
   sidebarStatus:state=>state.app.sidebarStatus,
+  baseURI:state=>state.app.baseURI,
   
   token: state => state.user.token,
   addRouters: state => state.user.addRouters,
