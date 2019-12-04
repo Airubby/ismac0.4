@@ -10,7 +10,7 @@
         </template>
         <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)">
             <template slot="title">
-                <div  @click="select(item.name,item.path)">
+                <div @click="select(item.name,item.path)">
                     <i :class="item.meta.icon" class="svg-icon"></i>
                     <span>{{$t("navbar."+item.name)}}</span>
                 </div>

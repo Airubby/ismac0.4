@@ -9,28 +9,34 @@ const externals = {
     'vue-router': 'VueRouter',
     'vuex': 'Vuex',
     'axios': 'axios',
-    'element-ui': 'ELEMENT'
+    'element-ui': 'ELEMENT',
+    'swiper':'Swiper',
+    'echarts':'echarts'
 }
 // CDN外链，会插入到index.html中
 const cdn = {
     // 开发环境
     dev: {
       css: [
-        './nodepackage/element-ui/lib/theme-chalk/index.css'
+        './nodepackage/element-ui/lib/theme-chalk/index.css',
+        './nodepackage/swiper/dist/css/swiper.min.css'
       ],
       js: []
     },
     // 生产环境
     build: {
       css: [
-        './nodepackage/element-ui/lib/theme-chalk/index.css'
+        './nodepackage/element-ui/lib/theme-chalk/index.css',
+        './nodepackage/swiper/dist/css/swiper.min.css'
       ],
       js: [
         './nodepackage/vue/dist/vue.min.js',
         './nodepackage/vue-router/dist/vue-router.min.js',
         './nodepackage/vuex/dist/vuex.min.js',
         './nodepackage/axios/dist/axios.min.js',
-        './nodepackage/element-ui/lib/index.js'
+        './nodepackage/element-ui/lib/index.js',
+        './nodepackage/swiper/dist/js/swiper.min.js',
+        './nodepackage/echarts/dist/echarts.min.js',
       ]
     }
 }
@@ -77,7 +83,7 @@ module.exports = {
             chunks: 'all'
         })
         /**
-         * 添加CDN参数到htmlWebpackPlugin配置中
+         * 添加CDN参数/将externals定义的不需要Webpack打包编译的到htmlWebpackPlugin配置中，
          */
         config
             .plugin('html')
@@ -110,49 +116,88 @@ module.exports = {
     configureWebpack: config => {
         const myConfig = {}
         if (isProduction) {
-            // 1. 生产环境npm包转CDN
+            // 1. 生产环境npm包转CDN，externals定义的部分不需要Webpack打包编译
             myConfig.externals = externals
             // 2. 使用预渲染，在仅加载html和css之后即可显示出基础的页面，提升用户体验，避免白屏
             myConfig.plugins = []
             productionPrerender && myConfig.plugins.push(
                 new PrerenderSPAPlugin({
-                staticDir: path.resolve(__dirname, './'), // 作为express.static()中间件的路径
-                outputDir: path.resolve(__dirname, './'),
-                indexPath: path.resolve(__dirname, 'index.html'),
-                routes: prerenderRoutes,
-                minify: {
-                    collapseBooleanAttributes: true,
-                    collapseWhitespace: true,
-                    decodeEntities: true,
-                    keepClosingSlash: true,
-                    sortAttributes: true
-                },
-                postProcess (renderedRoute) {
-                    /**
-                     * 懒加载模块会自动注入，无需直接通过script标签引入
-                     * 而且预渲染的html注入的是modern版本的懒加载模块
-                     * 这会导致在低版本浏览器出现报错，需要剔除
-                     * 这并不是一个非常严谨的正则，不适用于使用了 webpackChunkName: "group-foo" 注释的懒加载
-                     */
-                    renderedRoute.html = renderedRoute.html.replace(
-                    /<script[^<]*chunk-[a-z0-9]{8}\.[a-z0-9]{8}.js[^<]*><\/script>/g,
-                    function (target) {
-                        console.log(chalk.bgRed('\n\n剔除的懒加载标签:'), chalk.magenta(target))
-                        return ''
+                    staticDir: path.resolve(__dirname, './'), // 作为express.static()中间件的路径
+                    outputDir: path.resolve(__dirname, './'),
+                    indexPath: path.resolve(__dirname, 'index.html'),
+                    routes: prerenderRoutes,
+                    minify: {
+                        collapseBooleanAttributes: true,
+                        collapseWhitespace: true,
+                        decodeEntities: true,
+                        keepClosingSlash: true,
+                        sortAttributes: true
+                    },
+                    postProcess (renderedRoute) {
+                        /**
+                         * 懒加载模块会自动注入，无需直接通过script标签引入
+                         * 而且预渲染的html注入的是modern版本的懒加载模块
+                         * 这会导致在低版本浏览器出现报错，需要剔除
+                         * 这并不是一个非常严谨的正则，不适用于使用了 webpackChunkName: "group-foo" 注释的懒加载
+                         */
+                        renderedRoute.html = renderedRoute.html.replace(
+                        /<script[^<]*chunk-[a-z0-9]{8}\.[a-z0-9]{8}.js[^<]*><\/script>/g,
+                        function (target) {
+                            console.log(chalk.bgRed('\n\n剔除的懒加载标签:'), chalk.magenta(target))
+                            return ''
+                        }
+                        )
+                        return renderedRoute
                     }
-                    )
-                    return renderedRoute
-                }
                 })
             )
-            // 3. 构建时开启gzip，降低服务器压缩对CPU资源的占用，服务器也要相应开启gzip
+            //3.js代码整合
+            let optimization= {
+                splitChunks: {
+                    cacheGroups: {
+                        vendor:{
+                            chunks:"all",
+                            test: /node_modules/,
+                            name:"vendor",
+                            minChunks: 1,
+                            maxInitialRequests: 5,
+                            minSize: 0,
+                            priority:100,
+                        },
+                        common: {
+                            chunks:"all",
+                            test:/[\\/]src[\\/]js[\\/]/,
+                            name: "common",
+                            minChunks: 2,
+                            maxInitialRequests: 5,
+                            minSize: 0,
+                            priority:60
+                        },
+                        styles: {
+                            name: 'styles',
+                            test: /\.(le|sa|sc|c)ss$/,
+                            chunks: 'all',
+                            enforce: true,
+                        },
+                        runtimeChunk: {
+                            name: 'manifest'
+                        }
+                    } 
+                },
+          
+            }
+            Object.assign(config, {
+                optimization
+            })
+            // 4. 构建时开启gzip，降低服务器压缩对CPU资源的占用，服务器也要相应开启gzip
             productionGzip && myConfig.plugins.push(
                 new CompressionWebpackPlugin({
-                test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
-                threshold: 8192,
-                minRatio: 0.8
+                    test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+                    threshold: 8192,
+                    minRatio: 0.8
                 })
             )
+
         }
         if (!isProduction) {
             /**
@@ -164,7 +209,8 @@ module.exports = {
             let optimization={
                 minimizer:[
                     new TerserPlugin({
-                        // 将多线程关闭
+                        cache: true,
+                        // 将多线程关闭  webpack会92%卡住的问题
                         parallel: false
                     })
                 ]
@@ -174,64 +220,6 @@ module.exports = {
             })
         }
         return myConfig
-        // if (isProduction){
-        //     let optimization= {
-        //         splitChunks: {
-        //             cacheGroups: {
-        //                 vendor:{
-        //                     chunks:"all",
-        //                     test: /node_modules/,
-        //                     name:"vendor",
-        //                     minChunks: 1,
-        //                     maxInitialRequests: 5,
-        //                     minSize: 0,
-        //                     priority:100,
-        //                 },
-        //                 common: {
-        //                     chunks:"all",
-        //                     test:/[\\/]src[\\/]js[\\/]/,
-        //                     name: "common",
-        //                     minChunks: 2,
-        //                     maxInitialRequests: 5,
-        //                     minSize: 0,
-        //                     priority:60
-        //                 },
-        //                 styles: {
-        //                     name: 'styles',
-        //                     test: /\.(le|sa|sc|c)ss$/,
-        //                     chunks: 'all',
-        //                     enforce: true,
-        //                 },
-        //                 runtimeChunk: {
-        //                     name: 'manifest'
-        //                 }
-        //             } 
-        //         },
-          
-        //     }
-        //     Object.assign(config, {
-        //         optimization
-        //     })
-        //     //生成gz压缩包
-        //     // let plugins = [
-        //     //     new CompressionWebpackPlugin({
-        //     //       filename: '[path].gz[query]',
-        //     //       algorithm: 'gzip',
-        //     //       test: new RegExp(
-        //     //         '\\.(' +
-        //     //         ['js', 'css'].join('|') +
-        //     //         ')$',
-        //     //       ),
-        //     //       threshold: 10240,
-        //     //       minRatio: 0.8,
-        //     //     }),
-        //     // ]
-        //     // config.plugins = [...config.plugins, ...plugins]
-            
-        // } else {
-        //     // 为开发环境修改配置...
-        //     config.mode = 'development';
-        // }
         // Object.assign(config, {
         //     // 开发生产共同配置
         //     resolve: {

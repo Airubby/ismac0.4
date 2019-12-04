@@ -24,7 +24,6 @@ function filterAsyncRouter(url, roles) {
     });
 }
 function getInfo(){  //刷新页面重新获取权限
-    loadingInstance.close();
     return new Promise(function(resolve, reject){
         console.log(tool.Decrypt(sessionStorage.roleid))
         request.get('/getInfo',{"roleid":tool.Decrypt(sessionStorage.roleid)},res=>{
@@ -46,16 +45,15 @@ function getInfo(){  //刷新页面重新获取权限
 }
 
 async function routerGo(){
-    loadingInstance=Loading.service({text:"拼命加载中",spinner:"el-icon-loading",background:"rgba(0, 0, 0, 0.8)"})
     if(sessionStorage.roleid){
         await getInfo();
     }
     router.beforeEach((to, from, next) => {
-        loadingInstance = Loading.service({text:"拼命加载中",spinner:"el-icon-loading",background:"rgba(0, 0, 0, 0.8)"});
         // NProgress.start()
         const whiteList = ['/login','/401','/404','/bigHome'] // 不重定向白名单
         // let token=store.getters.token;
         if(sessionStorage.roleid){
+            loadingInstance = Loading.service({text:"拼命加载中",spinner:"el-icon-loading",background:"rgba(0, 0, 0, 0.8)"});
             if (to.path!=="/"&&whiteList.indexOf(to.path) !== -1) {
                 next()
             } else {
