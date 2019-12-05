@@ -63,6 +63,7 @@ async function routerGo(){
                             store.dispatch('setLimits',to.meta.limits.split(","));
                         }
                         next() 
+                        loadingInstance&&loadingInstance.close();
                     }else{
                         next('/401') 
                         console.log("没有权限访问")

@@ -11,7 +11,8 @@ const externals = {
     'axios': 'axios',
     'element-ui': 'ELEMENT',
     'swiper':'Swiper',
-    'echarts':'echarts'
+    'echarts':'echarts',
+    'el-table-pagination':'ElSearchTablePagination'
 }
 // CDN外链，会插入到index.html中
 const cdn = {
@@ -37,6 +38,7 @@ const cdn = {
         './nodepackage/element-ui/lib/index.js',
         './nodepackage/swiper/dist/js/swiper.min.js',
         './nodepackage/echarts/dist/echarts.min.js',
+        './nodepackage/el-table-pagination/lib/index.js',
       ]
     }
 }
@@ -153,6 +155,9 @@ module.exports = {
             )
             //3.js代码整合
             let optimization= {
+                //去掉打印console信息
+                minimizer: [new TerserPlugin({ terserOptions: { compress: { drop_console: true } } })],
+                //整合代码
                 splitChunks: {
                     cacheGroups: {
                         vendor:{
@@ -184,7 +189,7 @@ module.exports = {
                         }
                     } 
                 },
-          
+                
             }
             Object.assign(config, {
                 optimization
