@@ -1,6 +1,6 @@
 <template>
     <div class="bgfffcontent">
-        <el-search-table-pagination
+        <el-table-pagination
             :url="$ajaxUrl+'/getTable'"
             list-field="data" 
             total-field="total"
@@ -12,7 +12,7 @@
             <template slot-scope="scope" slot="preview-handle">
                 
             </template>
-        </el-search-table-pagination>
+        </el-table-pagination>
     </div>
 </template>
 

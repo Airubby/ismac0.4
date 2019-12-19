@@ -23,7 +23,7 @@
 <script>
 export default {
 	created () {
-		console.log(222)
+		this.$store.dispatch('setInfoFlag',true);
   	},
 	mounted() {
         //加载完成了去掉根节点的loading;

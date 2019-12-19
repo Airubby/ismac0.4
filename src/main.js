@@ -8,7 +8,7 @@ import store from './store/index'
 import request from './utils/request'
 
 // import 'element-ui/lib/theme-chalk/index.css'
-import ElSearchTablePagination from 'el-table-pagination'
+import ElTablePagination from 'el-table-pagination'
 import Swiper from 'swiper'  //3.4.2 打包不报错，4.+打包报错
 // import 'swiper/dist/css/swiper.min.css'
 import './utils/filters' // 自定义过滤器
@@ -53,13 +53,14 @@ Vue.prototype.publicPath=process.env.BASE_URL
 
 Vue.prototype.$Swiper = Swiper 
 
-Vue.use(ElSearchTablePagination)
+Vue.use(ElTablePagination)
 
 Vue.config.productionTip = false
 let i18n=''
 function getServerConfig() {
   return new Promise ((resolve, reject) => {
     axios.get('./serverConfig.json').then((result) => {
+      console.log(result)
       let config = result.data;
       let ajaxUrl = process.env.NODE_ENV == 'production' ? config.production:config.develop;
       Vue.prototype.$ajaxUrl=ajaxUrl;

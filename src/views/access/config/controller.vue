@@ -45,7 +45,7 @@
                 <el-button @click="removePermissions">权限清除</el-button>
                 <el-button @click="initialize">初始化</el-button>
             </div>
-            <el-search-table-pagination
+            <el-table-pagination
                 :url="$ajaxUrl+'/getTable'"
                 list-field="data" 
                 total-field="total"
@@ -59,7 +59,7 @@
                     <p class="table_handle"><span @click="disable(scope.row)">禁用</span><span @click="edit(scope.row)">编辑</span><span @click="moreDelete(scope.row)">删除</span></p>
                     <p class="table_handle"><span @click="removePermissions(scope.row)">门参数</span><span @click="removePermissions(scope.row)">通讯测试</span></p>
                 </template>
-            </el-search-table-pagination>
+            </el-table-pagination>
         </el-scrollbar>
     </div>
 </template>

@@ -62,7 +62,7 @@
                     <el-button @click="assignment">权限分配</el-button>
                     <el-button @click="removePermissions">权限清除</el-button>
                 </div>
-                <el-search-table-pagination
+                <el-table-pagination
                     :url="$ajaxUrl+'/getTable'"
                     list-field="data" 
                     total-field="total"
@@ -76,7 +76,7 @@
                         <p class="table_handle"><span @click="edit(scope.row)">编辑</span><span @click="moreDelete(scope.row)">删除</span></p>
                         <p class="table_handle"><span @click="assignment(scope.row)">权限分配</span><span @click="removePermissions(scope.row)">清除权限</span></p>
                     </template>
-                </el-search-table-pagination>
+                </el-table-pagination>
             </el-scrollbar>
         </div>
         <assignment v-if="assignmentInfo.visible" :dialogInfo="assignmentInfo"></assignment>
@@ -107,7 +107,7 @@ export default {
               { prop: 'code', label: '卡号',minWidth:10},
               { prop: 'type', label: '类型',minWidth:10},
               { prop: 'user', label: '领卡人',minWidth:10},
-              { prop: 'indate', label: '有效期',minWidth:10},
+              { prop: 'indate', label: '有效期',minWidth:10,sortable:true},
               { prop: 'timegroup', label: '时间组',minWidth:10},
               { prop: 'handle', label: '操作',slotName:'preview-handle',width:150},
             ],

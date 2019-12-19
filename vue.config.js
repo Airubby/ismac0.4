@@ -12,9 +12,10 @@ const externals = {
     'element-ui': 'ELEMENT',
     'swiper':'Swiper',
     'echarts':'echarts',
-    'el-table-pagination':'ElSearchTablePagination'
+    'liquidfill':'echarts-liquidfill',
+    'el-table-pagination':'elTablePagination'
 }
-// CDN外链，会插入到index.html中
+// CDN外链，会插入到index.html中 打包的时候去掉main.js中的elTablePagination引用
 const cdn = {
     // 开发环境
     dev: {
@@ -38,6 +39,7 @@ const cdn = {
         './nodepackage/element-ui/lib/index.js',
         './nodepackage/swiper/dist/js/swiper.min.js',
         './nodepackage/echarts/dist/echarts.min.js',
+        './nodepackage/echarts-liquidfill/dist/echarts-liquidfill.min.js',
         './nodepackage/el-table-pagination/lib/index.js',
       ]
     }
@@ -45,7 +47,7 @@ const cdn = {
 // 是否使用预渲染
 const productionPrerender = true
 // 需要预渲染的路由
-const prerenderRoutes = ['/', '/login']
+const prerenderRoutes = [ '/login']
 // 是否使用gzip
 const productionGzip = true
 // 需要gzip压缩的文件后缀

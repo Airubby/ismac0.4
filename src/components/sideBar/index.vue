@@ -19,6 +19,7 @@
 <script>
 import SidebarItem from './SidebarItem'
 import { mapGetters } from 'vuex'
+import store from '@/store/index'
 export default {
     components: { SidebarItem},
     data(){
@@ -38,6 +39,9 @@ export default {
             console.log("页面切换都会进入这里")
             const route = this.$route
             const { meta, path } = route
+            if(meta.limits&&meta.limits!=""){
+                store.dispatch('setLimits',meta.limits.split(","));
+            }
             for(let i=0;i<route.matched.length;i++){
                 if(route.matched[i].path==path){
                     if(route.matched[i].parent){
@@ -62,6 +66,7 @@ export default {
             }
         },
         select:function(index,indexpath){
+            sessionStorage.setItem("tabIndex", ""); //选项卡用
             if(indexpath.length==1){ //点击的没有子菜单的项，关闭前面的
                 this.$refs.navmenu.close(this.baseURI);
                 this.baseURI="";  //置空后，再点击前面展开的那项，就可以路由跳转了

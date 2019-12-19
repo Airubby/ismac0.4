@@ -64,14 +64,13 @@ service.interceptors.response.use(
      */
     
     const res = response.data;
-    if(res.data.err_code=="-1"&&sessionStorage.loginInfo){
+    if(res.data.err_code=="-1"&&store.getters.infoFlag){
+        store.dispatch('setInfoFlag',false);
         Message.warning("请登录系统");
         router.push({path:'/login'});
-        sessionStorage.removeItem('loginInfo');
+        return Promise.reject("请登录系统");
     }
-    if(res.data.err_code!="-1"){
-      return response.data;
-    }
+    return response.data;
     // if (res.code == 200 || res.code == 900 || !res.code) {
     //   return response.data;
     // } else {
@@ -87,7 +86,7 @@ service.interceptors.response.use(
   },
   error => {
     console.log("err" + error); // for debug
-    Message.error('服务器错误，请联系管理人员！');
+    Message.error('服务器错误，请联系管理人员！或者刷新登录试试！');
     router.push({path:'/login'});
     return Promise.reject("重新登录");
   }

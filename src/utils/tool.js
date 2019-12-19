@@ -243,6 +243,24 @@ function checkIP(obj) {
     }
     
 }
+//身份证号验证
+function checkIDCard(obj) {
+    if (!obj.value) {
+        if(obj.rules.required){
+            return 'hint.noEmpty';
+        }else{
+            return '';
+        }
+    } else {
+      var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if(reg.test(obj.value)){
+            return '';
+        }else{
+            return 'hint.formatErr';
+        }
+    }
+    
+}
 function checkEMAIL(obj) {
     if (!obj.value) {
         if(obj.rules.required){
@@ -337,6 +355,7 @@ export default {
     wsConnection,
     checkPORT,
     checkIP,
+    checkIDCard,
     checkEMAIL,
     checkPHONE,
     checkNumber,

@@ -20,7 +20,7 @@
                     </el-input>
                     <el-button type="primary" size="small" @click="search">搜索</el-button>
                 </div>
-                <el-search-table-pagination
+                <el-table-pagination
                     type="local" 
                     :params="initParams"
                     :data="table_data"
@@ -33,7 +33,7 @@
                     <template slot-scope="scope" slot="preview-handle">
                             <p class="table_handle"><span @click="del(scope.row,scope.$index)">删除</span></p>
                         </template>
-                </el-search-table-pagination>
+                </el-table-pagination>
             </el-card>
             </el-scrollbar>
         </div>

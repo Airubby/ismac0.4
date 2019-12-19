@@ -39,18 +39,18 @@
                             </el-select>
                         </div>
                     </div>
-                    <el-search-table-pagination
-                        :url="$ajaxUrl+'/getTable'"
+                    <el-table-pagination
+                        :url="$ajaxUrl+'/testpostTable'"
                         list-field="data" 
                         total-field="total"
-                        method='get' 
+                        method='post' 
                         :showPagination="true"
                         :params="initParams"
                         :columns="table_columns" ref="thisRef">   
                         <template slot-scope="scope" slot="preview-handle">
                             <p class="table_handle"><span @click="openDoor(scope.row)">开门</span><span @click="closeDoor(scope.row)">关门</span></p>
                         </template>
-                    </el-search-table-pagination>
+                    </el-table-pagination>
                     <el-tabs v-model="activeName">
                         <el-tab-pane label="进出记录" name="first">
                             <record></record>

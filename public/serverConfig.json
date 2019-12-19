@@ -1,6 +1,6 @@
 {
-    "production":"https://www.easy-mock.com/mock/5bd2d48f3e503e20f0011196/testUrl",
-    "develop":"/ISmac/ismacsite",
+    "production":"https://www.fastmock.site/mock/b5aeba034aac038de76b613109a5cce7/test",
+    "develop":"https://www.fastmock.site/mock/b5aeba034aac038de76b613109a5cce7/test",
     "wsAddr":"ws://192.168.16.6:8088/ws",
     "theme":"black",
     "language":"zh",

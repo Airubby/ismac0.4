@@ -12,6 +12,7 @@ const app = {
     viewState:'',
     sidebarStatus:Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : false,
     baseURI:'',
+    infoFlag:true,  //多个接口提示请重新登录的时候判断，第一个提示了就置位false；
   },
   mutations: {
     setwsData(state,wsData){
@@ -50,7 +51,10 @@ const app = {
     },
     SET_BASEURL:(state,path)=>{
       state.baseURI=path;
-    }
+    },
+    SET_INFOFLAG:(state,flag)=>{
+      state.infoFlag=flag;
+    },
 
   },
   actions: {
@@ -84,7 +88,9 @@ const app = {
     setBaseUrl({ commit },path) {
       commit('SET_BASEURL',path)
     },
-
+    setInfoFlag({ commit },flag) {
+      commit('SET_INFOFLAG',flag)
+    },
   }
 
 }

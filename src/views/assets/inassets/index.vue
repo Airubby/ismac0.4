@@ -8,7 +8,7 @@
         </div>
         <div class="public_content">
             <el-scrollbar class="scrollbar">
-            <el-search-table-pagination
+            <el-table-pagination
                 :url="$ajaxUrl+'/getTable'"
                 list-field="data" 
                 total-field="total"
@@ -27,7 +27,7 @@
                         <p>时间组：{{scope.row.timegroup}}</p>
                     </div>
                 </template>
-            </el-search-table-pagination>
+            </el-table-pagination>
             </el-scrollbar>
         </div>
     </div>

@@ -55,7 +55,7 @@
                         </el-radio-group>
                     </div>
                 </div>
-                <el-search-table-pagination
+                <el-table-pagination
                     :url="$ajaxUrl+'/getTable'"
                     list-field="data" 
                     total-field="total"
@@ -69,7 +69,7 @@
                     <template slot-scope="scope" slot="preview-handle">
                         <p class="table_handle"><span @click="eyeon(scope.row)">关注</span><span @click="maintain(scope.row)">维护</span></p>
                     </template>
-                </el-search-table-pagination>
+                </el-table-pagination>
             </el-scrollbar>
         </div>
         

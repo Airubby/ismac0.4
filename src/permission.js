@@ -30,8 +30,9 @@ function getInfo(){  //刷新页面重新获取权限
             if(res.err_code=="0"){
                 if(res.data.length>0){
                     store.dispatch('setAuthInfo',res.data);
-                    let url=window.document.URL.split("#")[1];
-                    filterAsyncRouter(url,res.data);
+                    //在导航菜单更新功能权限；
+                    // let url=window.document.URL.split("#")[1];
+                    // filterAsyncRouter(url,res.data);
                 }else{
                     console.log("没有任何权限，跳转到没有任何权限的页面")
                     router.push({path:'/login'});
@@ -57,12 +58,12 @@ async function routerGo(){
             if (to.path!=="/"&&whiteList.indexOf(to.path) !== -1) {
                 next()
             } else {
+                console.log(to)
+                console.log(from)
                 if(JSON.stringify(to.meta)!="{}"){
                     if(to.meta.show&&to.meta.show=="true"){
-                        if(to.meta.limits&&to.meta.limits!=""){
-                            store.dispatch('setLimits',to.meta.limits.split(","));
-                        }
-                        next() 
+                        //在导航菜单更新功能权限；不清楚为什么有时不进入路由钩子函数
+                        next()
                         loadingInstance&&loadingInstance.close();
                     }else{
                         next('/401') 

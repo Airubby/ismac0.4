@@ -5,7 +5,7 @@
                 <div slot="header" class="clearfix">
                     <span>时间组</span>
                 </div>
-                <el-search-table-pagination
+                <el-table-pagination
                     type="local"
                     :page-sizes="[1000]"
                     :data="table_data"
@@ -15,7 +15,7 @@
                     <template slot-scope="scope" slot="preview-handle">
                         <p class="table_handle"><span @click="edit(scope.row)">编辑</span><span @click="moreDelete(scope.row)">删除</span></p>
                     </template>
-                </el-search-table-pagination>
+                </el-table-pagination>
                 <div class="time_group_add" @click="timegroupAdd()">
                     <i class="el-icon-plus"></i>新增时间组
                 </div>
@@ -24,7 +24,7 @@
                 <div slot="header" class="clearfix">
                     <span>基础时间段</span>
                 </div>
-                <el-search-table-pagination
+                <el-table-pagination
                     type="local"
                     :page-sizes="[1000]"
                     :data="table_data"
@@ -34,7 +34,7 @@
                     <template slot-scope="scope" slot="preview-handle">
                         <p class="table_handle"><span @click="edit(scope.row)">编辑</span><span @click="moreDelete(scope.row)">删除</span></p>
                     </template>
-                </el-search-table-pagination>
+                </el-table-pagination>
                 <div class="time_group_add" @click="timesectionAdd()">
                     <i class="el-icon-plus"></i>新增时间段
                 </div>

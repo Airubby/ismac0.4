@@ -54,11 +54,12 @@
                             
                         </div>
                     </div>
-                    <el-search-table-pagination
+                    <el-table-pagination
                         :url="$ajaxUrl+'/getTable'"
                         list-field="data" 
                         total-field="total"
                         method='get' 
+                        max-height="250"
                         :show-pagination="true"
                         :show-select-all="false"
                         :params="initParams"
@@ -75,7 +76,7 @@
                         <template slot-scope="scope" slot="preview-handle">
                             <p class="table_handle"><span @click="eyeon(scope.row,scope.$index)">关注</span><span @click="maintain(scope.row)">维护</span></p>
                         </template>
-                    </el-search-table-pagination>
+                    </el-table-pagination>
                 </div>
             </el-scrollbar>
         </div>
