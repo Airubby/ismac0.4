@@ -29,7 +29,8 @@ export default {
 
         if(this.sendInfo){
             this.sInfo.cmd=this.sendInfo.cmd;
-            if(!this.sendInfo.changeSend){
+            if(!this.sendInfo.changeSend){ 
+                //changeSend为false，改变了不发送，所以就只有初始化连接的时候发送一次
                 this.handleInfo(this.wsInfo);
             }
         }
@@ -92,6 +93,7 @@ export default {
     },
     watch:{
         wsInfo:function(){
+            //changeSend为true 只要wsInfo改变了就发送，第一次连接的时候也改变了，发送；
             if(this.sendInfo.changeSend){
                 this.handleInfo();
             }

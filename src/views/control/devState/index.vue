@@ -109,7 +109,7 @@ export default {
               { prop: 'jieru', label: '告警状态',minWidth:10},
               { prop: 'handle', label: '操作',slotName:'preview-handle',width:120},
             ],
-            table_data:[],
+            table_data:[{code:"13"}],
             backSelect:{},
         }
     },

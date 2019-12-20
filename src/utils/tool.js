@@ -150,7 +150,7 @@ function wsConnection(sendMsg, callback,addr) {
       //var SOCKECT_ADDR = "ws://" + url +":"+ port;
       //let host=window.document.location.host;
       //let SOCKECT_ADDR=addr?addr:"ws://"+host+"/ws"
-      let SOCKECT_ADDR=addr?addr:"ws://192.168.16.6:8088/ws"
+      let SOCKECT_ADDR=addr?addr:"ws://echo.websocket.org"
       let ws = new WebSocket(SOCKECT_ADDR);
       Vue.prototype.$ws=ws;
       ws.onopen = function (event) {

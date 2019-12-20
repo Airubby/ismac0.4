@@ -1,7 +1,7 @@
 const path = require("path");
 const chalk = require('chalk')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
-const PrerenderSPAPlugin = require('prerender-spa-plugin')
+// const PrerenderSPAPlugin = require('prerender-spa-plugin')   //prerender-spa-plugin  这个在自动部署上面报错
 const TerserPlugin = require('terser-webpack-plugin')
 const isProduction = process.env.NODE_ENV === 'production';
 const externals = {
@@ -45,7 +45,7 @@ const cdn = {
     }
 }
 // 是否使用预渲染
-const productionPrerender = true
+const productionPrerender = false
 // 需要预渲染的路由
 const prerenderRoutes = [ '/login']
 // 是否使用gzip
@@ -122,39 +122,39 @@ module.exports = {
         if (isProduction) {
             // 1. 生产环境npm包转CDN，externals定义的部分不需要Webpack打包编译
             myConfig.externals = externals
-            // 2. 使用预渲染，在仅加载html和css之后即可显示出基础的页面，提升用户体验，避免白屏
+            // 2. 使用预渲染，在仅加载html和css之后即可显示出基础的页面，提升用户体验，避免白屏，但在自动部署上面报错
             myConfig.plugins = []
-            productionPrerender && myConfig.plugins.push(
-                new PrerenderSPAPlugin({
-                    staticDir: path.resolve(__dirname, './'), // 作为express.static()中间件的路径
-                    outputDir: path.resolve(__dirname, './'),
-                    indexPath: path.resolve(__dirname, 'index.html'),
-                    routes: prerenderRoutes,
-                    minify: {
-                        collapseBooleanAttributes: true,
-                        collapseWhitespace: true,
-                        decodeEntities: true,
-                        keepClosingSlash: true,
-                        sortAttributes: true
-                    },
-                    postProcess (renderedRoute) {
-                        /**
-                         * 懒加载模块会自动注入，无需直接通过script标签引入
-                         * 而且预渲染的html注入的是modern版本的懒加载模块
-                         * 这会导致在低版本浏览器出现报错，需要剔除
-                         * 这并不是一个非常严谨的正则，不适用于使用了 webpackChunkName: "group-foo" 注释的懒加载
-                         */
-                        renderedRoute.html = renderedRoute.html.replace(
-                        /<script[^<]*chunk-[a-z0-9]{8}\.[a-z0-9]{8}.js[^<]*><\/script>/g,
-                        function (target) {
-                            console.log(chalk.bgRed('\n\n剔除的懒加载标签:'), chalk.magenta(target))
-                            return ''
-                        }
-                        )
-                        return renderedRoute
-                    }
-                })
-            )
+            // productionPrerender && myConfig.plugins.push(
+            //     new PrerenderSPAPlugin({
+            //         staticDir: path.resolve(__dirname, './'), // 作为express.static()中间件的路径
+            //         outputDir: path.resolve(__dirname, './'),
+            //         indexPath: path.resolve(__dirname, 'index.html'),
+            //         routes: prerenderRoutes,
+            //         minify: {
+            //             collapseBooleanAttributes: true,
+            //             collapseWhitespace: true,
+            //             decodeEntities: true,
+            //             keepClosingSlash: true,
+            //             sortAttributes: true
+            //         },
+            //         postProcess (renderedRoute) {
+            //             /**
+            //              * 懒加载模块会自动注入，无需直接通过script标签引入
+            //              * 而且预渲染的html注入的是modern版本的懒加载模块
+            //              * 这会导致在低版本浏览器出现报错，需要剔除
+            //              * 这并不是一个非常严谨的正则，不适用于使用了 webpackChunkName: "group-foo" 注释的懒加载
+            //              */
+            //             renderedRoute.html = renderedRoute.html.replace(
+            //             /<script[^<]*chunk-[a-z0-9]{8}\.[a-z0-9]{8}.js[^<]*><\/script>/g,
+            //             function (target) {
+            //                 console.log(chalk.bgRed('\n\n剔除的懒加载标签:'), chalk.magenta(target))
+            //                 return ''
+            //             }
+            //             )
+            //             return renderedRoute
+            //         }
+            //     })
+            // )
             //3.js代码整合
             let optimization= {
                 //去掉打印console信息
