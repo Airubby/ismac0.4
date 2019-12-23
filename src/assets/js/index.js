@@ -1,1 +1,1 @@
-require('./basic.js');
+require('~@/assets/js/basic.js');

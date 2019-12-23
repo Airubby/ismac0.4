@@ -49,7 +49,7 @@ Router.prototype.push = function push(location) {
 }
 
 const createRouter = () => new Router({
-    mode: 'hash',
+    mode: 'history',  //默认hash
     base: process.env.BASE_URL,
     routes: syncRouter
  })

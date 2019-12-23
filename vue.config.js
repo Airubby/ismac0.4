@@ -20,41 +20,41 @@ const cdn = {
     // 开发环境
     dev: {
       css: [
-        './nodepackage/element-ui/lib/theme-chalk/index.css',
-        './nodepackage/swiper/dist/css/swiper.min.css'
+        '/nodepackage/element-ui/lib/theme-chalk/index.css',
+        '/nodepackage/swiper/dist/css/swiper.min.css'
       ],
       js: []
     },
     // 生产环境
     build: {
       css: [
-        './nodepackage/element-ui/lib/theme-chalk/index.css',
-        './nodepackage/swiper/dist/css/swiper.min.css'
+        '/nodepackage/element-ui/lib/theme-chalk/index.css',
+        '/nodepackage/swiper/dist/css/swiper.min.css'
       ],
       js: [
-        './nodepackage/vue/dist/vue.min.js',
-        './nodepackage/vue-router/dist/vue-router.min.js',
-        './nodepackage/vuex/dist/vuex.min.js',
-        './nodepackage/axios/dist/axios.min.js',
-        './nodepackage/element-ui/lib/index.js',
-        './nodepackage/swiper/dist/js/swiper.min.js',
-        './nodepackage/echarts/dist/echarts.min.js',
-        './nodepackage/echarts-liquidfill/dist/echarts-liquidfill.min.js',
-        './nodepackage/el-table-pagination/lib/index.js',
+        '/nodepackage/vue/dist/vue.min.js',
+        '/nodepackage/vue-router/dist/vue-router.min.js',
+        '/nodepackage/vuex/dist/vuex.min.js',
+        '/nodepackage/axios/dist/axios.min.js',
+        '/nodepackage/element-ui/lib/index.js',
+        '/nodepackage/swiper/dist/js/swiper.min.js',
+        '/nodepackage/echarts/dist/echarts.min.js',
+        '/nodepackage/echarts-liquidfill/dist/echarts-liquidfill.min.js',
+        '/nodepackage/el-table-pagination/lib/index.js',
       ]
     }
 }
-// 是否使用预渲染
-const productionPrerender = false
-// 需要预渲染的路由
-const prerenderRoutes = [ '/login']
+// // 是否使用预渲染
+// const productionPrerender = false
+// // 需要预渲染的路由
+// const prerenderRoutes = [ '/login']
 // 是否使用gzip
 const productionGzip = true
 // 需要gzip压缩的文件后缀
 const productionGzipExtensions = ['js', 'css']
 module.exports = {
     // 基本路径
-    publicPath: './',
+    publicPath: '/',
     // 输出主文件名称
     indexPath: './index.html',
     //baseUrl: process.env.NODE_ENV === "production" ? "./" : "/"
@@ -284,6 +284,7 @@ module.exports = {
             target: 'http://192.168.16.6:8090', // 你接口的域名
                 secure: false, // 如果是https接口，需要配置这个参数
                 changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+                ws:false,
                 pathRewrite:{
                 '^/ISmac/ismacsite':'/ISmac/ismacsite'
                 }

@@ -2,8 +2,8 @@
     <div class="app-wrapper" :class="classObj">
         <div class="sidebar-container">
             <div class="loncom_sidebar_top">
-                <router-link to="/" v-if="sidebarStatus"><img :src="'images/'+$theme+'/smallLogo.png'" v-if="$theme" style="width:54px;"></router-link>
-                <router-link to="/" v-if="!sidebarStatus"><img :src="'images/'+$theme+'/logo.png'" v-if="$theme"></router-link>
+                <router-link to="/" v-if="sidebarStatus"><img :src="'/images/'+$theme+'/smallLogo.png'" v-if="$theme" style="width:54px;"></router-link>
+                <router-link to="/" v-if="!sidebarStatus"><img :src="'/images/'+$theme+'/logo.png'" v-if="$theme"></router-link>
             </div>
             <div class="loncom_sidebar_list">
                 <sidebar />
@@ -35,7 +35,7 @@
                             </ul>
                         </div>
                         <div class="box_con" slot="reference">
-                            <div class="box_con_me"><img src="images/me.png"><span>admin</span></div>
+                            <div class="box_con_me"><img src="/images/me.png"><span>admin</span></div>
                         </div>
                     </el-popover>
                 </div>
