@@ -275,9 +275,9 @@ const getedittable=function(){
 
 
 Mock.mock(store.getters.AjaxUrl+'/getMockData', /post/i,getdata) //调用模拟数据方法
-Mock.mock(RegExp(store.getters.AjaxUrl+'/getInfo' + ".*"), /get/i,getinfo) 
-Mock.mock(RegExp(store.getters.AjaxUrl+'/getTable' + ".*"), /get/i,gettable) 
-Mock.mock(RegExp(store.getters.AjaxUrl+'/getEditTable' + ".*"), /get/i,getedittable) 
+Mock.mock(RegExp('/getLimit' + ".*"), /get/i,getinfo) 
+Mock.mock(RegExp('/getTable' + ".*"), /get/i,gettable) 
+Mock.mock(RegExp('/getEditTable' + ".*"), /get/i,getedittable) 
 
 const getCheck=function(){
     return {
@@ -297,17 +297,17 @@ const getTemp=function(){
         ]
     }
 }
-Mock.mock(store.getters.AjaxUrl+'/getTemp', /post/i,getTemp) //调用模拟数据方法
+Mock.mock('/getTemp', /post/i,getTemp) //调用模拟数据方法
 
 
 const getLogin=function(){
     return {
-        err_code:0,
-        err_msg:"成功",
+        code:200,
+        msg:"成功",
         data:{
             roleid:"quan_xian_id",
             userid:"admin"
         }
     }
 }
-Mock.mock(store.getters.AjaxUrl+'/login', /post/i,getLogin) //调用模拟登录
+Mock.mock('/login', /post/i,getLogin) //调用模拟登录

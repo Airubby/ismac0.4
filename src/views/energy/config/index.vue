@@ -85,7 +85,7 @@ export default {
         onSuccess(res, file, fileList){
 			this.fileList=[];
 			console.log(res,file,fileList)
-			this.loading=false;
+			
 			if(res.err_code=="0"){
 				console.log('上传成功')
 			}else{//上传失败
@@ -114,7 +114,7 @@ export default {
 			}
 		},
 		beforeUpload(file){
-			this.loading=true;
+			
 		}
 	},
     components: {

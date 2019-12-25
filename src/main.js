@@ -4,7 +4,6 @@ import axios from 'axios'
 import App from '@/App.vue'
 import {router} from '@/router/index'
 import store from '@/store/index'
-
 import request from '@/utils/request'
 
 // import 'element-ui/lib/theme-chalk/index.css'
@@ -24,7 +23,7 @@ import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
 
 import '@/utils/directive'  //自定义指令
 
-// import '@/utils/mock.js'  //测试接口
+import '@/utils/mock.js'  //测试接口
 
 import 'vue-transition.css'
 
@@ -41,7 +40,7 @@ Vue.use(VueVideoPlayer)
 import breadcrumb from '@/components/Breadcrumb'
 Vue.use(breadcrumb)
 
-// // 将API方法绑定到全局
+// 将API方法绑定到全局
 // Vue.prototype.$api = api
 Vue.prototype.$r=request
 
@@ -68,9 +67,8 @@ function getServerConfig() {
       store.dispatch('setAjaxUrl',ajaxUrl);
       store.dispatch('setLanguage',config.language);
       Vue.prototype.$theme = sessionStorage.getItem("theme") || config.theme || 'default';
-
-      require('@/permission')
-
+      
+      
       const enLocale=config.enLang
       const zhLocale=config.zhLang
       Vue.use(VueI18n)

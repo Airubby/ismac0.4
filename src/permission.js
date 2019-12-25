@@ -31,8 +31,6 @@ function getInfo(){  //刷新页面重新获取权限
                 if(res.data.length>0){
                     store.dispatch('setAuthInfo',res.data);
                     //在导航菜单更新功能权限；
-                    // let url=window.document.URL.split("#")[1];
-                    // filterAsyncRouter(url,res.data);
                 }else{
                     console.log("没有任何权限，跳转到没有任何权限的页面")
                     router.push({path:'/login'});

@@ -33,11 +33,11 @@ export default {
     
 	methods: {
         async init(){
-            this.loading=true;
+            
             await this.getCheck();
             await this.getTemp();
             this.checkshow=true;
-            this.loading=false;
+            
         },
         getCheck:function(){
             return new Promise((resolve, reject)=>{

@@ -65,10 +65,10 @@ export default {
         dialogSure:function(){
             this.$refs['ruleForm'].validate((valid) => {
                 if(valid){ //验证通过
-                    this.loading=true;
+                    
                     this.$r.post('/service/update',this.ruleForm, r => {
                         console.log(r)
-                        this.loading=false;
+                        
                         if(r.err_code=="0"){
                             this.$message.success(r.err_msg);
                             this.dialogInfo.visible=false;

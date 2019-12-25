@@ -151,10 +151,10 @@ export default {
         publicSure:function(){
             this.$refs['form'].validate((valid) => {
                 if(valid){ //验证通过
-                    this.loading=true;
+                    
                     this.$r.post('/update',{model:this.initParams}, r => {
                         console.log(r)
-                        this.loading=false;
+                        
                         if(r.err_code=="0"){
                             this.$message.success(r.err_msg);
                         }else{

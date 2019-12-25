@@ -1,8 +1,9 @@
 import axios from "axios";
 import Qs from "querystring";
-import { Message } from 'element-ui'
+import { Message,Loading,Notification } from 'element-ui'
 import {router} from '@/router/index'
 import store from '@/store/index'
+let loadingService=null;
 let service = axios.create({
   // baseURL: 'http://www.javasoft.top:9090/service',
   baseURL: store.getters.AjaxUrl,
@@ -59,52 +60,81 @@ service.interceptors.request.use(
 // respone拦截器
 service.interceptors.response.use(
   response => {
-    /**
-     * code为非200/900是抛错 可结合自己业务进行修改
-     */
-    
+    loadingService.close();
     const res = response.data;
     if(res.data.err_code=="-1"&&store.getters.infoFlag){
         store.dispatch('setInfoFlag',false);
-        Message.warning("请登录系统");
+        Notification.warning("请登录系统");
         router.push({path:'/login'});
         return Promise.reject("请登录系统");
     }
     return response.data;
-    // if (res.code == 200 || res.code == 900 || !res.code) {
-    //   return response.data;
-    // } else {
-    //   let errorMsg = "抱歉，出错啦~~~";
-    //   if (res.code === 10003) {
-    //     errorMsg = "长时间未登录，请重新登陆！";
-    //     location.reload()
-    //   }
-
-    //   Message.error(errorMsg);
-    //   return Promise.reject("error");
-    // }
   },
   error => {
-    console.log("err" + error); // for debug
-    Message.error('服务器错误，请联系管理人员！或者刷新登录试试！');
+    console.log(error.response)
+    loadingService.close();
+    Notification.error('服务器错误，请联系管理人员！');
     router.push({path:'/login'});
+    return error.response;
     return Promise.reject("重新登录");
+    
   }
 );
 
 // export default service;
 export default {
-  get: function (url, params, response) {
+  get: function (url, params, response,errorResponse) {
+    loadingService=Loading.service({
+      lock: true,
+      text: '数据获取中...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.7)'
+    })
     return service.get(url,{params:params}).then(res=>{
       if(response){
         response(res);
       }
+    }).catch( error=> {
+      if(errorResponse){
+        errorResponse(error);
+        console.log(error);
+      }
     })
   },
-  post: function (url, params, response) {
+  post: function (url, params, response,errorResponse) {
+    loadingService=Loading.service({
+      lock: true,
+      text: '数据提交中...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.7)'
+    })
     return service.post(url,params).then(res=>{
       if(response){
         response(res);
+      }
+    }).catch( error=> {
+      if(errorResponse){
+        errorResponse(error);
+        console.log(error);
+      }
+    })
+  },
+  //post请求参数放url中
+  postQuery: function (url, params, response,errorResponse) {
+    loadingService=Loading.service({
+      lock: true,
+      text: '数据提交中...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.7)'
+    })
+    return service.post(url,null,{params:params}).then(res=>{
+      if(response){
+        response(res);
+      }
+    }).catch( error=> {
+      if(errorResponse){
+        errorResponse(error);
+        console.log(error);
       }
     })
   },

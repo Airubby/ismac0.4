@@ -96,7 +96,7 @@ export default {
         dialogSure:function(){
             this.$refs['ruleForm'].validate((valid) => {
                 if(valid){ //验证通过
-                    this.loading=true;
+                    
                     // this.$api.post('',this.ruleForm, r => {});
                     console.log(this.$refs.tree.getCheckedNodes())
                     let node=this.$refs.tree.getCheckedNodes()[0];

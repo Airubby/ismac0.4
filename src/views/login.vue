@@ -21,9 +21,12 @@
 </template>
 
 <script>
+import request from '@/utils/request'
 export default {
 	created () {
 		this.$store.dispatch('setInfoFlag',true);
+		//可以动态设置接口信息，根据不同的接口从不同的服务器上啦数据
+		request.service.defaults.baseURL=this.$store.getters.AjaxUrl;  //初始化的时候配置文件中的请求前缀还没写入request的baseURL中的
   	},
 	mounted() {
         //加载完成了去掉根节点的loading;
@@ -68,28 +71,29 @@ export default {
 		loginIn:function(){
 			this.$refs['form'].validate((valid) => {
 				if(valid){
-					this.loading=true;
+					
 					let a="tKb634uLRuFdugF0P01eKw=="
 					console.log(this.$tool.Decrypt(a))
 					this.user.psword=this.$tool.Encrypt(this.user.psword);
 					this.$r.post('/login', this.user, r => {
 						console.log(r);
-						if(r.err_code=="0"){
-							this.$message.success(r.err_msg);
-							sessionStorage.roleid=this.$tool.Encrypt(r.data.roleid);  //刷新页面的时候用userid获取权限问题；
-							this.getLimit(r.data.roleid)  //获取权限
-							// sessionStorage.loginInfo= JSON.stringify(r.data);
-							// var date=new Date();
-							// var expiresDays=10;
-							// //将date设置为10天以后的时间
-							// date.setTime(date.getTime()+expiresDays*24*3600*1000);
-							// //将userId和userName两个cookie设置为10天后过期
-							// document.cookie=" userid="+this.user.userid+"; expires="+date.toGMTString();
-							// this.$router.push({path:'/'});
-						}else{
-							this.$refs.psinput.focus();
-							this.$message.error(r.err_msg);
-						}
+						this.$message.success(r.msg);
+						sessionStorage.roleid=this.$tool.Encrypt(r.data.roleid);  //刷新页面的时候用userid获取权限问题；
+						this.getLimit(r.data.roleid)  //获取权限
+						sessionStorage.loginInfo= JSON.stringify(r.data);
+						// var date=new Date();
+						// var expiresDays=10;
+						// //将date设置为10天以后的时间
+						// date.setTime(date.getTime()+expiresDays*24*3600*1000);
+						// //将userId和userName两个cookie设置为10天后过期
+						// document.cookie=" userid="+this.user.userid+"; expires="+date.toGMTString();
+						// this.$router.push({path:'/'});
+						// if(r.err_code=="0"){
+							
+						// }else{
+						// 	this.$refs.psinput.focus();
+						// 	this.$message.error(r.err_msg);
+						// }
 					});
 				}
 			});
@@ -106,14 +110,12 @@ export default {
 			});
 		},
 		getLimit:function(id){
-			this.$r.get('/getInfo', {roleid:id}, r => {
+			this.$r.get('/getLimit', {roleid:id}, r => {
 				console.log(r);
-				this.loading=false;
+				
 				if(r.err_code=="0"){
 					if(r.data.length>0){
 						this.$store.dispatch('setAuthInfo',r.data);
-						// let url=window.document.URL.split("#")[1];
-						// this.filterAsyncRouter(url,r.data);
 						this.$router.push({path:'/loncom'});
 					}else{
 						console.log("没有任何权限，跳转到没有任何权限的页面")
