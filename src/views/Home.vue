@@ -122,7 +122,9 @@ export default {
         //     console.log(r)
         // })
         //加载完成了去掉根节点的loading;
+        console.log(11111111111111111111111111111111)
         this.$nextTick(function(){
+            console.log(1111111111111)
             this.$emit("routerLoading")
         })
     },

@@ -36,8 +36,8 @@ import { mapGetters } from 'vuex'
     mounted() {
         this.switchTheme(this.$theme)
         this.getWebSocket()
-        
-        
+        console.log(22222222222)
+        console.log(this.loading)
       
     },
     data(){

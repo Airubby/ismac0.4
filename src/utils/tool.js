@@ -306,6 +306,7 @@ function checkNumber(obj) {
         let regPos = /^\d+(\.\d+)?$/; //非负浮点数
         //let regPos = /^([1-9]+)$/;  //大于0的正整数
         // let regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+        // let regA=/(^[\-0-9][0-9]*(.[0-9]+)?)$/;  //正负整数，浮点数  /^(\-|\+)?\d+(\.\d+)?$/   /^[-+]?\d+(\.\d+)?$/
         if(regPos.test(obj.value)){
             obj.callback()
         }else{
@@ -322,6 +323,7 @@ function checkPasspord(obj) {
             obj.callback()
         }
     } else {
+        // let regPos= /^([a-z_A-Z-.+0-9]{6,20})$/;   //. - _ 也可以包含包含
         let regPos = /^[A-Za-z0-9]{6,20}$/; 
         ///[a-z]/.test(value) && /[A-Z]/.test(value) && /[0-9]/.test(value)&& value.length>7    包含数字字母大小写，且至少8位
         if(regPos.test(obj.value)){

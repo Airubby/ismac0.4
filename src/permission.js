@@ -9,8 +9,6 @@ import tool from './utils/tool'
 import './utils/mock.js'  //测试接口 
 
 routerGo();
-//定义得写上服务，不然刷新，close()找不到
-let loadingInstance=null;
 
 function filterAsyncRouter(url, roles) {
     roles.forEach(element => {
@@ -26,7 +24,7 @@ function filterAsyncRouter(url, roles) {
 function getInfo(){  //刷新页面重新获取权限
     return new Promise(function(resolve, reject){
         console.log(tool.Decrypt(sessionStorage.roleid))
-        request.get('/getInfo',{"roleid":tool.Decrypt(sessionStorage.roleid)},res=>{
+        request.get('/getLimit',{"roleid":tool.Decrypt(sessionStorage.roleid)},res=>{
             if(res.err_code=="0"){
                 if(res.data.length>0){
                     store.dispatch('setAuthInfo',res.data);
@@ -52,7 +50,6 @@ async function routerGo(){
         const whiteList = ['/login','/401','/404','/bigHome'] // 不重定向白名单
         // let token=store.getters.token;
         if(sessionStorage.roleid){
-            loadingInstance = Loading.service({text:"拼命加载中",spinner:"el-icon-loading",background:"rgba(0, 0, 0, 0.8)"});
             if (to.path!=="/"&&whiteList.indexOf(to.path) !== -1) {
                 next()
             } else {
@@ -62,7 +59,6 @@ async function routerGo(){
                     if(to.meta.show&&to.meta.show=="true"){
                         //在导航菜单更新功能权限；不清楚为什么有时不进入路由钩子函数
                         next()
-                        loadingInstance&&loadingInstance.close();
                     }else{
                         next('/401') 
                         console.log("没有权限访问")
@@ -86,7 +82,6 @@ async function routerGo(){
     router.afterEach((to,from) => {
         let title=to.meta.title?`${to.meta.title}`:'小微产品0.4';
         window.document.title = title;
-        loadingInstance&&loadingInstance.close();
         // NProgress.done() // 结束Progress
     })
 }

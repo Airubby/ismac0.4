@@ -76,6 +76,12 @@ const getinfo = function(){
                         meta: { show:"true",type:'nav',limits: ""},
                         component: 'control/config/index.vue'
                     },
+                    {
+                        path: '/loncom/control/config/detail/:id',
+                        name:'controlConfigDetail',
+                        meta: { show:"true",type:'fun',limits: "",activePath:"/loncom/control/config",activeName:"controlConfigDetail"},
+                        component: 'control/config/detail.vue'
+                    },
                 ]
             },
             {

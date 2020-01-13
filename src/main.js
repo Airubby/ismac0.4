@@ -90,7 +90,7 @@ function getServerConfig() {
         size: 'small', // set element-ui default size
         i18n: (key, value) => i18n.t(key, value)
       })
-
+      require('./permission.js')
       resolve();
     }).catch((error) => {
       console.log(error)

@@ -8,8 +8,8 @@
         </div>
         <div class="public_content">
             <div class="pd20">
-                <h2>form表单中循环展示的验证问题及监听问题</h2>
-                <el-form :model="dynamicValidateForm" :rules="rules" ref="ValidateForm" label-width="100px" class="demo-dynamic">
+                <h2>form表单中循环展示的验证问题及监听问题-----@submit.native.prevent解决el-input回车刷新页面</h2>
+                <el-form :model="dynamicValidateForm" :rules="rules" @submit.native.prevent ref="ValidateForm" label-width="100px" class="demo-dynamic">
                     <el-form-item prop="obj.email" label="邮箱">
                         <el-input v-model="dynamicValidateForm.obj.email"></el-input>
                     </el-form-item>

@@ -30,9 +30,16 @@
                     select-id="code"
                     :columns="table_columns" ref="thisRef">   
                     <el-table-column slot="prepend" type="selection"></el-table-column>
+                    <template slot-scope="scope" slot="preview-name">
+                        <p class="table_handle"><span @click="detail(scope.row)">{{scope.row.code}}</span></p>
+                    </template>
+                    <template slot-scope="scope" slot="preview-type">
+                        <router-link :to="'/loncom/control/config/detail/'+scope.row.id">{{scope.row.type}}</router-link> / 
+                        <router-link :to="{name:'controlConfigDetail',params:{'id':scope.row.id}}">{{scope.row.type}}</router-link>
+                    </template>
                     <template slot-scope="scope" slot="preview-handle">
-                            <p class="table_handle"><span @click="del(scope.row,scope.$index)">删除</span></p>
-                        </template>
+                        <p class="table_handle"><span @click="del(scope.row,scope.$index)">删除</span></p>
+                    </template>
                 </el-table-pagination>
             </el-card>
             </el-scrollbar>
@@ -57,8 +64,8 @@ export default {
             table_data:[
             ],
             table_columns:[
-               { prop: 'user', label: '设备名称',minWidth:10},
-              { prop: 'type', label: '设备类型',minWidth:10},
+               { prop: 'user', label: '设备名称',slotName:'preview-name',minWidth:10},
+              { prop: 'type', label: '设备类型',slotName:'preview-type',minWidth:10},
               { prop: 'indate', label: '位置',minWidth:10},
               { prop: 'timegroup', label: '监控状态',minWidth:10},
               { prop: 'jieru', label: '告警状态',minWidth:10},
@@ -86,6 +93,11 @@ export default {
                     this.$message.warning(r.err_msg);
                 }
             })
+        },
+        detail:function(row){
+            // this.$router.push({name:'controlConfigDetail',params:{"id":row.id}});  //name路由
+            this.$router.push({path:'/loncom/control/config/detail/'+row.id});  //path路由
+
         },
         del:function(row,index){
             // console.log(row)
