@@ -80,6 +80,12 @@
 export default {
     created() {
         console.log(this.$route.params)
+        let metaInfo= {
+            title: "详情title",
+            keywords: "详情keywords",
+            description: "详情description"
+        }
+        this.$store.dispatch('changeMetaInfo',metaInfo)
     },
     mounted() {
         

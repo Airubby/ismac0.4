@@ -13,6 +13,11 @@ const app = {
     sidebarStatus:Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : false,
     baseURI:'',
     infoFlag:true,  //多个接口提示请重新登录的时候判断，第一个提示了就置位false；
+    metaInfo: {
+      title: "小微vue-cli3",
+      keywords: "vue-cli3",
+      description: "小微vue-cli3"
+    }
   },
   mutations: {
     setwsData(state,wsData){
@@ -55,6 +60,9 @@ const app = {
     SET_INFOFLAG:(state,flag)=>{
       state.infoFlag=flag;
     },
+    CAHNGE_META_INFO(state, metaInfo) {
+      state.metaInfo = metaInfo;
+    },
 
   },
   actions: {
@@ -91,6 +99,10 @@ const app = {
     setInfoFlag({ commit },flag) {
       commit('SET_INFOFLAG',flag)
     },
+    //动态修改title keywords description
+    changeMetaInfo({commit},metaInfo){
+      commit('CAHNGE_META_INFO',metaInfo)
+    }
   }
 
 }

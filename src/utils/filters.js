@@ -24,7 +24,7 @@ const CLASS_MAP = {
   2: 'testTwo'
 }
 
- // 为空时的默认处理
+ // 为空时的默认处理  {{ emptyTitle|empty('如果emptyTitle为空就显示这个,根据sex为不同给定不同的class样式') }}
 Vue.filter('empty', function(s, v) {
   if (!s) return v;
   return s;

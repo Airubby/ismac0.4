@@ -27,12 +27,23 @@
                     </el-form-item>
                 </el-form>
             </div>
+            <div>
+                <h2>组件管道</h2>
+                {{message | capitalize}}
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 export default {
+    filters:{
+        capitalize: function (value) {
+            if (!value) return ''
+            value = value.toString()
+            return value.charAt(0).toUpperCase() + value.slice(1)
+        }
+    },
     created() {
         
     },
@@ -46,6 +57,7 @@ export default {
     },
     data(){
         return{
+            message:"assasas",
             dynamicValidateForm: {
                 other:{
                     flag:true,

@@ -29,6 +29,8 @@ import 'vue-transition.css'
 
 import '@/assets/css/index.less'
 
+import Meta from 'vue-meta';
+Vue.use(Meta);
 
 import VueVideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
@@ -105,6 +107,20 @@ async function init() {
     router,
     store,
     i18n,
+    metaInfo(){
+      return {
+          title: this.$store.state.app.metaInfo.title,
+          meta: [
+              {
+                  name: "keywords",
+                  content: this.$store.state.app.metaInfo.keywords
+              }, {
+                  name: "description",
+                  content: this.$store.state.app.metaInfo.description
+              }
+          ]
+      }
+    },
     render: h => h(App),
   }).$mount('#app')
 }

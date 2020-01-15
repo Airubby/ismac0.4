@@ -80,8 +80,8 @@ async function routerGo(){
     })
     
     router.afterEach((to,from) => {
-        let title=to.meta.title?`${to.meta.title}`:'小微产品0.4';
-        window.document.title = title;
+        // let title=to.meta.title?`${to.meta.title}`:'小微产品0.4';
+        // window.document.title = title;
         // NProgress.done() // 结束Progress
     })
 }
