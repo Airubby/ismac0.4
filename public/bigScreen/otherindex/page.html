@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>主页面</title>
+<link rel="stylesheet" type="text/css" href="css/new_index.css" />
+<link rel="stylesheet" type="text/css" href="css/new_basic.css" />
+<link rel="stylesheet" type="text/css" href="css/swiper.min.css" />
+</head>
+
+<body>
+    <div class="loncom_content">
+	    <div class="loncom-index-body">
+	        <div class="main">
+	            <div class="main-left">
+					<div class="loncom-index-box loncom-index-box-left">
+						<div class="loncom-box">
+							<em class="topleft"></em>
+							<em class="topright"></em>
+							<em class="bottomleft"></em>
+							<em class="bottomright"></em>
+							<div class="loncom-box-con">
+								<div class="loncom-title">告警管理</div>
+								<div class="loncom-box-content">
+									<div id="loncom-box-radar" style="width:100%;">
+										<div class="loncom-radar" id="loncom-radar">
+											<div class="radar" id="radar"></div>
+											<em class="one alarm_em"></em>
+											<em class="two alarm_em"></em>
+										</div>
+										<div style="width:100%;height:35px;line-height:30px;text-align:center;color:#5B6A93;font-size:12px">正在扫描中...</div>
+									</div>
+									<div class="loncom-index-box">
+										<div class="loncom-boxpic">
+											<ul id="devIsAlarm">
+												<li>
+													<img src="images/wenshidu_alarm.png">
+													<div>温湿度</div>
+												</li>
+												<li>
+													<img src="images/loushui.png">
+													<div>漏水</div>
+												</li>
+												<li>
+													<img src="images/kongtiao.png">
+													<div>空调</div>
+												</li>
+												<li>
+													<img src="images/ups_alarm.png">
+													<div>UPS</div>
+												</li>
+												<li>
+													<img src="images/dianchi.png">
+													<div>电池</div>
+												</li>
+												<li>
+													<img src="images/pdu.svg">
+													<div>PDU</div>
+												</li>
+												<li>
+													<img src="images/rengan_alarm.svg">
+													<div>人感</div>
+												</li>
+												<li>
+													<img src="images/yangan.svg">
+													<div>烟感</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="loncom-index-box loncom-index-box-left1">
+						<div class="loncom-box">
+							<em class="topleft"></em>
+							<em class="topright"></em>
+							<em class="bottomleft"></em>
+							<em class="bottomright"></em>
+							<div class="loncom-box-con">
+								<div class="loncom-title">综合能效</div>
+								<div class="loncom-box-content">
+									<div id="loncom-box-pie" style="width:100%;height: 65%;"></div>
+									<div class="index-dl-radio">
+										<div class="index-dl-radio-con" id="radio1"></div>
+										<div class="index-dl-radio-con" id="radio2"></div>
+										<div class="index-dl-radio-con" id="radio3"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+	            </div>
+	            <div class="main-cen">
+					<div class="cen-top loncom-index-box">
+						<div class="number-box cen-top-number">
+							<div><span class="number">5.03</span>天</div>
+							<div>安全运行天数</div>
+						</div>
+						<div class="number-box cen-top-number">
+							<div class="number">1.53</div>
+							<div>PUE</div>
+						</div>
+						<div class="cen-top-number1">
+							<div class="cen-top-number-more">
+								<div class="cen-top-number-box">
+									<div class="loncom-box">
+										<em class="topleft"></em>
+										<em class="topright"></em>
+										<em class="bottomleft"></em>
+										<em class="bottomright"></em>
+										<div class="loncom-box-con">
+											0
+										</div>
+									</div>
+								</div>
+								<div class="cen-top-number-box">
+									<div class="loncom-box">
+										<em class="topleft"></em>
+										<em class="topright"></em>
+										<em class="bottomleft"></em>
+										<em class="bottomright"></em>
+										<div class="loncom-box-con">
+											1
+										</div>
+									</div>
+								</div>
+								<div class="cen-top-number-box">
+									<div class="loncom-box">
+										<em class="topleft"></em>
+										<em class="topright"></em>
+										<em class="bottomleft"></em>
+										<em class="bottomright"></em>
+										<div class="loncom-box-con">
+											2
+										</div>
+									</div>
+								</div>
+								<div class="cen-top-number-box">
+									<div class="loncom-box">
+										<em class="topleft"></em>
+										<em class="topright"></em>
+										<em class="bottomleft"></em>
+										<em class="bottomright"></em>
+										<div class="loncom-box-con">
+											4
+										</div>
+									</div>
+								</div>
+								<div class="cen-top-number-box">
+									<div class="loncom-box">
+										<em class="topleft"></em>
+										<em class="topright"></em>
+										<em class="bottomleft"></em>
+										<em class="bottomright"></em>
+										<div class="loncom-box-con">
+											6
+										</div>
+									</div>
+								</div>
+								<div class="cen-top-number-box cen-top-number-dot">
+									<span class="dot"></span>
+								</div>
+								<div class="cen-top-number-box">
+									<div class="loncom-box">
+										<em class="topleft"></em>
+										<em class="topright"></em>
+										<em class="bottomleft"></em>
+										<em class="bottomright"></em>
+										<div class="loncom-box-con">
+											3
+										</div>
+									</div>
+								</div>
+								<div class="cen-top-number-unit">
+									<span class="unit">KW/h</span>
+								</div>
+							</div>
+							<div>总耗电量</div>
+						</div>
+					</div>
+					<div class="cen-img loncom-index-box">
+						<div class="cen-img-con">
+							<img src="images/home.jpg">
+						</div>
+					</div>
+					<div class="cen-bottom loncom-index-box">
+						<div class="loncom-box">
+							<em class="topleft"></em>
+							<em class="topright"></em>
+							<em class="bottomleft"></em>
+							<em class="bottomright"></em>
+							<div class="loncom-box-con">
+								<div class="loncom-title">设施设备</div>
+								<div class="loncom-box-content flex">
+									<div class="cen-bottom-number">
+										<div class="cen-bottom-number-box">
+											<div class="number-box">
+												<div><span class="small-number">1427</span>台</div>
+												<div>设施总数</div>
+											</div>
+										</div>
+									</div>
+									<div class="cen-bottom-line" id="loncom-box-bar"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+	            </div>
+	            <div class="main-right">
+	                <div class="loncom-index-box loncom-index-box-right">
+						<div class="loncom-box">
+							<em class="topleft"></em>
+							<em class="topright"></em>
+							<em class="bottomleft"></em>
+							<em class="bottomright"></em>
+							<div class="loncom-box-con">
+								<div class="loncom-title">环境监控</div>
+								<div class="loncom-box-content">
+									<div class="loncom-two-line" id="loncom-two-line"></div>
+									<div class="loncom-env-info">
+										<div class="loncom-env-info-box">
+											<span>室外</span>
+											<span>27.6℃</span>
+											<span>43.2%</span>
+										</div>
+										<div class="loncom-env-info-box">
+											<span>室内</span>
+											<span>27.6℃</span>
+											<span>43.2%</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="loncom-index-box loncom-index-box-right1">
+						<div class="loncom-box">
+							<em class="topleft"></em>
+							<em class="topright"></em>
+							<em class="bottomleft"></em>
+							<em class="bottomright"></em>
+							<div class="loncom-box-con">
+								<div class="loncom-title">供冷系统</div>
+								<div class="loncom-box-content">
+									<div class="loncom-gongl-info">
+										<div class="number-box">
+											<div><span class="small-number">5.03</span></div>
+											<div>冷战EER</div>
+										</div>
+										<div class="number-box">
+											<div><span class="small-number">4.56</span></div>
+											<div>机组COP</div>
+										</div>
+										<div class="number-box">
+											<div><span class="small-number">1427</span>KW/hc</div>
+											<div>制冷量</div>
+										</div>
+									</div>
+									<div class="swiper-container-box">
+										<div class="swiper-container flowhidden">
+											<div class="swiper-pagination-box">
+												<div class="swiper-pagination"></div>
+											</div>
+											<div class="swiper-wrapper">
+												<div class="swiper-slide swiper-air-box flex">
+													<div class="swiper-air-title">空调</div>
+													<div class="swiper-air-con">
+														<span></span><span class="orange"></span><span></span><span></span><span></span><span></span>
+														<span></span><span></span><span class="orange"></span class="orange"><span></span><span></span><span></span>
+														<span></span><span></span><span class="orange"></span class="orange"><span></span><span></span><span></span>
+													</div>
+												</div>
+												<div class="swiper-slide swiper-air-box flex">
+													<div class="swiper-air-title">空调</div>
+													<div class="swiper-air-con">
+														<span></span><span class="orange"></span><span></span><span></span><span></span><span></span>
+														<span></span><span></span><span class="orange"></span class="orange"><span></span><span></span><span></span>
+														<span></span><span></span><span class="orange"></span class="orange"><span></span><span></span><span></span>
+													</div>
+												</div>
+												<div class="swiper-slide swiper-air-box flex">
+													<div class="swiper-air-title">空调</div>
+													<div class="swiper-air-con">
+														<span></span><span class="orange"></span><span></span><span></span><span></span><span></span>
+														<span></span><span></span><span class="orange"></span class="orange"><span></span><span></span><span></span>
+														<span></span><span></span><span class="orange"></span class="orange"><span></span><span></span><span></span>
+													</div>
+												</div>
+												<div class="swiper-slide swiper-air-box flex">
+													<div class="swiper-air-title">空调</div>
+													<div class="swiper-air-con">
+														<span></span><span class="orange"></span><span></span><span></span><span></span><span></span>
+														<span></span><span></span><span class="orange"></span class="orange"><span></span><span></span><span></span>
+														<span></span><span></span><span class="orange"></span class="orange"><span></span><span></span><span></span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="loncom-index-box loncom-index-box-right2">
+						<div class="loncom-box">
+							<em class="topleft"></em>
+							<em class="topright"></em>
+							<em class="bottomleft"></em>
+							<em class="bottomright"></em>
+							<div class="loncom-box-con">
+								<div class="loncom-title">供配电</div>
+								<div class="loncom-box-content">
+									<div class="loncom-pd-info flex">
+										<div class="loncom-pd-info-box">
+											<div class="number-box">
+												<div><span class="small-number">6.03</span>KW</div>
+												<div>实时总功耗</div>
+											</div>
+										</div>
+										<div class="loncom-pd-info-box">
+											<div class="number-box">
+												<div><span class="small-number">78%</span></div>
+												<div>总负载率</div>
+											</div>
+										</div>
+										<div class="loncom-pd-info-box" id="radio4">
+										</div>
+									</div>
+									<div class="swiper-container-box">
+										<div class="swiper-container1 flowhidden">
+											<div class="swiper-pagination-box">
+												<div class="swiper-pagination1"></div>
+											</div>
+											<div class="swiper-wrapper">
+												<div class="swiper-slide">
+													345
+												</div>
+												<div class="swiper-slide">
+													35
+												</div>
+												<div class="swiper-slide">
+													345
+												</div>
+												<div class="swiper-slide">
+													34
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/echarts4.min.js"></script>
+	<script type="text/javascript" src="js/swiper.min.js"></script>
+	<script type="text/javascript" src="js/jquery.nicescroll.min.js"></script>
+	<script type="text/javascript">
+		$(".loncom-box-content").niceScroll({
+			cursorcolor:"#277BDB",
+			cursorborder:"none",
+			cursorwidth:"4px",
+			overflowx: 'false'
+		});
+		var swipertitle=["区域1(26)","区域2(17)","区域3(24)","区域4(14)"];
+		var swiper = new Swiper('.swiper-container', {
+			pagination: {
+				el: '.swiper-pagination',
+				clickable: true,
+				renderBullet: function (index, className) {
+				return '<span class="' + className + '">' + swipertitle[index] + '</span>';
+				},
+			},
+		});
+		var swipertitle1=["UPS A1组","UPS B1组","UPS A2组","UPS B1组"];
+		var swiper1 = new Swiper('.swiper-container1', {
+			pagination: {
+				el: '.swiper-pagination1',
+				clickable: true,
+				renderBullet: function (index, className) {
+				return '<span class="' + className + '">' + swipertitle1[index] + '</span>';
+				},
+			},
+		});
+		Date.prototype.Format = function (fmt) { //author: meizz 
+			var o = {
+				"M+": this.getMonth() + 1, //月份 
+				"d+": this.getDate(), //日 
+				"h+": this.getHours(), //小时 
+				"m+": this.getMinutes(), //分 
+				"s+": this.getSeconds(), //秒 
+				"q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+				"S": this.getMilliseconds() //毫秒 
+			};
+			if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+			for (var k in o)
+				if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+			return fmt;
+		}
+		function open_ajax(url, parameter, request,type, error, async) {
+			type = type ? type : "Get";
+			$.ajax({
+				type: type,
+				url: url,
+				data: parameter,
+				dataType: 'JSON',
+				async: async ? async : true,
+				cache:false,
+				error: function () {
+					if (error != null && error != "") {
+						error();
+					}
+				},
+				success: function (msg) {
+					if (request){
+						request(msg);
+					}
+				}
+			});
+		}
+		open_ajax('package.json',{},function(result){
+			console.log(result)
+			resultData=result
+		});
+		let resultData={};
+		
+		
+    	var timer=setInterval(function(){
+    		radarSize();
+	  	},10000);
+	    	
+    	radarSize();
+		var radar=radarChar("radar")
+		radarChar("radar");
+		$(window).resize(function () {
+			console.log(oPUE)
+			radarSize();
+			if(radar){
+				radar.resize();
+			}
+		})
+		//设置雷达图的宽高
+		function radarSize(){
+			var radarW=$("#loncom-box-radar").width()-100;
+			// var radarH=$("#loncom-box-radar").height();
+			// var radarSize=radarW>radarH?(radarH-35):(radarW-35);
+			$("#loncom-radar").width(radarW);
+			$("#loncom-radar").height(radarW);
+
+		}
+		
+
+		//获取告警列表
+		getAlarm();
+		function getAlarm(){
+			var parms = {};
+			parms.cmd = "getALLAlarm";
+			parms.level = "all";
+	    	open_ajax('${pageContext.request.contextPath}/loncomServlet',{"parms": JSON.stringify(parms)},function(result){
+	    		var result = JSON.parse(result);
+	       		if(result.err_code=="0"){
+					var rd = JSON.parse(result.data);
+	       			if(rd&&rd.length>0){
+	       				var str="";
+	       				for(var i=0;i<rd.length;i++){
+	       					var li='<li class="loncom-pdlr20"><span>'+rd[i].alarmtime+'</span>'+rd[i].details+'</li>';
+	       					str+=li;
+	       				}
+	       				$("#devAlarm").html(str);
+	       			}
+	       		}
+	    		LodingAlarm();
+	       	});
+	    }
+		
+		pieChar("radio1","PUE1.53",25,"#27BACC");
+		pieChar("radio2","PUE1.53",25,"#0376E5");
+		pieChar("radio3","PUE1.53",25,"#E88400");
+		pieChar("radio4","",25,"#0376E5");
+
+		function pieChar(ID,title,value,color) {
+			var myChart = echarts.init(document.getElementById(ID));
+			var option = {
+				color:["#1c79c2","#234591"],
+				title:{
+					text:title,  
+					bottom: "0px",
+					x:'center',
+					textStyle:{
+						color:"#B1BFF5",
+						fontSize: "12"
+					},
+				},
+				grid: {
+					top:'20%',
+					bottom: '0',
+					containLabel: true
+				},
+				series: [
+					{
+						type:'pie',
+						radius: ['50%', '70%'],
+						center: ['50%', '40%'],
+						avoidLabelOverlap: false,  
+						hoverAnimation:false, //放大的动画效果
+						hoverOffset:5,  //高亮扇区的偏移距离,默认10，就是hover时候的放大的距离
+						silent:true,
+						label: {
+							normal: {
+								show: false,
+								position: 'center',
+								formatter:'{num|'+value+'%}',
+								rich: {
+									num: {
+										fontSize: 14,
+										color:'#B1BFF5'
+									},
+								},
+							},
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data:[
+							{   
+								itemStyle:{
+									normal:{
+										color: color
+									}
+								},
+								label:{
+									normal:{
+										color:'#fff'
+									}
+								},
+								value:value, 
+								name:'使用',
+							},
+							{
+								itemStyle:{
+									normal:{
+										color:'#234591'
+									}
+								},
+								value:100-value, 
+								name:'剩余'
+							},
+						]
+					}
+				]
+			};
+			myChart.setOption(option, true);
+			window.addEventListener("resize", () => { 
+				setTimeout(function(){
+					myChart.resize();
+				},0)
+			});
+			return myChart; 
+		}
+
+		
+		function radarChar(ID){
+		    var myChart = echarts.init(document.getElementById(ID));
+		    var option={
+		        tooltip: {
+		            trigger: 'item',
+		            formatter: "{b}: {c} ({d}%)"
+		        },
+		        series: [
+		                {
+		                    type:'pie',
+		                    radius: ['25%', '26%'],
+		                    silent:true,  
+		                    data:[
+		                        {value:1, name:'one'},
+		                    ],
+		                    label: {
+		                        normal: {
+		                            show: false,
+		                            position: 'center'
+		                        },
+		                    },
+		                    itemStyle:{
+		                        normal:{
+		                            color: '#1E4F79'
+		                        }
+		                    }
+		                },
+		                {
+		                    type:'pie',
+		                    radius: ['45%', '46%'],
+		                    silent:true,  
+		                    data:[
+		                        {value:1, name:'one'},
+		                    ],
+		                    label: {
+		                        normal: {
+		                            show: false,
+		                            position: 'center'
+		                        },
+		                    },
+		                    itemStyle:{
+		                        normal:{
+		                            color: '#1E4F79'
+		                        }
+		                    }
+		                },
+		                {
+		                    type:'pie',
+		                    radius: ['65%', '66%'],
+		                    silent:true,  
+		                    data:[
+		                        {value:1, name:'one'},
+		                    ],
+		                    label: {
+		                        normal: {
+		                            show: false,
+		                            position: 'center'
+		                        },
+		                    },
+		                    itemStyle:{
+		                        normal:{
+		                            color: '#1E4F79'
+		                        }
+		                    }
+		                },
+		                {
+		                    type:'pie',
+		                    radius: ['85%', '86%'],
+		                    silent:true,  
+		                    data:[
+		                        {value:1, name:'one'},
+		                    ],
+		                    label: {
+		                        normal: {
+		                            show: false,
+		                            position: 'center'
+		                        },
+		                    },
+		                    itemStyle:{
+		                        normal:{
+		                            color: '#1E4F79'
+		                        }
+		                    }
+		                },
+		                {
+		                    type:'pie',
+		                    radius: ['89%', '91%'],
+		                    silent:true,  
+		                    data:[
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'three'},
+		                        {value:1, name:'four'},
+		                        {value:1, name:'five'},
+		                        {value:1, name:'six'},
+		                        {value:1, name:'seven'},
+		                        {value:1, name:'eight'}
+		                    ],
+		                    label: {
+		                        normal: {
+		                            show: false,
+		                            position: 'center'
+		                        },
+		                    },
+		                    itemStyle:{
+		                        normal:{
+		                            color: function(params){
+		                                var index_color = params.name;
+		                                if(index_color=="one"||index_color=='three'||index_color=='five'||index_color=='seven'){
+		                                    return '#1E4F79';
+		                                }else if(index_color=='two'||index_color=='four'||index_color=='six'||index_color=='eight') {
+		                                    return 'transparent';
+		                                }
+		                            } 
+		                        }
+		                    }
+		                },
+		                {
+		                    type:'pie',
+		                    radius: ['94%', '95%'],
+		                    silent:true,  
+		                    data:[
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        {value:1, name:'one'},
+		                        {value:1, name:'two'},
+		                        
+		                    ],
+		                    label: {
+		                        normal: {
+		                            show: false,
+		                            position: 'center'
+		                        },
+		                    },
+		                    itemStyle:{
+		                        normal:{
+		                            color: function(params){
+		                                var index_color = params.name;
+		                                if(index_color=="one"){
+		                                    return '#092A50';
+		                                }else if(index_color=='two') {
+		                                    return 'transparent';
+		                                }
+		                            } 
+		                        }
+		                    }
+		                },
+		                
+		            ]
+		        }
+		        myChart.setOption(option, true);
+		        return myChart;
+		}
+		
+		annulus("loncom-box-pie")
+		function annulus(ID){
+			var myChart = echarts.init(document.getElementById(ID));
+			var option = {
+				color:["#DDAF34","#29BBCE","#4A78FF","#2AA857"],
+				tooltip: {
+					trigger: 'item',
+					formatter: "{a} <br/>{b}: {c} ({d}%)"
+				},
+				legend: {
+					orient: 'vertical',
+					x: '60%', //left,right
+					y:'center',
+					itemWidth:10,
+					itemHeight:10,
+					show:true,
+					data:['IT系统','制冷系统','供配电系统','照明及其它'],
+					formatter: function(name) {
+						var index = 0;
+						var clientlabels = ['IT系统','制冷系统','供配电系统','照明及其它'];
+						var clientcounts = [65.3,24.1,7.8,2.8];
+						clientlabels.forEach(function(value,i){
+							if(value == name){
+								index = i;
+							}
+						});
+						return name + "  " + clientcounts[index]+"%";
+					},
+					textStyle:{
+						color:'#5B6A93'
+					}
+				},
+				series: [
+					{
+						name:'',
+						type:'pie',
+						radius: ['0%', '70%'],
+						center:['30%','50%'],
+						//如果不需要开启该策略，例如圆环图这个例子中需要强制所有标签放在中心位置，可以将avoidLabelOverlap该值设为 false。
+						avoidLabelOverlap: false,
+						roseType: 'area',  //块状区域
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: false,
+								textStyle: {
+									fontSize: '20',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						itemStyle:{
+							borderColor:"#fff",  
+							borderWidth: 1,
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data:[
+							{value:65.3, name:'IT系统'},
+							{value:24.1, name:'制冷系统'},
+							{value:7.8, name:'供配电系统'},
+							{value:2.8, name:'照明及其它'}
+						]
+					}
+				]
+			};
+
+			myChart.setOption(option, true);
+			// myChart.on('click', function (param) {
+			// 	var index = param.dataIndex;
+			// }); 
+			return myChart; 
+		}
+		
+		barValue("loncom-box-bar")
+		function barValue(ID){
+			var myChart = echarts.init(document.getElementById(ID));
+			var option = {
+				color:["#4A78FF"],
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'cross',
+						crossStyle: {
+							color: '#5B6A93'
+						}
+					}
+				},
+				grid: {
+					left: '10px',
+					right: '25px',
+					top:'10px',
+					bottom: '15px',
+					containLabel: true
+				},
+				xAxis: [
+					{
+						type: 'category',
+						data: ['UPS','空调','配电柜','冷机','蓄冷柜','蓄电池','列头柜','消防设施'],
+						axisPointer: {
+							type: 'shadow'
+						},  
+						axisLine:{
+							lineStyle:{
+								color:"#292F50",
+								width:1,
+							}
+						},
+						axisLabel:{
+							color:"#5B6A93"    
+						},            
+					}
+				],
+				yAxis: [
+					{
+						type: 'value',
+						name: '设施总数',
+						axisLine:{
+							lineStyle:{
+								color:"#292F50",
+								width:1,
+							}
+						},
+						splitLine:{
+							show:true,
+							lineStyle:{
+								color:"#292F50",
+								width:1,
+							}
+						},
+						axisLabel: {
+							color:"#5B6A93",    
+							formatter: '{value}'
+						}
+					},
+				],
+				series: [
+					{
+						name:'设施总数',
+						type:'bar',
+						barWidth: '40%',
+						data:[12, 9, 11, 23, 5, 11, 3, 10]
+					}
+				]
+			};
+			myChart.setOption(option, true);
+			return myChart; 
+		}
+		
+		areaChar("loncom-two-line")
+		function areaChar(ID){
+			var xData=["机房1","机房2","机房3","机房4","机房5","机房6"];
+			var myChart = echarts.init(document.getElementById(ID));
+			var option = {
+				color:["#2D4595","#21654E"],
+				title: {
+					text: '各机房均值',
+					top:0,
+					left:10,
+					textStyle:{
+						color:"#5B6A93",
+						verticalAlign:'top',
+						fontWeight:'normal',
+						fontSize:'12'
+					}
+				},
+				tooltip : {
+					trigger: 'axis'
+				},
+				grid: {
+					left: '10px',
+					right: '25px',
+					top:'25px',
+					bottom: '10px',
+					containLabel: true
+				},
+				xAxis : [
+					{
+						type : 'category',
+						boundaryGap : false,
+						axisLine:{
+							lineStyle:{
+								color:"#292F50",
+								width:1,
+							}
+						},
+						axisTick:{
+							show:false
+						},
+						axisLabel:{
+							color:"#5B6A93",
+						},                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+						data :xData
+					}
+				],
+				yAxis : [
+					{
+						type : 'value',
+						scale:true,
+						min:10,
+						splitLine:{
+							show:false,
+						},
+						axisLine:{
+							lineStyle:{
+								color:"#292F50",
+								width:1,
+							}
+						},
+						splitLine:{
+							show:true,
+							lineStyle:{
+								color:"#292F50",
+								width:1,
+							}
+						},
+						axisTick:{
+							show:false
+						},
+						axisLabel:{
+							color:"#5B6A93",
+							formatter: '{value}'
+						}
+					}
+				],
+				series : [
+					{
+						name:'室外',
+						type:'line',
+						smooth:"true", //平滑
+						symbolSize:'40px',
+						data:[32, 30, 34, 90, 20, 10],
+					},
+					{
+						name:'室内',
+						type:'line',
+						smooth:"true", //平滑
+						symbol:"line", //不要圆圈
+						symbolSize:2, //平滑的时候设置为0
+						data:[12, 50, 24, 70, 30, 20],
+					},
+				]
+			};
+			myChart.setOption(option, true);
+			return myChart; 
+		}
+
+	
+	</script>
+</body>
+
+</html>
