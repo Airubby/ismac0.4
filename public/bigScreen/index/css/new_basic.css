@@ -1,3 +1,45 @@
+@charset "utf8";
+@font-face {
+    font-family:'Alibaba-PuHuiTi-Bold';
+    src: url(./font/Alibaba-PuHuiTi-Bold.ttf);
+}
+@font-face {
+    font-family:'Alibaba-PuHuiTi-Heavy';
+    src: url(./font/Alibaba-PuHuiTi-Heavy.ttf);
+}
+@font-face {
+    font-family:'Alibaba-PuHuiTi-Light';
+    src: url(./font/Alibaba-PuHuiTi-Light.ttf);
+}
+@font-face {
+    font-family:'Alibaba-PuHuiTi-Medium';
+    src: url(./font/Alibaba-PuHuiTi-Medium.ttf);
+}
+@font-face {
+    font-family:'Alibaba-PuHuiTi-Regular';
+    src: url(./font/Alibaba-PuHuiTi-Regular.ttf);
+}
+html,body,div,h2,ul,li,span,em,p,dl,dd,i,input, textarea, select, option,button{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Alibaba-PuHuiTi-Regular";
+}
+html,body{
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #000D49, #000000);
+  font-family: "Alibaba-PuHuiTi-Regular" !important;
+}
+ul,li{
+  list-style: none;
+}
+.loncom_content{
+  width: 100%;
+  height: 100%;
+}
 .loncom-title{
     width: 100%;
     height: 40px;
@@ -419,7 +461,7 @@
     height: calc(100% - 50px);
 }
 
-/* ÐÂÖ÷Ìâµ¯´°ÑùÊ½ */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½âµ¯ï¿½ï¿½ï¿½ï¿½Ê½ */
 .newTheme .layui-layer-title,
 .newTheme .layui-layer-btn{
     background-color: #072567;
