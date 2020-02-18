@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>空调系统</title>
+<link rel="stylesheet" type="text/css" href="css/new_basic.css" />
+<link rel="stylesheet" type="text/css" href="css/swiper.min.css" />
+<style>
+	.top-box{
+		width: 100%;
+		height: 150px;
+		margin:20px 0;
+	}
+	.bottom-box{
+		width: 100%;
+		height: calc(100% - 330px);
+    }
+    .swiper-container{
+        padding-top: 10px;
+        height: 100%;
+    }
+    .swiper-wrapper{
+        height: calc(100% - 64px);
+        color: #B1BFF5;
+    }
+    .swiper-slide{
+        padding: 0 15px;
+    }
+    .swiper-pagination-box{
+        width: 100%;
+        height: 34px;
+        color: #B1BFF5;
+        margin: 15px 0;
+        padding: 0 15px;
+    }
+    .swiper-pagination-box .swiper-pagination-bullet{
+        width: 100px;
+        height: 100%;
+        border-radius: inherit;
+        background: #061f58;
+        opacity:1;
+        line-height: 34px;
+        position: relative;
+        color: #62749E;
+    }
+    .swiper-pagination-box .swiper-pagination-bullet:nth-of-type(1){
+        border-radius: 40px 0 0 40px;
+    }
+    .swiper-pagination-box .swiper-pagination-bullet:nth-last-of-type(1){
+        border-radius: 0 40px 40px 0;
+    }
+    .swiper-pagination-box .swiper-pagination-bullet-active{
+        background: #305bcf;
+        color: #B1BFF5;
+    }
+    .swiper-slide-base{
+        width: 100%;
+        display: flex;
+    }
+    .base-box{
+        width: 15.5%;
+    }
+    .base-box .title{
+        color: #62749E;
+        margin: 10px 0;
+    }
+    .base-box .normal{
+        color: #62b57c;
+    }
+    .centermap{
+        padding: 20px;
+    }
+    #centermap{
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+    #centermap img{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        max-width: 100%;
+        max-height: 100%;
+    }
+    #centermap img{
+        max-width: 100%;
+        max-height: 100%;
+    }
+    #centermap .mapshow{
+        position: absolute;
+        color: #62749E;
+        text-align: center;
+    }
+</style>
+</head>
+
+<body>
+    <div class="loncom_content">
+	    <div class="loncom-pubcon">
+            <div class="loncom-public-top">
+                <div class="loncom-public-topnav">
+                    <ul class="scroll_con">
+                        <li onclick="enterPage('url1')">
+                            <a><img src="images/home-pd.png">
+                                <div>首页</div>
+                            </a>
+                        </li>
+                        <li onclick="enterPage('url2')">
+                            <img src="images/home-kt.png">
+                            <div>环境系统</div>
+                        </li>
+                        <li onclick="enterPage('url3')">
+                            <img src="images/home-hj.png">
+                            <div>空调系统</div>
+                        </li>
+                        <li onclick="enterPage('url4')">
+                            <img src="images/home-it.png">
+                            <div>安防系统</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="loncom-public-topbox">
+                    <div class="loncom-box">
+                        <em class="topleft"></em>
+                        <em class="topright"><em class="line"></em></em>
+                        <em class="bottomleft"><em class="line"></em></em>
+                        <em class="bottomright"></em>
+                        <ul class="loncom-public-topul">
+                            <li>
+                                <div class="loncom-block">
+                                    <div class="loncom-block-con">
+                                        <div class="num normal"><span class="numspan">10</span></div>
+                                        <div>空调数量</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="loncom-block">
+                                    <div class="loncom-block-con">
+                                        <div class="num"><span class="numspan">10.5</span></div>
+                                        <div>制冷需量</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="loncom-block">
+                                    <div class="loncom-block-con">
+                                        <div class="num normal"><span class="numspan">开启</span></div>
+                                        <div>群控模式</div>
+                                    </div>
+                                </div>
+
+                            </li>
+                            <li>
+                                <div class="loncom-block">
+                                    <div class="loncom-block-con">
+                                        <div class="num alarm"><span class="numspan">10.5</span></div>
+                                        <div>设定温度</div>
+                                    </div>
+                                </div>
+
+                            </li>
+                            <li>
+                                <div class="loncom-block">
+                                    <div class="loncom-block-con">
+                                        <div class="num alarm"><span class="numspan">10.5</span></div>
+                                        <div>设定湿度</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="top-box">
+                <div class="loncom-public-chartbox-title">
+                    <div class="loncom-title">
+                        <div class="loncom-title-con">基本信息</div>
+                        <div class="loncom-title-line">
+                            <em class="loncom-line-em"></em>
+                        </div>
+                    </div>
+                </div>
+                <div class="loncom-public-echartbox-con">
+                    <div class="loncom-box">
+                        <em class="topleft"></em>
+                        <em class="topright"><em class="line"></em></em>
+                        <em class="bottomleft"><em class="line"></em></em>
+                        <em class="bottomright"></em>
+                        <div class="loncom_content">
+                            <div class="swiper-container">
+                                <!-- <div class="swiper-pagination-box">
+                                    <div class="swiper-pagination"></div>
+                                </div> -->
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide swiper-slide-base">
+                                        <div class="base-box">
+                                            <div class="title">名称</div>
+                                            <div class="detail">UPS1</div>
+                                        </div>
+                                        <div class="base-box">
+                                            <div class="title">当前状态</div>
+                                            <div class="detail normal">正常</div>
+                                        </div>
+                                        <div class="base-box">
+                                            <div class="title">连接状态</div>
+                                            <div class="detail">已连接</div>
+                                        </div>
+                                        <div class="base-box">
+                                            <div class="title">类型</div>
+                                            <div class="detail">UPS-SS00</div>
+                                        </div>
+                                        <div class="base-box" style="width: 22.5%;">
+                                            <div class="title">位置</div>
+                                            <div class="detail">依米康龙控>成都数据中心>A01机房</div>
+                                        </div>
+                                        <div class="base-box">
+                                            <div class="title">序列号</div>
+                                            <div class="detail">35345345455</div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        35345
+                                    </div>
+                                    <div class="swiper-slide">
+                                        345435
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-box">
+                <div class="loncom-public-chartbox-title">
+                    <div class="loncom-title">
+                        <div class="loncom-title-con">空调系统图</div>
+                        <div class="loncom-title-line">
+                            <em class="loncom-line-em"></em>
+                        </div>
+                    </div>
+                </div>
+                <div class="loncom-public-echartbox-con">
+                    <div class="loncom-box">
+                        <em class="topleft"></em>
+                        <em class="topright"><em class="line"></em></em>
+                        <em class="bottomleft"><em class="line"></em></em>
+                        <em class="bottomright"></em>
+                        <div class="loncom_content centermap">
+                            <div id="centermap">
+                                <img src="images/kongt.png" usemap="#map" id="mapimg">
+                                <map name="map" id="map">
+                                    <div class="mapshow" coords="170,50,100">
+                                        <div class="maparea">低压开关</div>
+                                    </div>
+                                    <div class="mapshow" coords="600,80,100">
+                                        <div class="maparea">压缩机</div>
+                                    </div>
+                                    <div class="mapshow" coords="990,50,100">
+                                        <div class="maparea">压缩机</div>
+                                    </div>
+                                    <div class="mapshow" coords="1170,160,100">
+                                        <div class="maparea">冷凝器</div>
+                                    </div>
+                                    <div class="mapshow" coords="165,240,100">
+                                        <div class="maparea">蒸发器</div>
+                                    </div>
+                                    <div class="mapshow" coords="820,300,100">
+                                        <div class="maparea">蒸发器</div>
+                                    </div>
+                                </map>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+	</div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/echarts4.min.js"></script>
+    <script type="text/javascript" src="js/swiper.min.js"></script>
+    <script type="text/javascript">
+        // var swipertitle=["概要","测点","告警"];
+		// var swiper = new Swiper('.swiper-container', {
+		// 	pagination: {
+		// 		el: '.swiper-pagination',
+		// 		clickable: true,
+		// 		renderBullet: function (index, className) {
+		// 		return '<span class="' + className + '">' + swipertitle[index] + '</span>';
+		// 		},
+		// 	},
+		// });
+        function open_ajax(url, parameter, request,type, error, async) {
+			type = type ? type : "Get";
+			$.ajax({
+				type: type,
+				url: url,
+				data: parameter,
+				dataType: 'JSON',
+				async: async ? async : true,
+				cache:false,
+				error: function () {
+					if (error != null && error != "") {
+						error();
+					}
+				},
+				success: function (msg) {
+					if (request){
+						request(msg);
+					}
+				}
+			});
+		}
+		open_ajax('package.json',{},function(result){
+			console.log(result)
+			resultData=result
+		});
+		let resultData={};
+        function enterPage(url){
+			parent.document.getElementById("myIframe").src=resultData[url];	
+        }
+
+
+        // 图片
+        let timeout = null;//onresize触发次数过多，设置定时器
+        adjust();
+        window.onresize = ()=> {  
+            clearTimeout(timeout);  
+            timeout = setTimeout( () =>{ 
+                adjust(); 
+            }, 100);//页面大小变化，重新加载页面以刷新MAP  
+        }  
+        function adjust(){
+            if(!document.getElementById("mapimg").complete){
+                clearTimeout(timeout);  
+                timeout = setTimeout( () =>{ 
+                    adjust(); 
+                }, 400);//页面大小变化，重新加载页面以刷新MAP  
+                return;
+            }
+            let maplist=document.getElementById("map").getElementsByClassName('mapshow');
+            let mapimg=document.getElementById("mapimg");
+            let centermap=document.getElementById("centermap");
+            let domWidth=centermap.offsetWidth;
+            let domHeight=centermap.offsetHeight;
+            let mapWidth=mapimg.offsetWidth;
+            let mapHeight=mapimg.offsetHeight;
+            let img=new Image();
+            img.src=mapimg.getAttribute("src");
+            let width=img.width;
+            let height=img.height;
+
+            
+            let xdom=domWidth/mapWidth;
+            let ydom=domHeight/mapHeight;
+            let rate=mapHeight/height;  ////宽度有多的 按高度缩放比例
+            let number=domWidth-mapWidth;
+            if(xdom<ydom){   //高度有多的 
+                rate=mapWidth/width;  ////高度有多的 按宽度缩放比例
+                number=domHeight-mapHeight;
+            }
+            if(width<=domWidth&&height<=domHeight){
+                for(let i=0;i<maplist.length;i++){
+                    let oldCoords = maplist[i].getAttribute("coords"); //定义一个初始化的coords 改变浏览器用这个值去计算
+                    let newcoords = this.adjustPosition(oldCoords,rate);  
+                    maplist[i].querySelector(".maparea").setAttribute("coords", newcoords.toString());  
+                    maplist[i].style.left=(domWidth-width)/2+parseFloat(newcoords[0])+"px";
+                    maplist[i].style.top=(domHeight-height)/2+parseFloat(newcoords[1])+"px";
+                    
+                }
+            }else{
+                for(let i=0;i<maplist.length;i++){
+                    let oldCoords = maplist[i].getAttribute("coords"); //定义一个初始化的coords 改变浏览器用这个值去计算
+                    let newcoords = this.adjustPosition(oldCoords,rate);  
+                    maplist[i].querySelector(".maparea").setAttribute("coords", newcoords.toString());  
+                    if(xdom>ydom){  //宽度有多的
+                        maplist[i].style.left=number/2+parseFloat(newcoords[0])+"px";
+                        maplist[i].style.top=newcoords[1]+"px";
+                    }else{  //高度有多的
+                        maplist[i].style.left=newcoords[0]+"px";
+                        maplist[i].style.top=number/2+parseFloat(newcoords[1])+"px";
+                    }
+                    
+                }
+            }
+        }
+        function adjustPosition(position,rate){
+            let each = position.split(",");  
+            for (let i = 0; i < each.length; i++) { 
+                each[i] = Math.round(parseFloat(each[i]) * rate).toString();//坐标  
+            }  
+            return each;  
+        }
+        
+	</script>
+</body>
+
+</html>

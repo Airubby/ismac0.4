@@ -4,18 +4,6 @@
     src: url(./font/Alibaba-PuHuiTi-Bold.ttf);
 }
 @font-face {
-    font-family:'Alibaba-PuHuiTi-Heavy';
-    src: url(./font/Alibaba-PuHuiTi-Heavy.ttf);
-}
-@font-face {
-    font-family:'Alibaba-PuHuiTi-Light';
-    src: url(./font/Alibaba-PuHuiTi-Light.ttf);
-}
-@font-face {
-    font-family:'Alibaba-PuHuiTi-Medium';
-    src: url(./font/Alibaba-PuHuiTi-Medium.ttf);
-}
-@font-face {
     font-family:'Alibaba-PuHuiTi-Regular';
     src: url(./font/Alibaba-PuHuiTi-Regular.ttf);
 }
