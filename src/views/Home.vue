@@ -6,7 +6,7 @@
                 <router-link to="/" v-if="!sidebarStatus"><img :src="'/images/'+$theme+'/logo.png'" v-if="$theme"></router-link>
             </div>
             <div class="loncom_sidebar_list">
-                <sidebar />
+                <sidebar @backFn="reload"/>
             </div>
         </div>
         <div class="main-container loncom_sidebar_right">
@@ -191,11 +191,10 @@ export default {
         },
         enterAlarm:function(){
             sessionStorage.setItem("tabIndex", ""); //选项卡用
-            this.$router.push({name:'controlAlarmRecord'});
+            // this.$router.push({name:'controlAlarmRecord'});
+            this.$router.push({name:'accessConfig'});
             this.$nextTick(function(){
-                this.removeActive("childHidden");
-                this.setBaseUrl();
-                this.setActive();
+                this.reload();  //如果跳转的页面带tab的时候 就 reload刷新就可以  在第一个去了
             })
         },
 

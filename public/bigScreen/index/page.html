@@ -38,7 +38,7 @@
 	                        <em class="wk-tix"></em>
 	                        <ul>
 	                            <li id="fullscreen" onclick="switcFullScreen()"><img src="images/fullscreen.png"></li>
-	                            <li><img src="images/alarm.png"></li>
+	                            <li onclick="showAlarm()"><img src="images/alarm.png"></li>
 	                            <li><img src="images/account.png"></li>
 	                        	<li onclick="enterOld()"><img src="images/manage.png"></li>
 	                        </ul>
@@ -46,7 +46,7 @@
 	                </div>
 	            </div>
 	        </div>
-	        <div class="main">
+	        <div class="main" id="main">
 	            <div class="main-left">
 	                <div class="loncom-index-box loncom-index-box-left">
 	                    <div class="loncom-title">
@@ -288,11 +288,127 @@
 	                </div>
 	            </div>
 	        </div>
-	    </div>
+		</div>
+		<div class="side-alarm" id="sideAlarm">
+			<div class="loncom-box">
+				<em class="topleft"></em>
+				<em class="topright"><em class="line"></em></em>
+				<em class="bottomleft"><em class="line"></em></em>
+				<em class="bottomright"></em>
+				<div class="loncom-box-con loncom-box-content">
+					<div class="side-alarm-box">
+						<div class="side-alarm-box-top">
+							<div class="title">
+								<img src="images/gaojing.png" class="img">室内温度过高告警
+							</div>
+							<div class="sure">确定</div>
+						</div>
+						<div class="side-alarm-content">
+							1号温度，湿度，值=30
+						</div>
+						<div class="side-alrm-time">
+							2019-12-12
+						</div>
+					</div>
+					<div class="side-alarm-box">
+						<div class="side-alarm-box-top">
+							<div class="title">
+								<img src="images/gaojing.png" class="img">室内温度过高告警
+							</div>
+							<div class="sure">确定</div>
+						</div>
+						<div class="side-alarm-content">
+							1号温度，湿度，值=30
+						</div>
+						<div class="side-alrm-time">
+							2019-12-12
+						</div>
+					</div>
+					<div class="side-alarm-box">
+						<div class="side-alarm-box-top">
+							<div class="title">
+								<img src="images/gaojing.png" class="img">室内温度过高告警
+							</div>
+							<div class="sure">确定</div>
+						</div>
+						<div class="side-alarm-content">
+							1号温度，湿度，值=30
+						</div>
+						<div class="side-alrm-time">
+							2019-12-12
+						</div>
+					</div>
+					<div class="side-alarm-box">
+						<div class="side-alarm-box-top">
+							<div class="title">
+								<img src="images/gaojing.png" class="img">室内温度过高告警
+							</div>
+							<div class="sure">确定</div>
+						</div>
+						<div class="side-alarm-content">
+							1号温度，湿度，值=30
+						</div>
+						<div class="side-alrm-time">
+							2019-12-12
+						</div>
+					</div>
+					<div class="side-alarm-box">
+						<div class="side-alarm-box-top">
+							<div class="title">
+								<img src="images/gaojing.png" class="img">室内温度过高告警
+							</div>
+							<div class="sure">确定</div>
+						</div>
+						<div class="side-alarm-content">
+							1号温度，湿度，值=30
+						</div>
+						<div class="side-alrm-time">
+							2019-12-12
+						</div>
+					</div>
+					<div class="side-alarm-box">
+						<div class="side-alarm-box-top">
+							<div class="title">
+								<img src="images/gaojing.png" class="img">室内温度过高告警
+							</div>
+							<div class="sure">确定</div>
+						</div>
+						<div class="side-alarm-content">
+							1号温度，湿度，值=30
+						</div>
+						<div class="side-alrm-time">
+							2019-12-12
+						</div>
+					</div>
+					<div class="side-alarm-box">
+						<div class="side-alarm-box-top">
+							<div class="title">
+								<img src="images/gaojing.png" class="img">室内温度过高告警
+							</div>
+							<div class="sure">确定</div>
+						</div>
+						<div class="side-alarm-content">
+							1号温度，湿度，值=30
+						</div>
+						<div class="side-alrm-time">
+							2019-12-12
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
     <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/echarts4.min.js"></script>
+	<script type="text/javascript" src="js/echarts4.min.js"></script>
+	<script type="text/javascript" src="js/jquery.nicescroll.min.js"></script>
+	<script type="text/javascript" src="layer/layer.js"></script>
 	<script type="text/javascript">
+		$(".loncom-box-content").niceScroll({
+			cursorcolor:"#277BDB",
+			cursorborder:"none",
+			cursorwidth:"4px",
+			overflowx: 'false'
+		});
 		Date.prototype.Format = function (fmt) { //author: meizz 
 			var o = {
 				"M+": this.getMonth() + 1, //月份 
@@ -398,8 +514,6 @@
 		}
 
 		function enterPage(url){
-			console.log(parent.document.getElementById("myBackUrl"))
-			debugger;
 			parent.document.getElementById("myBackUrl").value=resultData[url];
 			parent.document.getElementById("myIframe").src=resultData[url];	
 			
@@ -881,7 +995,20 @@
 		        return myChart;
 		}
 		
-		
+		var showA=false;
+		function showAlarm(){
+			if(showA){
+				document.getElementById("sideAlarm").style.right="-300px";
+			}else{
+				document.getElementById("sideAlarm").style.right="5px";
+			}
+			showA=!showA;
+		}
+		document.getElementById("main").onclick = function() {
+			if(showA){
+				document.getElementById("sideAlarm").style.right="-300px";
+			}
+		}
 	</script>
 </body>
 

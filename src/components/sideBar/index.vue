@@ -64,6 +64,7 @@ export default {
                 sessionStorage.setItem("tabIndex", ""); //选项卡用
                 this.$router.push({path:path});
             }
+            this.$emit("backFn");
         },
         select:function(index,indexpath){
             sessionStorage.setItem("tabIndex", ""); //选项卡用
@@ -71,6 +72,7 @@ export default {
                 this.$refs.navmenu.close(this.baseURI);
                 this.baseURI="";  //置空后，再点击前面展开的那项，就可以路由跳转了
             }
+            this.$emit("backFn");
         },
         open:function(index,indexpath){
             if(this.activeStatus){
