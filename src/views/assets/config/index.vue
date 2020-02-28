@@ -8,7 +8,7 @@
         </div>
         <div class="public_content">
             <div id="centermap" class="centermap">
-                <img src="images/school.png" usemap="#map" id="mapimg">
+                <img src="/images/school.png" usemap="#map" id="mapimg">
                 <map name="map" id="map">
                     <el-popover
                         class="mapshow" coords="675,405,50"
@@ -100,21 +100,27 @@ export default {
         document.querySelector('#mapimg').addEventListener('load',  () =>{
             this.adjust();
         })
-        let timeout = null;//onresize触发次数过多，设置定时器
         window.onresize = ()=> {  
             clearTimeout(timeout);  
-            timeout = setTimeout( () =>{ 
+            this.timeout = setTimeout( () =>{ 
                 this.adjust(); 
             }, 100);//页面大小变化，重新加载页面以刷新MAP  
         }  
     },
     data(){
         return{
-            
+            timeout:null  //onresize触发次数过多，设置定时器
         }
     },
 	methods: {
         adjust:function(){
+            if(!document.getElementById("mapimg").complete){
+                clearTimeout(timeout);  
+                this.timeout = setTimeout( () =>{ 
+                    this.adjust(); 
+                }, 400);//页面大小变化，重新加载页面以刷新MAP  
+                return;
+            }
             let maplist=document.getElementById("map").children;
             let mapimg=document.getElementById("mapimg");
             let centermap=document.getElementById("centermap");
