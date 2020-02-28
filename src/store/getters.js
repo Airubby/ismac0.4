@@ -16,5 +16,6 @@ const getters = {
   navList: state => state.user.navList,
   
   getTheme: state => state.theme.theme,
+  showTheme:state=>state.theme.show,
 }
 export default getters

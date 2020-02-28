@@ -22,10 +22,17 @@
             @check-change="checkChange"
             :default-checked-keys="checkedKeys"
             :props="defaultProps">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+                <span>{{ node.label }}</span>
+                <span v-if="node.id==1" style="color:#f00;">
+                    我是第一个
+                </span>
+            </span>
             </el-tree>
             <div style="width:200px;height:200px;" id="echart"></div>
         </div>
         <treeShow v-if="treeInfo.visible" :dialogInfo="treeInfo" v-on:backInfo="backTreeInfo"></treeShow>
+        
     </div>
 </template>
 
@@ -53,7 +60,7 @@ export default {
     },
     data(){
         return{
-            input:"123123123123123",
+            input:"a345435345aa",
             treedata: [{
                 id: 1,
                 label: '一级 1',
@@ -175,8 +182,6 @@ export default {
             }else{
                 console.log(this.$refs.tree.getCheckedKeys());
             }
-            
-
         },
         getCheckedKeys() {
             console.log(this.$refs.tree.getCheckedKeys());

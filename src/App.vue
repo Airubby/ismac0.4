@@ -36,9 +36,6 @@ import { mapGetters } from 'vuex'
     mounted() {
         this.switchTheme(this.$theme)
         this.getWebSocket()
-        console.log(22222222222)
-        console.log(this.loading)
-      
     },
     data(){
       return{
@@ -72,8 +69,9 @@ import { mapGetters } from 'vuex'
             this.$refs.app.className=themeName+"_theme";
             document.body.className=themeName+"_theme";
             Vue.prototype.$theme=themeName;
+            this.$store.dispatch('setShow',false);
             this.$nextTick(function(){
-            this.reload();
+                this.$store.dispatch('setShow',true);
             })
             
         },

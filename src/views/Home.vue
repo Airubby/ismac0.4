@@ -2,8 +2,8 @@
     <div class="app-wrapper" :class="classObj">
         <div class="sidebar-container">
             <div class="loncom_sidebar_top">
-                <router-link to="/" v-if="sidebarStatus"><img :src="'/images/'+$theme+'/smallLogo.png'" v-if="$theme" style="width:54px;"></router-link>
-                <router-link to="/" v-if="!sidebarStatus"><img :src="'/images/'+$theme+'/logo.png'" v-if="$theme"></router-link>
+                <router-link to="/" v-if="sidebarStatus"><img :src="'/images/'+$theme+'/smallLogo.png'" v-if="$theme&&$store.getters.showTheme" style="width:54px;"></router-link>
+                <router-link to="/" v-if="!sidebarStatus"><img :src="'/images/'+$theme+'/logo.png'" v-if="$theme&&$store.getters.showTheme"></router-link>
             </div>
             <div class="loncom_sidebar_list">
                 <sidebar @backFn="reload"/>

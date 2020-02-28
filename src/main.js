@@ -42,6 +42,7 @@ Vue.use(VueVideoPlayer)
 import breadcrumb from '@/components/Breadcrumb'
 Vue.use(breadcrumb)
 
+
 // 将API方法绑定到全局
 // Vue.prototype.$api = api
 Vue.prototype.$r=request
