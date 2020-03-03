@@ -22,6 +22,12 @@ export const syncRouter=[
       meta: { title: 'bigHome'},
       component: () => import('@/views/bigHome.vue'),
     },
+    {
+      path: '/test',
+      name: 'test',
+      meta: { title: 'test'},
+      component: () => import('@/views/test/index.vue'),
+    },
     { path: '/404',name:'404',meta: { title: '404'}, 
       component: () => import('@/views/errorPage/404') 
     },
