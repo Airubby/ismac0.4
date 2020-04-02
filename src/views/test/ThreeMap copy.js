@@ -23,8 +23,7 @@ export default class ThreeMap {
         // this.drawMap(); 
         // this.drawLines();
         
-        this.dom.addEventListener('click', this.mouseClickEvent.bind(this))
-        this.dom.addEventListener('mousemove', this.mouseHoverEvent.bind(this))
+        this.dom.addEventListener('click', this.mouseEvent.bind(this))
     }
 
     //初始化渲染场景
@@ -42,18 +41,16 @@ export default class ThreeMap {
         // this.camera.up.x = 0;
         // this.camera.up.y = 1;
         // this.camera.up.z = 0;
-        this.camera.position.set(-2, 4, 6);
-        this.camera.lookAt(0, 0, 0)
+        this.camera.position.set(-0.265, 4.472, -6.809);
+        this.camera.rotation.set(-146.70 ,-1.46 ,-178.78);
+        // this.camera.lookAt(0, 0, 0)
     }
     //初始化场景
     initScene() {
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0xffffff);
-        var ambientLight=new THREE.AmbientLight(0xffffff);
+        var ambientLight=new THREE.AmbientLight(0x000000);
         ambientLight.position.set(0,10,0);
-        var spotLight = new THREE.SpotLight(0xffffff);
-        spotLight.position.set(0, 50, 0);
-        this.scene.add(spotLight);
         this.scene.add(ambientLight);
     }
     //渲染
@@ -74,78 +71,79 @@ export default class ThreeMap {
         this.controls.update();
     }
     drawbox(){
-        const tgroup = new THREE.Group();
+        // const group = new THREE.Group();
         let loader = new THREE.ObjectLoader();
-        // let obj = loader.parse(this.mapData);
-        // console.log(obj)
-        // this.group = obj;
-        // this.scene.add(obj)
-
-        let _this=this;
-        var textureLoader=new THREE.TextureLoader();
-        let mapData=this.mapData;
-        let data=this.mapData.object.children[0].children;
-        for(let i=0;i<data.length;i++){
-            for(let j=0;j<mapData.materials.length;j++){
-                if(data[i].material==mapData.materials[j].uuid){
-                    textureLoader.load(mapData.materials[j].map,function(texture){
-                        for(let n=0;n<mapData.geometries.length;n++){
-                            if(data[i].geometry==mapData.geometries[n].uuid){
-                                if(mapData.geometries[n].type=="PlaneBufferGeometry"){
-                                    var geometry=new THREE.PlaneBufferGeometry(mapData.geometries[n].width,mapData.geometries[n].height);  
-                                    mapData.materials[j].map=mapData.materials[j].map?texture:"";
-                                    var materail=new THREE.MeshBasicMaterial(mapData.materials[j]);
-                                    var mesh=new THREE.Mesh(geometry,materail);
-                                    var mirrorMatrix = new THREE.Matrix4().fromArray(data[i].matrix);
-                                    mesh.applyMatrix(mirrorMatrix);
-                                    _this.scene.add(mesh);
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-        }
-        let data1=this.mapData.object.children[1].children;
-        for(let i=0;i<data1.length;i++){
-            var geometry=new THREE.BoxGeometry(
-                this.mapData.geometries[this.mapData.geometries.length-1].width,
-                this.mapData.geometries[this.mapData.geometries.length-1].height,
-                this.mapData.geometries[this.mapData.geometries.length-1].depth); 
-            var materail=new THREE.MeshBasicMaterial(this.mapData.materials[this.mapData.materials.length-1]);
-            var mesh=new THREE.Mesh(geometry,materail);
-            var mirrorMatrix = new THREE.Matrix4().fromArray(data1[i].matrix);
-            mesh.applyMatrix(mirrorMatrix);
-            tgroup.children.push(mesh);
-            _this.scene.add(mesh);
-        }
-        this.group=tgroup;
-
-        // let _this=this;
+        let obj = loader.parse(this.mapData);
+        this.group = obj;
+        this.scene.add(obj)
+        
         // var textureLoader=new THREE.TextureLoader();
-        // textureLoader.load("/three/1a.png",function(texture){
-        //     console.log(texture)
-        //     var geometry=new THREE.PlaneBufferGeometry(6,6);
-        //     var materail=new THREE.MeshBasicMaterial({
-        //         map:"",
-        //         color:"#000000",
-        //         transparent: true,
-        //         opacity: 1,
-        //         "depthFunc": 3,
-        //         "depthTest": true,
-        //         "depthWrite": true,
-        //         "stencilWrite": false,
-        //         side: THREE.DoubleSide
-        //     });
-        //     var mesh=new THREE.Mesh(geometry,materail);
-        //     _this.scene.add(mesh);
+        // var crateTexture=textureLoader.load(pic1);
 
-        // });
-       
+        // var crate=new THREE.Mesh(
+        //       new THREE.BoxGeometry(30,30,30),
+        //       new THREE.MeshBasicMaterial({
+        //           color:0xffffff,
+        //           map:crateTexture
+        //       })
+        // )
 
+        // this.scene.add(crate);
+        
+        // const group = new THREE.Group();
+        // // var faceMaterial=new THREE.MeshNormalMaterial();
+        // // var faceMaterial=new THREE.MeshPhongMaterial( { 
+        // //     ambient: 0x050505, color: 0x0033ff, specular: 0x555555, shininess: 30 ,
+        // //     map: THREE.ImageUtils.loadTexture('http://wow.techbrood.com/uploads/1702/crate.jpg') 
+        // // } );
+        // var faceMaterial = new THREE.MeshBasicMaterial({
+        //     //map: texture,
+        //     map: new THREE.TextureLoader().load(pic1), ////颜色贴图
+        //     color: '#ffffff',
+        //     transparent: true,
+        //     opacity: 1,
+        //     depthTest: false, //深度测试属性
+        //     blending: THREE.AdditiveBlending, //滤镜选择
+        //     side: THREE.DoubleSide
+        // })
+        // var cubeGeom = new THREE.BoxGeometry(29, 29, 29);
+        // var cube = new THREE.Mesh(cubeGeom, faceMaterial);  
+        // group.add(cube)
+        // this.scene.add(cube)
 
+      
     }
-    
+    drawMultiPolygon() {
+        //console.log(this.mapData);
+        this.vector3Json = [];
+        this.mapData.features.forEach(element => {
+            const areas = element.geometry.coordinates;
+            areas.forEach(a => {
+                const areaData = { coordinates: [] };
+                a.forEach((point, index) => {
+                    if (point[0] instanceof Array) {
+                        areaData.coordinates[index] = [];
+                        point.forEach(pointInner => {
+                            //console.log(pointInner);
+                            areaData.coordinates[index].push(this.lnglatToVector(pointInner))
+                        })
+                    }
+                    this.vector3Json.push(areaData);
+                })
+            })
+        });
+        console.log('vector3json', this.vector3Json)
+        //绘制模块
+        const group = new THREE.Group();
+        this.vector3Json.forEach(provinces => {
+            provinces.coordinates.forEach(area => {
+                const mesh = this.getAreaMesh(area);
+                group.add(mesh);
+            })
+        });
+        this.scene.add(group);
+    }
+
     //绘制网格
     getAreaMesh(points) {
         // console.log('---' + points);
@@ -196,9 +194,8 @@ export default class ThreeMap {
         let z = 0;
         return [y, x, z];
     }
-    mouseClickEvent(event) {
+    mouseEvent(event) {
         console.log(event)
-        console.log(this.group)
         if (!this.raycaster)
             this.raycaster = new THREE.Raycaster();
         if (!this.mouse)
@@ -222,24 +219,5 @@ export default class ThreeMap {
         //     console.log(intersects[i])
         //     intersects[i].object.material.color.set(0xff0000);
         // }
-    }
-    mouseHoverEvent(event){
-        console.log(event)
-        console.log(this.group)
-        if (!this.raycaster)
-            this.raycaster = new THREE.Raycaster();
-        if (!this.mouse)
-            this.mouse = new THREE.Vector2();
-
-        // 将鼠标位置归一化为设备坐标。x 和 y 方向的取值范围是 (-1 to +1)
-        this.mouse.x = (event.offsetX / this.dom.offsetWidth) * 2 - 1;
-        this.mouse.y = -(event.offsetY / this.dom.offsetHeight) * 2 + 1;
-
-        // 通过摄像机和鼠标位置更新射线
-        this.raycaster.setFromCamera(this.mouse, this.camera);
-
-        // 计算物体和射线的焦点
-        const intersects = this.raycaster.intersectObjects(this.group.children);
-        console.log(intersects)
     }
 }

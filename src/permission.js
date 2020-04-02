@@ -45,6 +45,7 @@ async function routerGo(){
     if(sessionStorage.roleid){
         await getInfo();
     }
+    console.log(11111111111)
     router.beforeEach((to, from, next) => {
         // NProgress.start()
         const whiteList = ['/login','/401','/404','/bigHome','/test'] // 不重定向白名单

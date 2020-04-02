@@ -108,7 +108,21 @@ export default {
         }
     },
 	methods: {
+        //懒加载  :load="loadNode"  lazy
+        loadNode(node, resolve) {
+            if (node.level === 0) {
+                return resolve([{ name: 'region' }]);
+            }
+            this.$r.post("",{},r=>{
+                if(r.data){
+                    return resolve(r.data);
+                }else{
+                    return resolve([]);
+                }
+            })
+        },
         initEchart:function(){
+            let value=0.015;
             // 基于准备好的dom，初始化echarts实例
             var myChart = echarts.init(document.getElementById('echart'));
             // 绘制图表
@@ -139,16 +153,19 @@ export default {
                             show: true,
                             textStyle: {
                                 color: "#709CFD",
-                                fontSize: 12,
+                                fontSize: 26,
                                 align: 'center',
                                 baseline: 'middle'
+                            },
+                            formatter:function(param) {
+                                return 'Value:' + (param.value*100).toFixed(2)+"%";
                             },
                             position: 'inside'
                         }
                     },
                     data: [
                     {
-                        value: 0.7,
+                        value: value,
                         itemStyle: {
                             normal: {
                                 color: "#709CFD"

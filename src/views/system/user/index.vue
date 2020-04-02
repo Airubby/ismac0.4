@@ -14,6 +14,8 @@
 
 <script>
 import * as THREE from 'three'
+import axios from 'axios';
+var OrbitControls = require('three-orbit-controls')(THREE)
 // import {MTLLoader,OBJLoader} from 'three-obj-mtl-loader'
 // import {CSS2DRenderer,CSS2DObject} from 'three-css2drender'
 // let OrbitControls = require('three-orbit-controls')(THREE)
@@ -47,19 +49,32 @@ export default {
         //初始化相机
         initCamera:function(){
             //fov可视角度70；aspect通常设置为canvas的宽高比
-            this.camera=new THREE.PerspectiveCamera(70,window.innerWidth/window.innerHeight,0.01,100);
+            this.camera=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.01,1000);
             this.camera.position.z=1;
         },
         //初始化场景
         initScene:function(){
             this.scene=new THREE.Scene();
+            this.scene.background = new THREE.Color(0xAAAAAA);
         },
         //初始化物体
         initObj:function(){
-            this.geometry=new THREE.BoxGeometry(0.2,0.2,0.2);
-            this.materail=new THREE.MeshNormalMaterial();
-            this.mesh=new THREE.Mesh(this.geometry,this.materail);
-            this.scene.add(this.mesh);
+            // this.geometry=new THREE.BoxGeometry(0.2,0.2,0.2);
+            // this.materail=new THREE.MeshNormalMaterial();
+            // this.mesh=new THREE.Mesh(this.geometry,this.materail);
+            // this.scene.add(this.mesh);
+            axios.get('/three/scene.json').then(data => {
+                let result=data.data;
+                let loader = new THREE.ObjectLoader();
+                let obj = loader.parse(result);
+                this.group = obj;
+                this.scene.add(obj)
+            })
+            
+        },
+        setControl:function() {
+            this.controls = new OrbitControls(this.camera);
+            this.controls.update();
         },
         //渲染
         render:function(){
@@ -67,8 +82,8 @@ export default {
         },
         animate:function(){
             requestAnimationFrame(this.animate)
-            this.mesh.rotation.x+=0.01;
-            this.mesh.rotation.y+=0.02;
+            // this.mesh.rotation.x+=0.01;
+            // this.mesh.rotation.y+=0.02;
             this.renderer.render(this.scene,this.camera);
         },
         init:function(){
@@ -77,6 +92,7 @@ export default {
             this.initScene();
             this.initObj();
             this.render();
+            this.setControl();
         }
 
 	},

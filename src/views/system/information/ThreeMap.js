@@ -184,6 +184,8 @@ export default class ThreeMap {
                 lineGroup.add(line);
             }
         });
+        group.rotation.y = Math.PI;
+        lineGroup.rotation.y = Math.PI;
         this.group = group;
         this.scene.add(group);
         this.scene.add(lineGroup); //描线
@@ -254,6 +256,8 @@ export default class ThreeMap {
 
         // 计算物体和射线的焦点
         const intersects = this.raycaster.intersectObjects(this.group.children);
+        console.log(this.group)
+        debugger;
         this.group.children.forEach(mesh => {
             mesh.material.color.set('#005fc3');
         })

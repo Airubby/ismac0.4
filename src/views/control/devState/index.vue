@@ -1,7 +1,8 @@
 <template>
     <div class="bgfffcontent">
-        <div class="breadcrumb">
-            <breadcrumb class="breadcrumb-container" />
+        <div class="breadcrumb" id="template-box">
+            <!-- <breadcrumb class="breadcrumb-container" /> -->
+            <component :is="currentView"></component>
             <!-- <el-breadcrumb separator="/">
                 <el-breadcrumb-item>{{$t("navbar.control")}}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{$t("navbar.controlDevState")}}</el-breadcrumb-item>
@@ -91,10 +92,13 @@ export default {
         
     },
     mounted() {
+        let temp="breadcrumb"
         this.$refs.thisRef.setSelect([{id:'2'}])
+        this.currentView=temp;
     },
     data(){
         return{
+            currentView:"",
             search:'',
             initParams:{
                 guanzhu:'',

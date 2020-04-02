@@ -117,17 +117,37 @@ function echartfn(ID,xData,yData){
     });
     return myChart;
 }
-function exportFile(fileUrl,name){
-    //fileUrl 是给的流文件接口地址；"/export/hisalarm?level="+level;
-    let link = document.createElement('a')
-    link.style.display = 'none'
-    link.href = fileUrl
-    link.setAttribute('download', name)
 
-    document.body.appendChild(link)
-    link.click();
-    window.URL.revokeObjectURL(link.href); // 释放URL 对象
-    document.body.removeChild(link);
+function exportFile(fileUrl,params,filename){
+    //fileUrl 是给的流文件接口地址；"/export/hisalarm?level="+level;
+
+    // let link = document.createElement('a')
+    // link.style.display = 'none'
+    // link.href = fileUrl
+    // link.setAttribute('download', filename)
+
+    // document.body.appendChild(link)
+    // link.click();
+    // window.URL.revokeObjectURL(link.href); // 释放URL 对象
+    // document.body.removeChild(link);
+
+    //以上是GET请求导出,以下POST导出
+    //responseType:blob或者arraybuffer
+    axios.post(fileUrl,params,{responseType:"blob"}).then(function(res){
+        let blob=new Blob([response.data],{type: "application/vnd.ms-excel;charset=utf-8"})
+        let objectUrl = window.URL.createObjectURL(blob);
+        let link = document.createElement('a');
+        let name= filename + ".csv";
+        link.href=objectUrl;
+        link.download=name;
+        document.body.appendChild(link);
+        link.click();
+        window.URL.revokeObjectURL(link.href); // 释放URL 对象
+        document.body.removeChild(link);// 下载完成移除元素
+    })
+    
+
+
 }
 function downFile(fileUrl){
     //fileUrl:/static/test.pdf
@@ -305,7 +325,7 @@ function checkNumber(obj) {
     } else {
         //中文：var a=/[\u4e00-\u9fa5+！@#￥……&*（）——【】，；。？‘’“”]/;  
         let regPos = /^\d+(\.\d+)?$/; //非负浮点数
-        //let regPos = /^([1-9]+)$/;  //大于0的正整数
+        //let regPos = /^[1-9]\d*$/;  //大于0的正整数
         // let regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
         // let regA=/(^[\-0-9][0-9]*(.[0-9]+)?)$/;  //正负整数，浮点数  /^(\-|\+)?\d+(\.\d+)?$/   /^[-+]?\d+(\.\d+)?$/
         if(regPos.test(obj.value)){

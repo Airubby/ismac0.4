@@ -11,13 +11,14 @@ export default class ThreeMapLightBar extends ThreeMap {
     }
 
     drawLightBar(data) {
-        //console.log(this.vector3Json[0]);
         const group = new THREE.Group();
         const texture = new THREE.TextureLoader().load(pic1);
         //texture.rotation.x = Math.PI;
         data.forEach((d, i) => {
+            //console.log(this.vector3Json[d.name]);
             const { cp } = this.vector3Json[d.name];
             const [x, y, z] = this.lnglatToVector(cp);
+            this.vector3Json[d.name].vector3 = [x, y, z];
             var geomentry = new THREE.PlaneGeometry(1, d.value / 5);
             var material = new THREE.MeshBasicMaterial({
                 //map: texture,
@@ -30,20 +31,21 @@ export default class ThreeMapLightBar extends ThreeMap {
                 side: THREE.DoubleSide
             })
             var plane = new THREE.Mesh(geomentry, material);
-            plane.position.set(x, y, z + d.value / 5 / 2);
-            plane.rotation.x = -Math.PI / 2;
+            plane.position.set(x, y, -(z + d.value / 5 / 2));
+            plane.rotation.x = Math.PI / 2;
             group.add(plane);
             var plane2 = plane.clone();
             plane2.rotation.y = Math.PI / 2;
             group.add(plane2);
             group.add(this.addButtomPlate([x, y, z]));
+
         });
         group.rotation.y = Math.PI;
         this.scene.add(group);
 
     }
     addButtomPlate(point, i) {
-        var geomentry = new THREE.CircleGeometry(0.5, 6);
+        var geomentry = new THREE.CircleGeometry(0.4, 6);
         var material = new THREE.MeshBasicMaterial({
             color: this.colors[i % 2],
             side: THREE.DoubleSide
@@ -53,5 +55,35 @@ export default class ThreeMapLightBar extends ThreeMap {
         const [x, y, z] = point;
         circle.position.set(x, y, z);
         return circle;
+    }
+    drawFlyLine(data) {
+        const group = new THREE.Group();
+        data.forEach(d => {
+            const { source, target } = d;
+            //console.log(this.vector3Json[source.name]);
+            const [x0, y0, z0] = this.vector3Json[source.name].vector3;
+            const [x1, y1, z1] = this.vector3Json[target.name].vector3;
+
+            const curve = new THREE.QuadraticBezierCurve3(
+                new THREE.Vector3(x0, y0, z0),
+                new THREE.Vector3((x0 + x1) / 2, (y0 + y1) / 2, -10),
+                new THREE.Vector3(x1, y1, z1),
+            )
+
+            const points = curve.getPoints(10);
+            const geomentry = new THREE.Geometry();
+            geomentry.vertices = points;
+            const material = new THREE.LineBasicMaterial({
+                vertexColors: THREE.VertexColors
+                //color: '#ff0000',
+                //transparent: true,
+                //opacity: 0.6,
+                //side: THREE.DoubleSide
+            });
+            const line = new THREE.Line(geomentry, material);
+            group.add(line);
+        })
+        group.rotation.y = Math.PI;
+        this.scene.add(group)
     }
 }

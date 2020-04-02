@@ -74,7 +74,7 @@ export default {
                     return false;
                 }
             });
-        }
+        },
 	},
     watch: {
         checkboxGroup:function(val){

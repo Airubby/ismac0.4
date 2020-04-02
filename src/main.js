@@ -50,6 +50,7 @@ Vue.prototype.$r=request
 //绑定工具函数到全局
 Vue.prototype.$tool = tool
 Vue.prototype.$store = store
+Vue.prototype.$axios = axios
 
 Vue.prototype.publicPath=process.env.BASE_URL
 
