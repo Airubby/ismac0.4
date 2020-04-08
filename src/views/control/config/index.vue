@@ -22,14 +22,15 @@
                 </div>
                 <el-table-pagination
                     type="local" 
+                    border
                     :params="initParams"
                     :data="table_data"
                     :page-sizes="[4]"
                     :showPagination="true"
                     :show-select-all="true"
                     select-id="code"
+                    :span-method="spanMethod"
                     :columns="table_columns" ref="thisRef">   
-                    <el-table-column slot="prepend" type="selection"></el-table-column>
                     <template slot-scope="scope" slot="preview-name">
                         <p class="table_handle"><span @click="detail(scope.row)">{{scope.row.code}}</span></p>
                     </template>
@@ -116,6 +117,21 @@ export default {
         },
         timesectionAdd:function(){
 
+        },
+        spanMethod:function({ row, column, rowIndex, columnIndex }){
+             if (columnIndex === 0) {
+                if (rowIndex % 2 === 0) {
+                    return {
+                        rowspan: 2,
+                        colspan: 1
+                    };
+                } else {
+                    return {
+                        rowspan: 0,
+                        colspan: 0
+                    };
+                }
+            }
         }
 	},
     components: {

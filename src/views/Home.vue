@@ -74,7 +74,24 @@
                         <i class="el-icon-view top-icon-color" @click="enterFullScreen"></i>
                     </div>
                 </div>
-                
+                <div class="loncom_right_top_box">
+                    <div class="box_con">
+                        <el-dropdown>
+                            <span class="el-dropdown-link">
+                                {{language}}<i class="el-icon-arrow-down el-icon--right"></i>
+                            </span>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item>
+                                    <span @click="setLanguage('zh')">中文</span>
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    <span @click="setLanguage('en')">英文</span>
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </div>
+                </div>
+          
             </div>
             <div class="loncom_content">
                 <router-view v-if="isRouterAlive"/>
@@ -109,10 +126,17 @@
 <script>
 import  Sidebar from '@/components/sidebar/index.vue'
 import { mapGetters } from 'vuex'
+import Cookies from 'js-cookie'
 export default {
     // inject:['reload'],  点击刷新的时候右侧主体框刷新就可以，不用整个刷新，
     created() {
         this.getCheck();
+        let lang=Cookies.get('language')||'zh';
+        if(lang=='zh'){
+            this.language="中文"
+        }else{
+            this.language="英文"
+        }
     },
     mounted() {
         // this.$r.post("/getMockData",{},r=>{
@@ -132,6 +156,7 @@ export default {
             navbtn:'open',
             baseURI:'',
             isRouterAlive:true,
+            language:"中文",
             loginInfo:{
                 userid:"admin",
                 phone:"15252525252",
@@ -161,6 +186,16 @@ export default {
         }
     },
 	methods: {
+        setLanguage:function(language){
+            console.log("!!!!!!!!!!!")
+            if(language=="zh"){
+                this.language="中文"
+            }else{
+                this.language="English"
+            }
+            this.$i18n.locale = language
+            this.$store.dispatch('setLanguage', language)
+        },
         toggleClick() {
             this.$store.dispatch('toggleSideBar')
         },

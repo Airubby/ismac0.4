@@ -69,7 +69,7 @@ function getServerConfig() {
       Vue.prototype.$ajaxUrl=ajaxUrl;
       Vue.prototype.$wsAddr=config.wsAddr;
       store.dispatch('setAjaxUrl',ajaxUrl);
-      store.dispatch('setLanguage',config.language);
+      store.dispatch('setLanguage',Cookies.get('language') || config.language);
       Vue.prototype.$theme = sessionStorage.getItem("theme") || config.theme || 'default';
       
       

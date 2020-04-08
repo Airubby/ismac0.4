@@ -72,6 +72,70 @@
         }
     },
     "enLang":{
-        
+        "navbar": {
+          "index": "Home",
+          "control": "control",
+          "controlDevState": "controlDevState",
+          "controlDevStateDetail":"controlDevStateDetail",
+          "controlAlarmRecord":"controlAlarmRecord",
+          "controlConfig":"controlConfig",
+          "access":"access",
+          "accessStatus":"accessStatus",
+          "accessCardImpower":"accessCardImpower",
+          "accessConfig":"accessConfig",
+          "video":"video",
+          "videoPreview":"videoPreview",
+          "videoPlayback":"videoPlayback",
+          "videoConfig":"videoConfig",
+          "energy":"energy",
+          "energyConfig":"energyConfig",
+          "energyStatus":"energyStatus",
+          "statement":"statement",
+          "statementConvention":"statementConvention",
+          "statementPlan":"statementPlan",
+          "statementConfig":"statementConfig",
+          "system":"system",
+          "systemUser":"systemUser",
+          "systemInformation":"systemInformation",
+          "systemConfig":"systemConfig",
+          "assets":"assets",
+          "assetsCabinet":"assetsCabinet",
+          "assetsInassets":"assetsInassets",
+          "assetsConfig":"assetsConfig"
+      },
+      "hint":{
+          "select":"请选择",
+          "add":"添加",
+          "edit":"编辑",
+          "unfold":"展开",
+          "shrink":"收缩",
+          "noEmpty":"非空项",
+          "isInteger":"必须为整数数字",
+          "rangeInteger":"端口范围在1-65535之间",
+          "formatErr":"格式错误"
+      },
+      "access":{
+        "card":"卡",
+        "dev":"设备"
+      },
+      "control":{
+        "devDetail":"设备详情"
+      },
+      "skin": {
+        "Black": "酷黑风格",
+        "Default": "亮白风格"
+      },
+      "layer":{
+        "tips":"提示",
+        "sure":"确定测试"
+      },
+      "button":{
+        "ok":"确定",
+        "cancel":"取消"
+      },
+      "message":{
+        "changeSkin":"切换风格",
+        "testLang":"测试国际化"
+      }
     }
 }
