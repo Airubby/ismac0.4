@@ -29,7 +29,7 @@
             </div>
             <div>
                 <h2>组件管道</h2>
-                {{message | capitalize}}
+                {{message | capitalize(thisVue)}}
             </div>
         </div>
     </div>
@@ -38,10 +38,10 @@
 <script>
 export default {
     filters:{
-        capitalize: function (value) {
+        capitalize: function (value,_this) {
             if (!value) return ''
             value = value.toString()
-            return value.charAt(0).toUpperCase() + value.slice(1)
+            return value.charAt(0).toUpperCase() + value.slice(1)+"-----"+_this.filtersInfo
         }
     },
     created() {
@@ -57,7 +57,9 @@ export default {
     },
     data(){
         return{
+            thisVue:this,
             message:"assasas",
+            filtersInfo:"filters中获取this属性",
             dynamicValidateForm: {
                 other:{
                     flag:true,
