@@ -27,6 +27,7 @@
                     </el-form-item>
                 </el-form>
             </div>
+            <div>监听多个属性任意一个改变都去验证其它的属性问题；用computed中return多个属性，watch中this.$refs['ValidateForm'].validate();</div>
             <div>
                 <h2>组件管道</h2>
                 {{message | capitalize(thisVue)}}
@@ -53,10 +54,23 @@ export default {
     computed:{
         email:function(){
             return this.dynamicValidateForm.other.domains[0].value;
+        },
+        changeValue:function(){
+            return {
+                value:this.initParams.value,
+                number:this.initParams.number,
+                index:this.initParams.index,
+            }
         }
     },
     data(){
         return{
+            //多个属性同时监听的问题；
+            initParams:{
+                value:"",
+                number:"",
+                index:"",
+            },
             thisVue:this,
             message:"assasas",
             filtersInfo:"filters中获取this属性",
@@ -107,6 +121,10 @@ export default {
         //computed 中的email函数的值变化
         email:function(val){
             this.dynamicValidateForm.other.domains[1].value=val;
+        },
+        //监听多个属性任意一个改变都去验证其它的属性问题；
+        changeValue:function(val){
+            this.$refs['ValidateForm'].validate();
         }
     },
 }

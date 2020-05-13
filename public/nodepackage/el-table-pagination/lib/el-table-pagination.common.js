@@ -101,7 +101,7 @@ module.exports = JSON.parse("{\"name\":\"el-table-pagination\",\"version\":\"0.5
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(5);
+module.exports = __webpack_require__(4);
 
 
 /***/ }),
@@ -112,12 +112,6 @@ module.exports = require("axios");
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-module.exports = require("querystring");
-
-/***/ }),
-/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -191,7 +185,8 @@ var render = function() {
             "tooltip-effect": _vm.tooltipEffect,
             "show-summary": _vm.showSummary,
             "sum-text": _vm.sumText,
-            "summary-method": _vm.summaryMethod
+            "summary-method": _vm.summaryMethod,
+            "span-method": _vm.spanMethod
           },
           on: {
             select: function(selection, row) {
@@ -501,6 +496,7 @@ const Props = {
   showSummary: Boolean,
   sumText: String,
   summaryMethod: Function,
+  spanMethod: Function,
   // custom attributes
   fetch: {
     type: Function
@@ -1502,6 +1498,7 @@ component.options.__file = "packages/el-table-form/src/main.vue"
 //
 //
 //
+//
 
 
 
@@ -1647,14 +1644,13 @@ component.options.__file = "packages/el-table-form/src/main.vue"
           Object.keys(headers).forEach(v => {
             config.headers[v] = headers[v];
           });
-          console.log("item!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
           return config;
         }, error => {
           return Promise.reject(error);
         });
 
         method = method.toLowerCase();
-        console.log(params);
+
         if (method === 'get') {
           requestObject = $axios[method](url, { params });
         } else {
@@ -1702,6 +1698,11 @@ component.options.__file = "packages/el-table-form/src/main.vue"
           totalValue = 0;
         }
         this.total = Number(totalValue);
+
+        //当前页不为第一页（为第三页每页20条）切换到每页100条的时候第三页没有数据返回为空的这种情况下；
+        if (this.total > 0 && this.tableData.length == 0) {
+          this.handleCurrentChange(1);
+        }
 
         this.loading = false;
       }).catch(error => {
@@ -1882,19 +1883,9 @@ const install = function (Vue, opts = {}) {
   components.forEach(component => {
     Vue.component(component.name, component);
   });
-  console.log("public****************************");
-  console.log(opts.axios);
   if (!opts.axios) {
     opts.axios = __webpack_require__(3);
-    opts.Qs = __webpack_require__(4);
     opts.axios.interceptors.request.use(config => {
-      if (config.method == "post") {
-        console.log("public!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-        config.data = opts.Qs.stringify(config.data);
-        config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-        console.log("public@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-      }
       return config;
     }, error => {
       return Promise.reject(error);

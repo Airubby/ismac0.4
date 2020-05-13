@@ -938,7 +938,8 @@ var render = function() {
             "tooltip-effect": _vm.tooltipEffect,
             "show-summary": _vm.showSummary,
             "sum-text": _vm.sumText,
-            "summary-method": _vm.summaryMethod
+            "summary-method": _vm.summaryMethod,
+            "span-method": _vm.spanMethod
           },
           on: {
             select: function(selection, row) {
@@ -1248,6 +1249,7 @@ const Props = {
   showSummary: Boolean,
   sumText: String,
   summaryMethod: Function,
+  spanMethod: Function,
   // custom attributes
   fetch: {
     type: Function
@@ -1366,6 +1368,7 @@ const Props = {
 var main = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./packages/el-table-pagination/src/main.vue?vue&type=script&lang=js&
+//
 //
 //
 //
@@ -1642,14 +1645,13 @@ var main = __webpack_require__(0);
           Object.keys(headers).forEach(v => {
             config.headers[v] = headers[v];
           });
-          console.log("item!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
           return config;
         }, error => {
           return Promise.reject(error);
         });
 
         method = method.toLowerCase();
-        console.log(params);
+
         if (method === 'get') {
           requestObject = $axios[method](url, { params });
         } else {
@@ -1697,6 +1699,11 @@ var main = __webpack_require__(0);
           totalValue = 0;
         }
         this.total = Number(totalValue);
+
+        //当前页不为第一页（为第三页每页20条）切换到每页100条的时候第三页没有数据返回为空的这种情况下；
+        if (this.total > 0 && this.tableData.length == 0) {
+          this.handleCurrentChange(1);
+        }
 
         this.loading = false;
       }).catch(error => {

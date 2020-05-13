@@ -12,7 +12,7 @@
                 <el-col :span="12"><el-button type="primary" @click="copy">复制</el-button></el-col>
             </el-row>
             <el-checkbox v-model="check">测试computed属性写入store</el-checkbox>
-            <el-button type="primary" @click="treeInfo.visible=true">弹窗$emit方式返回数据</el-button>
+            <el-button type="primary" @click="treeDialog">弹窗$emit方式返回数据</el-button>
             <el-tree
             :data="treedata"
             show-checkbox
@@ -209,6 +209,16 @@ export default {
         backTreeInfo:function(info){
             this.input=info.times+"--"+info.treeid+"--"+info.treename;
         },
+        treeDialog:function(){
+            this.$confirm("确定测试这个玩意儿？","提示",{
+                confirmButtonText:"确定",
+                cancelButtonText:"取消",
+                type:"warning"
+            }).then(()=>{
+                this.treeInfo.visible=true
+            })
+            
+        }
 	},
     components: {
         treeShow

@@ -49,7 +49,7 @@ const cdn = {
 // // 需要预渲染的路由
 // const prerenderRoutes = [ '/login']
 // 是否使用gzip
-const productionGzip = true
+const productionGzip = false
 // 需要gzip压缩的文件后缀
 const productionGzipExtensions = ['js', 'css']
 module.exports = {
