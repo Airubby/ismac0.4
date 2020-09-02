@@ -3,6 +3,7 @@
         <breadcrumb class="breadcrumb-container" />
         <el-input v-model="value" placeholder="请输入播放内容内容"></el-input>
         <el-button type="primary" @click="play()">语音播放内容</el-button>
+        <handle-btn @handleClick="testHandleTimeout" btnName="防抖动点击" :btnTimeout="2000"></handle-btn>
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item label="IP" prop="port">
                 <el-input v-model="form.port"></el-input>
@@ -56,6 +57,9 @@ export default {
         }
     },
 	methods: {
+        testHandleTimeout:function(){
+            console.log("延时点击有效哦")
+        },
         play:function(){
             let utterThis = new window.SpeechSynthesisUtterance();
             utterThis.text=this.value;

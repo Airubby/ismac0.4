@@ -43,7 +43,7 @@ function Decrypt(word, keyStr, ivStr) {
     var decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
     return decryptedStr.toString();
 }
-
+//时间格式化
 function Format(fmt,value){
   let date=value?new Date(value):new Date();
   let o = {
@@ -60,7 +60,29 @@ function Format(fmt,value){
       if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
   return fmt;
 }
-
+//获取时间前一段时间  json:{key:"标识",value:2}  标识：y年 m月 d日 h时；value给数字
+function GetBeforeDate(json,tdate){
+    let date=tdate?new Date(tdate):new Date();
+    if(json&&json.key){
+        switch (json.key) {
+            case "y":
+                date=new Date(date.setFullYear(date.getFullYear()-json.value));
+                break;
+            case "m":
+                date=new Date(date.setMonth(date.getMonth()-json.value));
+                break;
+            case "d":
+                date=new Date(date.setDate(date.getDate()-json.value));
+                break;
+            case "h":
+                date=new Date(date.setHours(date.getHours()-json.value));
+                break;
+            default:
+                break;
+        }
+    }
+    return date;
+}
 function arrayContains(v,arr){
   if(arr.indexOf(v)==-1){
     return false;
@@ -371,6 +393,7 @@ export default {
     Decrypt,
     arrayContains,
     Format,
+    GetBeforeDate,
     switcFullScreen,
     echartfn,
     exportFile,

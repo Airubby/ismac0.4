@@ -20,6 +20,9 @@ import Cookies from 'js-cookie'
 import elementEnLocale from 'element-ui/lib/locale/lang/en' // element-ui lang
 import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
 
+//加载全局组件
+import './components/Global/index.js'
+
 
 import '@/utils/directive'  //自定义指令
 
