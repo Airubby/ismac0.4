@@ -90,6 +90,40 @@ function arrayContains(v,arr){
     return true;
   }
 }
+/*
+普通列表转真树形结构
+listToTree(list,{idKey:"id",parentKey:"pid",childrenKey:"children"})
+ */
+function listToTree(data,option){
+    if(data&&data.length>0){
+        let options=option||{};
+        let ID_KEY=options.idKey||"id";
+        let PARENT_KEY=options.parentKey||"pid";
+        let CHILDREN_KEY=options.childrenKey||"children";
+        let tree=[],childrenOf={};
+        for(let i=0;i<data.length;i++){
+            var item,id,parentId;
+            item=data[i];
+            id=item[ID_KEY];
+            parentId=item[PARENT_KEY]||"0";
+            //每行数据都可能存在子类
+            childrenOf[id]=childrenOf[id]||[];
+            //初始化子类
+            item[CHILDREN_KEY]=childrenOf[id];
+            if(parentId!="0"){
+                //初始化其父的子节点
+                childrenOf[parentId]=childrenOf[parentId]||[];
+                //把它推到父类下的children
+                childrenOf[parentId].push(item);
+            }else{
+                tree.push(item);
+            }
+        }
+        return tree;
+    }else{
+        return [];
+    }
+}
 //全屏切换
 let isFullScreen=false;//是否是全屏状态
 function switcFullScreen(){
@@ -217,165 +251,6 @@ function wsConnection(sendMsg, callback,addr) {
       console.log(ex);
   }
 }
-function checkPORT(obj) {
-    console.log(obj);
-    // if (!obj.value) {
-    //     if(obj.rules.required){
-    //         obj.callback(new Error('不能为空'))
-    //     }else{
-    //         obj.callback()
-    //     }
-    // } else if (Math.round(Number(obj.value)) !== Number(obj.value)) {
-    //     obj.callback(new Error('必须为整数数字'))
-    // } else {
-    //     if(Number(obj.value)>65535||Number(obj.value)<1){
-    //         obj.callback("端口范围在1-65535之间")
-    //     }else{
-    //         obj.callback()
-    //     }
-    // }
-    //双语验证问题
-    if (!obj.value) {
-        if(obj.rules.required){
-            return 'hint.noEmpty';
-        }else{
-            return '';
-        }
-    } else if (Math.round(Number(obj.value)) !== Number(obj.value)) {
-        return 'hint.isInteger';
-    } else {
-        if(Number(obj.value)>65535||Number(obj.value)<1){
-            return 'hint.rangeInteger';
-        }else{
-            return '';
-        }
-    }
-}
-// function checkIP(obj) {
-//     if (!obj.value) {
-//         if(obj.rules.required){
-//             obj.callback(new Error('不能为空'))
-//         }else{
-//             obj.callback()
-//         }
-//     } else {
-//       var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
-//         if(reg.test(obj.value)){
-//             obj.callback()
-//         }else{
-//             obj.callback("ip格式错误")
-//         }
-//     }
-    
-// }
-function checkIP(obj) {
-    if (!obj.value) {
-        if(obj.rules.required){
-            return 'hint.noEmpty';
-        }else{
-            return '';
-        }
-    } else {
-      var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
-        if(reg.test(obj.value)){
-            return '';
-        }else{
-            return 'hint.formatErr';
-        }
-    }
-    
-}
-//身份证号验证
-function checkIDCard(obj) {
-    if (!obj.value) {
-        if(obj.rules.required){
-            return 'hint.noEmpty';
-        }else{
-            return '';
-        }
-    } else {
-      var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-        if(reg.test(obj.value)){
-            return '';
-        }else{
-            return 'hint.formatErr';
-        }
-    }
-    
-}
-function checkEMAIL(obj) {
-    if (!obj.value) {
-        if(obj.rules.required){
-            obj.callback(new Error('不能为空'))
-        }else{
-            obj.callback()
-        }
-    } else {
-      var reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-        if(reg.test(obj.value)){
-            obj.callback()
-        }else{
-            obj.callback("邮箱格式错误")
-        }
-    }
-    
-}
-function checkPHONE(obj) {
-    if (!obj.value) {
-        if(obj.rules.required){
-            obj.callback(new Error('不能为空'))
-        }else{
-            obj.callback()
-        }
-    } else {
-      var reg = /^1[345789]\d{9}$/
-        if(reg.test(obj.value)){
-            obj.callback()
-        }else{
-            obj.callback("手机格式错误")
-        }
-    }
-    
-}
-function checkNumber(obj) {
-    if (!obj.value) {
-        if(obj.rules.required){
-            obj.callback(new Error('不能为空'))
-        }else{
-            obj.callback()
-        }
-    } else {
-        //中文：var a=/[\u4e00-\u9fa5+！@#￥……&*（）——【】，；。？‘’“”]/;  
-        let regPos = /^\d+(\.\d+)?$/; //非负浮点数
-        //let regPos = /^[1-9]\d*$/;  //大于0的正整数
-        // let regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
-        // let regA=/(^[\-0-9][0-9]*(.[0-9]+)?)$/;  //正负整数，浮点数  /^(\-|\+)?\d+(\.\d+)?$/   /^[-+]?\d+(\.\d+)?$/
-        if(regPos.test(obj.value)){
-            obj.callback()
-        }else{
-            obj.callback('请输入正数数值')
-        }
-    }
-    
-}
-function checkPasspord(obj) {
-    if (!obj.value) {
-        if(obj.rules.required){
-            obj.callback(new Error('不能为空'))
-        }else{
-            obj.callback()
-        }
-    } else {
-        // let regPos= /^([a-z_A-Z-.+0-9]{6,20})$/;   //. - _ 也可以包含包含
-        let regPos = /^[A-Za-z0-9]{6,20}$/; 
-        ///[a-z]/.test(value) && /[A-Z]/.test(value) && /[0-9]/.test(value)&& value.length>7    包含数字字母大小写，且至少8位
-        if(regPos.test(obj.value)){
-            obj.callback()
-        }else{
-            obj.callback('密码6到20位且只能为数字和字母')
-        }
-    } 
-}
 //判断两个对象是否相等
 function equalsObj(objOne,objTwo){
     if(Object.keys(objOne).length!=Object.keys(objTwo).length){
@@ -394,17 +269,11 @@ export default {
     arrayContains,
     Format,
     GetBeforeDate,
+    listToTree,
     switcFullScreen,
     echartfn,
     exportFile,
     downFile,
     wsConnection,
-    checkPORT,
-    checkIP,
-    checkIDCard,
-    checkEMAIL,
-    checkPHONE,
-    checkNumber,
-    checkPasspord,
     equalsObj
 }

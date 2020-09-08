@@ -26,17 +26,29 @@
                         <el-button @click="resetForm()">重置(要给prop属性才可以重置)</el-button>
                     </el-form-item>
                 </el-form>
+                <div class="pt20">监听多个属性任意一个改变都去验证其它的属性问题；用computed中return多个属性，watch中this.$refs['ValidateForm'].validate();</div>
+                <div class="pt20">
+                    <h2>组件管道</h2>
+                    {{message | capitalize(thisVue)}}
+                </div>
+                <div class="pt20">
+                    <el-form :model="ValidateForm" :rules="rulesForm" ref="Form">
+                    <el-form-item prop="phone" label="手机验证">
+                        <el-input v-model="ValidateForm.phone"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="submitFormT()">提交</el-button>
+                    </el-form-item>
+                </el-form>
+                </div>
             </div>
-            <div>监听多个属性任意一个改变都去验证其它的属性问题；用computed中return多个属性，watch中this.$refs['ValidateForm'].validate();</div>
-            <div>
-                <h2>组件管道</h2>
-                {{message | capitalize(thisVue)}}
-            </div>
+            
         </div>
     </div>
 </template>
 
 <script>
+import Rules from "@/utils/Rules"
 export default {
     filters:{
         capitalize: function (value,_this) {
@@ -96,21 +108,39 @@ export default {
                 'other.domains[0].value':[
                     {required: true, message: '域名不能为空', trigger: 'blur'}
                 ]
+            },
+            ValidateForm:{
+                name:"",   
+            },
+            rulesForm:{
+                phone:[
+                    { required: true, trigger: ['blur', 'change'] ,reqMessage:"不能为空",ruleMessage:"手机格式错误",validator: Rules.checkPhone},
+                ],
             }
         }
     },
 	methods: {
+        submitFormT:function(){
+            this.$refs['Form'].validate((valid) => {
+                if (valid) {
+                    console.log(this.dynamicValidateForm)
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
         resetForm(formName) {
             this.$refs['ValidateForm'].resetFields();
         },
         submitForm(formName) {
             this.$refs['ValidateForm'].validate((valid) => {
-            if (valid) {
-                console.log(this.dynamicValidateForm)
-            } else {
-                console.log('error submit!!');
-                return false;
-            }
+                if (valid) {
+                    console.log(this.dynamicValidateForm)
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
             });
         },
 	},

@@ -7,7 +7,9 @@
             </el-breadcrumb>
         </div>
         <div class="public_content">
-            报表计划
+            <h2>list树形列表转真树形结构</h2>
+            <div style="margin:30px 0;">{{data}}</div>
+            <div>{{tree}}</div>
         </div>
     </div>
 </template>
@@ -18,11 +20,18 @@ export default {
         
     },
     mounted() {
-        
+        this.tree=this.$tool.listToTree(JSON.parse(JSON.stringify(this.data)))
     },
     data(){
         return{
-            
+            data:[
+                {id:"10",name:"类1",pid:"0"},
+                {id:"20",name:"类2",pid:"0"},
+                {id:"110",name:"类11",pid:"10"},
+                {id:"210",name:"类21",pid:"20"},
+                {id:"310",name:"类321",pid:"210"},
+            ],
+            tree:[]
         }
     },
 	methods: {

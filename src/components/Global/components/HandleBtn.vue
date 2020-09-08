@@ -1,11 +1,15 @@
 <template>
-    <el-button type="primary" @click="handleClick" :disabled="handleLoading">{{btnName}}</el-button>
+    <el-button :type="btnType" @click="handleClick" :disabled="handleLoading">{{btnName}}</el-button>
 </template>
 
 <script>
 
 export default {
     props:{
+        btnType:{
+            type:String,
+            default:"primary"
+        },
         btnName:{
             type:String,
             default:"确定"
