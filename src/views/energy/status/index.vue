@@ -32,6 +32,7 @@
                     {{message | capitalize(thisVue)}}
                 </div>
                 <div class="pt20">
+                    <h2>webSocket及验证封装</h2>
                     <el-form :model="ValidateForm" :rules="rulesForm" ref="Form">
                     <el-form-item prop="phone" label="手机验证">
                         <el-input v-model="ValidateForm.phone"></el-input>
@@ -42,14 +43,18 @@
                 </el-form>
                 </div>
             </div>
-            
         </div>
+        <webSocket :wsInfo="wsData" :sendInfo='{cmd:"subdata",returnFn:true,changeSend:true}' @backInfo="backInfo"></webSocket>
     </div>
 </template>
 
 <script>
 import Rules from "@/utils/Rules"
+import webSocket from "@/components/webSocket"
 export default {
+    components: {
+        webSocket
+    },
     filters:{
         capitalize: function (value,_this) {
             if (!value) return ''
@@ -61,7 +66,7 @@ export default {
         
     },
     mounted() {
-        
+        this.wsData=[{"devid":"01"}]
     },
     computed:{
         email:function(){
@@ -110,13 +115,14 @@ export default {
                 ]
             },
             ValidateForm:{
-                name:"",   
+                phone:"",   
             },
             rulesForm:{
                 phone:[
                     { required: true, trigger: ['blur', 'change'] ,reqMessage:"不能为空",ruleMessage:"手机格式错误",validator: Rules.checkPhone},
                 ],
-            }
+            },
+            wsData:[]
         }
     },
 	methods: {
@@ -143,10 +149,10 @@ export default {
                 }
             });
         },
+        backInfo:function(info){
+            console.log(info)
+        }
 	},
-    components: {
-        
-    },
     watch:{
         //computed 中的email函数的值变化
         email:function(val){
@@ -155,6 +161,9 @@ export default {
         //监听多个属性任意一个改变都去验证其它的属性问题；
         changeValue:function(val){
             this.$refs['ValidateForm'].validate();
+        },
+        'ValidateForm.phone':function(val){
+            this.wsData=[{devid:"01",pointid:val}]
         }
     },
 }

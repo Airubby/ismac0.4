@@ -1,5 +1,4 @@
 <template>
-    <span></span>
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -47,6 +46,7 @@ export default {
     },
     data() {
         return {
+            timeout:1000,  //连接异常 每个多久重发一次
             sendFlag:true,
             sInfo:{
                 cmd:'',
@@ -66,7 +66,7 @@ export default {
                     if(this.sendFlag){
                         this.send();
                     }
-                },1000)
+                },this.timeout)
             }
             
         },
@@ -92,10 +92,10 @@ export default {
         }
     },
     watch:{
-        wsInfo:function(){
+        wsInfo:function(val){
             //changeSend为true 只要wsInfo改变了就发送，第一次连接的时候也改变了，发送；
             if(this.sendInfo.changeSend){
-                this.handleInfo();
+                this.handleInfo(val);
             }
         },
         getWSData: function(val) { 

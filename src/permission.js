@@ -5,7 +5,7 @@ import store from '@/store/index'
 // import 'nprogress/nprogress.css'// Progress 进度条样式
 import { Loading } from 'element-ui'
 import request from './utils/request'
-import tool from './utils/tool'
+import {Decrypt} from './utils/AEScrypt'
 import './utils/mock.js'  //测试接口 
 
 routerGo();
@@ -23,8 +23,8 @@ function filterAsyncRouter(url, roles) {
 }
 function getInfo(){  //刷新页面重新获取权限
     return new Promise(function(resolve, reject){
-        console.log(tool.Decrypt(sessionStorage.roleid))
-        request.get('/getLimit',{"roleid":tool.Decrypt(sessionStorage.roleid)},res=>{
+        console.log(Decrypt(sessionStorage.roleid))
+        request.get('/getLimit',{"roleid":Decrypt(sessionStorage.roleid)},res=>{
             if(res.err_code=="0"){
                 if(res.data.length>0){
                     store.dispatch('setAuthInfo',res.data);
@@ -45,7 +45,6 @@ async function routerGo(){
     if(sessionStorage.roleid){
         await getInfo();
     }
-    console.log(11111111111)
     router.beforeEach((to, from, next) => {
         // NProgress.start()
         const whiteList = ['/login','/401','/404','/bigHome','/test'] // 不重定向白名单

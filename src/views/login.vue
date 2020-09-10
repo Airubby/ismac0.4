@@ -22,6 +22,7 @@
 
 <script>
 import request from '@/utils/request'
+import {Encrypt,Decrypt} from '@/utils/AEScrypt'
 export default {
 	created () {
 		this.$store.dispatch('setInfoFlag',true);
@@ -71,30 +72,36 @@ export default {
 		loginIn:function(){
 			this.$refs['form'].validate((valid) => {
 				if(valid){
-					
 					let a="tKb634uLRuFdugF0P01eKw=="
-					console.log(this.$tool.Decrypt(a))
-					this.user.psword=this.$tool.Encrypt(this.user.psword);
-					this.$r.post('/login', this.user, r => {
-						console.log(r);
-						this.$message.success(r.msg);
-						sessionStorage.roleid=this.$tool.Encrypt(r.data.roleid);  //刷新页面的时候用userid获取权限问题；
-						this.getLimit(r.data.roleid)  //获取权限
-						sessionStorage.loginInfo= JSON.stringify(r.data);
-						// var date=new Date();
-						// var expiresDays=10;
-						// //将date设置为10天以后的时间
-						// date.setTime(date.getTime()+expiresDays*24*3600*1000);
-						// //将userId和userName两个cookie设置为10天后过期
-						// document.cookie=" userid="+this.user.userid+"; expires="+date.toGMTString();
-						// this.$router.push({path:'/'});
-						// if(r.err_code=="0"){
+					console.log(Decrypt(a))
+					this.user.psword=Encrypt(this.user.psword);
+					this.$api.post("/login",this.user,{text:"登录信息提交中..."}).then(res=>{
+						console.log(res)
+						this.$message.success(res.msg);
+						sessionStorage.roleid=Encrypt(res.data.roleid);  //刷新页面的时候用userid获取权限问题；
+						this.getLimit(res.data.roleid)  //获取权限
+						sessionStorage.loginInfo= JSON.stringify(res.data);
+					})
+					// this.$r.post('/login', this.user, r => {
+					// 	console.log(r);
+					// 	this.$message.success(r.msg);
+					// 	sessionStorage.roleid=Encrypt(r.data.roleid);  //刷新页面的时候用userid获取权限问题；
+					// 	this.getLimit(r.data.roleid)  //获取权限
+					// 	sessionStorage.loginInfo= JSON.stringify(r.data);
+					// 	// var date=new Date();
+					// 	// var expiresDays=10;
+					// 	// //将date设置为10天以后的时间
+					// 	// date.setTime(date.getTime()+expiresDays*24*3600*1000);
+					// 	// //将userId和userName两个cookie设置为10天后过期
+					// 	// document.cookie=" userid="+this.user.userid+"; expires="+date.toGMTString();
+					// 	// this.$router.push({path:'/'});
+					// 	// if(r.err_code=="0"){
 							
-						// }else{
-						// 	this.$refs.psinput.focus();
-						// 	this.$message.error(r.err_msg);
-						// }
-					});
+					// 	// }else{
+					// 	// 	this.$refs.psinput.focus();
+					// 	// 	this.$message.error(r.err_msg);
+					// 	// }
+					// });
 				}
 			});
 		},
@@ -110,12 +117,10 @@ export default {
 			});
 		},
 		getLimit:function(id){
-			this.$r.get('/getLimit', {roleid:id}, r => {
-				console.log(r);
-				
-				if(r.err_code=="0"){
-					if(r.data.length>0){
-						this.$store.dispatch('setAuthInfo',r.data);
+			this.$api.get("/getLimit",{roleid:id},{text:"权限信息获取中...",isLoading:false}).then(res=>{
+				if(res.err_code=="0"){
+					if(res.data.length>0){
+						this.$store.dispatch('setAuthInfo',res.data);
 						this.$router.push({path:'/loncom'});
 					}else{
 						console.log("没有任何权限，跳转到没有任何权限的页面")
@@ -124,7 +129,21 @@ export default {
 				}else{
 					this.$message.error(r.err_msg);
 				}
-			});
+			})
+			// this.$r.get('/getLimit', {roleid:id}, r => {
+			// 	console.log(r);
+			// 	if(r.err_code=="0"){
+			// 		if(r.data.length>0){
+			// 			this.$store.dispatch('setAuthInfo',r.data);
+			// 			this.$router.push({path:'/loncom'});
+			// 		}else{
+			// 			console.log("没有任何权限，跳转到没有任何权限的页面")
+			// 			this.$router.push({path:'/login'});
+			// 		}
+			// 	}else{
+			// 		this.$message.error(r.err_msg);
+			// 	}
+			// });
 		},
 		
 	},

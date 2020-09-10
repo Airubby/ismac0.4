@@ -1,50 +1,9 @@
 import echarts from 'echarts'
-import CryptoJS from 'crypto-js/crypto-js'
 import Vue from 'vue'
 import axios from 'axios'
 
-// 默认的 KEY 与 iv 如果没有给
-const KEY = "loncom";//""中与后台一样  密码
-const keySize=128;
-const fillKey = (key) => { 
-    const filledKey = Buffer.alloc(keySize / 8); 
-    const keys = Buffer.from(key); 
-    if (keys.length < filledKey.length) { 
-        filledKey.map((b, i) => filledKey[i] = keys[i]); 
-    }
-    return filledKey; 
-}
-/**
- * AES加密 ：字符串 key iv  返回base64
- */
-function Encrypt(word, keyStr) {
-    let key = keyStr ? CryptoJS.enc.Utf8.parse(fillKey(keyStr)):CryptoJS.enc.Utf8.parse(fillKey(KEY));
-    let srcs = CryptoJS.enc.Utf8.parse(word);
-    var encrypted = CryptoJS.AES.encrypt(srcs, key, {
-        mode: CryptoJS.mode.ECB,  //mode 为ECB  不需要iv
-        padding: CryptoJS.pad.Pkcs7
-    });
-    // console.log("-=-=-=-", encrypted.ciphertext)
-    return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
-}
-
-/**
- * AES 解密 ：字符串 key iv  返回base64
- *
- */
-function Decrypt(word, keyStr, ivStr) {
-    let key = keyStr ? CryptoJS.enc.Utf8.parse(fillKey(keyStr)):CryptoJS.enc.Utf8.parse(fillKey(KEY));
-    let base64 = CryptoJS.enc.Base64.parse(word);
-    let src = CryptoJS.enc.Base64.stringify(base64);
-    var decrypt = CryptoJS.AES.decrypt(src, key, {
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.Pkcs7
-    });
-    var decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
-    return decryptedStr.toString();
-}
 //时间格式化
-function Format(fmt,value){
+function FormatDate(fmt,value){
   let date=value?new Date(value):new Date();
   let o = {
       "M+": date.getMonth() + 1, //月份 
@@ -221,36 +180,6 @@ function downFile(fileUrl){
         document.body.removeChild(link);
     })
 }
-function wsConnection(sendMsg, callback,addr) {
-  try {
-      //var SOCKECT_ADDR = "ws://" + url +":"+ port;
-      //let host=window.document.location.host;
-      //let SOCKECT_ADDR=addr?addr:"ws://"+host+"/ws"
-      let SOCKECT_ADDR=addr?addr:"ws://echo.websocket.org"
-      let ws = new WebSocket(SOCKECT_ADDR);
-      Vue.prototype.$ws=ws;
-      ws.onopen = function (event) {
-        //   console.log(event)
-          console.log("已经与服务器建立了连接\r\n当前连接状态：" + event);
-          if(sendMsg!=""){
-            ws.send(sendMsg);
-          }
-          
-      };
-    
-      ws.onmessage = callback;
-      ws.onclose = function (event) {
-        // console.log(event)
-      };
-      ws.onerror = function (event) {
-        console.log("WebSocket异常！" + event.toString());
-      };
-      Vue.prototype.$ws=ws;
-
-  } catch (ex) {
-      console.log(ex);
-  }
-}
 //判断两个对象是否相等
 function equalsObj(objOne,objTwo){
     if(Object.keys(objOne).length!=Object.keys(objTwo).length){
@@ -264,16 +193,13 @@ function equalsObj(objOne,objTwo){
     return true;
 }
 export default {
-    Encrypt,
-    Decrypt,
     arrayContains,
-    Format,
+    FormatDate,
     GetBeforeDate,
     listToTree,
     switcFullScreen,
     echartfn,
     exportFile,
     downFile,
-    wsConnection,
     equalsObj
 }

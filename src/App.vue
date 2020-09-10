@@ -13,9 +13,11 @@
 // import store from './store'
 import store from './store/index'
 import Vue from 'vue'
+import webSocket from "@/utils/webSocket"
 import { mapGetters } from 'vuex'
   export default {
-    name: 'app',
+	name: 'app',
+	mixins:[webSocket],
     provide(){
       return{
         reload:this.reload
@@ -35,7 +37,6 @@ import { mapGetters } from 'vuex'
     },
     mounted() {
         this.switchTheme(this.$theme)
-        this.getWebSocket()
     },
     data(){
       return{
@@ -44,18 +45,6 @@ import { mapGetters } from 'vuex'
       }
     },
     methods:{
-        getWebSocket:function(){
-            if(!this.$ws||this.$ws.readyState!=1){
-                this.$tool.wsConnection("",function(result){
-                    console.log(result)
-                    // store.dispatch('setwsData',eval(result.data));
-                })
-            }
-            //每隔一段时间检测一下是否连上webSocket
-            setTimeout(()=>{
-                this.getWebSocket();
-            },10000)
-        },
         routerLoading:function(){
             this.loading=false;
         },

@@ -5,6 +5,7 @@ import App from '@/App.vue'
 import {router} from '@/router/index'
 import store from '@/store/index'
 import request from '@/utils/request'
+import newRequest from '@/utils/newRequest'
 
 // import 'element-ui/lib/theme-chalk/index.css'
 import ElTablePagination from 'el-table-pagination'
@@ -47,7 +48,7 @@ Vue.use(breadcrumb)
 
 
 // 将API方法绑定到全局
-// Vue.prototype.$api = api
+Vue.prototype.$api = newRequest
 Vue.prototype.$r=request
 
 //绑定工具函数到全局
@@ -68,14 +69,18 @@ function getServerConfig() {
     axios.get('/serverConfig.json').then((result) => {
       console.log(result)
       let config = result.data;
-      let ajaxUrl = process.env.NODE_ENV == 'production' ? config.production:config.develop;
+      // let ajaxUrl = process.env.NODE_ENV == 'production' ? config.production:config.develop;
+      let reqcon=config.reqConnection;
+      let website=reqcon.website,port=reqcon.port?reqcon.port:80,postfix=reqcon.postfix;
+      if(reqcon.website==""||reqcon.website.indexOf("127.0.0.1")!=-1||reqcon.website.indexOf("localhost")!=-1){
+        website=window.document.location.origin;
+      }
+      let ajaxUrl=website+":"+port+postfix;
       Vue.prototype.$ajaxUrl=ajaxUrl;
-      Vue.prototype.$wsAddr=config.wsAddr;
+      Vue.prototype.$webSocket=config.webSocket;
       store.dispatch('setAjaxUrl',ajaxUrl);
       store.dispatch('setLanguage',Cookies.get('language') || config.language);
       Vue.prototype.$theme = sessionStorage.getItem("theme") || config.theme || 'default';
-      
-      
       const enLocale=config.enLang
       const zhLocale=config.zhLang
       Vue.use(VueI18n)
