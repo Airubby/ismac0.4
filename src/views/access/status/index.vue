@@ -1,68 +1,4 @@
 <template>
-    <!-- <div class="bgfffcontent">
-        <div class="breadcrumb">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{$t("navbar.access")}}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{$t("navbar.accessStatus")}}</el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
-        <div class="public_content">
-            <el-scrollbar class="scrollbar">
-                <el-row>
-                    <el-col :span="8">
-                        <div class="lc-data-con">
-                            <span class="lc-data-title">接入设备总数</span>
-                            <div class="lc-data-value"><span class="dataValue">8</span>个</div>
-                        </div>
-                    </el-col>
-                    <el-col :span="8">
-                        <div class="lc-data-con">
-                            <span class="lc-data-title">告警中的设备</span>
-                            <div class="lc-data-value"><span class="dataValue">8</span>个</div>
-                        </div>
-                    </el-col>
-                    <el-col :span="8">
-                        <div class="lc-data-con last-con">
-                            <span class="lc-data-title">通讯不上的设备</span>
-                            <div class="lc-data-value"><span class="dataValue">8</span>个</div>
-                        </div>
-                    </el-col>
-                </el-row>
-                <div class="color-mg20"></div>
-                <div class="pd20 ">
-                    <div class="card_title">
-                        <span>门状态</span>
-                        <div style="width:150px" class="fr">
-                            <el-select v-model="initParams.type" :placeholder='$t("hint.select")'>
-                                <el-option label="23" value="shanghai"></el-option>
-                                <el-option label="234" value="beijing"></el-option>
-                            </el-select>
-                        </div>
-                    </div>
-                    <el-table-pagination
-                        :url="$ajaxUrl+'/testpostTable'"
-                        list-field="data" 
-                        total-field="total"
-                        method='post' 
-                        :showPagination="true"
-                        :params="initParams"
-                        :columns="table_columns" ref="thisRef">   
-                        <template slot-scope="scope" slot="preview-handle">
-                            <p class="table_handle"><span @click="openDoor(scope.row)">开门</span><span @click="closeDoor(scope.row)">关门</span></p>
-                        </template>
-                    </el-table-pagination>
-                    <el-tabs v-model="activeName">
-                        <el-tab-pane label="进出记录" name="first">
-                            <record></record>
-                        </el-tab-pane>
-                        <el-tab-pane label="异常事件" name="second">
-                            <event></event>
-                        </el-tab-pane>
-                    </el-tabs>
-                </div>
-            </el-scrollbar>
-        </div>
-    </div> -->
     <app-con>
         <el-row>
             <el-col :span="8">
@@ -87,44 +23,29 @@
         <div class="color-mg20"></div>
         <div class="pd20 ">
             <div class="card_title">
-                <span>门状态</span>
+                <span>动态组件切换</span>
                 <div style="width:150px" class="fr">
                     <el-select v-model="initParams.type" :placeholder='$t("hint.select")'>
-                        <el-option label="23" value="shanghai"></el-option>
-                        <el-option label="234" value="beijing"></el-option>
+                        <el-option label="event组件" value="event"></el-option>
+                        <el-option label="record组件" value="record"></el-option>
                     </el-select>
                 </div>
             </div>
-            <el-table-pagination
-                :url="$ajaxUrl+'/testpostTable'"
-                list-field="data" 
-                total-field="total"
-                method='post' 
-                :showPagination="true"
-                :params="initParams"
-                :columns="table_columns" ref="thisRef">   
-                <template slot-scope="scope" slot="preview-handle">
-                    <p class="table_handle"><span @click="openDoor(scope.row)">开门</span><span @click="closeDoor(scope.row)">关门</span></p>
-                </template>
-            </el-table-pagination>
-            <el-tabs v-model="activeName">
-                <el-tab-pane label="进出记录" name="first">
-                    <record></record>
-                </el-tab-pane>
-                <el-tab-pane label="异常事件" name="second">
-                    <event></event>
-                </el-tab-pane>
-            </el-tabs>
+            <div>
+                <component is="currentTabComponent"></component>
+            </div>
         </div>
     </app-con>
 </template>
 
 <script>
-import event from './event.vue'
-import record from './record.vue'
+import Vue from 'vue'
 export default {
-    created() {
+    components: {
         
+    },
+    created() {
+        this.getComponent()
     },
     mounted() {
         
@@ -133,7 +54,7 @@ export default {
         return{
             activeName:'first',
             initParams:{
-                type:"",
+                type:"event",
             },
             table_columns:[
               { prop: 'code', label: '编号',minWidth:10},
@@ -146,29 +67,26 @@ export default {
         }
     },
 	methods: {
-        openDoor:function(row){
-            this.$r.get("/open",{model:{id:row.id}},r=>{
-                console.log(r)
-                if(r.err_code=='0'){
-                    this.$message.success(r.err_msg);
-                }else{
-                    this.$message.warning(r.err_msg);
-                }
-            })
-        },
-        closeDoor:function(row){
-            this.$r.get("/close",{model:{id:row.id}},r=>{
-                console.log(r)
-                if(r.err_code=='0'){
-                    this.$message.success(r.err_msg);
-                }else{
-                    this.$message.warning(r.err_msg);
-                }
-            })
-        },
-	},
-    components: {
-        event,record
+        getComponent(){
+            let _this=this;
+            // Vue.component('currentTabComponent', function (resolve) {
+            //     // 这个特殊的 `require` 语法将会告诉 webpack
+            //     // 自动将你的构建代码切割成多个包，这些包
+            //     // 会通过 Ajax 请求加载
+            //     require(['./'+_this.initParams.type], resolve)
+            // })
+            Vue.component(
+                'currentTabComponent',
+                // 这个动态导入会返回一个 `Promise` 对象。
+                () => import('./'+_this.initParams.type)
+            )
+        }
+    },
+    watch:{
+        'initParams.type':function(val){
+            this.getComponent();
+        }
     }
+    
 }
 </script>
