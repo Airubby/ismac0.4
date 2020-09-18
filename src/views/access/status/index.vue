@@ -31,8 +31,9 @@
                     </el-select>
                 </div>
             </div>
+            <h4><component :is="currentTabComponent"></component></h4>
             <div>
-                <component is="currentTabComponent"></component>
+                <component :is="currentComponent"></component>
             </div>
         </div>
     </app-con>
@@ -40,6 +41,8 @@
 
 <script>
 import Vue from 'vue'
+import axios from 'axios'
+const compiler = require('vue-template-compiler')
 export default {
     components: {
         
@@ -64,9 +67,22 @@ export default {
               { prop: 'handle', label: '操作',slotName:'preview-handle',width:150},
             ],
             table_data:[],
+            temp:'',
+            currentComponent:null,
+            currentTabComponent:null
         }
     },
 	methods: {
+        getTemplate:function(){
+            return new Promise ((resolve, reject) => {
+                axios.get('/template/event.vue').then((result) => {
+                    this.temp = result.data;
+                    resolve();
+                }).catch((error) => {
+                    reject()
+                })
+            })
+        },
         getComponent(){
             let _this=this;
             // Vue.component('currentTabComponent', function (resolve) {
@@ -75,11 +91,59 @@ export default {
             //     // 会通过 Ajax 请求加载
             //     require(['./'+_this.initParams.type], resolve)
             // })
-            Vue.component(
-                'currentTabComponent',
+            this.currentComponent=Vue.component(
+                'currentComponent',
                 // 这个动态导入会返回一个 `Promise` 对象。
-                () => import('./'+_this.initParams.type)
+                () => import(`./${_this.initParams.type}`)
             )
+
+            new Promise ((resolve, reject) => {
+                this.currentTabComponent=null;
+                this.temp=null;
+                axios.get(`/template/${this.initParams.type}.js`).then((result) => {
+                    this.temp = result.data;
+                    resolve();
+                }).catch((error) => {
+                    reject()
+                })
+            }).then(()=>{
+                if(this.temp){
+                    let r=compiler.compile(this.temp)
+                    console.log(r)
+                    this.currentTabComponent=Vue.component('currentTabComponent',{
+                        render:new Function(this.temp),
+                        data(){
+                            return{
+                                test:`动态组件${_this.initParams.type}：点击我看打印有事件哦`
+                            }
+                        },
+                        methods:{
+                            clickFn(){
+                                console.log("事件点击了！！！")
+                            }
+                        }
+                    }) 
+                    // let temp="<div @click='clickFn()'>{{test}}</div>";
+                    // let r=compiler.compile(temp);
+                    // console.log(r)
+                    // this.currentTabComponent=Vue.component('currentTabComponent',{
+                    //     render:new Function(r.render),
+                    //     data(){
+                    //         return{
+                    //             test:"动态组件噢噢噢噢"
+                    //         }
+                    //     },
+                    //     methods:{
+                    //         clickFn(){
+                    //             console.log("事件点击了！！！")
+                    //         }
+                    //     }
+                    // })
+                }
+            });
+
+
+            
         }
     },
     watch:{
