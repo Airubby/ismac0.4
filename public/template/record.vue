@@ -15,11 +15,7 @@
         </el-table-pagination>
     </div>
 </template>
-<style lang="less" scoped>
-    .bgfffcontent{
-        color: #666;
-    }
-</style>
+
 <script>
 export default {
     created() {
@@ -41,7 +37,10 @@ export default {
             table_columns:[
               { prop: 'code', label: '时间',minWidth:10},
               { prop: 'type', label: '事件',minWidth:10},
-              { prop: 'timegroup', label: '位置',minWidth:10},
+              { prop: 'user', label: '方向',minWidth:10},
+              { prop: 'indate', label: '卡号',minWidth:10},
+              { prop: 'timegroup', label: '人员',minWidth:10},
+              { prop: 'jieru', label: '位置',minWidth:10},
             ],
             table_data:[],
         }

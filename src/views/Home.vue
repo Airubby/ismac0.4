@@ -124,7 +124,7 @@
     }
 </style>
 <script>
-import  Sidebar from '@/components/sidebar/index.vue'
+import  Sidebar from '@/components/sideBar/index.vue'
 import { mapGetters } from 'vuex'
 import Cookies from 'js-cookie'
 export default {

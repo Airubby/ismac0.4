@@ -21,7 +21,7 @@
     }
 </style>
 <script>
-export default {
+module.exports = {
     created() {
         
     },
