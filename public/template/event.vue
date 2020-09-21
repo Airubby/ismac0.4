@@ -15,11 +15,7 @@
         </el-table-pagination>
     </div>
 </template>
-<style lang="less" scoped>
-    .bgfffcontent{
-        color: #666;
-    }
-</style>
+
 <script>
 module.exports = {
     created() {
