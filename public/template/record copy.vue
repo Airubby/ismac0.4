@@ -23,7 +23,7 @@
         <div class="color-mg20"></div>
         <div class="pd20 ">
             <div class="card_title">
-                <span class="coma"><span class="comp">动态组件切换</span></span>
+                <span>动态组件切换</span>
                 <div style="width:150px" class="fr">
                     <el-select v-model="initParams.type" :placeholder='$t("hint.select")'>
                         <el-option label="event组件" value="event"></el-option>
@@ -31,24 +31,17 @@
                     </el-select>
                 </div>
             </div>
+            <h4><component :is="currentTabComponent"></component></h4>
             <div>
                 <component :is="currentComponent"></component>
-                <!-- <DynamicComponent :pathUrl="`@/views/access/status/${initParams.type}.vue`" pathType="local"></DynamicComponent> -->
             </div>
             <div>
-                <!-- <DynamicComponent :pathUrl="`/template/${initParams.type}.vue`"></DynamicComponent> -->
-                <component :is="currentTabComponent" :data="initParams" url="/template"></component>
+                <component :is="allComponent"></component>
             </div>
         </div>
     </app-con>
 </template>
-<style lang="less" scoped>
-    .coma{
-        .comp{
-            color: #f00;
-        }
-    }
-</style>
+
 <script>
 import Vue from 'vue'
 import axios from 'axios'
@@ -64,14 +57,12 @@ const tagToUuid = (tpl, id) => {
         return $1.replace(/<([\w\-]+)/i, ($2, $3) => `<${$3} data-u-${id}`)  
     })
 }
-const formatStyle = (sty, css, componentId) => {  
+const formatStyl = (sty, css, componentId) => {  
+    debugger
     let cssText = css  
     if (sty.scoped) {    
-        console.log(css)
-        cssText = css.css.replace(/[\.\w\>\s]+{/g, $1 => { 
-            console.log($1.replace(/\s+>>>/, `[data-u-${componentId}]`))     
-            if (/>>>/.test($1)) return $1.replace(/\s+>>>/, `[data-u-${componentId}]`)   
-            console.log($1.replace(/\s+{/g, $2 => `[data-u-${componentId}]${$2}`))   
+        cssText = css.replace(/[\.\w\>\s]+{/g, $1 => {      
+        if (/>>>/.test($1)) return $1.replace(/\s+>>>/, `[data-u-${componentId}]`)      
             return $1.replace(/\s+{/g, $2 => `[data-u-${componentId}]${$2}`)    
         })  
     }  
@@ -86,13 +77,19 @@ const $require = (filepath, scriptContext) => {
     eval(code)  
     return module.exports
 }
-import DynamicComponent from '@/components/DynamicComponent'
 export default {
     components: {
-        DynamicComponent
+        
     },
     created() {
         this.getComponent()
+        // (
+        //     function(
+        //     $require,module,exports,__dirname,filename)
+        //     {
+        //         $[code]
+        //     })
+        // ($require,module,exports,__dirname,filename)
     },
     mounted() {
         
@@ -122,21 +119,21 @@ export default {
             // 生成data-u-id 
             const componentId = uuid(8, 16).toLocaleLowerCase();
             const template = sfc.template ? tagToUuid(sfc.template.content, componentId) : '' 
-            // const template = sfc.template;
             // 转化style（less、sass、stylus）  
             let styles = []  
+            debugger
             sfc.styles.forEach(sty => {    
                 switch (sty.lang) {      
-                    case 'stylus':        
-                        stylus.render(sty.content, (err, css) => styles.push(formatStyle(sty, css, componentId)))        
-                        break;      
-                    case 'sass':      
-                    case 'scss':        
-                        styles.push(formatStyle(sty, sass.renderSync({ data: sty.content }).css.toString(), componentId))        
-                        break;      
-                    case 'less':        
-                        less.render(sty.content, (err, css) => styles.push(formatStyle(sty, css, componentId)))        
-                        break;    
+                case 'stylus':        
+                    stylus.render(sty.content, (err, css) => styles.push(formatStyl(sty, css, componentId)))        
+                    break;      
+                case 'sass':      
+                case 'scss':        
+                    styles.push(formatStyl(sty, sass.renderSync({ data: sty.content }).css.toString(), componentId))        
+                    break;      
+                case 'less':        
+                    less.render(sty.content, (err, css) => styles.push(formatStyl(sty, css, componentId)))        
+                    break;    
                 }  
             })  
             let options = {    
@@ -144,7 +141,25 @@ export default {
                 styles,    
                 template  
             }  
+            debugger
             return options
+            // return JSON.stringify(options, (k, v) => {
+            //     if(typeof(v) === 'function') {
+            //         let _fn = v.toString()
+            //         return /^function()/.test(_fn) ? _fn : fn.replace(/^/,'function ')
+            //     }
+            //     return v
+            // })
+        },
+        getTemplate:function(){
+            return new Promise ((resolve, reject) => {
+                axios.get('/template/event.vue').then((result) => {
+                    this.temp = result.data;
+                    resolve();
+                }).catch((error) => {
+                    reject()
+                })
+            })
         },
         getComponent(){
             let _this=this;
@@ -157,7 +172,7 @@ export default {
             this.currentComponent=Vue.component(
                 'currentComponent',
                 // 这个动态导入会返回一个 `Promise` 对象。
-                () => import(`@/views/access/status/${_this.initParams.type}.vue`)
+                () => import(`./${_this.initParams.type}`)
             )
 
             new Promise ((resolve, reject) => {
@@ -172,30 +187,19 @@ export default {
                 })
             }).then(()=>{
                 if(this.temp){
+                    console.log(this.temp)
                     let r=this.getComponentOption(this.temp)
-                    let temp=compiler.compile(r.template)  //编译成render函数
-                    let styleDom=document.createElement("style");
-                    let str=r.styles[0];
-                    styleDom.type="text/css";
-                    styleDom.appendChild(document.createTextNode(str)) 
-                    document.getElementsByTagName("head")[0].appendChild(styleDom);
+                    console.log(r)
+                    let temp=compiler.compile(r.template)
                     this.currentTabComponent=Vue.component('currentTabComponent',{
-                        render:new Function(temp.render),
+                        render:r.template.content,
                         ...r.script
                     }) 
-
-                    // let temp="<div @click='clickFn()' class='ac'><span class='aaa'>{{test}}</span></div>";
-                    // const componentId = uuid(8, 16).toLocaleLowerCase();
-                    // temp = tagToUuid(temp, componentId)
-                    // let styleDom=document.createElement("style");
-                    // let str=".ac[data-u-"+componentId+"] .aaa[data-u-"+componentId+"]{color:#f00}";
-                    // styleDom.type="text/css";
-                    // styleDom.appendChild(document.createTextNode(str)) 
-                    // document.getElementsByTagName("head")[0].appendChild(styleDom);
-                    // let rt=compiler.compile(temp);
-                    // console.log(rt)
+                    // let temp="<div @click='clickFn()'>{{test}}</div>";
+                    // let r=compiler.compile(temp);
+                    // console.log(r)
                     // this.currentTabComponent=Vue.component('currentTabComponent',{
-                    //     render:new Function(rt.render),
+                    //     render:new Function(r.render),
                     //     data(){
                     //         return{
                     //             test:"动态组件噢噢噢噢"
@@ -207,9 +211,22 @@ export default {
                     //         }
                     //     },
                     // })
-
                 }
             });
+
+            let temp=``;
+            
+            return new Promise ((resolve, reject) => {
+                axios.get('/template/event.vue').then((result) => {
+                    console.log(result)
+                    let r=compiler.parseComponent(result.data);
+            console.log(r)
+                    resolve();
+                }).catch((error) => {
+                    reject()
+                })
+            })
+            
         }
     },
     watch:{

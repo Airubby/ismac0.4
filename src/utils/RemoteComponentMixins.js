@@ -1,55 +1,3 @@
-<template>
-    <app-con>
-        <el-row>
-            <el-col :span="8">
-                <div class="lc-data-con">
-                    <span class="lc-data-title">接入设备总数</span>
-                    <div class="lc-data-value"><span class="dataValue">8</span>个</div>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="lc-data-con">
-                    <span class="lc-data-title">告警中的设备</span>
-                    <div class="lc-data-value"><span class="dataValue">8</span>个</div>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="lc-data-con last-con">
-                    <span class="lc-data-title">通讯不上的设备</span>
-                    <div class="lc-data-value"><span class="dataValue">8</span>个</div>
-                </div>
-            </el-col>
-        </el-row>
-        <div class="color-mg20"></div>
-        <div class="pd20 ">
-            <div class="card_title">
-                <span class="coma"><span class="comp">动态组件切换</span></span>
-                <div style="width:150px" class="fr">
-                    <el-select v-model="initParams.type" :placeholder='$t("hint.select")'>
-                        <el-option label="event组件" value="event"></el-option>
-                        <el-option label="record组件" value="record"></el-option>
-                    </el-select>
-                </div>
-            </div>
-            <div>
-                <component :is="currentComponent"></component>
-                <!-- <DynamicComponent :pathUrl="`@/views/access/status/${initParams.type}.vue`" pathType="local"></DynamicComponent> -->
-            </div>
-            <div>
-                <!-- <DynamicComponent :pathUrl="`/template/${initParams.type}.vue`"></DynamicComponent> -->
-                <component :is="currentTabComponent" :data="initParams" url="/template"></component>
-            </div>
-        </div>
-    </app-con>
-</template>
-<style lang="less" scoped>
-    .coma{
-        .comp{
-            color: #f00;
-        }
-    }
-</style>
-<script>
 import Vue from 'vue'
 import axios from 'axios'
 const compiler = require('vue-template-compiler')
@@ -86,10 +34,9 @@ const $require = (filepath, scriptContext) => {
     eval(code)  
     return module.exports
 }
-import DynamicComponent from '@/components/DynamicComponent'
 export default {
     components: {
-        DynamicComponent
+        
     },
     created() {
         this.getComponent()
@@ -99,18 +46,6 @@ export default {
     },
     data(){
         return{
-            activeName:'first',
-            initParams:{
-                type:"event",
-            },
-            table_columns:[
-              { prop: 'code', label: '编号',minWidth:10},
-              { prop: 'type', label: '名称',minWidth:10},
-              { prop: 'indate', label: '状态',minWidth:10},
-              { prop: 'timegroup', label: '所属设备',minWidth:10},
-              { prop: 'handle', label: '操作',slotName:'preview-handle',width:150},
-            ],
-            table_data:[],
             temp:'',
             currentComponent:null,
             currentTabComponent:null,
@@ -122,7 +57,6 @@ export default {
             // 生成data-u-id 
             const componentId = uuid(8, 16).toLocaleLowerCase();
             const template = sfc.template ? tagToUuid(sfc.template.content, componentId) : '' 
-            // const template = sfc.template;
             // 转化style（less、sass、stylus）  
             let styles = []  
             sfc.styles.forEach(sty => {    
@@ -146,6 +80,16 @@ export default {
             }  
             return options
         },
+        getTemplate:function(){
+            return new Promise ((resolve, reject) => {
+                axios.get('/template/event.vue').then((result) => {
+                    this.temp = result.data;
+                    resolve();
+                }).catch((error) => {
+                    reject()
+                })
+            })
+        },
         getComponent(){
             let _this=this;
             // Vue.component('currentTabComponent', function (resolve) {
@@ -157,7 +101,7 @@ export default {
             this.currentComponent=Vue.component(
                 'currentComponent',
                 // 这个动态导入会返回一个 `Promise` 对象。
-                () => import(`@/views/access/status/${_this.initParams.type}.vue`)
+                () => import(`./${_this.initParams.type}`)
             )
 
             new Promise ((resolve, reject) => {
@@ -172,7 +116,9 @@ export default {
                 })
             }).then(()=>{
                 if(this.temp){
+                    console.log(this.temp)
                     let r=this.getComponentOption(this.temp)
+                    console.log(r)
                     let temp=compiler.compile(r.template)  //编译成render函数
                     let styleDom=document.createElement("style");
                     let str=r.styles[0];
@@ -210,6 +156,18 @@ export default {
 
                 }
             });
+
+            return new Promise ((resolve, reject) => {
+                axios.get('/template/event.vue').then((result) => {
+                    console.log(result)
+                    let r=compiler.parseComponent(result.data);
+            console.log(r)
+                    resolve();
+                }).catch((error) => {
+                    reject()
+                })
+            })
+            
         }
     },
     watch:{
@@ -219,4 +177,3 @@ export default {
     }
     
 }
-</script>
