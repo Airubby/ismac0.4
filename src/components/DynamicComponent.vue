@@ -19,11 +19,8 @@ const tagToUuid = (tpl, id) => {
 const formatStyle = (sty, css, componentId) => {  
     let cssText = css  
     if (sty.scoped) {    
-        console.log(css)
-        cssText = css.css.replace(/[\.\w\>\s]+{/g, $1 => { 
-            console.log($1.replace(/\s+>>>/, `[data-u-${componentId}]`))     
-            if (/>>>/.test($1)) return $1.replace(/\s+>>>/, `[data-u-${componentId}]`)   
-            console.log($1.replace(/\s+{/g, $2 => `[data-u-${componentId}]${$2}`))   
+        cssText = css.css.replace(/[\.\w\>\s]+{/g, $1 => {     
+            if (/>>>/.test($1)) return $1.replace(/\s+>>>/, `[data-u-${componentId}]`)  
             return $1.replace(/\s+{/g, $2 => `[data-u-${componentId}]${$2}`)    
         })  
     }  
@@ -38,6 +35,7 @@ const $require = (filepath, scriptContext) => {
     eval(code)  
     return module.exports
 }
+// import aaa from '@/views/access/status/event'
 export default {
     props:{
         pathUrl:{
@@ -169,20 +167,14 @@ export default {
                     }
                 });
             }else{
-                new Promise ((resolve, reject) => {
-                    this.currentComponent=Vue.component(
-                        'currentComponent',
-                        // 这个动态导入会返回一个 `Promise` 对象。
-                        () => import(`${_this.pathUrl}`)
-                    )
-                    resolve();
-                })
-                // this.currentComponent=Vue.component(
+                //注册全局组件
+                // Vue.component(
                 //     'currentComponent',
                 //     // 这个动态导入会返回一个 `Promise` 对象。
-                //     () => import(`${_this.pathUrl}`)
+                //     () => import(`@/views${_this.pathUrl}`)
                 // )
-
+                //注册局部组件 @/views  必须在这个地方写，如果传参过来会报错
+                this.currentComponent = () => import(`@/views${_this.pathUrl}`);
             }
         }
     },

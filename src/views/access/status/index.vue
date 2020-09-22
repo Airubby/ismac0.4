@@ -32,12 +32,14 @@
                 </div>
             </div>
             <div>
-                <component :is="currentComponent"></component>
-                <!-- <DynamicComponent :pathUrl="`@/views/access/status/${initParams.type}.vue`" pathType="local"></DynamicComponent> -->
+                <!-- <component :is="currentComponent"></component> -->
+                <DynamicComponent :pathUrl="`/access/status/${initParams.type}.vue`" pathType="local"></DynamicComponent>
+                <DynamicComponent :pathUrl="`/access/status/record.vue`" pathType="local"></DynamicComponent>
             </div>
             <div>
                 <!-- <DynamicComponent :pathUrl="`/template/${initParams.type}.vue`"></DynamicComponent> -->
-                <component :is="currentTabComponent" :data="initParams" url="/template"></component>
+                <!-- <DynamicComponent :pathUrl="`/template/record.vue`"></DynamicComponent> -->
+                <!-- <component :is="currentTabComponent" :data="initParams" url="/template"></component> -->
             </div>
         </div>
     </app-con>
@@ -67,11 +69,8 @@ const tagToUuid = (tpl, id) => {
 const formatStyle = (sty, css, componentId) => {  
     let cssText = css  
     if (sty.scoped) {    
-        console.log(css)
         cssText = css.css.replace(/[\.\w\>\s]+{/g, $1 => { 
-            console.log($1.replace(/\s+>>>/, `[data-u-${componentId}]`))     
-            if (/>>>/.test($1)) return $1.replace(/\s+>>>/, `[data-u-${componentId}]`)   
-            console.log($1.replace(/\s+{/g, $2 => `[data-u-${componentId}]${$2}`))   
+            if (/>>>/.test($1)) return $1.replace(/\s+>>>/, `[data-u-${componentId}]`)    
             return $1.replace(/\s+{/g, $2 => `[data-u-${componentId}]${$2}`)    
         })  
     }  
@@ -92,7 +91,7 @@ export default {
         DynamicComponent
     },
     created() {
-        this.getComponent()
+        // this.getComponent()
     },
     mounted() {
         
