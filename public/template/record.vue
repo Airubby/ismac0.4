@@ -1,7 +1,7 @@
 <template>
     <div>
         {{activeName}}
-        <div class="bg" :style="`background:url(${url}/logo.png);background-size: contain;`"></div>
+        <div class="bg" :style="`background:url(${templateUrl}/logo.png);background-size: contain;`"></div>
     </div>
 </template>
 <style lang="less" scoped>
@@ -13,7 +13,7 @@
 <script>
 
 module.exports = {
-    props:["data","url"],
+    props:["templateData","templateUrl"],
     components: {
         
     },

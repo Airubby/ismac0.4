@@ -1,8 +1,8 @@
 <template>
     <div class="bgfffcontent">
         <h4 class="item">{{initParams}}</h4>
-        <span class="item1">父组件传来的值:{{data.type}}</span>
-        <img :src="url+'/logo.png'" style="width:54px;">
+        <span class="item1">父组件传来的值:{{templateData.type}}</span>
+        <img :src="templateUrl+'/logo.png'" style="width:54px;">
     </div>
 </template>
 <style lang="less" scoped>
@@ -17,7 +17,7 @@
 </style>
 <script>
 module.exports = {
-    props:["data","url"],
+    props:["templateData","templateUrl"],
     created() {
         
     },

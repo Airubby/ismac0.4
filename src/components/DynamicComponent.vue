@@ -1,5 +1,5 @@
 <template>
-    <component :is="currentComponent"></component>
+    <component :is="currentComponent" :templateData="templateData" :templateUrl="templateUrl"></component>
 </template>
 <script>
 import Vue from 'vue'
@@ -35,7 +35,6 @@ const $require = (filepath, scriptContext) => {
     eval(code)  
     return module.exports
 }
-// import aaa from '@/views/access/status/event'
 export default {
     props:{
         pathUrl:{
@@ -44,31 +43,35 @@ export default {
         },
         pathType:{
             type:String,
-            default:function () {
-                return "remote"  //remote,local
+            default:"remote"  //remote,local
+        },
+        //需要传给动态子组件的数据
+        templateData:{
+            type:Object,
+            default:function(){
+                return {}
             }
+        },
+        templateUrl:{
+            type:String,
+            default:""
         }
     },
-    components: {
-        
-    },
+    components: {},
     created() {
-        this.setStyleID();
-        this.getComponent()
+        this.Init();
     },
-    mounted() {
-        
-    },
+    mounted() {},
     data(){
         return{
-            temp:'',
             styleID:"",
-            currentComponent:null
+            currentComponent:null,
         }
     },
 	methods: {
-        setStyleID(){
+        Init(){
             this.styleID=uuid(16, 32).toLocaleLowerCase();
+            this.getComponent();
         },
         setStyle(styles){
             let style="";
@@ -76,11 +79,13 @@ export default {
                 style+=styles[i];
             }
             if(this.styleID!=""&&document.getElementById(this.styleID)){
-                document.getElementById(this.styleID).innerHTML=document.createTextNode(style);
+                document.getElementById(this.styleID).innerHTML="";
+                document.getElementById(this.styleID).appendChild(document.createTextNode(style))
             }else{
                 let head=document.getElementsByTagName("head")[0];
                 let styleDom=document.createElement("style");
                 styleDom.type="text/css";
+                styleDom.id=this.styleID;
                 styleDom.appendChild(document.createTextNode(style));
                 document.getElementsByTagName("head")[0].appendChild(styleDom);
             }
@@ -114,56 +119,32 @@ export default {
         },
         getComponent(){
             let _this=this;
-            // Vue.component('currentTabComponent', function (resolve) {
-            //     // 这个特殊的 `require` 语法将会告诉 webpack
-            //     // 自动将你的构建代码切割成多个包，这些包
-            //     // 会通过 Ajax 请求加载
-            //     require(['./'+_this.initParams.type], resolve)
-            // })
+            this.currentComponent=null;
             if(this.pathType=="remote"){
+                let tempData=null;
                 new Promise ((resolve, reject) => {
-                    this.currentComponent=null;
-                    this.temp=null;
                     axios.get(`${_this.pathUrl}`).then((result) => {
-                        this.temp = compiler.parseComponent(result.data);
+                        tempData = compiler.parseComponent(result.data);
                         resolve();
                     }).catch((error) => {
                         reject()
                     })
                 }).then(()=>{
-                    if(this.temp){
-                        let r=this.getComponentOption(this.temp)
+                    if(tempData){
+                        let r=this.getComponentOption(tempData)
                         let temp=compiler.compile(r.template)  //编译成render函数
                         this.setStyle(r.styles);
-                        this.currentComponent=Vue.component('currentComponent',{
+                        
+                        //注册全局组件
+                        // this.currentComponent=Vue.component('currentComponent',{
+                        //     render:new Function(temp.render),
+                        //     ...r.script
+                        // }) 
+                        //注册局部组件
+                        this.currentComponent={
                             render:new Function(temp.render),
                             ...r.script
-                        }) 
-
-                        // let temp="<div @click='clickFn()' class='ac'><span class='aaa'>{{test}}</span></div>";
-                        // const componentId = uuid(8, 16).toLocaleLowerCase();
-                        // temp = tagToUuid(temp, componentId)
-                        // let styleDom=document.createElement("style");
-                        // let str=".ac[data-u-"+componentId+"] .aaa[data-u-"+componentId+"]{color:#f00}";
-                        // styleDom.type="text/css";
-                        // styleDom.appendChild(document.createTextNode(str)) 
-                        // document.getElementsByTagName("head")[0].appendChild(styleDom);
-                        // let rt=compiler.compile(temp);
-                        // console.log(rt)
-                        // this.currentTabComponent=Vue.component('currentTabComponent',{
-                        //     render:new Function(rt.render),
-                        //     data(){
-                        //         return{
-                        //             test:"动态组件噢噢噢噢"
-                        //         }
-                        //     },
-                        //     methods:{
-                        //         clickFn(){
-                        //             console.log("事件点击了！！！")
-                        //         }
-                        //     },
-                        // })
-
+                        }
                     }
                 });
             }else{
@@ -173,9 +154,41 @@ export default {
                 //     // 这个动态导入会返回一个 `Promise` 对象。
                 //     () => import(`@/views${_this.pathUrl}`)
                 // )
+
                 //注册局部组件 @/views  必须在这个地方写，如果传参过来会报错
                 this.currentComponent = () => import(`@/views${_this.pathUrl}`);
             }
+            //测试
+            // Vue.component('currentComponent', function (resolve) {
+            //     // 这个特殊的 `require` 语法将会告诉 webpack
+            //     // 自动将你的构建代码切割成多个包，这些包
+            //     // 会通过 Ajax 请求加载
+            //     require(['./'+_this.initParams.type], resolve)
+            // })
+            //测试
+            // let temp="<div @click='clickFn()' class='ac'><span class='aaa'>{{test}}</span></div>";
+            // const componentId = uuid(8, 16).toLocaleLowerCase();
+            // temp = tagToUuid(temp, componentId)
+            // let styleDom=document.createElement("style");
+            // let str=".ac[data-u-"+componentId+"] .aaa[data-u-"+componentId+"]{color:#f00}";
+            // styleDom.type="text/css";
+            // styleDom.appendChild(document.createTextNode(str)) 
+            // document.getElementsByTagName("head")[0].appendChild(styleDom);
+            // let rt=compiler.compile(temp);
+            // console.log(rt)
+            // this.currentComponent=Vue.component('currentComponent',{
+            //     render:new Function(rt.render),
+            //     data(){
+            //         return{
+            //             test:"动态组件噢噢噢噢"
+            //         }
+            //     },
+            //     methods:{
+            //         clickFn(){
+            //             console.log("事件点击了！！！")
+            //         }
+            //     },
+            // })
         }
     },
     watch:{
@@ -183,7 +196,6 @@ export default {
             this.getComponent();
         }
     },
-    
     destroyed() {
         if(this.styleID!=""&&document.getElementById(this.styleID)){
             document.getElementById(this.styleID).parentNode.removeChild(document.getElementById(this.styleID));
