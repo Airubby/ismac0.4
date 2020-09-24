@@ -37,6 +37,7 @@
             </div>
             <div>
                 <DynamicComponent :pathUrl="`/template/${initParams.type}.vue`" :templateData="initParams" templateUrl="/template"></DynamicComponent>
+                <DynamicCompileComponent :pathUrl="`/template/${initParams.type}.js`" :templateData="initParams" templateUrl="/template"></DynamicCompileComponent>
             </div>
         </div>
     </app-con>
@@ -50,9 +51,10 @@
 </style>
 <script>
 import DynamicComponent from '@/components/DynamicComponent'
+import DynamicCompileComponent from '@/components/DynamicCompileComponent'
 export default {
     components: {
-        DynamicComponent
+        DynamicComponent,DynamicCompileComponent
     },
     created() {
         

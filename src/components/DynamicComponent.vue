@@ -78,6 +78,7 @@ export default {
             for(let i=0;i<styles.length;i++){
                 style+=styles[i];
             }
+            //这个地方生成编译后的样式 style
             if(this.styleID!=""&&document.getElementById(this.styleID)){
                 document.getElementById(this.styleID).innerHTML="";
                 document.getElementById(this.styleID).appendChild(document.createTextNode(style))
@@ -132,7 +133,9 @@ export default {
                 }).then(()=>{
                     if(tempData){
                         let r=this.getComponentOption(tempData)
+                        console.log(r)
                         let temp=compiler.compile(r.template)  //编译成render函数
+                        //这个地方生成编译后的dom  temp.render   注意:生成的编译文件中去掉\n;编译的源组件中不能有模板字符串`
                         this.setStyle(r.styles);
                         
                         //注册全局组件
@@ -154,8 +157,9 @@ export default {
                 //     // 这个动态导入会返回一个 `Promise` 对象。
                 //     () => import(`@/views${_this.pathUrl}`)
                 // )
-
+                
                 //注册局部组件 @/views  必须在这个地方写，如果传参过来会报错
+                // this.$options.components["componentName"]=() => import(`@/views${_this.pathUrl}`);
                 this.currentComponent = () => import(`@/views${_this.pathUrl}`);
             }
             //测试
