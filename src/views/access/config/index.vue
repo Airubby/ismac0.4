@@ -8,14 +8,14 @@
         </div>
         <div class="public_content pd20">
             <el-tabs v-model="activeName" class="content" @tab-click="tabClick">
-                <el-tab-pane label="时间组" name="first" class="content">
-                    <time-group></time-group>
+                <el-tab-pane label="table配置" name="first" class="content">
+                    <table-group></table-group>
                 </el-tab-pane>
-                <el-tab-pane label="控制器" name="second" class="content">
+                <!-- <el-tab-pane label="控制器" name="second" class="content">
                     
                     <controller></controller>
-                </el-tab-pane>
-                <el-tab-pane label="权限组" name="third" class="content">
+                </el-tab-pane> -->
+                <el-tab-pane label="form配置" name="third" class="content">
                     <limits-group></limits-group>
                 </el-tab-pane>
             </el-tabs>
@@ -26,8 +26,8 @@
 
 <script>
 import controller from './controller.vue'
-import timeGroup from './timeGroup.vue'
-import limitsGroup from './limitsGroup.vue'
+import tableGroup from './tableGroup/index.vue'
+import limitsGroup from './formGroup/index.vue'
 export default {
     created() {
         this.activeName=sessionStorage.getItem("tabIndex")?sessionStorage.getItem("tabIndex"):'first';
@@ -46,7 +46,7 @@ export default {
         }
 	},
     components: {
-        limitsGroup,timeGroup,controller
+        limitsGroup,tableGroup,controller
     }
 }
 </script>
