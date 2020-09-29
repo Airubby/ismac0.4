@@ -60,6 +60,7 @@ const checkIP = (rule, value, callback) => {
 			if(reg.test(value)){
 				callback()
 			}else{
+				console.log(this)
 				callback(new Error(rule.ruleMessage||ruleMessage))
 			}
 		}

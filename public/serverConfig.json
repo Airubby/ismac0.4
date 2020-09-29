@@ -14,6 +14,9 @@
     "theme":"black",
     "language":"zh",
     "zhLang":{
+        "ActiveArea":"活动区域",
+        "formTestLanguage":"表单名称测试",
+        "select":"请选择",
         "navbar": {
             "index": "主页",
             "control": "监控管理",
@@ -81,6 +84,9 @@
         }
     },
     "enLang":{
+        "select":"please select",
+        "ActiveArea":"Active Area",
+        "formTestLanguage":"Form Name Test",
         "navbar": {
           "index": "Home",
           "control": "control",

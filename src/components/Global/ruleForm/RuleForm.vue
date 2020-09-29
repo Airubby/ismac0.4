@@ -3,12 +3,12 @@
         <el-row :gutter="rowGutter">
             <template v-for="item in ruleFormOpt">
                 <el-col :span="colSpan">
-                    <el-form-item :label="item.label" :prop="item.field" :class="{'mb':item.type=='switch'||item.type=='radio'}">
-                        <el-input v-model="ruleForm[item.field]" :placeholder="item.placeholder" v-if="item.type=='input'"></el-input>
-                        <el-input type="textarea" v-model="ruleForm[item.field]" :placeholder="item.placeholder" v-if="item.type=='textarea'"></el-input>
-                        <el-input type="password" v-model="ruleForm[item.field]" :placeholder="item.placeholder" v-if="item.type=='password'"></el-input>
+                    <el-form-item :label="changeLanguage(item,'label')" :prop="item.field" :class="{'mb':item.type=='switch'||item.type=='radio'}">
+                        <el-input v-model="ruleForm[item.field]" :placeholder="changeLanguage(item,'placeholder')" v-if="item.type=='input'"></el-input>
+                        <el-input type="textarea" v-model="ruleForm[item.field]" :placeholder="changeLanguage(item,'placeholder')" v-if="item.type=='textarea'"></el-input>
+                        <el-input type="password" v-model="ruleForm[item.field]" :placeholder="changeLanguage(item,'placeholder')" v-if="item.type=='password'"></el-input>
                         <el-switch v-model="ruleForm[item.field]" v-if="item.type=='switch'"></el-switch>
-                        <el-select v-model="ruleForm.region" :placeholder="item.placeholder" v-if="item.type=='select'">
+                        <el-select v-model="ruleForm.region" :placeholder="changeLanguage(item,'placeholder')" v-if="item.type=='select'">
                             <template v-for="selectItem in item.children">
                                 <el-option :label="selectItem.label" :value="selectItem.value"></el-option>
                             </template>
@@ -27,7 +27,7 @@
                 </el-col>
             </template>
         </el-row>
-        
+        <slot></slot>
     </el-form>
 </template>
 <style lang="less" scoped>
@@ -36,13 +36,9 @@
             margin-bottom: 1px;
         }
     }
-    // .ruleForm{
-    //     /deep/ .el-form--label-top .el-form-item__label{
-    //         padding: 0;
-    //     }
-    // }
 </style>
 <script>
+import { mapGetters } from 'vuex'
 export default {
     name:'RuleForm',
     props:{
@@ -71,6 +67,11 @@ export default {
         }
     },
     components:{},
+    computed:{
+        ...mapGetters([
+            'language'
+        ]),
+    },
     created () {
         this.InitRuleForm();
     },
@@ -79,26 +80,61 @@ export default {
     },
     data() {
         return {
-            ruleForm:{
-                name:"",
-                region:""
-            },
-            rules:{
-
-            }
+            ruleForm:{},
+            rules:{}
        }
     },
     methods:{
         InitRuleForm:function(){
             for(let i=0;i<this.ruleFormOpt.length;i++){
+                if(this.ruleFormOpt[i].options){
+                    this.ruleFormOpt[i].options.api&&this.getFormData(this.ruleFormOpt[i]);
+                    if(this.ruleFormOpt[i].options.rules){
+                        this.$set(this.rules,this.ruleFormOpt[i].field,JSON.parse(JSON.stringify(this.ruleFormOpt[i].options.rules)));
+                        if(this.ruleFormOpt[i].options.languageChange){
+                            for(let j=0;j<this.rules[this.ruleFormOpt[i].field].length;j++){
+                                this.rules[this.ruleFormOpt[i].field][j].message&&( this.rules[this.ruleFormOpt[i].field][j].message=this.$t(this.ruleFormOpt[i].options.rules[j].message));
+                                this.rules[this.ruleFormOpt[i].field][j].reqMessage&&(this.rules[this.ruleFormOpt[i].field][j].reqMessage=this.$t(this.ruleFormOpt[i].options.rules[j].reqMessage));
+                                this.rules[this.ruleFormOpt[i].field][j].ruleMessage&&(this.rules[this.ruleFormOpt[i].field][j].ruleMessage=this.$t(this.ruleFormOpt[i].options.rules[j].ruleMessage));
+                            }
+                        }
+                    }
+                }
                 let value=this.ruleFormOpt[i].value?this.ruleFormOpt[i].value:(this.ruleFormOpt[i].type=='checkbox'?[]:"");
                 this.$set(this.ruleForm,this.ruleFormOpt[i].field,value);
+                
             }
-            console.log(this.ruleForm)
+        },
+        getFormData:function(opt){
+            let params=opt.options.params?opt.options.params:{}
+            this.$api.post(opt.options.api,params).then(res=>{
+                if(res.code==200){
+                    this.$set(opt,"children",res.data)
+                }
+            })
+        },
+        changeLanguage:function(opt,key){
+            if(opt.options&&opt.options.languageChange){
+                return this.$t(opt[key])
+            }
+            return opt[key];
+        },
+        resetRule:function(){
+            for(let i=0;i<this.ruleFormOpt.length;i++){
+                if(this.ruleFormOpt[i].options&&this.ruleFormOpt[i].options.rules&&this.ruleFormOpt[i].options.languageChange){
+                    for(let j=0;j<this.rules[this.ruleFormOpt[i].field].length;j++){
+                        this.rules[this.ruleFormOpt[i].field][j].message&&( this.rules[this.ruleFormOpt[i].field][j].message=this.$t(this.ruleFormOpt[i].options.rules[j].message));
+                        this.rules[this.ruleFormOpt[i].field][j].reqMessage&&(this.rules[this.ruleFormOpt[i].field][j].reqMessage=this.$t(this.ruleFormOpt[i].options.rules[j].reqMessage));
+                        this.rules[this.ruleFormOpt[i].field][j].ruleMessage&&(this.rules[this.ruleFormOpt[i].field][j].ruleMessage=this.$t(this.ruleFormOpt[i].options.rules[j].ruleMessage));
+                    }
+                }
+            }
         }
     },
     watch:{
-        
+        language:function(){
+            this.resetRule();
+        }
     },
     
 }

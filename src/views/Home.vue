@@ -58,8 +58,12 @@
                         <el-dropdown>
                             <i class="el-icon-magic-stick top-icon-color"></i>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item :class="{'themeActive':$theme=='default'}"><span @click="changeTheme('default')">优雅白</span></el-dropdown-item>
-                                <el-dropdown-item :class="{'themeActive':$theme=='black'}"><span @click="changeTheme('black')">炫酷黑</span></el-dropdown-item>
+                                <el-dropdown-item :class="{'themeActive':$theme=='default','dropdown-item':true}">
+                                    <span @click="changeTheme('default')">优雅白</span>
+                                </el-dropdown-item>
+                                <el-dropdown-item :class="{'themeActive':$theme=='black','dropdown-item':true}">
+                                    <span @click="changeTheme('black')">炫酷黑</span>
+                                </el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </div>
@@ -81,10 +85,10 @@
                                 {{language}}<i class="el-icon-arrow-down el-icon--right"></i>
                             </span>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item>
+                                <el-dropdown-item class="dropdown-item">
                                     <span @click="setLanguage('zh')">中文</span>
                                 </el-dropdown-item>
-                                <el-dropdown-item>
+                                <el-dropdown-item class="dropdown-item">
                                     <span @click="setLanguage('en')">英文</span>
                                 </el-dropdown-item>
                             </el-dropdown-menu>
@@ -187,7 +191,6 @@ export default {
     },
 	methods: {
         setLanguage:function(language){
-            console.log("!!!!!!!!!!!")
             if(language=="zh"){
                 this.language="中文"
             }else{
@@ -201,7 +204,6 @@ export default {
         },
         getCheck:function(){
             this.$r.post('/getCheck',{},r=>{
-                console.log(r)
                 if(r.err_code=='0'){
                     this.$store.dispatch('setIsview',r.data);
                 }

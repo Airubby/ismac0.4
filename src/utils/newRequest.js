@@ -26,7 +26,7 @@ service.interceptors.response.use(
 	response => {
 		loadingService&&loadingService.close();
 		const res = response.data;
-		if(res.data.err_code=="-1"&&store.getters.infoFlag){
+		if(res.err_code&&res.err_code=="-1"&&store.getters.infoFlag){
 			store.dispatch('setInfoFlag',false);
 			Notification.warning("请登录系统");
 			router.push({path:'/login'});

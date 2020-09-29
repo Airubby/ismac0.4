@@ -9,14 +9,14 @@
         <div class="public_content pd20">
             <el-tabs v-model="activeName" class="content" @tab-click="tabClick">
                 <el-tab-pane label="table配置" name="first" class="content">
-                    <table-group></table-group>
+                    <table-group v-if="activeName=='first'"></table-group>
                 </el-tab-pane>
                 <!-- <el-tab-pane label="控制器" name="second" class="content">
                     
                     <controller></controller>
                 </el-tab-pane> -->
                 <el-tab-pane label="form配置" name="third" class="content">
-                    <limits-group></limits-group>
+                    <limits-group v-if="activeName=='third'"></limits-group>
                 </el-tab-pane>
             </el-tabs>
         </div>

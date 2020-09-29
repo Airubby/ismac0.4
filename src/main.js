@@ -70,11 +70,12 @@ function getServerConfig() {
       let config = result.data;
       // let ajaxUrl = process.env.NODE_ENV == 'production' ? config.production:config.develop;
       let reqcon=config.reqConnection;
-      let website=reqcon.website,port=reqcon.port?reqcon.port:80,postfix=reqcon.postfix;
+      let website=reqcon.website,port=reqcon.port?reqcon.port:"",postfix=reqcon.postfix;
       if(reqcon.website==""||reqcon.website.indexOf("127.0.0.1")!=-1||reqcon.website.indexOf("localhost")!=-1){
         website=window.document.location.origin;
       }
-      let ajaxUrl=website+":"+port+postfix;
+      console.log(port)
+      let ajaxUrl=website+(port?(":"+port):"")+postfix;
       Vue.prototype.$ajaxUrl=ajaxUrl;
       Vue.prototype.$webSocket=config.webSocket;
       store.dispatch('setAjaxUrl',ajaxUrl);
@@ -101,6 +102,7 @@ function getServerConfig() {
         size: 'small', // set element-ui default size
         i18n: (key, value) => i18n.t(key, value)
       })
+      Vue.prototype.$vue=Vue;
       require('./permission.js')
       resolve();
     }).catch((error) => {
