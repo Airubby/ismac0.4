@@ -6,7 +6,7 @@ import store from '@/store/index'
 import { Loading } from 'element-ui'
 import request from './utils/request'
 import {Decrypt} from './utils/AEScrypt'
-import './utils/mock.js'  //测试接口 
+// import './utils/mock.js'  //测试接口 
 
 routerGo();
 

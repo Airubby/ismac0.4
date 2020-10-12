@@ -1,6 +1,5 @@
 {
-    "production":"https://www.fastmock.site/mock/b5aeba034aac038de76b613109a5cce7/test",
-	"develop":"https://www.fastmock.site/mock/b5aeba034aac038de76b613109a5cce7/test",
+	"mock":true,
 	"reqConnection":{
 		"website":"https://www.fastmock.site/mock/b5aeba034aac038de76b613109a5cce7/test",
 		"port":"",

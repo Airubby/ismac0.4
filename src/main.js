@@ -65,77 +65,81 @@ Vue.use(ElTablePagination)
 Vue.config.productionTip = false
 let i18n='';
 function getServerConfig() {
-  return new Promise ((resolve, reject) => {
-    axios.get('/serverConfig.json').then((result) => {
-      console.log(result)
-      let config = result.data;
-      // let ajaxUrl = process.env.NODE_ENV == 'production' ? config.production:config.develop;
-      let reqcon=config.reqConnection;
-      let website=reqcon.website,port=reqcon.port?reqcon.port:"",postfix=reqcon.postfix;
-      if(reqcon.website==""||reqcon.website.indexOf("127.0.0.1")!=-1||reqcon.website.indexOf("localhost")!=-1){
-        website=window.document.location.origin;
-      }
-      console.log(port)
-      let ajaxUrl=website+(port?(":"+port):"")+postfix;
-      Vue.prototype.$ajaxUrl=ajaxUrl;
-      Vue.prototype.$webSocket=config.webSocket;
-      store.dispatch('setAjaxUrl',ajaxUrl);
-      store.dispatch('setLanguage',Cookies.get('language') || config.language);
-      Vue.prototype.$theme = sessionStorage.getItem("theme") || config.theme || 'default';
-      store.dispatch('setLanguageZh',config.zhLang);
-      store.dispatch('setLanguageEn',config.enLang);
-      const enLocale=config.enLang
-      const zhLocale=config.zhLang
-      Vue.use(VueI18n)
-      const messages = {
-        en: {
-          ...enLocale,
-          ...elementEnLocale
-        },
-        zh: {
-          ...zhLocale,
-          ...elementZhLocale
+    return new Promise ((resolve, reject) => {
+        axios.get('/serverConfig.json').then((result) => {
+        console.log(result)
+        let config = result.data;
+        // let ajaxUrl = process.env.NODE_ENV == 'production' ? config.production:config.develop;
+        let reqcon=config.reqConnection;
+        let website=reqcon.website,port=reqcon.port?reqcon.port:"",postfix=reqcon.postfix;
+        if(reqcon.website==""||reqcon.website.indexOf("127.0.0.1")!=-1||reqcon.website.indexOf("localhost")!=-1){
+            website=window.document.location.origin;
         }
-      }
-      i18n = new VueI18n({
-        locale: Cookies.get('language') || config.language, // set locale
-        messages // set locale messages
-      })
-      Vue.use(ElementUI,{
-        size: 'small', // set element-ui default size
-        i18n: (key, value) => i18n.t(key, value)
-      })
-      Vue.prototype.$vue=Vue;
-      require('./permission.js')
-      resolve();
-    }).catch((error) => {
-      console.log(error)
-      reject()
+        console.log(port)
+        let ajaxUrl=website+(port?(":"+port):"")+postfix;
+        Vue.prototype.$ajaxUrl=ajaxUrl;
+        Vue.prototype.$webSocket=config.webSocket;
+        store.dispatch('setAjaxUrl',ajaxUrl);
+        store.dispatch('setLanguage',Cookies.get('language') || config.language);
+        Vue.prototype.$theme = sessionStorage.getItem("theme") || config.theme || 'default';
+        //只能用this.$i18n.getLocaleMessage('zh') 不能用config.zhLang,因为，还有element中的语言
+        // store.dispatch('setLanguageZh',config.zhLang);
+        // store.dispatch('setLanguageEn',config.enLang);
+        const enLocale=config.enLang
+        const zhLocale=config.zhLang
+        Vue.use(VueI18n)
+        const messages = {
+            en: {
+            ...enLocale,
+            ...elementEnLocale
+            },
+            zh: {
+            ...zhLocale,
+            ...elementZhLocale
+            }
+        }
+        i18n = new VueI18n({
+            locale: Cookies.get('language') || config.language, // set locale
+            messages // set locale messages
+        })
+        Vue.use(ElementUI,{
+            size: 'small', // set element-ui default size
+            i18n: (key, value) => i18n.t(key, value)
+        })
+        Vue.prototype.$vue=Vue;
+        require('./permission.js')
+        if(config.mock){
+            require('@/utils/newMock.js')
+        }
+        resolve();
+        }).catch((error) => {
+            console.log(error)
+            reject()
+        })
     })
-  })
 }
 
 async function init() {
-  await getServerConfig();
-  new Vue({
-    router,
-    store,
-    i18n,
-    metaInfo(){
-      return {
-          title: this.$store.state.app.metaInfo.title,
-          meta: [
-              {
-                  name: "keywords",
-                  content: this.$store.state.app.metaInfo.keywords
-              }, {
-                  name: "description",
-                  content: this.$store.state.app.metaInfo.description
-              }
-          ]
-      }
-    },
-    render: h => h(App),
-  }).$mount('#app')
+    await getServerConfig();
+    new Vue({
+        router,
+        store,
+        i18n,
+        metaInfo(){
+            return {
+                title: this.$store.state.app.metaInfo.title,
+                meta: [
+                    {
+                        name: "keywords",
+                        content: this.$store.state.app.metaInfo.keywords
+                    }, {
+                        name: "description",
+                        content: this.$store.state.app.metaInfo.description
+                    }
+                ]
+            }
+        },
+        render: h => h(App),
+    }).$mount('#app')
 }
 init();

@@ -4,6 +4,7 @@ import { Random } from 'mockjs' // 引入random对象,随机生成数据的对�
 Mock.setup({
 	timeout:1000  //设置请求延时时间
 })
+
 const getdata = function(){
     let datalist = []
 	for (let i = 0; i < 20; i += 1) {
@@ -278,9 +279,8 @@ const getedittable=function(){
     }
 }
 
-
-
-Mock.mock(store.getters.AjaxUrl+'/getMockData', /post/i,getdata) //调用模拟数据方法
+// Mock.mock(store.getters.AjaxUrl+'/getMockData', /post/i,getdata) //调用模拟数据方法
+Mock.mock(RegExp('/getMockData' + ".*"), /post/i,getdata) //如果不带前缀的post请求
 Mock.mock(RegExp('/getLimit' + ".*"), /get/i,getinfo) 
 Mock.mock(RegExp('/getTable' + ".*"), /get/i,gettable) 
 Mock.mock(RegExp('/getEditTable' + ".*"), /get/i,getedittable) 

@@ -28,7 +28,9 @@ import LangMixins from './language'
 export default {
     mixins:[LangMixins],
     created() {
-        
+        this.$r.post("/gethomemock",{},r=>{
+            console.log(r)
+        })
     },
     mounted() {
     },
