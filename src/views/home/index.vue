@@ -15,11 +15,18 @@
         <el-checkbox-group v-model="checkboxGroup">
             <el-checkbox-button v-for="item in alarmOptions" :label="item.id" :key="item.id">{{item.name}}{{item.number}}</el-checkbox-button>
         </el-checkbox-group>
+        <div>
+            {{$t("testLanguage")}}
+        </div>
+        <div class="color">字体颜色随主题全局变量设置改变</div>
+        <div class="bg"></div>
     </div>
 </template>
 
 <script>
+import LangMixins from './language'
 export default {
+    mixins:[LangMixins],
     created() {
         
     },
@@ -102,5 +109,14 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-    
+    .module-theme(@color,@bg){
+        .color{
+            color: @color;
+        }
+        .bg{
+            width: @width;
+            height: 20px;
+            background: @bg;
+        }
+    }
 </style>

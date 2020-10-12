@@ -7,7 +7,7 @@
 				<div class="loncom_login_input">
 					<el-form :model="user" :rules="rules" ref="form" status-icon>
 						<el-form-item prop="userid" class="loncom_user">
-							<el-input v-model.trim="user.userid" placeholder="请输入账号"></el-input>
+							<el-input v-model.trim="user.userid" placeholder="请输入账号" ref="customerInput"></el-input>
 						</el-form-item>
 						<el-form-item prop="psword" class="loncom_pass">
 							<el-input type="password" v-model.trim="user.psword" ref="psinput" placeholder="请输入密码" @keyup.native="keyLogin($event,'userName')"></el-input>
@@ -33,7 +33,11 @@ export default {
         //加载完成了去掉根节点的loading;
         this.$nextTick(function(){
             this.$emit("routerLoading")
-        })
+		})
+		this.$nextTick(function () {
+			//设置第一个input框聚焦
+			this.$refs.customerInput.$el.querySelector('input').focus();
+		});
     },
 	data(){
 		let checkpassword = (rule, value, callback) => {
@@ -124,7 +128,11 @@ export default {
 						this.$router.push({path:'/loncom'});
 					}else{
 						console.log("没有任何权限，跳转到没有任何权限的页面")
-						this.$router.push({path:'/login'});
+						this.$router.push({name:'login'});
+						//query中用一个params做key值，这样刷新的时候才能解析到
+						// this.$router.push({name:'login',query:{params:JSON.stringify({"id":"123",name:'小呆'})}});
+						// this.$router.push({path:'/login',query:{params:JSON.stringify({"id":"123",name:'小呆'})}});
+						//let params = JSON.parse(this.$route.query.params);
 					}
 				}else{
 					this.$message.error(r.err_msg);

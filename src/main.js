@@ -33,6 +33,7 @@ import 'vue-transition.css'
 
 import '@/assets/css/index.less'
 
+
 import Meta from 'vue-meta';
 Vue.use(Meta);
 
@@ -62,7 +63,7 @@ Vue.prototype.$Swiper = Swiper
 Vue.use(ElTablePagination)
 
 Vue.config.productionTip = false
-let i18n=''
+let i18n='';
 function getServerConfig() {
   return new Promise ((resolve, reject) => {
     axios.get('/serverConfig.json').then((result) => {
@@ -81,6 +82,8 @@ function getServerConfig() {
       store.dispatch('setAjaxUrl',ajaxUrl);
       store.dispatch('setLanguage',Cookies.get('language') || config.language);
       Vue.prototype.$theme = sessionStorage.getItem("theme") || config.theme || 'default';
+      store.dispatch('setLanguageZh',config.zhLang);
+      store.dispatch('setLanguageEn',config.enLang);
       const enLocale=config.enLang
       const zhLocale=config.zhLang
       Vue.use(VueI18n)

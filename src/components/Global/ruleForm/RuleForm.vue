@@ -23,6 +23,13 @@
                                 <el-radio :label="radioItem.value">{{radioItem.label}}</el-radio>
                             </template>
                         </el-radio-group>
+                        <el-time-picker
+                            v-if="item.type=='timePicker'"
+                            v-model="ruleForm[item.field]"
+                            :is-range="item.options.isRange"
+                            :picker-options="item.options.pickerOptions"
+                            :placeholder="changeLanguage(item,'placeholder')">
+                        </el-time-picker>
                     </el-form-item>
                 </el-col>
             </template>
@@ -100,7 +107,17 @@ export default {
                         }
                     }
                 }
-                let value=this.ruleFormOpt[i].value?this.ruleFormOpt[i].value:(this.ruleFormOpt[i].type=='checkbox'?[]:"");
+                let value="";
+                if(this.ruleFormOpt[i].value){
+                    value=this.ruleFormOpt[i].value;
+                }else{
+                    if(this.ruleFormOpt[i].type=='checkbox'){
+                        value=[];
+                    }
+                    if(this.ruleFormOpt[i].type=='timePicker'&&this.ruleFormOpt[i].options&&this.ruleFormOpt[i].options.isRange){
+                        value=null;
+                    }
+                }
                 this.$set(this.ruleForm,this.ruleFormOpt[i].field,value);
                 
             }

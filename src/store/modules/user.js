@@ -54,7 +54,7 @@ const user = {
         
         // router.options.routes.push(newRouter)
         router.addRoutes([newRouter]);
-        
+        console.log(router)
     },
     setLimits(state,data){
       state.limits=data;

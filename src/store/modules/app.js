@@ -7,8 +7,8 @@ const app = {
     loginUrl:Cookies.get('loginUrl')||'',
     // 中英文
     language: Cookies.get('language') || 'zh',
-    languagezh: {},
-    languageen: {},
+    languageZh: {},
+    languageEn: {},
     viewState:'',
     sidebarStatus:Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : false,
     baseURI:'',
@@ -37,10 +37,10 @@ const app = {
       Cookies.set('language', language)
     },
     SET_LANGUAGEZH: (state, language) => {
-      state.languagezh = language
+      state.languageZh = language
     },
     SET_LANGUAGEEN: (state, language) => {
-      state.languageen = language
+      state.languageEn = language
     },
 
     SET_VIEW: (state, viewState) => {
@@ -79,10 +79,10 @@ const app = {
     setLanguage({ commit }, language) {
       commit('SET_LANGUAGE', language)
     },
-    setLanguagezh({ commit }, language) {
+    setLanguageZh({ commit }, language) {
       commit('SET_LANGUAGEZH', language)
     },
-    setLanguageen({ commit }, language) {
+    setLanguageEn({ commit }, language) {
       commit('SET_LANGUAGEEN', language)
     },
 

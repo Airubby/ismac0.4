@@ -1,7 +1,7 @@
 const getters = {
   language: state => state.app.language,
-  languagezh: state => state.app.languagezh,
-  languageen: state => state.app.languageen,
+  languageZh: state => state.app.languageZh,
+  languageEn: state => state.app.languageEn,
   getWSData: state => state.app.wsData,
   AjaxUrl: state => state.app.AjaxUrl,
   loginUrl: state => state.app.loginUrl,

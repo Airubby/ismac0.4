@@ -15,7 +15,7 @@ export default {
 	methods:{
 		init(){
 			let wscon=this.$webSocket;
-			let website=wscon.website,port=wscon.port?wscon.port:80,postfix=wscon.postfix,wsLink=window.document.location.protocol=="http:"?"WS":"WSS";
+			let website=wscon.website,port=wscon.port?wscon.port:"",postfix=wscon.postfix,wsLink=window.document.location.protocol=="http:"?"WS":"WSS";
 			if(wscon.website==""||wscon.website=="127.0.0.1"||wscon.website=="localhost"){
 				website=window.document.location.hostname;
 			}

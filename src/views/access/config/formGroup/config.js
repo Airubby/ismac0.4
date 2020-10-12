@@ -49,6 +49,13 @@ const ruleFormOpt=[
     },
     {
         type:"textarea",label:"活动形式",field:"desc"
+    },
+    {
+        type:"timePicker", label:"时间",field:"time",
+        options:{
+            pickerOptions:{},
+            isRange:true
+        }
     }
 ]
 export const config={

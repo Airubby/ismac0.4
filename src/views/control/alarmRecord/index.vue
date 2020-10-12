@@ -11,6 +11,7 @@
                 <el-col :span="12"><el-input v-model="input" placeholder="请输入内容" ref="inp"></el-input></el-col>
                 <el-col :span="12"><el-button type="primary" @click="copy">复制</el-button></el-col>
             </el-row>
+            <div>{{$t("testLanguage")}}</div>
             <el-checkbox v-model="check">测试computed属性写入store</el-checkbox>
             <el-button type="primary" @click="treeDialog">弹窗$emit方式返回数据</el-button>
             <el-tree
@@ -40,7 +41,9 @@
 import treeShow from '@/components/dialogShow.vue'
 import echarts from 'echarts';
 import 'echarts-liquidfill';
+import LangMixins from './language'
 export default {
+    mixins:[LangMixins],
     created() {
         
     },
