@@ -59,9 +59,6 @@ export default {
 		if(info.isLoading){
 			loadingService=Loading.service(info)
 		}
-		if(loadInfo.isLoading){
-			loadingService=Loading.service(loadInfo)
-		}
 		return new Promise((resolve,reject)=>{
 			service.get(url,{params:params}).then(response=>{
 				resolve(response)

@@ -1,19 +1,42 @@
 
 @width:500px;
+// .black_theme{
+//     .module-theme(
+//         @color:#045a5a;
+//         @bg:#09c    
+//     );
+// }
+// .default_theme{
+//     .module-theme(
+//         @color:#ff0000;
+//         @bg:#ffd640
+//     );
+// }
+//上面这样定义，参数得写全
+// .module-theme(@color,@bg){}
+
 .black_theme{
-    // @color:#045a5a;
-    // @bg:#09c;
+    @color:#045a5a;
+    @bg:#09c;
+    @color1:#fff;    
+    @logo:"/images/black/logo.png";
     .module-theme(
-        @color:#045a5a,
-        @bg:#09c    
+        @color;
+        @bg;
+        @color1;
+        @logo   
     );
 }
 .default_theme{
-    // @color:#ff0000;
-    // @bg:#ffd640;
+    @color:#ff0000;
+    @bg:#ffd640;
+    @color1:#000;
+    @logo:"/images/default/logo.png";
     .module-theme(
-        @color:#ff0000,
-        @bg:#ffd640
+        @color;
+        @bg;
+        @color1;
+        @logo
     );
 }
-.module-theme(@color,@bg){}
+.module-theme(...){}

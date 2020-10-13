@@ -248,11 +248,18 @@ module.exports = {
         // 开启 CSS source maps?
         sourceMap: false,
         // css预设器配置项
-        loaderOptions: {
-            //为每个css引入公共需要引入的样式
+        loaderOptions: { 
+            //为每个css引入公共需要引入的样式vue-cli3
             // less:{
-            //     data:`@import "@/assets/public.less"`
+            //     // data:`@import "~@/assets/css/common.less"`
+            //     // import:path.resolve("src/assets/css/common.less")
             // }
+            //vue-cli4中使用less全局变量 为每个css引入公共需要引入的样式 无需安装style-resources-loader
+            less:{
+                globalVars: {
+                    hack: `true; @import '~@/assets/css/common.less';`
+                }
+            }
         },
         // 启用 CSS modules for all css / pre-processor files.
         modules: false

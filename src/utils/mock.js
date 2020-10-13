@@ -280,7 +280,7 @@ const getedittable=function(){
 }
 
 // Mock.mock(store.getters.AjaxUrl+'/getMockData', /post/i,getdata) //调用模拟数据方法
-Mock.mock(RegExp('/getMockData' + ".*"), /post/i,getdata) //如果不带前缀的post请求
+Mock.mock(RegExp('/getMockData' + ".*"), /get|post/i,getdata) //如果不带前缀的post请求
 Mock.mock(RegExp('/getLimit' + ".*"), /get/i,getinfo) 
 Mock.mock(RegExp('/getTable' + ".*"), /get/i,gettable) 
 Mock.mock(RegExp('/getEditTable' + ".*"), /get/i,getedittable) 

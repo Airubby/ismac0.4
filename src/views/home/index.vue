@@ -19,17 +19,23 @@
             {{$t("testLanguage")}}
         </div>
         <div class="color">字体颜色随主题全局变量设置改变</div>
-        <div class="bg"></div>
+        <div class="bg">字体颜色随主题全局变量设置改变</div>
+        <div class="bgimg">背景图片</div>
     </div>
 </template>
+1
 
 <script>
-import LangMixins from './language'
+import LangMixins from './config/language'
+import Api from './config/api'
 export default {
     mixins:[LangMixins],
     created() {
-        this.$r.post("/gethomemock",{},r=>{
-            console.log(r)
+        this.$api.post(Api.gethomemock,{}).then(res=>{
+            console.log(res)
+        })
+        this.$api.get(Api.gethomemock,{}).then(res=>{
+            console.log(res)
         })
     },
     mounted() {
@@ -111,7 +117,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-    .module-theme(@color,@bg){
+    .module-theme(...){
         .color{
             color: @color;
         }
@@ -119,6 +125,12 @@ export default {
             width: @width;
             height: 20px;
             background: @bg;
+            color: @color1
+        }
+        .bgimg{
+            width: 200px;
+            height: 200px;
+            background:url(@logo) no-repeat;
         }
     }
 </style>
