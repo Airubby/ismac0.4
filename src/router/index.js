@@ -8,44 +8,8 @@ export const syncRouter=[
         name: 'home',
         meta: { title: 'home'},
         component: () => import('@/views/home.vue'),
-        redirect:'/login',
-    },
-    {
-      path: '/login',
-      name: 'login',
-      meta: { title: 'login'},
-      component: () => import('@/views/login.vue'),
-    },
-    {
-      path: '/bigHome',
-      name: 'bigHome',
-      meta: { title: 'bigHome'},
-      component: () => import('@/views/bigHome.vue'),
-    },
-    {
-      path: '/test',
-      name: 'test',
-      meta: { title: 'test'},
-      component: () => import('@/views/test/index.vue'),
-    },
-    { path: '/404',name:'404',meta: { title: '404'}, 
-      component: () => import('@/views/errorPage/404') 
-    },
-    { path: '/401',name:'401',meta: { title: '401'}, 
-      component: () => import('@/views/errorPage/401') 
     },
 ];
-
-// export const asyncRouter=[
-    
-// ]
-// export const router= new Router({
-//   //mode: 'history',
-//   mode:'hash',
-//   base: process.env.BASE_URL,
-//   routes:syncRouter
-// })
-
 /**
  * 重写路由的push方法  解决 Navigating to current location ("url") is not allowed
  */

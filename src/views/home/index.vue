@@ -23,8 +23,6 @@
         <div class="bgimg">背景图片</div>
     </div>
 </template>
-1
-
 <script>
 import LangMixins from './config/language'
 import Api from './config/api'
