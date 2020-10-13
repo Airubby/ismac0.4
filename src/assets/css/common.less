@@ -14,29 +14,6 @@
 // }
 //上面这样定义，参数得写全
 // .module-theme(@color,@bg){}
-
-.black_theme{
-    @color:#045a5a;
-    @bg:#09c;
-    @color1:#fff;    
-    @logo:"/images/black/logo.png";
-    .module-theme(
-        @color;
-        @bg;
-        @color1;
-        @logo   
-    );
-}
-.default_theme{
-    @color:#ff0000;
-    @bg:#ffd640;
-    @color1:#000;
-    @logo:"/images/default/logo.png";
-    .module-theme(
-        @color;
-        @bg;
-        @color1;
-        @logo
-    );
-}
+@import '~@/assets/css/black.less';
+@import '~@/assets/css/default.less';
 .module-theme(...){}
