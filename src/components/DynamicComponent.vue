@@ -112,7 +112,8 @@ export default {
                 }  
             })  
             let options = {    
-                script: sfc.script ? $require(null, sfc.script.content) : {},    
+                // script: sfc.script ? $require(null, sfc.script.content) : {},    
+                script: sfc.script ? eval(sfc.script.content): {},    
                 styles,    
                 template  
             }  

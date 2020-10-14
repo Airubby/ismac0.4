@@ -12,7 +12,7 @@ import ElTablePagination from 'el-table-pagination'
 import Swiper from 'swiper'  //3.4.2 打包不报错，4.+打包报错
 // import 'swiper/dist/css/swiper.min.css'
 import '@/utils/filters' // 自定义过滤器
-import tool from '@/utils/tool'  //工具函数
+import Tool from '@/utils/Tool'  //工具函数
 import 'promise-polyfill'  //兼容低版本浏览器  
 import 'babel-polyfill' //兼容低版本浏览器  
 // import i18n from '@/lang'  //国际化，用下面的做在配置文件中，打包后可修改
@@ -25,7 +25,7 @@ import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
 import './components/Global/index.js'
 
 
-import '@/utils/directive'  //自定义指令
+import '@/utils/Directive'  //自定义指令
 
 import '@/utils/mock.js'  //测试接口
 
@@ -52,7 +52,7 @@ Vue.prototype.$api = newRequest
 Vue.prototype.$r=request
 
 //绑定工具函数到全局
-Vue.prototype.$tool = tool
+Vue.prototype.$tool = Tool
 Vue.prototype.$store = store
 Vue.prototype.$axios = axios
 

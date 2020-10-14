@@ -13,11 +13,11 @@
 // import store from './store'
 import store from './store/index'
 import Vue from 'vue'
-import webSocket from "@/utils/webSocket"
+import WebSocket from "@/utils/WebSocket"
 import { mapGetters } from 'vuex'
   export default {
 	name: 'app',
-	mixins:[webSocket],
+	mixins:[WebSocket],
     provide(){
       return{
         reload:this.reload
