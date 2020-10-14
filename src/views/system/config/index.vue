@@ -6,37 +6,33 @@
                 <el-breadcrumb-item>{{$t("navbar.systemConfig")}}</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <div class="public_content" id="template-box">
-           
+        <div class="public_content">
+            <h4>禁止:draggable="false"；默认不给为可拖拽</h4>
+            <draggable v-model="myArray" 
+                
+                >
+                <transition-group>
+                    <div v-for="element in myArray" :key="element.id">
+                        {{element.name}}
+                    </div>
+                </transition-group>
+            </draggable>
+            <button @click="addPeople">Add</button>
         </div>
     </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import axios from 'axios'
+import draggable from 'vuedraggable'
 export default {
+    components: {
+        draggable
+    },
     created() {
         
     },
     mounted() {
-        //动态获取模板展示
-        axios.get('/template/test.html').then(data => {
-            console.log(data);
-            console.log(data.data)
-            let res=data.data;
-            let arr=res.split("<script>")
-            let dom=document.querySelector("#template-box");
-            dom.innerHTML=arr[0];
-            if(arr.length>1){
-                let js=arr[1].split("<\/script>")[0];
-                let script = document.createElement('script')
-                script.type = "text/javascript"
-                script.id = "template-script"
-                script.text = js
-                document.getElementsByTagName('body')[0].appendChild(script)
-            }
-        })
+        
         
     },
     destroyed(){
@@ -44,14 +40,18 @@ export default {
     },
     data(){
         return{
-            
+            myArray:[
+                {id:"1",name:"test"},
+                {id:"3",name:"发送到了"},
+                {id:"2",name:"上了对方诉讼费"}
+            ]
         }
     },
 	methods: {
-        
+        addPeople:function(){
+            this.myArray.push({id:"23",name:"新增1"})
+        }
 	},
-    components: {
-        
-    }
+    
 }
 </script>

@@ -27,7 +27,7 @@ import './components/Global/index.js'
 
 import '@/utils/Directive'  //自定义指令
 
-import '@/utils/mock.js'  //测试接口
+import '@/utils/Mock.js'  //测试接口
 
 import 'vue-transition.css'
 

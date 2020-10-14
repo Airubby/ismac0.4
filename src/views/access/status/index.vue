@@ -1,25 +1,6 @@
 <template>
     <app-con>
-        <el-row>
-            <el-col :span="8">
-                <div class="lc-data-con">
-                    <span class="lc-data-title">接入设备总数</span>
-                    <div class="lc-data-value"><span class="dataValue">8</span>个</div>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="lc-data-con">
-                    <span class="lc-data-title">告警中的设备</span>
-                    <div class="lc-data-value"><span class="dataValue">8</span>个</div>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="lc-data-con last-con">
-                    <span class="lc-data-title">通讯不上的设备</span>
-                    <div class="lc-data-value"><span class="dataValue">8</span>个</div>
-                </div>
-            </el-col>
-        </el-row>
+        <div id="template-box"></div>
         <div class="color-mg20"></div>
         <div class="pd20 ">
             <div class="card_title">
@@ -50,6 +31,7 @@
     }
 </style>
 <script>
+import axios from 'axios'
 import DynamicComponent from '@/components/DynamicComponent'
 import DynamicCompileComponent from '@/components/DynamicCompileComponent'
 export default {
@@ -57,7 +39,23 @@ export default {
         DynamicComponent,DynamicCompileComponent
     },
     created() {
-        
+        //动态获取模板展示
+        axios.get('/template/test.html').then(data => {
+            console.log(data);
+            console.log(data.data)
+            let res=data.data;
+            let arr=res.split("<script>")
+            let dom=document.querySelector("#template-box");
+            dom.innerHTML=arr[0];
+            if(arr.length>1){
+                let js=arr[1].split("<\/script>")[0];
+                let script = document.createElement('script')
+                script.type = "text/javascript"
+                script.id = "template-script"
+                script.text = js
+                document.getElementsByTagName('body')[0].appendChild(script)
+            }
+        })
     },
     mounted() {
         
