@@ -17,26 +17,43 @@ Mock.setup({
 	timeout:1000  //设置请求延时时间
 })
 
+// const getdata = function(){
+//     let datalist = []
+// 	for (let i = 0; i < 20; i += 1) {
+//         const o = {  //mockjs模拟随机生成数据，生成20条
+//             recipeId: Random.guid(),
+//             billId: Random.string(10),
+//             value: Random.string('number', 8, 10),
+//             Date:Random.date('yyyy-MM-dd'),
+//             time:Random.time('A HH:mm:ss'),
+//             adress:Random.county(),
+//             name: Random.cword(4, 16), // 随机生成任意名称
+//             personName: Random.cname(),
+//             content: Random.csentence(10, 32),
+//             "matchID":"match1"
+//         }
+//         datalist.push(o)
+//     }
+// 	return{
+//         err_code:0,
+//         err_msg:"成功",
+//         data:datalist
+//     }
+// }
+
 const getdata = function(){
-    let datalist = []
-	for (let i = 0; i < 20; i += 1) {
-        const o = {  //mockjs模拟随机生成数据，生成20条
-            recipeId: Random.guid(),
-            billId: Random.string(10),
-            value: Random.string('number', 8, 10),
-            Date:Random.date('yyyy-MM-dd'),
-            time:Random.time('A HH:mm:ss'),
-            adress:Random.county(),
-            name: Random.cword(4, 16), // 随机生成任意名称
-            personName: Random.cname(),
-            content: Random.csentence(10, 32),
-            "matchID":"match1"
-        }
-        datalist.push(o)
-    }
 	return{
         err_code:0,
         err_msg:"成功",
-        data:datalist
+        data:[
+            {
+                "key": "home",
+                "component": "TestComponent",
+                "iconfont": "menu-monitort.png",
+                "language": "Home"
+            }
+        ]
     }
 }
+
+Mock.mock(RegExp('/getMockData' + ".*"), /get|post/i,getdata) 

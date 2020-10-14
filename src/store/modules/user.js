@@ -1,80 +1,108 @@
 import {syncRouter, resetRouter,router } from '@/router/index'
 import Cookies from 'js-cookie'
-/**
- * 递归过滤异步路由表，生成router数据结构
- * @param asyncRouterMap
- * @param data
- */
-function filterAsyncRouter(data) {
-    data.map((item)=>{
-        let addr=item.component;
-        item.component = () => import(`@/views/${addr}`);
-        // item.component = resolve => require([`@/views/${addr}`], resolve);
-        if(item.children&&item.children.length>0){
-            item["redirect"]=item.children[0].path;
-            item.children=filterAsyncRouter(item.children);
-        }
-    })
-    return data;
-}
-
+const rootPath="/loncom";
+const PageIndex="PageIndex";
+const PageMoreIndex="PageMoreIndex";
 const user = {
-  state: {
-    token:Cookies.get('token')||'token888',
-    routers: syncRouter,
-    addRouters: [],
-    limits:[],
-    navList:[],
-  },
-  mutations: {
-    setToken(state,token){
-      state.token=token;
-      Cookies.set('token', token)
+    state: {
+        token:Cookies.get('token')||'token888',
+        config:[], //所有导航
+		currentConfig:{},  //当前导航
+		currentComponent:"",  //当前组件
     },
-    setAuthInfo(state,data){
-        resetRouter(); //重置初始路由
-        state.navList=data; //导航用
-        let redirect=data.length>0?data[0].path:'/401';
-        let newRouter={
-            path: '/loncom',
-            name:'loncom',
-            meta: { title: '首页'},
-            component: () => import('@/views/home.vue'),
-            // component:resolve => require(['@/views/home.vue'], resolve),
-            redirect:redirect,
-            children:[]
-        }
-        if(data.length>0){
-          let theAsyncRouter = filterAsyncRouter(data);
-          if(theAsyncRouter){
-              newRouter.redirect=theAsyncRouter[0].path;
-              newRouter.children=theAsyncRouter;
-          }
-        }
-        
-        // router.options.routes.push(newRouter)
-        router.addRoutes([newRouter]);
-        console.log(router)
+    mutations: {
+        SET_TOKEN(state,token){
+            state.token=token;
+            Cookies.set('token', token)
+        },
+        SET_CONFIG(state, config){
+            resetRouter(); //重置初始路由
+			let data=config;
+			let redirect=data.length>0?`${rootPath}/`+data[0].key:`${rootPath}/401`;
+			let newRouter={
+				path: rootPath,
+				name:'loncom',
+				component: () => import('@/views/Index.vue'),
+				redirect:redirect,
+				children:[]
+            }
+			if(data.length>0){
+				let arr=[];
+				for(let i=0;i<data.length;i++){
+					let children=[];
+					if(data[i].children&&data[i].children.length>0){
+						for(let j=0;j<data[i].children.length;j++){
+							children.push({
+								path: `${rootPath}/`+data[i].key+"/"+data[i].children[j].key,
+								name: data[i].children[j].key,
+								meta:{componentName:data[i].children[j].component},
+								component: () => import(`@/views/public/${PageIndex}.vue`),
+							})
+							if(data[i].children[j].relation&&data[i].children[j].relation.length>0){
+								for(let m=0;m<data[i].children[j].relation.length;m++){
+									children.push({
+										path: `${rootPath}/`+data[i].key+"/"+data[i].children[j].key+"/"+data[i].children[j].relation[m].key,
+										name: data[i].children[j].relation[m].key,
+										meta:{componentName:data[i].children[j].relation[m].component},
+										component: () => import(`@/views/public/${PageIndex}.vue`),
+									})
+								}
+							}
+						}
+					}
+					if(children.length>0){
+						arr.push({
+							path: `${rootPath}/`+data[i].key,
+							name: data[i].key,
+							meta:{componentName:data[i].component},
+							component: () => import(`@/views/public/${PageMoreIndex}.vue`),
+							redirect:children[0].path,
+							children:children
+						});
+					}else{
+						arr.push({
+							path: `${rootPath}/`+data[i].key,
+							name: data[i].key,
+							meta:{componentName:data[i].component},
+							component: () => import(`@/views/public/${PageIndex}.vue`),
+						});
+						if(data[i].relation&&data[i].relation.length>0){
+							for(let m=0;m<data[i].relation.length;m++){
+								children.push({
+									path: `${rootPath}/`+data[i].key+"/"+data[i].relation[m].key,
+									name: data[i].relation[m].key,
+									meta:{componentName:data[i].relation[m].component},
+									component: () => import(`@/views/public/${PageIndex}.vue`),
+								})
+							}
+						}
+					}
+				}
+			}
+            router.addRoutes([newRouter]);
+            state.config = config
+		},
+		SET_CURRENTCONFIG(state,currentConfig){
+			state.currentConfig=currentConfig
+		},
+		SET_CURRENTCOMPONENT(state,currentComponent){
+			state.currentComponent=currentComponent
+		},
     },
-    setLimits(state,data){
-      state.limits=data;
+    actions: {
+        setToken({ commit }, token) {
+            commit('SET_TOKEN', token)
+        },
+        setConfig({ commit }, config) {
+			commit('SET_CONFIG', config)
+		},
+		setCurrentConfig({ commit }, currentConfig){
+			commit('SET_CURRENTCONFIG', currentConfig)
+		},
+		setCurrentComponent({ commit }, currentComponent){
+			commit('SET_CURRENTCOMPONENT', currentComponent)
+		},
     }
-    
-  },
-  actions: {
-    setToken({ commit }, token) {
-      commit('setToken', token)
-    },
-    //设置获取的权限信息
-    setAuthInfo({commit},data){
-      commit('setAuthInfo',data)
-    },
-    //设置功能权限
-    setLimits({commit},data){
-      commit('setLimits',data);
-    }
-
-  }
 
 }
 

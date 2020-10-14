@@ -5,10 +5,17 @@ Vue.use(Router)
 export const syncRouter=[
     {
         path: '/',
-        name: 'home',
-        meta: { title: 'home'},
-        component: () => import('@/views/home.vue'),
+        name: 'Home',
+        redirect:'/login',
+        component: () => import('@/views/Index.vue'),
     },
+    {
+        path: '/login',
+        name: 'Login',
+        component: () => import('@/views/Login.vue'),
+    },
+    { path: '/loncom/401', component: () => import('@/views/errorPage/401') },
+  	{ path: '*', component: () => import('@/views/errorPage/404') },
 ];
 /**
  * 重写路由的push方法  解决 Navigating to current location ("url") is not allowed

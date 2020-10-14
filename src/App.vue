@@ -6,12 +6,17 @@
 <script>
 import store from './store/index'
 import Vue from 'vue'
-import webSocket from "@/utils/webSocket"
+import Request from '@/utils/Request'
+import WebSocket from "@/utils/WebSocket"
+import ParseComponent from '@/utils/ParseComponent'
 import { mapGetters } from 'vuex'
   export default {
 	name: 'app',
-	mixins:[webSocket],
+    // mixins:[WebSocket,ParseComponent],
     created () {
+        Request.service.defaults.baseURL=store.state.AjaxUrl;
+        // 将API方法绑定到全局
+        Vue.prototype.$api = Request
         
     },
     computed:{
@@ -36,13 +41,12 @@ import { mapGetters } from 'vuex'
             this.$nextTick(function(){
                 this.$store.dispatch('setShow',true);
             })
-            
         },
     },
     watch:{
         getTheme:function(val){
             this.switchTheme(val)
-        }
+        },
     }
   }
 </script>

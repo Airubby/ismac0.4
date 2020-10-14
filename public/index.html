@@ -8,12 +8,7 @@
 		<meta name="description" content="HTML,ASP,PHP,SQL"> -->
 		<link rel="icon" href="<%= BASE_URL %>favicon.ico">
 		<link href="<%= BASE_URL %>css/style.css" rel="stylesheet">
-		<!-- 使用CDN加速的CSS文件，配置在vue.config.js下 -->
-		<% for (var i in htmlWebpackPlugin.options.cdn&&htmlWebpackPlugin.options.cdn.css) { %>
-		<link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="preload" as="style">
-		<link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="stylesheet">
-		<% } %>
-		<title>vue-cli3</title>
+		<title></title>
 		<style>
 		html,
 		body,
@@ -238,10 +233,7 @@
 			<div class="load_title" id="load-info">正在加载 小微产品,请耐心等待<br><span>V0.4</span></div>
 		</div>
 		</div>
-		<!-- 使用CDN加速的JS文件，配置在vue.config.js下 -->
-		<% for (var i in htmlWebpackPlugin.options.cdn&&htmlWebpackPlugin.options.cdn.js) { %>
-		<script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>" rel="preload" as="script"></script>
-		<% } %>
+		
 		<!-- built files will be auto injected -->
 		<script>
 			var cookie_name="language";
