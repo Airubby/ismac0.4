@@ -73,7 +73,7 @@ function getServerConfig() {
                 import(`@/utils/Mock.js`)
             }
             resolve();
-        }).then(back=>{
+        }).then(()=>{
             import(`./permission.js`)
         })
         resolve();

@@ -46,7 +46,7 @@ export default {
             this.$store.dispatch('setCurrentConfig',item);
         },
         setComponent:function(){
-            console.log("setComponent")
+            console.log(this.config)
             //key作为的路由name
             if(this.config&&this.config.length>0){
                 for(let i=0;i<this.config.length;i++){

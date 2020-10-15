@@ -8,7 +8,9 @@
                         <router-link :to="{name:item.key}">
                             <div class="nav-box">
                                 <div class="nav-box-con">
-                                    <div class="nav-box-con-img"><img :src="'/images/'+item.img"></div>
+                                    <div class="nav-box-con-img">
+                                        <i :class="item.iconfont"></i>
+                                    </div>
                                     <p>{{$t(item.language)}}</p>
                                 </div>
                             </div>

@@ -13,6 +13,7 @@ export const syncRouter=[
         name: 'Login',
         component: () => import('@/views/Login.vue'),
     },
+    { path: '*', component: () => import('@/views/errorPage/Loading') },
     { path: '/404',name:'404',meta: { title: '404'}, component: () => import('@/views/errorPage/404') },
   
 ];

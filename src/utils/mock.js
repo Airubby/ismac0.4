@@ -49,7 +49,7 @@ const getdata = function(){
             {
                 "key": "home",
                 "component": "TestComponent",
-                "iconfont": "menu-monitort.png",
+                "iconfont": "icon-statement",
                 "language": "Home"
             }
         ]
