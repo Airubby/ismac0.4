@@ -1,5 +1,5 @@
 <template>
-	<div class="content" v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.8)">
+	<div class="content">
 		<div class="loncom_login">
 			<div class="loncom_login_con loncom_public_shadow">
 				<div class="loncom_logo_img"></div>
@@ -30,10 +30,6 @@ export default {
 		request.service.defaults.baseURL=this.$store.getters.AjaxUrl;  //初始化的时候配置文件中的请求前缀还没写入request的baseURL中的
   	},
 	mounted() {
-        //加载完成了去掉根节点的loading;
-        this.$nextTick(function(){
-            this.$emit("routerLoading")
-		})
 		this.$nextTick(function () {
 			//设置第一个input框聚焦
 			this.$refs.customerInput.$el.querySelector('input').focus();
@@ -51,7 +47,6 @@ export default {
 			}
 		};
 		return {
-			loading:false,
 			user:{
 				userid:"",
 				psword:""
@@ -135,7 +130,7 @@ export default {
 						//let params = JSON.parse(this.$route.query.params);
 					}
 				}else{
-					this.$message.error(r.err_msg);
+					this.$message.error("错错错");
 				}
 			})
 			// this.$r.get('/getLimit', {roleid:id}, r => {

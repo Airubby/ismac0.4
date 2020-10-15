@@ -18,9 +18,6 @@ export default {
         // })
     },
     mounted() {
-        this.$nextTick(function(){
-            this.$emit("routerLoading")
-        })
         let props={dom:"three-dom"}
         // const Map = new ThreeMap(props);
         axios.get('/three/scene.json').then(data => {

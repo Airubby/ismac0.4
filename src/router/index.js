@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
-
+//要给meta，meta中必须存在键值对
 export const syncRouter=[
     {
         path: '/',
@@ -28,6 +28,7 @@ export const syncRouter=[
       meta: { title: 'test'},
       component: () => import('@/views/test/index.vue'),
     },
+    { path: '*', component: () => import('@/views/errorPage/Loading') }, //这个不要给meta的键值对
     { path: '/404',name:'404',meta: { title: '404'}, 
       component: () => import('@/views/errorPage/404') 
     },
