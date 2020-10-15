@@ -27,7 +27,7 @@ import './components/Global/index.js'
 
 import '@/utils/Directive'  //自定义指令
 
-import '@/utils/Mock.js'  //测试接口
+
 
 import 'vue-transition.css'
 
@@ -107,10 +107,14 @@ function getServerConfig() {
             i18n: (key, value) => i18n.t(key, value)
         })
         Vue.prototype.$vue=Vue;
-        require('./permission.js')
-        if(config.mock){
-            require('@/utils/newMock.js')
-        }
+        new Promise ((resolve, reject) => {
+            if(config.mock){
+                import(`@/utils/newMock.js`)
+            }
+            resolve();
+        }).then(back=>{
+            import(`./permission.js`)
+        })
         resolve();
         }).catch((error) => {
             console.log(error)

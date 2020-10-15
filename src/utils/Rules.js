@@ -22,7 +22,7 @@ const checkPassword = (rule, value, callback) => {
 			callback(new Error(rule.reqMessage||reqMessage));
 		}else{
 			/**
-			 * /^[A-Za-z0-9]{6,20}$/; 
+			 * /^([A-Za-z0-9]{6,20})$/; 
 			 * [a-z]/.test(value) && /[A-Z]/.test(value) && /[0-9]/.test(value)&& value.length>7    包含数字字母大小写，且至少8位
 			 */
 			let reg = /^([a-z_A-Z-.+0-9]{6,20})$/;   //. - _ 也可以包含包含
