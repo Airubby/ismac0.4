@@ -1,23 +1,23 @@
 <template>
-    <div id="app" ref="app">
-        <router-view />
-    </div>
+  <div id="app" ref="app">
+    <router-view />
+  </div>
 </template>
 <script>
 import store from './store/index'
 import Vue from 'vue'
+import { mapGetters } from 'vuex'
 import Request from '@/utils/Request'
 import WebSocket from "@/utils/WebSocket"
 import ParseComponent from '@/utils/ParseComponent'
-import { mapGetters } from 'vuex'
-  export default {
-	name: 'app',
-    // mixins:[WebSocket,ParseComponent],
+export default {
+    name: 'app',
+    mixins:[WebSocket,ParseComponent],
     created () {
+        //store.state.AjaxUrl完成后绑定API全局
         Request.service.defaults.baseURL=store.state.AjaxUrl;
         // 将API方法绑定到全局
         Vue.prototype.$api = Request
-        
     },
     computed:{
         ...mapGetters([
@@ -28,9 +28,9 @@ import { mapGetters } from 'vuex'
         this.switchTheme(this.$theme)
     },
     data(){
-        return{
-            
-        }
+      return{
+        
+      }
     },
     methods:{
         switchTheme:function(themeName){
@@ -48,7 +48,7 @@ import { mapGetters } from 'vuex'
             this.switchTheme(val)
         },
     }
-  }
+}
 </script>
 <style lang="less">
 

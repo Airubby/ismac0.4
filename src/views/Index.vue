@@ -1,78 +1,93 @@
 <template>
-    <div class="app-wrapper">
-        <div class="content-left">
-            <ul>
-                <el-scrollbar class="scrollbar">
-                    <template v-for="item in $store.getters.config">
-                        <li>
-                            <router-link :to="{name:item.key}">
-                                <div class="nav-box">
-                                    <div class="nav-box-con">
-                                        <div class="nav-box-con-img"><img :src="'/images/'+item.img"></div>
-                                        <p>{{$t(item.language)}}</p>
-                                    </div>
+  <div class="content content-flex">
+    <div class="content-left">
+        <ul class="scrollbar">
+            <el-scrollbar>
+                <template v-for="item in $store.getters.config">
+                    <li>
+                        <router-link :to="{name:item.key}">
+                            <div class="nav-box">
+                                <div class="nav-box-con">
+                                    <div class="nav-box-con-img"><img :src="'/images/'+item.img"></div>
+                                    <p>{{$t(item.language)}}</p>
                                 </div>
-                            </router-link>
-                        </li>
-                    </template>
-                </el-scrollbar>
-            </ul>
-        </div>
-        <div class="content-right">
-        <div class="content-right-top">
-                <div class="content-right-top-logo">
-                    <img src="/images/logo.png">
-                </div>
-                <div class="index-right-top-list">
-                    <el-dropdown trigger="click">
-                        <span class="el-dropdown-link">
-                            {{getLanguage}}<i class="el-icon-arrow-down el-icon--right"></i>
-                        </span>
-                        <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item>
-                                <span @click="setLanguage('zh')">中文</span>
-                            </el-dropdown-item>
-                            <el-dropdown-item>
-                                <span @click="setLanguage('en')">英文</span>
-                            </el-dropdown-item>
-                        </el-dropdown-menu>
-                    </el-dropdown>
-                </div>
-                <div class="index-right-top-list" @click="flushPage">
-                    <i class="el-icon-refresh"></i>刷新
-                </div>
-                <div class="index-right-top-list">
-                    <i class="el-icon-s-opportunity"></i>声光
-                </div>
-                <div class="index-right-top-list">
-                    <router-link :to="{name:'Alarm'}">
-                        <el-badge :value="200" :max="99" class="item">
-                            <i class="el-icon-bell"></i>告警
-                        </el-badge>
-                    </router-link>
-                </div>
-                <div>
-                    <p style="font-size:26px;">{{date.hours}}:{{date.minutes}}:{{date.seconds}}</p>
-                    <p class="font-size12">{{date.year}}-{{date.month}}-{{date.day}}<span>{{date.week}}</span></p>
-                </div>
-        </div>
-        <div class="content-body">
-            <router-view  v-if="isRouterAlive"/>
-        </div>
-        </div>
+                            </div>
+                        </router-link>
+                    </li>
+                </template>
+            </el-scrollbar>
+        </ul>
     </div>
+    <div class="content-right">
+      <div class="content-right-top">
+            <div class="content-right-top-logo">
+                <img src="/images/logo.png">
+            </div>
+            <div class="index-right-top-list">
+                <el-dropdown trigger="click">
+                    <span class="el-dropdown-link">
+                        {{getLanguage}}<i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>
+                            <span @click="setLanguage('zh')">中文</span>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                            <span @click="setLanguage('en')">英文</span>
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </div>
+            <div class="index-right-top-list">
+                <i class="el-icon-refresh"></i>刷新
+            </div>
+            <div class="index-right-top-list">
+                <i class="el-icon-s-opportunity"></i>声光
+            </div>
+            <div class="index-right-top-list">
+                <router-link :to="{name:'Home'}">
+                    <el-badge :value="200" :max="99" class="item">
+                        <i class="el-icon-bell"></i>告警
+                    </el-badge>
+                </router-link>
+            </div>
+            <div class="index-right-top-list">
+                <i class="el-icon-user"></i>登陆
+            </div>
+            <div>
+                <p style="font-size:26px;">{{date.hours}}:{{date.minutes}}:{{date.seconds}}</p>
+                <p class="font-size12">{{date.year}}-{{date.month}}-{{date.day}}<span>{{date.week}}</span></p>
+            </div>
+      </div>
+      <div class="content-body">
+        <router-view  v-if="isRouterAlive"/>
+      </div>
+    </div>
+  </div>
 </template>
+
 <script>
 import { mapGetters } from 'vuex'
-import Cookies from 'js-cookie'
 export default {
-    created() {
+    name: 'index',
+    components: { },
+    created () {
         this.date=this.setClock();
     },
     mounted() {
         setInterval(()=>{
             this.date=this.setClock();
         },1000);
+    },
+    computed:{
+        getLanguage:function(){
+            let language=this.$store.state.language;
+            if(language=="zh"){
+                return "中文"
+            }else{
+                return "English"
+            }
+        },
     },
     data(){
         return{
@@ -88,27 +103,11 @@ export default {
             vWeek: [this.$t("SUN"),this.$t("Mon"),this.$t("Tues"),this.$t("Wed"),this.$t("Thurs"),this.$t("Fir"),this.$t("Sat")]
         }
     },
-    computed:{
-        getLanguage:function(){
-            let language=this.$store.state.language;
-            if(language=="zh"){
-                return "中文"
-            }else{
-                return "English"
-            }
-        },
-    },
-	methods: {
+    methods: {
         setLanguage:function(language){
             this.$i18n.locale = language
             this.$store.dispatch('setLanguage', language)
             this.vWeek=[this.$t("SUN"),this.$t("Mon"),this.$t("Tues"),this.$t("Wed"),this.$t("Thurs"),this.$t("Fir"),this.$t("Sat")];
-        },
-        flushPage:function(){
-            this.isRouterAlive=false;
-            this.$nextTick(function(){
-                this.isRouterAlive=true;
-            })
         },
         setClock:function(){
             let vWeek,vDate={};
@@ -124,23 +123,19 @@ export default {
             vDate["week"] = this.vWeek[date.getDay()];
             return vDate;
         },
-        changeTheme:function(theme){
-            this.$store.dispatch('setTheme',theme);
-            sessionStorage.setItem("theme", theme);
-        },
-	},
-    components: {
-        
     }
 }
 </script>
 <style lang="less" scoped>
     .module-theme(...){
+        .content-flex{
+            display: flex;
+        }
         .content-left,
         .content-left ul {
-            width: 100px;
+            width: 160px;
             height: 100%;
-            background: #354052;
+            background: @navBg;
             li {
                 width: 100%;
                 height: calc(100% / 9);
@@ -186,7 +181,7 @@ export default {
             }
         }
         .content-right {
-            width: calc(100% - 100px);
+            width: calc(100% - 160px);
             height: 100%;
             .content-right-top{
                 display: flex;
@@ -201,7 +196,7 @@ export default {
                     line-height: 60px;
                     display: flex;
                     align-items: center;
-                    max-width: 260px;
+                    width: 100%;
                     min-width: 260px;
                     margin-right: 20px;
                     img{
@@ -210,7 +205,7 @@ export default {
                     }
                 }
                 .index-right-top-list{
-                    font-size: 17px;
+                    font-size: 16px;
                     margin: 0 12px;
                     i{
                         font-size: 24px;
@@ -226,7 +221,7 @@ export default {
             }
         }
         .el-dropdown-link{
-            font-size: 17px;
+            font-size: 16px;
             i{
                 font-size: 20px !important;
             }

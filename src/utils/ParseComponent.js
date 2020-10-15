@@ -73,8 +73,6 @@ export default {
         },
         changeRoute:function(){
             if(this.config&&this.config.length>0){
-                console.log("changeRoute")
-                console.log(this.$route)
                 for(let i=0;i<this.config.length;i++){
                     if(this.config[i].children&&this.config[i].children.length>0){
                         for(let j=0;j<this.config[i].children.length;j++){
@@ -142,7 +140,8 @@ export default {
                 }  
             })  
             let options = {    
-                script: sfc.script ? $require(null, sfc.script.content) : {},    
+                // script: sfc.script ? $require(null, sfc.script.content) : {},    
+                script: sfc.script ? eval(sfc.script.content) : {},    
                 styles,    
                 template  
             }  
@@ -181,7 +180,7 @@ export default {
                 });
             }else{
                 //注册全局组件
-                let component=currentComponent?currentComponent:"index";
+                let component=currentComponent?currentComponent:"Index";
                 let componentName=currentComponent?currentComponent:ComponentPackage
                 Vue.component(
                     componentName,
@@ -198,9 +197,11 @@ export default {
     watch:{
         $route(to,from){
             this.changeRoute();
+            console.log(this.$route)
         },
         config:{
             handler:function(val,oldval){
+                console.log("config改变")
                 this.setComponent();
             },
             deep: true, 

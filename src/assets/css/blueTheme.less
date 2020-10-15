@@ -1,14 +1,26 @@
 
 .blue_theme{
-    @color:#045a5a;
-    @bg:#09c;
-    @color1:#fff;    
+    @color:#A7B5D1;  //字体颜色
+    @activeColor:#33B9FF;  //active 字体颜色
+    @navBg:#073474;   // 侧边导航背景色
+    @bodyTopBg:#052B62;  //主体框架头部背景色
+    @bodyBg:#061C47;  //body背景色
+    @contentBg:#052B62;  //组件主题背景色
+    @lineColor:#0A3B79;  //线条颜色
+    @normalBg:#0A3B79;   //正常背景色
+    @activeBg:#134998;  //active背景色 
     @loginLogo:"/images/theme/blue/login_logo.png";
     @loginBg:"/images/theme/blue/login_bg.png";
     .module-theme(
         @color;
-        @bg;
-        @color1;
+        @activeColor;
+        @navBg;
+        @bodyTopBg;
+        @bodyBg;
+        @contentBg; 
+        @lineColor; 
+        @normalBg;  
+        @activeBg;  
         @loginLogo;
         @loginBg
     );

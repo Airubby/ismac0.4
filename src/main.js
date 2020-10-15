@@ -19,7 +19,6 @@ import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
 
 import '@/utils/Directive'  //自定义指令
 
-
 //绑定工具函数到全局
 Vue.prototype.$tool = Tool
 Vue.prototype.$store = store
@@ -42,10 +41,11 @@ function getServerConfig() {
             website=window.document.location.origin;
         }
         let ajaxUrl=website+(port?(":"+port):"")+postfix;
-        Vue.prototype.$ajaxUrl=ajaxUrl;
-        Vue.prototype.$webSocket=config.webSocket;
         store.dispatch('setAjaxUrl',ajaxUrl);
         store.dispatch('setLanguage',Cookies.get('language') || config.language);
+        store.dispatch('setConfig',config.config);
+        Vue.prototype.$ajaxUrl=ajaxUrl;
+        Vue.prototype.$webSocket=config.webSocket;
         Vue.prototype.$theme = sessionStorage.getItem("theme") || config.theme || 'blue';
         const enLocale=config.enLang
         const zhLocale=config.zhLang
@@ -68,10 +68,14 @@ function getServerConfig() {
             size: 'small', // set element-ui default size
             i18n: (key, value) => i18n.t(key, value)
         })
-        if(config.mock){
-            require('@/utils/Mock.js')
-        }
-        console.log("!!!!!!!!!!!!!!!!")
+        new Promise ((resolve, reject) => {
+            if(config.mock){
+                import(`@/utils/Mock.js`)
+            }
+            resolve();
+        }).then(back=>{
+            import(`./permission.js`)
+        })
         resolve();
         }).catch((error) => {
             console.log(error)

@@ -13,9 +13,23 @@
     "theme":"blue",
     "language":"zh",
     "zhLang":{
-        
+        "Home":"主监控",
+        "Mon":"星期一",
+        "Tues":"星期二",
+        "Wed":"星期三",
+        "Thurs":"星期四",
+        "Fir":"星期五",
+        "Sat":"星期六",
+        "SUN":"星期天"
     },
     "enLang":{
-        
+        "Home":"Home",
+        "Mon":"Mon",
+        "Tues":"Tues",
+        "Wed":"Wed",
+        "Thurs":"Thurs",
+        "Fir":"Fir",
+        "Sat":"Sat",
+        "SUN":"SUN"
     }
 }

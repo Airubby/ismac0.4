@@ -44,8 +44,8 @@ export default {
 		};
 		return {
 			user:{
-				userid:"",
-				psword:""
+				userid:"admin",
+				psword:"admin"
 			},
 			rules: {
 				userid:[
@@ -64,20 +64,28 @@ export default {
 			}
 		},
 		loginIn:function(){
-			this.$refs['form'].validate((valid) => {
-				if(valid){
-					let a="tKb634uLRuFdugF0P01eKw=="
-					console.log(Decrypt(a))
-					this.user.psword=Encrypt(this.user.psword);
-					this.$api.post("/login",this.user,{text:"登录信息提交中..."}).then(res=>{
-						console.log(res)
-						this.$message.success(res.msg);
-						sessionStorage.roleid=Encrypt(res.data.roleid);  //刷新页面的时候用userid获取权限问题；
-						this.getLimit(res.data.roleid)  //获取权限
-						sessionStorage.loginInfo= JSON.stringify(res.data);
-					})
-				}
-			});
+            this.$api.post("/getMockData",this.user,{text:"登录信息提交中..."}).then(res=>{
+                console.log(res)
+                sessionStorage.roleid=Encrypt("roleid");
+                this.$store.dispatch("setConfig",res.data).then(result=>{
+                    console.log(result)
+                    this.$router.push({path:'/loncom'});
+                })
+            })
+			// this.$refs['form'].validate((valid) => {
+			// 	if(valid){
+			// 		let a="tKb634uLRuFdugF0P01eKw=="
+			// 		console.log(Decrypt(a))
+			// 		this.user.psword=Encrypt(this.user.psword);
+			// 		this.$api.post("/login",this.user,{text:"登录信息提交中..."}).then(res=>{
+			// 			console.log(res)
+			// 			this.$message.success(res.msg);
+			// 			sessionStorage.roleid=Encrypt(res.data.roleid);  //刷新页面的时候用userid获取权限问题；
+			// 			this.getLimit(res.data.roleid)  //获取权限
+			// 			sessionStorage.loginInfo= JSON.stringify(res.data);
+			// 		})
+			// 	}
+			// });
 		},
 		filterAsyncRouter:function(url, roles) {
 			roles.forEach(element => {
