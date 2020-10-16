@@ -19,6 +19,8 @@ import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
 
 import '@/utils/Directive'  //自定义指令
 
+import './assets/css/basic.less'
+
 //绑定工具函数到全局
 Vue.prototype.$tool = Tool
 Vue.prototype.$store = store

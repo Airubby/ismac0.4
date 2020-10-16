@@ -1,31 +1,3 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-#app,
-.content {
-    height: 100%;
-    width: 100%;
-    font-size: 14px;
-    font-family: "Microsoft YaHei,sans-serif";
-}
-.scrollbar .el-scrollbar__wrap { //给外层class不然element组件自己的会有问题比如下拉选项
-    overflow-x: hidden !important;
-}
-.scrollbar .el-scrollbar__view{
-    height: 100%;
-    min-height: 100%;
-}
-a{
-    text-decoration: none;
-}
-ul,li{
-    list-style: none;
-}
-em{
-    font-style: normal;
-}
 @import '~@/assets/css/blueTheme.less';
 @import '~@/assets/css/partysuTheme.less';
 .module-theme(...){}

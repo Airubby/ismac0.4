@@ -47,11 +47,81 @@ const getdata = function(){
         err_msg:"成功",
         data:[
             {
-                "key": "home",
-                "component": "TestComponent",
+                "key": "monitor",
+                "component": "Monitor",
+                "iconfont": "icon-monitor",
+                "language": "Monitor",
+                "children":[]
+            },
+            {
+                "key": "alarm",
+                "component": "Alarm",
+                "iconfont": "icon-alarm",
+                "language": "Alarm",
+                "children":[
+                    {
+                        "key": "activeAlarm",
+                        "component": "ActiveAlarm",
+                        "iconfont": "icon-alarm",
+                        "language": "ActiveAlarm"
+                    },
+                    {
+                        "key": "historyAlarm",
+                        "component": "HistoryAlarm",
+                        "iconfont": "icon-alarm",
+                        "language": "HistoryAlarm"
+                    }
+                ]
+            },
+            {
+                "key": "energy",
+                "component": "Energy",
+                "iconfont": "icon-energy",
+                "language": "Energy",
+                "children":[]
+            },
+            {
+                "key": "access",
+                "component": "Access",
+                "iconfont": "icon-access",
+                "language": "Access",
+                "children":[]
+            },
+            {
+                "key": "video",
+                "component": "Video",
+                "iconfont": "icon-video",
+                "language": "Video",
+                "children":[]
+            },
+            {
+                "key": "rack",
+                "component": "Rack",
+                "iconfont": "icon-rack",
+                "language": "Rack",
+                "children":[]
+            },
+            {
+                "key": "statement",
+                "component": "Statement",
                 "iconfont": "icon-statement",
-                "language": "Home"
-            }
+                "language": "Statement",
+                "children":[]
+            },
+            {
+                "key": "system",
+                "component": "System",
+                "iconfont": "icon-system",
+                "language": "System",
+                "children":[]
+            },
+            {
+                "key": "assert",
+                "component": "Assert",
+                "iconfont": "icon-assert",
+                "language": "Assert",
+                "children":[]
+            },
         ]
     }
 }

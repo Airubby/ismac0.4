@@ -23,7 +23,7 @@
     <div class="content-right">
       <div class="content-right-top">
             <div class="content-right-top-logo">
-                <img src="/images/logo.png">
+                <router-link to="/loncom"><img :src="'/images/theme/'+$theme+'/logo.png'" v-if="$theme&&$store.getters.showTheme"></router-link>
             </div>
             <div class="index-right-top-list">
                 <el-dropdown trigger="click">
@@ -45,13 +45,6 @@
             </div>
             <div class="index-right-top-list">
                 <i class="el-icon-s-opportunity"></i>声光
-            </div>
-            <div class="index-right-top-list">
-                <router-link :to="{name:'Home'}">
-                    <el-badge :value="200" :max="99" class="item">
-                        <i class="el-icon-bell"></i>告警
-                    </el-badge>
-                </router-link>
             </div>
             <div class="index-right-top-list">
                 <i class="el-icon-user"></i>登陆
@@ -83,7 +76,7 @@ export default {
     },
     computed:{
         getLanguage:function(){
-            let language=this.$store.state.language;
+            let language=this.$store.getters.language;
             if(language=="zh"){
                 return "中文"
             }else{
@@ -133,77 +126,94 @@ export default {
         .content-flex{
             display: flex;
         }
-        .content-left,
-        .content-left ul {
+        .content-left{
             width: 160px;
             height: 100%;
-            background: @navBg;
-            li {
+            ul {
                 width: 100%;
-                height: calc(100% / 9);
-                .nav-box{
-                    display: flex;
+                height: 100%;
+                background: @navBg;
+                li {
                     width: 100%;
-                    height: 100%;
-                    align-items: center;
-                    .nav-box-con{
-                        vertical-align: middle;
-                        text-align: center;
-                        font-size: 14px;
-                        width: calc(100% - 6px);
-                        border-left: 6px solid #354052;
-                        .nav-box-con-img{
-                            width: 30px;
-                            height: 30px;
-                            overflow: hidden;
-                            margin: 0 auto 2px auto;
-                        }
-                        img{
-                            height: 30px;
-                        }
-                        p{
-                            color: #A0ACBF;
+                    height: auto;
+                    padding: 18px 0;
+                    .nav-box{
+                        display: flex;
+                        width: 100%;
+                        height: 100%;
+                        align-items: center;
+                        .nav-box-con{
+                            vertical-align: middle;
+                            text-align: center;
+                            font-size: 14px;
+                            width: calc(100% - 6px);
+                            border-left: 6px solid @navBg;
+                            .nav-box-con-img{
+                                width: 30px;
+                                height: 30px;
+                                overflow: hidden;
+                                margin: 0 auto 2px auto;
+                                i{
+                                    font-size: 30px;
+                                    &:before{
+                                        color: @color;
+                                    }
+                                }
+                            }
+                            img{
+                                height: 30px;
+                            }
+                            p{
+                                color: @color;
+                            }
                         }
                     }
-                }
-                a.router-link-active{
-                    .nav-box-con-img img{
-                        margin-left: -30px;
+                    a.router-link-active{
+                        .nav-box .nav-box-con{
+                            border-color: @activeColor;
+                            .nav-box-con-img{
+                                i:before{
+                                    color: @activeColor;
+                                }
+                            }
+                            p{
+                                color: @activeColor;
+                            }
+                        } 
                     }
-                    .nav-box .nav-box-con{
-                        border-color: #3CB2FF;
-                        p{
-                            color: #3CB2FF;
-                        }
-                    } 
                 }
-            }
-            li:nth-last-of-type(1){
-                border: none;
+                li:nth-last-of-type(1){
+                    border: none;
+                }
             }
         }
         .content-right {
             width: calc(100% - 160px);
             height: 100%;
+            background: @bodyBg;
             .content-right-top{
                 display: flex;
                 white-space: nowrap;
                 align-items: center;
-                background: #fff;
+                background: @bodyTopBg;
                 width: 100%;
-                height: 60px;
+                height: 64px;
                 padding: 0 15px;
                 .content-right-top-logo{
                     font-size: 26px;
-                    line-height: 60px;
+                    line-height: 64px;
                     display: flex;
                     align-items: center;
                     width: 100%;
                     min-width: 260px;
                     margin-right: 20px;
+                    a{
+                        display: flex;
+                        align-items: center;
+                    }
                     img{
                         max-width: 100%;
-                        max-height: 60px;
+                        max-height: 64px;
                     }
                 }
                 .index-right-top-list{
@@ -218,8 +228,8 @@ export default {
             }
             .content-body{
                 width: 100%;
-                height: calc(100% - 60px);
-                padding: 10px;
+                height: calc(100% - 64px);
+                padding: 15px;
             }
         }
         .el-dropdown-link{

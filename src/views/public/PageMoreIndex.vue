@@ -1,20 +1,18 @@
 <template>
-	<div class="content">
-		<div class="content" v-if="currentConfig.children&&currentConfig.children.length>0">
-			<ul class="content-nav">
-				<template v-for="item in currentConfig.children">
-                    <li>
-                        <router-link :to="{name:item.key}">
-                            {{$t(item.language)}}
-                        </router-link>
-                    </li>
-                </template>
-			</ul>
-			<div class="content-con">
-				<router-view />
-			</div>
-		</div>
-	</div>
+	<div class="content" v-if="currentConfig.children&&currentConfig.children.length>0">
+        <ul class="content-nav">
+            <template v-for="item in currentConfig.children">
+                <li>
+                    <router-link :to="{name:item.key}">
+                        {{$t(item.language)}}
+                    </router-link>
+                </li>
+            </template>
+        </ul>
+        <div class="content-con">
+            <router-view />
+        </div>
+    </div>
 </template>
 
 <script>
@@ -37,6 +35,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.module-theme(...){
 	.content-nav{
 		width:100%;
 		height: 48px;
@@ -46,19 +45,22 @@ export default {
 			width: 100%;
 			height: 100%;
 			text-align: center;
-			line-height: 48px;
+            line-height: 48px;
+            font-size: 18px;
 			a{
 				display: block;
-				background: #718199;
-				color: #fff;
+				background: @normalBg;
+				color: @color;
 				&.router-link-exact-active,&.router-link-active{
-					background: #5a687b;
+					background: @activeBg;
 				}
 			}
 		}
 	}
 	.content-con{
 		width: 100%;
-		height: calc(100% - 48px);
-	}
+        height: calc(100% - 48px);
+        background: @contentBg;
+    }
+}
 </style>
