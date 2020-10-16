@@ -1,5 +1,5 @@
 <template>
-    <div class="app-wrapper">
+    <div class="content">
         能效管理
     </div>
 </template>

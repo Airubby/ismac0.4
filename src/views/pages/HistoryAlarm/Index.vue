@@ -1,5 +1,5 @@
 <template>
-    <div class="app-wrapper">
+    <div class="content">
         历史告警
     </div>
 </template>

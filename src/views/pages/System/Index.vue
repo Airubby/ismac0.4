@@ -1,5 +1,5 @@
 <template>
-    <div class="app-wrapper">
+    <div class="content">
         系统管理
     </div>
 </template>

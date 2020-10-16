@@ -1,5 +1,5 @@
 <template>
-    <div class="app-wrapper">
+    <div class="content">
         视频管理
     </div>
 </template>

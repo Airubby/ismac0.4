@@ -1,18 +1,42 @@
 
 .partysu_theme{
-    @color:#A7B5D1;  //字体颜色
+    @color:#828896;  //字体颜色
+    @bgColor:#ffffff;  //带背景色的color
     @activeColor:#33B9FF;  //active 字体颜色
-    @navBg:#073474;   // 侧边导航背景色
-    @bodyTopBg:#052B62;  //主体框架头部背景色
-    @bodyBg:#061C47;  //body背景色
-    @contentBg:#052B62;  //组件主题背景色
-    @lineColor:#0A3B79;  //线条颜色
-    @normalBg:#0A3B79;   //正常背景色
-    @activeBg:#134998;  //active背景色 
-    @loginLogo:"/images/theme/blue/login_logo.png";
-    @loginBg:"/images/theme/blue/login_bg.png";
+    @navBg:#2A303F;   // 侧边导航背景色
+    @bodyTopBg:#FFFFFF;  //主体框架头部背景色
+    @bodyBg:#EFF0F2;  //body背景色
+    @contentBg:#FFFFFF;  //组件主体背景色
+    @lineColor:#E8ECF0;  //线条颜色
+    @normalBg:#868DA1;   //正常背景色
+    @activeBg:#606A83;  //active背景色 
+    @boxBg:#FFFFFF;  //box框，input框背景色
+    @loginLogo:"/images/theme/partysu/login_logo.png";
+    @loginBg:"/images/theme/partysu/login_bg.png";
+
+    color: @color;
+    //重置
+    .el-dropdown-menu{
+        background-color: @boxBg;
+        border-color: @lineColor;
+    }
+    .el-dropdown,
+    .el-dropdown-menu__item{
+        color: @color;
+    }
+    .el-popper[x-placement^=bottom] .popper__arrow::after{
+        border-bottom-color:@boxBg;
+    }
+    .el-popper[x-placement^=bottom] .popper__arrow{
+        border-bottom-color:@lineColor;
+    }
+    .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover{
+        background-color:@activeBg;
+        color: @activeColor;
+    }
     .module-theme(
         @color;
+        @bgColor;
         @activeColor;
         @navBg;
         @bodyTopBg;
@@ -21,6 +45,7 @@
         @lineColor; 
         @normalBg;  
         @activeBg;  
+        @boxBg;
         @loginLogo;
         @loginBg
     );

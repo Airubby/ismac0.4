@@ -18,19 +18,10 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-	components:{},
 	computed:{
         ...mapGetters([
             'currentConfig'
         ]),
-	},
-	methods:{
-		
-	},
-	watch:{
-		currentConfig:function(val){
-			console.log(val)
-		}
 	}
 }
 </script>
@@ -50,7 +41,7 @@ export default {
 			a{
 				display: block;
 				background: @normalBg;
-				color: @color;
+				color: @bgColor;
 				&.router-link-exact-active,&.router-link-active{
 					background: @activeBg;
 				}

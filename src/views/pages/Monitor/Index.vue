@@ -1,5 +1,5 @@
 <template>
-    <div class="app-wrapper">
+    <div class="content">
         监控管理
     </div>
 </template>

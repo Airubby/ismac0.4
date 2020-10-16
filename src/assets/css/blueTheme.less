@@ -1,20 +1,134 @@
 
 .blue_theme{
-    @color:#A7B5D1;  //字体颜色
+    @color:#8b9ed4;  //字体颜色
+    @bgColor: #DDE4F6; //带背景色的color
     @activeColor:#33B9FF;  //active 字体颜色
     @navBg:#073474;   // 侧边导航背景色
     @bodyTopBg:#052B62;  //主体框架头部背景色
     @bodyBg:#061C47;  //body背景色
-    @contentBg:#052B62;  //组件主题背景色
+    @contentBg:#052B62;  //组件主体背景色
     @lineColor:#0A3B79;  //线条颜色
     @normalBg:#0A3B79;   //正常背景色
     @activeBg:#134998;  //active背景色 
+    @boxBg:#05285B;  //box框，input框背景色
     @loginLogo:"/images/theme/blue/login_logo.png";
     @loginBg:"/images/theme/blue/login_bg.png";
 
+
     color: @color;
+    .el-table__header{
+        th{
+            padding: 12px 0;
+        }
+    }
+    .el-table{
+        color: @color;
+    }
+    .el-table thead{
+        color: @bgColor;
+    }
+    .el-table th, .el-table tr{
+        background: @normalBg;
+    } 
+    .el-table tr.el-table__row{
+        background: @contentBg;
+    }
+    .el-table th.is-leaf{
+        border-color: @normalBg;
+    }
+    .el-table td{
+        border-color: @lineColor;
+    }
+    .el-table:before{
+        background-color: @lineColor; 
+    }
+    .el-table--enable-row-hover .el-table__body tr:hover>td{
+        background-color: @contentBg ;
+    }
+    .showPagination{
+        background: @contentBg;
+    }
+    .el-pagination__total,
+    .el-pagination__jump{
+        color: @color;
+    }
+    .el-pagination.is-background .btn-next, 
+    .el-pagination.is-background .btn-prev, 
+    .el-pagination.is-background .el-pager li,
+    .el-pagination.is-background .btn-next:disabled:hover,
+    .el-pagination.is-background .btn-prev:disabled:hover,
+    .el-input__inner{
+        background-color: @boxBg;
+        border: 1px solid @lineColor;
+        color: @color;
+    }
+    .el-pagination.is-background .btn-next:hover,
+    .el-pagination.is-background .btn-prev:hover,
+    .el-pagination.is-background .el-pager li:not(.disabled):hover,
+    .el-pagination.is-background .el-pager li:not(.disabled).active{
+        background-color: transparent;
+        color: @activeColor;
+        border: 1px solid @activeColor;
+    }
+    .el-input__inner:hover{
+        border-color: @activeColor;
+    }
+    .table_handle{
+        text-align: right;
+        span{
+            color: @activeColor;
+            margin-left: 10px;
+        }
+    }
+    .el-dropdown-menu,
+    .el-select-dropdown{
+        background-color: @boxBg;
+        border-color: @lineColor;
+    }
+    .el-checkbox__inner{
+        background-color: transparent;
+        border-color: @color;
+    }
+    .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+        background-color: @activeColor;
+        border-color: @activeColor;
+    }
+    .el-dropdown,
+    .el-dropdown-menu__item,
+    .el-select-dropdown__item{
+        color: @color;
+    }
+    .el-popper[x-placement^=top] .popper__arrow::after{
+        border-top-color:@boxBg;
+    }
+    .el-popper[x-placement^=bottom] .popper__arrow::after{
+        border-bottom-color:@boxBg;
+    }
+    .el-popper[x-placement^=top] .popper__arrow{
+        border-top-color:@lineColor;
+    }
+    .el-popper[x-placement^=bottom] .popper__arrow{
+        border-bottom-color:@lineColor;
+    }
+    .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover,
+    .el-select-dropdown__item.hover,.el-select-dropdown__item.selected{
+        background-color:@activeBg;
+        color: @activeColor;
+    }
+    .el-button--primary,.el-button--primary:focus,.el-button--primary:hover{
+        background-color: @activeColor;
+        border-color: @activeColor;
+        color: @bgColor;
+    }
+    .el-button--primary.is-plain{
+        background-color: transparent;
+        border-color: @activeColor;
+        color: @activeColor;
+    }
+
     .module-theme(
         @color;
+        @bgColor;
         @activeColor;
         @navBg;
         @bodyTopBg;
@@ -23,6 +137,7 @@
         @lineColor; 
         @normalBg;  
         @activeBg;  
+        @boxBg;
         @loginLogo;
         @loginBg
     );

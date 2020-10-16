@@ -35,23 +35,40 @@
                             <span @click="setLanguage('zh')">中文</span>
                         </el-dropdown-item>
                         <el-dropdown-item>
-                            <span @click="setLanguage('en')">英文</span>
+                            <span @click="setLanguage('en')">English</span>
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
             <div class="index-right-top-list">
-                <i class="el-icon-refresh"></i>刷新
+                <el-dropdown trigger="click">
+                    <span class="el-dropdown-link">
+                        <i class="icon-skin"></i>换肤
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item :class="[$theme=='partysu'?'themeActive':'','dropdown-item']">
+                            <span @click="changeTheme('partysu')">小清新</span>
+                        </el-dropdown-item>
+                        <el-dropdown-item :class="[$theme=='blue'?'themeActive':'','dropdown-item']">
+                            <span @click="changeTheme('blue')">科技蓝</span>
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
             </div>
             <div class="index-right-top-list">
-                <i class="el-icon-s-opportunity"></i>声光
+                <i class="icon-screen"></i>大屏
             </div>
             <div class="index-right-top-list">
-                <i class="el-icon-user"></i>登陆
+                <i class="icon-acousto"></i>声光
+            </div>
+            <div class="index-right-top-list">
+                <div class="top-user">
+                    <img src="/images/me.png" class="userid"/>Airubby
+                </div>
             </div>
             <div>
                 <p style="font-size:26px;">{{date.hours}}:{{date.minutes}}:{{date.seconds}}</p>
-                <p class="font-size12">{{date.year}}-{{date.month}}-{{date.day}}<span>{{date.week}}</span></p>
+                <p style="font-size:12px;">{{date.year}}-{{date.month}}-{{date.day}}<span>{{date.week}}</span></p>
             </div>
       </div>
       <div class="content-body">
@@ -118,11 +135,16 @@ export default {
             vDate["week"] = this.vWeek[date.getDay()];
             return vDate;
         },
+        changeTheme:function(theme){
+            this.$store.dispatch('setTheme',theme);
+            sessionStorage.setItem("theme", theme);
+        },
     }
 }
 </script>
 <style lang="less" scoped>
     .module-theme(...){
+        
         .content-flex{
             display: flex;
         }
@@ -218,10 +240,22 @@ export default {
                 }
                 .index-right-top-list{
                     font-size: 16px;
-                    margin: 0 12px;
+                    margin: 0 15px;
+                    cursor: pointer;
                     i{
                         font-size: 24px;
                         vertical-align: middle;
+                        margin-right: 8px;
+                    }
+                    .top-user{
+                        display: flex;
+                        align-items: center;
+                        img{
+                            width: 44px;
+                            height: 44px;
+                            border-radius: 50%;
+                            margin-right: 8px;
+                        }
                     }
                 }
                 
