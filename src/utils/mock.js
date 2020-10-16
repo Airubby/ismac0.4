@@ -70,6 +70,18 @@ const getdata = function(){
                         "component": "HistoryAlarm",
                         "iconfont": "icon-alarm",
                         "language": "HistoryAlarm"
+                    },
+                    {
+                        "key": "eventMask",
+                        "component": "EventMask",
+                        "iconfont": "icon-alarm",
+                        "language": "EventMask"
+                    },
+                    {
+                        "key": "informLog",
+                        "component": "InformLog",
+                        "iconfont": "icon-alarm",
+                        "language": "InformLog"
                     }
                 ]
             },

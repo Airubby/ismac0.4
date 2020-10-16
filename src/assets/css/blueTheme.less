@@ -3,6 +3,7 @@
     @color:#8b9ed4;  //字体颜色
     @bgColor: #DDE4F6; //带背景色的color
     @activeColor:#33B9FF;  //active 字体颜色
+    @alarmColor: #ff4b61;  //告警色
     @navBg:#073474;   // 侧边导航背景色
     @bodyTopBg:#052B62;  //主体框架头部背景色
     @bodyBg:#061C47;  //body背景色
@@ -20,9 +21,6 @@
         th{
             padding: 12px 0;
         }
-    }
-    .el-table{
-        color: @color;
     }
     .el-table thead{
         color: @bgColor;
@@ -48,8 +46,11 @@
     .showPagination{
         background: @contentBg;
     }
+    .el-table,
     .el-pagination__total,
-    .el-pagination__jump{
+    .el-pagination__jump,
+    .el-form-item__label,
+    .el-date-editor .el-range-separator{
         color: @color;
     }
     .el-pagination.is-background .btn-next, 
@@ -130,6 +131,7 @@
         @color;
         @bgColor;
         @activeColor;
+        @alarmColor;
         @navBg;
         @bodyTopBg;
         @bodyBg;

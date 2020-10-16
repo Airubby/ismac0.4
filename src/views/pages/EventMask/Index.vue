@@ -1,48 +1,9 @@
 <template>
     <div class="content">
-        <el-form class="top" :model="initParams" :rules="rules" @submit.native.prevent ref="ValidateForm" label-position="top" >
-            <div class="search">
-                <el-form-item prop="alarm" label="等级">
-                    <el-select v-model="initParams.alarm" placeholder="请选择">
-                        <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="alarm" label="对象" class="form-item">
-                    <el-select v-model="initParams.alarm" placeholder="请选择">
-                        <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="alarm" label="查询时段" class="form-item">
-                    <el-date-picker
-                        v-model="initParams.date"
-                        type="datetimerange"
-                        range-separator="~"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item class="form-item" prop="" :label="`\u3000`">
-                    <el-button type="primary" @click="submitForm()">提交</el-button>
-                    <el-button type="primary" plain @click="resetForm()">重置</el-button>
-                </el-form-item>
-            </div>
-            <div class="btn">
-                <el-form-item class="form-item" prop="" :label="`\u3000`">
-                    <el-button type="primary">批量导出</el-button>
-                    <el-button type="primary" plain>统计分析</el-button>
-                </el-form-item>
-            </div>
-        </el-form>
+        <div class="top">
+            <el-button type="primary">批量导出</el-button>
+            <el-button type="primary" plain>统计分析</el-button>
+        </div>
         <el-table-pagination
             :url="$ajaxUrl+'/getTable'"
             list-field="data" 
@@ -134,17 +95,9 @@ export default {
     .module-theme(...){
         .top{
             color: @color;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            white-space: nowrap;
-            .search{
-                width: 100%;
-                display: flex;
-                .form-item{
-                    margin-left: @boxMargin;
-                }
-            }
+            height: 32px;
+            margin-bottom: @boxMargin;
+            text-align: right;
         }
     }
 </style>

@@ -2,7 +2,7 @@
     <div class="content">
         <el-form class="top" :model="initParams" :rules="rules" @submit.native.prevent ref="ValidateForm" label-position="top" >
             <div class="search">
-                <el-form-item prop="alarm" label="等级">
+                <el-form-item prop="alarm" label="通知方式">
                     <el-select v-model="initParams.alarm" placeholder="请选择">
                         <el-option
                         v-for="item in options"
@@ -12,7 +12,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item prop="alarm" label="对象" class="form-item">
+                <el-form-item prop="alarm" label="状态" class="form-item">
                     <el-select v-model="initParams.alarm" placeholder="请选择">
                         <el-option
                         v-for="item in options"
@@ -39,7 +39,6 @@
             <div class="btn">
                 <el-form-item class="form-item" prop="" :label="`\u3000`">
                     <el-button type="primary">批量导出</el-button>
-                    <el-button type="primary" plain>统计分析</el-button>
                 </el-form-item>
             </div>
         </el-form>

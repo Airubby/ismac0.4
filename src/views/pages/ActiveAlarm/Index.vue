@@ -6,7 +6,7 @@
                 <div>接入设备总数</div>
             </div>
             <div class="top-box">
-                <p><i :class="['icon-ups','active'?true:'']"></i></p>
+                <p><i :class="['icon-ups',true?'active':'']"></i></p>
                 <div>UPS:2</div>
             </div>
             <div class="top-box">
@@ -47,25 +47,23 @@
                 <el-button type="primary" plain>主要按钮</el-button>
             </div>
         </div>
-        <div class="table">
-            <el-table-pagination
-                :url="$ajaxUrl+'/getTable'"
-                list-field="data" 
-                total-field="total"
-                type="local"
-                :data="tableData"
-                method='get' 
-                :params="initParams"
-                :columns="tableColumns" ref="thisRef">   
-                <el-table-column slot="prepend" type="selection"></el-table-column>
-                <template slot-scope="scope" slot="preview-handle">
-                    <p class="table_handle">
-                        <span>确认</span>
-                        <span>屏蔽</span>
-                    </p>
-                </template>
-            </el-table-pagination>
-        </div>
+        <el-table-pagination
+            :url="$ajaxUrl+'/getTable'"
+            list-field="data" 
+            total-field="total"
+            type="local"
+            :data="tableData"
+            method='get' 
+            :params="initParams"
+            :columns="tableColumns" ref="thisRef">   
+            <el-table-column slot="prepend" type="selection"></el-table-column>
+            <template slot-scope="scope" slot="preview-handle">
+                <p class="table_handle">
+                    <span>确认</span>
+                    <span>屏蔽</span>
+                </p>
+            </template>
+        </el-table-pagination>
     </div>
 </template>
 <script>
@@ -138,6 +136,9 @@ export default {
                     &:before{
                         color: @color;
                     }
+                    &.active:before{
+                        color: @alarmColor
+                    }
                 }
             }
         }
@@ -157,9 +158,6 @@ export default {
                     }
                 }
             }
-        }
-        .table{
-
         }
     }
 </style>
