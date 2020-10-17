@@ -74,7 +74,9 @@ function getServerConfig() {
             if(config.mock){
                 import(`@/utils/Mock.js`)
             }
-            resolve();
+            setTimeout(()=>{
+                resolve();
+            },1000)
         }).then(()=>{
             import(`./permission.js`)
         })

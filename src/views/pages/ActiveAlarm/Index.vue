@@ -48,7 +48,7 @@
             </div>
         </div>
         <el-table-pagination
-            :url="$ajaxUrl+tablePath"
+            :url='$ajaxUrl+tablePath'
             list-field="data.item" 
             total-field="data.total"
             :data="tableData"
