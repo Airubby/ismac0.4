@@ -2,6 +2,7 @@
 .blue_theme{
     @color:#8b9ed4;  //字体颜色
     @bgColor: #DDE4F6; //带背景色的color
+    @disabledColor: #3250a2; //不可编辑的颜色
     @activeColor:#33B9FF;  //active 字体颜色
     @alarmColor: #ff4b61;  //告警色
     @navBg:#073474;   // 侧边导航背景色
@@ -11,6 +12,7 @@
     @lineColor:#0A3B79;  //线条颜色
     @normalBg:#0A3B79;   //正常背景色
     @activeBg:#134998;  //active背景色 
+    @disabledBg: #03214c;  //不可编辑的背景色
     @boxBg:#05285B;  //box框，input框背景色
     @loginLogo:"/images/theme/blue/login_logo.png";
     @loginBg:"/images/theme/blue/login_bg.png";
@@ -28,9 +30,6 @@
     .el-table th, .el-table tr{
         background: @normalBg;
     } 
-    .el-table tr.el-table__row{
-        background: @contentBg;
-    }
     .el-table th.is-leaf{
         border-color: @normalBg;
     }
@@ -40,17 +39,15 @@
     .el-table:before{
         background-color: @lineColor; 
     }
-    .el-table--enable-row-hover .el-table__body tr:hover>td{
+    .el-loading-mask,
+    .el-table tr.el-table__row,.el-table--enable-row-hover .el-table__body tr:hover>td,.el-table__expanded-cell,.el-table__empty-block,.showPagination{
         background-color: @contentBg ;
     }
-    .showPagination{
-        background: @contentBg;
-    }
-    .el-table,
-    .el-pagination__total,
-    .el-pagination__jump,
+    .el-table,.el-pagination__total,.el-pagination__jump,.el-table__empty-text,
     .el-form-item__label,
-    .el-date-editor .el-range-separator{
+    .el-dropdown,.el-dropdown-menu__item,
+    .el-select-dropdown__item,
+    .el-date-editor .el-range-separator,.el-date-editor .el-range-input,.el-date-table th{
         color: @color;
     }
     .el-pagination.is-background .btn-next, 
@@ -94,11 +91,6 @@
         background-color: @activeColor;
         border-color: @activeColor;
     }
-    .el-dropdown,
-    .el-dropdown-menu__item,
-    .el-select-dropdown__item{
-        color: @color;
-    }
     .el-popper[x-placement^=top] .popper__arrow::after{
         border-top-color:@boxBg;
     }
@@ -127,9 +119,39 @@
         color: @activeColor;
     }
 
+    .el-picker-panel,.el-picker-panel__footer{
+        background: @boxBg;
+        color: @color;
+        border-color: @lineColor;
+    }
+    .el-date-range-picker__time-header,.el-date-table th,.el-date-range-picker__content.is-left{
+        border-color: @lineColor;
+    }
+    .el-date-table td.next-month, .el-date-table td.prev-month{
+        color: @disabledColor;
+    }
+    .el-picker-panel__footer{
+        .el-button.is-plain,.el-button.is-plain:focus, .el-button.is-plain:hover{
+            background-color: @activeColor;
+            border-color: @activeColor;
+            color: @bgColor;
+        }
+    }
+    .el-date-table td.end-date span, .el-date-table td.start-date span{
+        background-color: @activeColor;
+    }
+    .el-date-table td.in-range div, .el-date-table td.in-range div:hover{
+        background-color: @disabledBg; 
+    }
+    .el-input.is-disabled .el-input__inner{
+        background-color: @disabledBg;
+        color: @color;
+        border-color: @lineColor;
+    }
     .module-theme(
         @color;
         @bgColor;
+        @disabledColor;
         @activeColor;
         @alarmColor;
         @navBg;
@@ -139,6 +161,7 @@
         @lineColor; 
         @normalBg;  
         @activeBg;  
+        @disabledBg;
         @boxBg;
         @loginLogo;
         @loginBg

@@ -3,7 +3,7 @@
         <div class="top">
             <div class="top-box">
                 <p><span>24</span></p>
-                <div>接入设备总数</div>
+                <div>{{$t("AllDev")}}</div>
             </div>
             <div class="top-box">
                 <p><i :class="['icon-ups',true?'active':'']"></i></p>
@@ -48,15 +48,17 @@
             </div>
         </div>
         <el-table-pagination
-            :url="$ajaxUrl+'/getTable'"
-            list-field="data" 
-            total-field="total"
-            type="local"
+            :url="$ajaxUrl+tablePath"
+            list-field="data.item" 
+            total-field="data.total"
             :data="tableData"
-            method='get' 
+            method='post' 
             :params="initParams"
             :columns="tableColumns" ref="thisRef">   
             <el-table-column slot="prepend" type="selection"></el-table-column>
+            <template slot-scope="scope" slot="preview-type">
+                {{scope.row.type | alarmShow(thisVue)}}
+            </template>
             <template slot-scope="scope" slot="preview-handle">
                 <p class="table_handle">
                     <span>确认</span>
@@ -67,37 +69,48 @@
     </div>
 </template>
 <script>
+import Api from './config/Api'
+import Language from './config/Language'
 export default {
+    mixins:[Language],
+    filters:{
+        alarmShow: function (value,_this) {
+            if (!value) return ''
+            const TYPE_MAP = {
+                1: _this.$t("AllDev"),
+                2: "次要",
+                3: "重要",
+                4: "严重",
+                5: "紧急",
+            }
+            let n = parseInt(value);
+            return TYPE_MAP[n];
+        }
+    },
     created() {
-        
+        // this.$api.post(Api.GetTable,{}).then(res=>{
+        //     console.log(res)
+        //     if(res.err_code==0){
+        //         this.tableData=res.data.item;
+        //     }
+        // })
     },
     mounted() {
         
     },
     data(){
         return{
+            thisVue:this,
+            tablePath:Api.GetTable,
             initParams:{},
-            tableData:[
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-            ],
+            tableData:[],
             tableColumns:[
-                { prop: 'code', label: '等级',minWidth:10},
-                { prop: 'type', label: '告警事件',minWidth:10},
-                { prop: 'indate', label: '定位',minWidth:10},
-                { prop: 'timegroup', label: '触发原因',minWidth:10},
-                { prop: 'jieru', label: '产生时间',minWidth:10},
-                { prop: 'jieru1', label: '解除时间',minWidth:10},
+                { prop: 'type', label: '等级',slotName:'preview-type',minWidth:10},
+                { prop: 'name', label: '告警事件',minWidth:10},
+                { prop: 'addr', label: '定位',minWidth:20},
+                { prop: 'content', label: '触发原因',minWidth:30},
+                { prop: 'time', label: '产生时间',minWidth:10},
+                { prop: 'time1', label: '解除时间',minWidth:10},
                 { prop: 'handle', label: '操作',slotName:'preview-handle',width:120},
             ]
         }

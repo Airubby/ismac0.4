@@ -2,6 +2,7 @@
 .partysu_theme{
     @color:#828896;  //字体颜色
     @bgColor:#ffffff;  //带背景色的color
+    @disabledColor: #828896; //不可编辑的颜色
     @activeColor:#33B9FF;  //active 字体颜色
     @alarmColor: #ff4b61;  //告警色
     @navBg:#2A303F;   // 侧边导航背景色
@@ -11,6 +12,7 @@
     @lineColor:#E8ECF0;  //线条颜色
     @normalBg:#868DA1;   //正常背景色
     @activeBg:#606A83;  //active背景色 
+    @disabledBg: #EFF0F2;  //不可编辑的背景色
     @boxBg:#FFFFFF;  //box框，input框背景色
     @loginLogo:"/images/theme/partysu/login_logo.png";
     @loginBg:"/images/theme/partysu/login_bg.png";
@@ -38,6 +40,7 @@
     .module-theme(
         @color;
         @bgColor;
+        @disabledColor;
         @activeColor;
         @alarmColor;
         @navBg;
@@ -47,6 +50,7 @@
         @lineColor; 
         @normalBg;  
         @activeBg;  
+        @disabledBg;
         @boxBg;
         @loginLogo;
         @loginBg
