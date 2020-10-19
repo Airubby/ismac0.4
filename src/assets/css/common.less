@@ -1,7 +1,9 @@
 @boxMargin:15px;  //设置box的上下左右距离用
+@itemMargin:5px;  //设置item的上下左右的距离用 小的间距
 .el-form-item--small.el-form-item{
     margin-bottom: @boxMargin;
 }
+
 /*时间下拉*/
 .el-date-editor--daterange.el-input, 
 .el-date-editor--daterange.el-input__inner, 
@@ -15,4 +17,41 @@
 }
 @import '~@/assets/css/blueTheme.less';
 @import '~@/assets/css/partysuTheme.less';
-.module-theme(...){}
+.module-theme(...){
+    //table上面的条件筛选
+    .search-top{
+        color: @color;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        white-space: nowrap;
+        .search{
+            width: 100%;
+            display: flex;
+            .form-item{
+                margin-left: @boxMargin;
+            }
+        }
+    }
+    .table_handle{
+        text-align: right;
+        span{
+            color: @activeColor;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    }
+    .card_title{
+        min-height: 32px;
+        line-height: 32px;
+        font-size: 16px;
+        overflow: hidden;
+        .title{
+            height: 18px;
+            line-height: 18px;
+            display: inline-block;
+            padding-left: 10px;
+            border-left: 3px solid @activeColor; 
+        }
+    }
+}

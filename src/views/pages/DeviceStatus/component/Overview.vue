@@ -1,10 +1,14 @@
 <template>
     <div class="content">
-        维护管理
+        概览
     </div>
 </template>
 <script>
 export default {
+    mixins:[],
+    filters:{
+        
+    },
     created() {
         
     },

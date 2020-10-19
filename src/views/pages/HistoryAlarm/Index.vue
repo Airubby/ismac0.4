@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <el-form class="top" :model="initParams" :rules="rules" @submit.native.prevent ref="ValidateForm" label-position="top" >
+        <el-form class="search-top" :model="initParams" :rules="rules" @submit.native.prevent ref="ValidateForm" label-position="top" >
             <div class="search">
                 <el-form-item prop="alarm" label="等级">
                     <el-select v-model="initParams.alarm" placeholder="请选择">
@@ -132,19 +132,6 @@ export default {
 </script>
 <style lang="less" scoped>
     .module-theme(...){
-        .top{
-            color: @color;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            white-space: nowrap;
-            .search{
-                width: 100%;
-                display: flex;
-                .form-item{
-                    margin-left: @boxMargin;
-                }
-            }
-        }
+        
     }
 </style>

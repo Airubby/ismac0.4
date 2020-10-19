@@ -60,7 +60,17 @@ const getdata = function(){
                 "component": "Monitor",
                 "iconfont": "icon-monitor",
                 "language": "Monitor",
-                "children":[]
+                "children":[
+                    {
+                        "key": "deviceStatus",
+                        "component": "DeviceStatus",
+                        "iconfont": "",
+                        "language": "DeviceStatus",
+                        "relation":[
+                            {"key":"deviceStatusDetail","component":"DeviceStatusDetail"}
+                        ]
+                    },
+                ]
             },
             {
                 "key": "alarm",
@@ -71,25 +81,25 @@ const getdata = function(){
                     {
                         "key": "activeAlarm",
                         "component": "ActiveAlarm",
-                        "iconfont": "icon-alarm",
+                        "iconfont": "",
                         "language": "ActiveAlarm"
                     },
                     {
                         "key": "historyAlarm",
                         "component": "HistoryAlarm",
-                        "iconfont": "icon-alarm",
+                        "iconfont": "",
                         "language": "HistoryAlarm"
                     },
                     {
                         "key": "eventMask",
                         "component": "EventMask",
-                        "iconfont": "icon-alarm",
+                        "iconfont": "",
                         "language": "EventMask"
                     },
                     {
                         "key": "informLog",
                         "component": "InformLog",
-                        "iconfont": "icon-alarm",
+                        "iconfont": "",
                         "language": "InformLog"
                     }
                 ]
@@ -134,14 +144,49 @@ const getdata = function(){
                 "component": "System",
                 "iconfont": "icon-system",
                 "language": "System",
-                "children":[]
+                "children":[
+                    {
+                        "key": "user",
+                        "component": "User",
+                        "iconfont": "",
+                        "language": "User"
+                    },
+                    {
+                        "key": "role",
+                        "component": "Role",
+                        "iconfont": "",
+                        "language": "Role"
+                    },
+                    {
+                        "key": "messageNotification",
+                        "component": "MessageNotification",
+                        "iconfont": "",
+                        "language": "MessageNotification"
+                    },
+                    {
+                        "key": "log",
+                        "component": "Log",
+                        "iconfont": "",
+                        "language": "Log"
+                    },
+                ]
             },
             {
                 "key": "assert",
                 "component": "Assert",
                 "iconfont": "icon-assert",
                 "language": "Assert",
-                "children":[]
+                "children":[
+                    {
+                        "key": "device",
+                        "component": "Device",
+                        "iconfont": "",
+                        "language": "Device",
+                        "relation":[
+                            {"key":"deviceDetail","component":"DeviceDetail"}
+                        ]
+                    },
+                ]
             },
         ]
     }

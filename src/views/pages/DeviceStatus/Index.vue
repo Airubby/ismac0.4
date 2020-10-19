@@ -3,7 +3,7 @@
         <div class="top">
             <div class="top-box">
                 <p><span>24</span></p>
-                <div>{{$t("AllDev")}}</div>
+                <div>接入设备总数</div>
             </div>
             <div class="top-box">
                 <p><i :class="['icon-ups',true?'active':'']"></i></p>
@@ -35,70 +35,55 @@
             </div>
         </div>
         <div class="center">
-            <div class="number">
-                <span>紧急(5)</span>
-                <span>严重(25)</span>
-                <span>重要(50)</span>
-                <span>次要(15)</span>
-                <span>提示(5)</span>
+            <div class="title">筛选</div>
+            <div class="searchbox">
+                <el-select v-model="initParams.alarm" placeholder="请选择">
+                    <el-option key="all" label="所有" value="all"></el-option>
+                    <el-option key="1" label="关注" value="1"></el-option>
+                </el-select>
             </div>
-            <div class="btn">
-                <el-button type="primary">批量确认</el-button>
-                <el-button type="primary" plain>批量导出</el-button>
+            <div class="searchbox">
+                <el-select v-model="initParams.alarm" placeholder="请选择">
+                    <el-option key="all" label="所有" value="all"></el-option>
+                    <el-option key="1" label="关注" value="1"></el-option>
+                </el-select>
+            </div>
+            <div class="searchbox">
+                <el-input v-model="initParams.alarm" placeholder="请输入内容">
+                    <i slot="suffix" class="el-input__icon el-icon-search cursor-pointer"></i>
+                </el-input>
             </div>
         </div>
         <el-table-pagination
-            :url='$ajaxUrl+tablePath'
             list-field="data.item" 
             total-field="data.total"
             :data="tableData"
             method='post' 
+            type="local"
             :params="initParams"
             :columns="tableColumns" ref="thisRef">   
             <el-table-column slot="prepend" type="selection"></el-table-column>
-            <template slot-scope="scope" slot="preview-type">
-                <div class="alarm-type">
-                <i :class="{'icon-urgency':scope.row.type=='5',
-                'icon-severity':scope.row.type=='4','icon-significance':scope.row.type=='3',
-                'icon-general':scope.row.type=='2','icon-reminder':scope.row.type=='1'}"></i>
-                {{scope.row.type | alarmShow(thisVue)}}
-                </div>
+            <template v-slot:preview-name="scope">
+                <span @click="enterDetail(scope.row)" class="item-color">{{scope.row.a}}</span>
             </template>
-            <template slot-scope="scope" slot="preview-handle">
+            <template v-slot:preview-handle="scope">
                 <p class="table_handle">
-                    <span>确认</span>
-                    <span>屏蔽</span>
+                    <span v-if="scope.row.h=='1'">关注</span>
+                    <span v-else>取消关注</span>
+                    <span>维护</span>
                 </p>
             </template>
         </el-table-pagination>
     </div>
 </template>
 <script>
-import Api from './config/Api'
-import Language from './config/Language'
 export default {
-    mixins:[Language],
+    mixins:[],
     filters:{
-        alarmShow: function (value,_this) {
-            if (!value) return ''
-            const TYPE_MAP = {
-                1: _this.$t("AllDev"),
-                2: "次要",
-                3: "重要",
-                4: "严重",
-                5: "紧急",
-            }
-            let n = parseInt(value);
-            return TYPE_MAP[n];
-        }
+        
     },
     created() {
-        // this.$api.post(Api.GetTable,{}).then(res=>{
-        //     console.log(res)
-        //     if(res.err_code==0){
-        //         this.tableData=res.data.item;
-        //     }
-        // })
+        
     },
     mounted() {
         
@@ -106,24 +91,29 @@ export default {
     data(){
         return{
             thisVue:this,
-            tablePath:Api.GetTable,
             initParams:{},
-            tableData:[],
+            tableData:[
+                {a:"1号温湿度",b:"温湿度",c:"依米康",d:"2020-10-22",e:"机房222",f:"正常",g:"告警",h:"1",id:"1"},
+                {a:"1号温湿度",b:"温湿度",c:"依米康",d:"2020-10-22",e:"机房222",f:"正常",g:"告警",h:"2",id:"2"},
+            ],
             tableColumns:[
-                { prop: 'type', label: '等级',slotName:'preview-type',minWidth:10},
-                { prop: 'name', label: '告警事件',minWidth:10},
-                { prop: 'addr', label: '定位',minWidth:20},
-                { prop: 'content', label: '触发原因',minWidth:30},
-                { prop: 'time', label: '产生时间',minWidth:10},
-                { prop: 'time1', label: '解除时间',minWidth:10},
-                { prop: 'handle', label: '操作',slotName:'preview-handle',width:120},
+                { prop: 'a', label: '设备名称',slotName:'preview-name',minWidth:10},
+                { prop: 'b', label: '设备类型',minWidth:10},
+                { prop: 'c', label: '厂商',minWidth:10},
+                { prop: 'd', label: '维保期限',minWidth:10},
+                { prop: 'e', label: '位置',minWidth:10},
+                { prop: 'f', label: '监控状态',minWidth:10},
+                { prop: 'g', label: '告警状态',minWidth:10},
+                { prop: 'handle', label: '操作',slotName:'preview-handle',width:130},
             ]
         }
     },
     computed: {
     },
 	methods: {
-        
+        enterDetail:function(item){
+            this.$router.push({name:'deviceStatusDetail',query:{params:JSON.stringify({"id":item.id})}});
+        }
 	},
     components: {
         
@@ -162,27 +152,19 @@ export default {
         }
         .center{
             display: flex;
-            justify-content: space-between;
             height: 32px;
             margin: 35px 0 15px 0;
             align-items: center;
-            .number{
-                span{
-                    border-right: 1px solid @color;
-                    padding-right: 10px;
-                    margin-right: 10px;
-                    &:nth-last-of-type(1){
-                        border: none;
-                    }
-                }
-            }
-        }
-        .alarm-type{
-            display:flex;
-            align-items: center;
-            i{
+            .title{
                 margin-right: @itemMargin;
             }
+            .searchbox{
+                margin-right: @boxMargin;
+            }
+        }
+        .item-color{
+            color: @activeColor;
+            cursor: pointer;
         }
     }
 </style>
