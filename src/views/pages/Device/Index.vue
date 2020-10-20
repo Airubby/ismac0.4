@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="btn">
-                <el-button type="primary">创建</el-button>
+                <el-button type="primary" @click="handleTemp()">创建模板</el-button>
                 <el-button type="primary" plain>批量导入</el-button>
             </div>
         </div>
@@ -80,16 +80,21 @@
             </template>
             <template v-slot:preview-handle="scope">
                 <p class="table_handle">
-                    <span>编辑</span>
+                    <span @click="handleTemp(scope.row)">编辑</span>
                     <span>移除</span>
-                    <span>创建实例</span>
+                    <span @click="enterExample(scope.row)">创建实例</span>
                 </p>
             </template>
         </el-table-pagination>
+        <add-temp :dialogInfo="tempInfo" v-if="tempInfo.visible" @backInfo="backInfo"></add-temp>
     </div>
 </template>
 <script>
+import AddTemp from './component/AddTemp'
 export default {
+    components: {
+        AddTemp
+    },
     mixins:[],
     filters:{
         
@@ -117,19 +122,33 @@ export default {
                 { prop: 'f', label: '版本',minWidth:10},
                 { prop: 'g', label: '实例',minWidth:10},
                 { prop: 'handle', label: '操作',slotName:'preview-handle',width:170},
-            ]
+            ],
+            tempInfo:{
+                visible:false,
+                id:""
+            },
         }
-    },
-    computed: {
     },
 	methods: {
+        handleTemp:function(item){
+            if(item){
+                this.tempInfo.id=item.id;
+            }else{
+                this.tempInfo.id=""
+            }
+            this.tempInfo.visible=true;
+        },
+        backInfo:function(){
+
+        },
         enterDetail:function(item){
             this.$router.push({name:'deviceDetail',query:{params:JSON.stringify({"id":item.id})}});
+        },
+        enterExample:function(item){
+            this.$router.push({name:'deviceExample',query:{params:JSON.stringify({"id":item.id})}});
         }
 	},
-    components: {
-        
-    }
+    
 }
 </script>
 <style lang="less" scoped>

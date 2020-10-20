@@ -2,7 +2,7 @@
     <div class="content">
         <el-button type="primary" plain @click="$router.back(-1)">返回</el-button>
         <div class="card_title">
-            ATS1-1
+            创建实例
         </div>
         <el-row class="row">
             <el-col :span="8" class="row-col">

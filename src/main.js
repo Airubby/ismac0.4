@@ -18,6 +18,8 @@ import elementEnLocale from 'element-ui/lib/locale/lang/en' // element-ui lang
 import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
 
 import '@/utils/Directive'  //自定义指令
+//加载全局组件
+import './components/Global/index.js'
 
 import './assets/css/basic.less'
 

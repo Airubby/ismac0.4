@@ -24,9 +24,16 @@
                 <el-form-item class="form-item" prop="" :label="`\u3000`">
                     <el-button type="primary">创建</el-button>
                     <el-button type="primary" plain>更新目录</el-button>
-                    <el-button type="primary" plain>通知时段</el-button>
-                    <el-button type="primary" plain>确认规则</el-button>
-                    <el-button type="primary" plain>通知记录</el-button>
+                    <el-dropdown trigger="click" class="dropdown-btn">
+                        <el-button type="primary" plain>
+                            更多菜单<i class="el-icon-arrow-down el-icon--right"></i>
+                        </el-button>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item><el-button type="primary" plain @click="handleTime()">通知时段</el-button></el-dropdown-item>
+                            <el-dropdown-item><el-button type="primary" plain @click="handleRule()">确认规则</el-button></el-dropdown-item>
+                            <el-dropdown-item><el-button type="primary" plain>通知记录</el-button></el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </el-form-item>
             </div>
         </el-form>
@@ -46,11 +53,17 @@
                 </p>
             </template>
         </el-table-pagination>
+        <time-component :dialogInfo="timeInfo" v-if="timeInfo.visible" @backInfo="backTime"></time-component>
+        <rule-component :dialogInfo="ruleInfo" v-if="ruleInfo.visible"></rule-component>
     </div>
 </template>
 <script>
-
+import TimeComponent from './component/Time'
+import RuleComponent from './component/Rule'
 export default {
+    components: {
+        TimeComponent,RuleComponent
+    },
     created() {
         
     },
@@ -81,12 +94,25 @@ export default {
                 { prop: 'f', label: '是否需要确认',minWidth:10},
                 { prop: 'g', label: '处理建议',minWidth:10},
                 { prop: 'handle', label: '操作',slotName:'preview-handle',width:80},
-            ]
+            ],
+            timeInfo:{
+                visible:false
+            },
+            ruleInfo:{
+                visible:false
+            }
         }
     },
-    computed: {
-    },
 	methods: {
+        handleTime:function(){
+            this.timeInfo.visible=true;
+        },
+        handleRule:function(){
+            this.ruleInfo.visible=true;
+        },
+        backTime:function(){
+
+        },
         resetForm() {
             this.$refs['ValidateForm'].resetFields();
         },
@@ -98,13 +124,13 @@ export default {
             });
         },
 	},
-    components: {
-        
-    }
+    
 }
 </script>
 <style lang="less" scoped>
     .module-theme(...){
-        
+        .dropdown-btn{
+            margin-left: @btnMargin;
+        }
     }
 </style>

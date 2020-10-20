@@ -183,7 +183,8 @@ const getdata = function(){
                         "iconfont": "",
                         "language": "Device",
                         "relation":[
-                            {"key":"deviceDetail","component":"DeviceDetail"}
+                            {"key":"deviceDetail","component":"DeviceDetail"},
+                            {"key":"deviceExample","component":"DeviceExample"}
                         ]
                     },
                 ]

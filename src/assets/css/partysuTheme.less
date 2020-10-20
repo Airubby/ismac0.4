@@ -16,27 +16,6 @@
     @boxBg:#FFFFFF;  //box框，input框背景色
     @loginLogo:"/images/theme/partysu/login_logo.png";
     @loginBg:"/images/theme/partysu/login_bg.png";
-
-    color: @color;
-    //重置
-    .el-dropdown-menu{
-        background-color: @boxBg;
-        border-color: @lineColor;
-    }
-    .el-dropdown,
-    .el-dropdown-menu__item{
-        color: @color;
-    }
-    .el-popper[x-placement^=bottom] .popper__arrow::after{
-        border-bottom-color:@boxBg;
-    }
-    .el-popper[x-placement^=bottom] .popper__arrow{
-        border-bottom-color:@lineColor;
-    }
-    .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover{
-        background-color:@activeBg;
-        color: @activeColor;
-    }
     .module-theme(
         @color;
         @bgColor;

@@ -1,16 +1,23 @@
 <template>
     <div class="content">
         <div class="center">
-            <div class="searchbox">
-                <el-select v-model="initParams.alarm" placeholder="请选择">
-                    <el-option key="all" label="所有" value="all"></el-option>
-                    <el-option key="1" label="关注" value="1"></el-option>
-                </el-select>
+            <div class="search">
+                <div class="searchbox">
+                    <el-select v-model="initParams.alarm" placeholder="请选择">
+                        
+                    </el-select>
+                </div>
+                <div class="searchbox">
+                    <el-input v-model="initParams.alarm" placeholder="请输入内容">
+                        <i slot="suffix" class="el-input__icon el-icon-search cursor-pointer"></i>
+                    </el-input>
+                </div>
             </div>
-            <div class="searchbox">
-                <el-input v-model="initParams.alarm" placeholder="请输入内容">
-                    <i slot="suffix" class="el-input__icon el-icon-search cursor-pointer"></i>
-                </el-input>
+            <div class="btn">
+                <el-button type="primary">更新</el-button>
+                <el-button type="primary" plain>批量导入</el-button>
+                <el-button type="primary" plain>批量删除</el-button>
+                <el-button type="primary" plain>批量导出</el-button>
             </div>
         </div>
         <el-table-pagination
@@ -27,15 +34,17 @@
             </template>
             <template v-slot:preview-handle="scope">
                 <p class="table_handle">
-                    <span>历史趋势</span>
-                    <span>设置</span>
+                    <span @click="config(scope.row)">配置事件</span>
                 </p>
             </template>
         </el-table-pagination>
+        <point-config :dialogInfo="configInfo" v-if="configInfo.visible"></point-config>
     </div>
 </template>
 <script>
+import PointConfig from './PointConfig'
 export default {
+    components:{PointConfig},
     mixins:[],
     filters:{
         
@@ -54,24 +63,35 @@ export default {
                 {a:"1号温湿度",b:"33",c:"依米康",d:"2020-10-22",e:"机房222",f:"正常",g:"告警",h:"2",id:"2"},
             ],
             tableColumns:[
-                { prop: 'a', label: '测点名称',minWidth:10},
-                { prop: 'b', label: '当前值',slotName:'preview-value',minWidth:10},
-                { prop: 'c', label: '有效值范围',minWidth:10},
-                { prop: 'd', label: '采集值',minWidth:10},
-                { prop: 'e', label: '信号类型',minWidth:10},
-                { prop: 'f', label: '测点分类',minWidth:10},
+                { prop: 'a', label: '测点编号',minWidth:10},
+                { prop: 'b', label: '测点名称',minWidth:10},
+                { prop: 'c', label: '类型',minWidth:10},
+                { prop: 'd', label: '单位',minWidth:10},
+                { prop: 'e', label: '精度',minWidth:10},
+                { prop: 'f', label: '枚举描述',minWidth:10},
+                { prop: 'g', label: '有效值范围',minWidth:10},
+                { prop: 'h', label: '指标分组',minWidth:10},
+                { prop: 'h', label: '标准化指标',minWidth:10},
                 { prop: 'handle', label: '操作',slotName:'preview-handle',width:130},
-            ]
+            ],
+            configInfo:{
+                visible:false,
+                devid:'',
+                pointid:'',
+                alarmpara:'',
+                pointtype:"",
+                hislogpara:"",
+                alarmdead:"",  //死区
+                pointstate:"",  //点位状态
+                valuerange:'',  //下发值范围判断
+            }
         }
     },
-    computed: {
-    },
 	methods: {
-        
-	},
-    components: {
-        
-    }
+        config:function(item){
+            this.configInfo.visible=true;
+        }
+	}
 }
 </script>
 <style lang="less" scoped>
@@ -80,7 +100,11 @@ export default {
             display: flex;
             height: 32px;
             margin-bottom: @boxMargin;
+            justify-content: space-between;
             align-items: center;
+            .search{
+                display: flex;
+            }
             .title{
                 margin-right: @itemMargin;
             }

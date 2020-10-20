@@ -19,8 +19,8 @@
             </div>
             <div class="btn">
                 <el-form-item class="form-item" prop="" :label="`\u3000`">
-                    <el-button type="primary">创建用户</el-button>
-                    <el-button type="primary" plain>安全策略</el-button>
+                    <el-button type="primary" @click="handleUser()">创建用户</el-button>
+                    <el-button type="primary" plain @click="handleSet()">安全策略</el-button>
                 </el-form-item>
             </div>
         </el-form>
@@ -34,20 +34,27 @@
             :params="initParams"
             :columns="tableColumns" ref="thisRef">   
             <el-table-column slot="prepend" type="selection"></el-table-column>
-            <template slot-scope="scope" slot="preview-handle">
+            <template v-slot:preview-handle="scope">
                 <p class="table_handle">
                     <span>重置密码</span>
                     <span>解锁</span>
                     <span>停用</span>
-                    <span>编辑</span>
+                    <span @click="handleUser(scope.row)">编辑</span>
                     <span>删除</span>
                 </p>
             </template>
         </el-table-pagination>
+        <add :dialogInfo="addInfo" v-if="addInfo.visible" @backInfo="backInfo"></add>
+        <set :dialogInfo="setInfo" v-if="setInfo.visible"></set>
     </div>
 </template>
 <script>
+import Add from './component/Add'
+import Set from './component/Set'
 export default {
+    components: {
+        Add,Set
+    },
     created() {
         
     },
@@ -81,16 +88,37 @@ export default {
                 { prop: 'g', label: '在线状态',minWidth:10},
                 { prop: 'h', label: '登录源',minWidth:10},
                 { prop: 'handle', label: '操作',slotName:'preview-handle',width:240},
-            ]
+            ],
+            addInfo:{
+                visible:false,
+                id:"",
+            },
+            setInfo:{
+                visible:false,
+            }
         }
     },
     computed: {
     },
 	methods: {
-        resetForm() {
+        handleUser:function(info){
+            if(info){
+                this.addInfo.id=info.id;
+            }else{
+                this.addInfo.id="";
+            }
+            this.addInfo.visible=true;
+        },
+        handleSet:function(){
+            this.setInfo.visible=true;
+        },
+        backInfo:function(){
+
+        },
+        resetForm:function() {
             this.$refs['ValidateForm'].resetFields();
         },
-        submitForm() {
+        submitForm:function() {
             this.$refs['ValidateForm'].validate((valid) => {
                 if (valid) {
                     
@@ -98,9 +126,7 @@ export default {
             });
         },
 	},
-    components: {
-        
-    }
+    
 }
 </script>
 <style lang="less" scoped>
