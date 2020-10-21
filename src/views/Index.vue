@@ -27,7 +27,7 @@
             </div>
             <div class="index-right-top-list">
                 <el-dropdown trigger="click">
-                    <span class="el-dropdown-link">
+                    <span class="el-dropdown-link el-dropdown-link-down">
                         {{getLanguage}}<i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
@@ -43,23 +43,23 @@
             <div class="index-right-top-list">
                 <el-dropdown trigger="click">
                     <span class="el-dropdown-link">
-                        <i class="icon-skin"></i>换肤
+                        <i class="icon-skin"></i>{{$t("SkinPeeler")}}
                     </span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item :class="[$theme=='partysu'?'themeActive':'','dropdown-item']">
-                            <span @click="changeTheme('partysu')">小清新</span>
+                            <span @click="changeTheme('partysu')">{{$t("Partysu")}}</span>
                         </el-dropdown-item>
                         <el-dropdown-item :class="[$theme=='blue'?'themeActive':'','dropdown-item']">
-                            <span @click="changeTheme('blue')">科技蓝</span>
+                            <span @click="changeTheme('blue')">{{$t("TechnologyBlue")}}</span>
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
             <div class="index-right-top-list">
-                <i class="icon-screen"></i>大屏
+                <i class="icon-screen"></i>{{$t("BigScreen")}}
             </div>
             <div class="index-right-top-list">
-                <i class="icon-acousto"></i>声光
+                <i class="icon-acousto"></i>{{$t("AcoustoOptic")}}
             </div>
             <div class="index-right-top-list">
                 <div class="top-user">
@@ -268,6 +268,8 @@ export default {
         }
         .el-dropdown-link{
             font-size: 16px;
+        }
+        .el-dropdown-link-down{
             i{
                 font-size: 20px !important;
             }

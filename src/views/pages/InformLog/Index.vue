@@ -15,7 +15,7 @@
                 <el-form-item prop="alarm" label="状态" class="form-item">
                     <el-select v-model="initParams.alarm" placeholder="请选择">
                         <el-option
-                        v-for="item in options"
+                        v-for="item in options1"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -39,7 +39,6 @@
             <div class="btn">
                 <el-form-item class="form-item" prop="" :label="`\u3000`">
                     <el-button type="primary">批量导出</el-button>
-                    <el-button type="primary" plain>统计分析</el-button>
                 </el-form-item>
             </div>
         </el-form>
@@ -53,12 +52,7 @@
             :params="initParams"
             :columns="tableColumns" ref="thisRef">   
             <el-table-column slot="prepend" type="selection"></el-table-column>
-            <template slot-scope="scope" slot="preview-handle">
-                <p class="table_handle">
-                    <span>确认</span>
-                    <span>屏蔽</span>
-                </p>
-            </template>
+        
         </el-table-pagination>
     </div>
 </template>
@@ -73,11 +67,15 @@ export default {
     data(){
         return{
             options:[
-                {value:"1",label:"提示"},
-                {value:"2",label:"次要"},
-                {value:"3",label:"重要"},
-                {value:"4",label:"严重"},
-                {value:"5",label:"紧急"},
+                {value:"1",label:"短信"},
+                {value:"2",label:"电话"},
+                {value:"3",label:"邮件"},
+                {value:"4",label:"微信"},
+                {value:"5",label:"钉钉"},
+            ],
+            options:[
+                {value:"1",label:"成功"},
+                {value:"2",label:"失败"},
             ],
             initParams:{
                 alarm:"",
@@ -87,27 +85,25 @@ export default {
 
             },
             tableData:[
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
+                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"成功",jieru1:"成功"},
+                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"成功",jieru1:"成功"},
+                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"成功",jieru1:"成功"},
+                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"成功",jieru1:"成功"},
+                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"成功",jieru1:"成功"},
+                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"成功",jieru1:"成功"},
+                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"成功",jieru1:"成功"},
+                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"成功",jieru1:"成功"},
+                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"成功",jieru1:"成功"},
+                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"成功",jieru1:"成功"},
+                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"成功",jieru1:"成功"},
+                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"成功",jieru1:"成功"},
             ],
             tableColumns:[
-                { prop: 'code', label: '等级',minWidth:10},
-                { prop: 'type', label: '告警事件',minWidth:10},
-                { prop: 'indate', label: '定位',minWidth:10},
-                { prop: 'timegroup', label: '触发原因',minWidth:10},
-                { prop: 'jieru', label: '产生时间',minWidth:10},
-                { prop: 'jieru1', label: '解除时间',minWidth:10},
-                { prop: 'handle', label: '操作',slotName:'preview-handle',width:120},
+                { prop: 'code', label: '时间',minWidth:10},
+                { prop: 'type', label: '通知方式',minWidth:10},
+                { prop: 'indate', label: '目标',minWidth:10},
+                { prop: 'timegroup', label: '消息内容',minWidth:30},
+                { prop: 'jieru', label: '状态',minWidth:10},
             ]
         }
     },

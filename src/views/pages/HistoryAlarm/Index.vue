@@ -22,7 +22,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item prop="alarm" label="查询时段" class="form-item">
+                <el-form-item prop="alarm" label="查询时段" class="form-item" style="width:340px;">
                     <el-date-picker
                         v-model="initParams.date"
                         type="datetimerange"
@@ -107,7 +107,8 @@ export default {
                 { prop: 'timegroup', label: '触发原因',minWidth:10},
                 { prop: 'jieru', label: '产生时间',minWidth:10},
                 { prop: 'jieru1', label: '解除时间',minWidth:10},
-                { prop: 'handle', label: '操作',slotName:'preview-handle',width:120},
+                { prop: 'jieru1', label: '确认时间',minWidth:10},
+                { prop: 'jieru1', label: '确认人',minWidth:10},
             ]
         }
     },

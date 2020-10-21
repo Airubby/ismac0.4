@@ -98,7 +98,7 @@ export default {
             height: 32px;
             align-items: center;
             .title{
-                width: 60px;
+                min-width: 60px;
                 text-align: right;
                 margin-right: @boxMargin;
             }

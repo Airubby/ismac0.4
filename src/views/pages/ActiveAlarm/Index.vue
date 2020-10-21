@@ -45,6 +45,7 @@
             <div class="btn">
                 <el-button type="primary">批量确认</el-button>
                 <el-button type="primary" plain>批量导出</el-button>
+                <el-button type="primary" plain @click="handleSureSet()">告警确认</el-button>
             </div>
         </div>
         <el-table-pagination
@@ -66,17 +67,24 @@
             </template>
             <template slot-scope="scope" slot="preview-handle">
                 <p class="table_handle">
-                    <span>确认</span>
-                    <span>屏蔽</span>
+                    <span @click="handleSure(scope.row)">确认</span>
+                    <span @click="handleMask(scope.row)">屏蔽</span>
                 </p>
             </template>
         </el-table-pagination>
+        <alarm-sure-set :dialogInfo="suresetInfo" v-if="suresetInfo.visible"></alarm-sure-set>
+        <alarm-mask :dialogInfo="maskInfo" v-if="maskInfo.visible"></alarm-mask>
     </div>
 </template>
 <script>
 import Api from './config/Api'
 import Language from './config/Language'
+import AlarmSureSet from './component/AlarmSureSet'
+import AlarmMask from './component/AlarmMask'
 export default {
+    components: {
+        AlarmSureSet,AlarmMask
+    },
     mixins:[Language],
     filters:{
         alarmShow: function (value,_this) {
@@ -117,17 +125,35 @@ export default {
                 { prop: 'time', label: '产生时间',minWidth:10},
                 { prop: 'time1', label: '解除时间',minWidth:10},
                 { prop: 'handle', label: '操作',slotName:'preview-handle',width:120},
-            ]
+            ],
+            suresetInfo:{
+                visible:false,
+            },
+            maskInfo:{
+                visible:false
+            }
         }
     },
     computed: {
     },
 	methods: {
-        
+        handleSureSet:function(){
+            this.suresetInfo.visible=true;
+        },
+        handleMask:function(item){
+            this.maskInfo.visible=true;
+        },
+        handleSure:function(item){
+            this.$prompt('备注', '告警确认', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                // inputPattern: /\S/,
+                // inputErrorMessage: '不能为空'
+            }).then(({ value }) => {
+                this.$message.success(value);
+            });
+        },
 	},
-    components: {
-        
-    }
 }
 </script>
 <style lang="less" scoped>

@@ -1,0 +1,33 @@
+<template>
+    <div class="content">
+        系统配置
+    </div>
+</template>
+<script>
+export default {
+    created() {
+        
+    },
+    mounted() {
+        
+    },
+    data(){
+        return{
+            
+        }
+    },
+    computed: {
+    },
+	methods: {
+        
+	},
+    components: {
+        
+    }
+}
+</script>
+<style lang="less" scoped>
+    .module-theme(...){
+        
+    }
+</style>

@@ -83,7 +83,7 @@
     .el-pagination.is-background .el-pager li,
     .el-pagination.is-background .btn-next:disabled:hover,
     .el-pagination.is-background .btn-prev:disabled:hover,
-    .el-input__inner{
+    .el-input__inner,.el-textarea__inner{
         background-color: @boxBg;
         border: 1px solid @lineColor;
         color: @color;
@@ -194,19 +194,35 @@
     .el-tabs__item.is-active,.el-tabs__item:hover{
         color: @activeColor;
     }
+    .el-message-box{
+        background: @contentBg;
+        border-color: @contentBg;
+    }
+    .el-message-box__btns .el-button{
+        background: transparent;
+        border-color: @activeColor;
+        color: @activeColor;
+    }
+    .el-message-box__btns .el-button.el-button--primary{
+        background: @activeColor;
+        color: @bgColor;
+    }
     .el-dialog{
         margin: 0 auto;
         background: @contentBg;
     }
-    .el-dialog__body{
+    .el-dialog__body,
+    .el-message-box__input{
         padding: 0;
         color: @color;
     }
-    .el-dialog__title{
+    .el-dialog__title,
+    .el-message-box__title{
         color: @color;
         font-size: 16px;
     }
-    .el-dialog__headerbtn .el-dialog__close{
+    .el-dialog__headerbtn .el-dialog__close,
+    .el-message-box__content{
         color: @color;
     }
     .dialog-footer{

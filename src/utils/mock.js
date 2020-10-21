@@ -70,6 +70,13 @@ const getdata = function(){
                             {"key":"deviceStatusDetail","component":"DeviceStatusDetail"}
                         ]
                     },
+                    {
+                        "key": "deviceLayout",
+                        "component": "DeviceLayout",
+                        "iconfont": "",
+                        "language": "DeviceLayout",
+                        "relation":[]
+                    },
                 ]
             },
             {
@@ -109,35 +116,158 @@ const getdata = function(){
                 "component": "Energy",
                 "iconfont": "icon-energy",
                 "language": "Energy",
-                "children":[]
+                "children":[
+                    {
+                        "key": "energyStatus",
+                        "component": "EnergyStatus",
+                        "iconfont": "",
+                        "language": "EnergyStatus"
+                    },
+                    {
+                        "key": "coulometry",
+                        "component": "Coulometry",
+                        "iconfont": "",
+                        "language": "Coulometry"
+                    },
+                    {
+                        "key": "coolingAnalysis",
+                        "component": "CoolingAnalysis",
+                        "iconfont": "",
+                        "language": "CoolingAnalysis"
+                    },
+                    {
+                        "key": "eEnergyConfig",
+                        "component": "EnergyConfig",
+                        "iconfont": "",
+                        "language": "EnergyConfig"
+                    },
+                ]
             },
             {
                 "key": "access",
                 "component": "Access",
                 "iconfont": "icon-access",
                 "language": "Access",
-                "children":[]
+                "children":[
+                    {
+                        "key": "accessStatus",
+                        "component": "AccessStatus",
+                        "iconfont": "",
+                        "language": "AccessStatus"
+                    },
+                    {
+                        "key": "cardAuthorize",
+                        "component": "CardAuthorize",
+                        "iconfont": "",
+                        "language": "CardAuthorize"
+                    },
+                    {
+                        "key": "accessController",
+                        "component": "AccessController",
+                        "iconfont": "",
+                        "language": "AccessController"
+                    },
+                    {
+                        "key": "timeGroup",
+                        "component": "TimeGroup",
+                        "iconfont": "",
+                        "language": "TimeGroup"
+                    },
+                ]
             },
             {
                 "key": "video",
                 "component": "Video",
                 "iconfont": "icon-video",
                 "language": "Video",
-                "children":[]
+                "children":[
+                    {
+                        "key": "videoPreview",
+                        "component": "VideoPreview",
+                        "iconfont": "",
+                        "language": "VideoPreview"
+                    },
+                    {
+                        "key": "videoPlayback",
+                        "component": "VideoPlayback",
+                        "iconfont": "",
+                        "language": "VideoPlayback"
+                    },
+                    {
+                        "key": "videoConfig",
+                        "component": "VideoConfig",
+                        "iconfont": "",
+                        "language": "VideoConfig"
+                    },
+                ]
             },
             {
                 "key": "rack",
                 "component": "Rack",
                 "iconfont": "icon-rack",
                 "language": "Rack",
-                "children":[]
+                "children":[
+                    {
+                        "key": "dataOverview",
+                        "component": "DataOverview",
+                        "iconfont": "",
+                        "language": "DataOverview"
+                    },
+                    {
+                        "key": "rackInfo",
+                        "component": "RackInfo",
+                        "iconfont": "",
+                        "language": "RackInfo"
+                    },
+                    {
+                        "key": "inAssets",
+                        "component": "InAssets",
+                        "iconfont": "",
+                        "language": "InAssets"
+                    },
+                    {
+                        "key": "logInfo",
+                        "component": "LogInfo",
+                        "iconfont": "",
+                        "language": "LogInfo"
+                    },
+                ]
             },
             {
                 "key": "statement",
                 "component": "Statement",
                 "iconfont": "icon-statement",
                 "language": "Statement",
-                "children":[]
+                "children":[
+                    {
+                        "key": "eventStatement",
+                        "component": "EventStatement",
+                        "iconfont": "",
+                        "language": "EventStatement",
+                        "relation":[]
+                    },
+                    {
+                        "key": "propertyStatement",
+                        "component": "PropertyStatement",
+                        "iconfont": "",
+                        "language": "PropertyStatement",
+                        "relation":[]
+                    },
+                    {
+                        "key": "planStatement",
+                        "component": "PlanStatement",
+                        "iconfont": "",
+                        "language": "PlanStatement",
+                        "relation":[]
+                    },
+                    {
+                        "key": "configStatement",
+                        "component": "ConfigStatement",
+                        "iconfont": "",
+                        "language": "ConfigStatement",
+                        "relation":[]
+                    },
+                ]
             },
             {
                 "key": "system",
@@ -186,6 +316,30 @@ const getdata = function(){
                             {"key":"deviceDetail","component":"DeviceDetail"},
                             {"key":"deviceExample","component":"DeviceExample"}
                         ]
+                    },
+                    {
+                        "key": "interface",
+                        "component": "Interface",
+                        "iconfont": "",
+                        "language": "Interface"
+                    },
+                    {
+                        "key": "linkageStrategies",
+                        "component": "LinkageStrategies",
+                        "iconfont": "",
+                        "language": "LinkageStrategies"
+                    },
+                    {
+                        "key": "screenConfig",
+                        "component": "ScreenConfig",
+                        "iconfont": "",
+                        "language": "ScreenConfig"
+                    },
+                    {
+                        "key": "systemConfig",
+                        "component": "SystemConfig",
+                        "iconfont": "",
+                        "language": "SystemConfig"
                     },
                 ]
             },

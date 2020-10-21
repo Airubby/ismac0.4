@@ -1,8 +1,7 @@
 <template>
     <div class="content">
         <div class="top">
-            <el-button type="primary">批量导出</el-button>
-            <el-button type="primary" plain>统计分析</el-button>
+            <el-button type="primary">新增规则</el-button>
         </div>
         <el-table-pagination
             :url="$ajaxUrl+'/getTable'"
@@ -14,17 +13,21 @@
             :params="initParams"
             :columns="tableColumns" ref="thisRef">   
             <el-table-column slot="prepend" type="selection"></el-table-column>
-            <template slot-scope="scope" slot="preview-handle">
+            <template v-slot:preview-handle="scope">
                 <p class="table_handle">
-                    <span>确认</span>
-                    <span>屏蔽</span>
+                    <span @click="handleRule(scope.row)">查看规则</span>
                 </p>
             </template>
         </el-table-pagination>
+        <show-rule :dialogInfo="ruleInfo" v-if="ruleInfo.visible"></show-rule>
     </div>
 </template>
 <script>
+import ShowRule from './component/ShowRule'
 export default {
+    components: {
+        ShowRule
+    },
     created() {
         
     },
@@ -67,14 +70,21 @@ export default {
                 { prop: 'indate', label: '定位',minWidth:10},
                 { prop: 'timegroup', label: '触发原因',minWidth:10},
                 { prop: 'jieru', label: '产生时间',minWidth:10},
-                { prop: 'jieru1', label: '解除时间',minWidth:10},
-                { prop: 'handle', label: '操作',slotName:'preview-handle',width:120},
-            ]
+                { prop: 'jieru1', label: '屏蔽时间',minWidth:10},
+                { prop: 'jieru1', label: '屏蔽缘由',minWidth:10},
+                { prop: 'handle', label: '操作',slotName:'preview-handle',width:90},
+            ],
+            ruleInfo:{
+                visible:false,
+                id:""
+            }
         }
     },
-    computed: {
-    },
 	methods: {
+        handleRule:function(item){
+            this.ruleInfo.id=item.id;
+            this.ruleInfo.visible=true;
+        },
         resetForm() {
             this.$refs['ValidateForm'].resetFields();
         },
@@ -86,9 +96,7 @@ export default {
             });
         },
 	},
-    components: {
-        
-    }
+    
 }
 </script>
 <style lang="less" scoped>

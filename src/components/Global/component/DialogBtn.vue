@@ -1,7 +1,7 @@
 <template>
     <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogSure" :disabled="handleLoading">确 定</el-button>
         <el-button type="primary" plain @click="dialogCancel">取 消</el-button>
+        <el-button type="primary" @click="dialogSure" :disabled="handleLoading">确 定</el-button>
     </div>
 </template>
 

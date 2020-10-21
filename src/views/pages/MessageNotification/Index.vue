@@ -22,7 +22,7 @@
             </div>
             <div class="btn">
                 <el-form-item class="form-item" prop="" :label="`\u3000`">
-                    <el-button type="primary">创建</el-button>
+                    <el-button type="primary" @click="handleAdd()">创建</el-button>
                     <el-button type="primary" plain>更新目录</el-button>
                     <el-dropdown trigger="click" class="dropdown-btn">
                         <el-button type="primary" plain>
@@ -31,7 +31,7 @@
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item><el-button type="primary" plain @click="handleTime()">通知时段</el-button></el-dropdown-item>
                             <el-dropdown-item><el-button type="primary" plain @click="handleRule()">确认规则</el-button></el-dropdown-item>
-                            <el-dropdown-item><el-button type="primary" plain>通知记录</el-button></el-dropdown-item>
+                            <el-dropdown-item><el-button type="primary" plain @click="handleRecord()">通知记录</el-button></el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </el-form-item>
@@ -47,22 +47,28 @@
             :params="initParams"
             :columns="tableColumns" ref="thisRef">   
             <el-table-column slot="prepend" type="selection"></el-table-column>
-            <template slot-scope="scope" slot="preview-handle">
+            <template v-slot:preview-handle="scope">
                 <p class="table_handle">
-                    <span>配置</span>
+                    <span @click="handleConfig(scope.row)">配置</span>
                 </p>
             </template>
         </el-table-pagination>
         <time-component :dialogInfo="timeInfo" v-if="timeInfo.visible" @backInfo="backTime"></time-component>
         <rule-component :dialogInfo="ruleInfo" v-if="ruleInfo.visible"></rule-component>
+        <record-component :dialogInfo="recordInfo" v-if="recordInfo.visible"></record-component>
+        <config-component :dialogInfo="configInfo" v-if="configInfo.visible"></config-component>
+        <add-component :dialogInfo="addInfo" v-if="addInfo.visible"></add-component>
     </div>
 </template>
 <script>
 import TimeComponent from './component/Time'
 import RuleComponent from './component/Rule'
+import RecordComponent from './component/Record'
+import ConfigComponent from './component/Config'
+import AddComponent from './component/Add'
 export default {
     components: {
-        TimeComponent,RuleComponent
+        TimeComponent,RuleComponent,RecordComponent,ConfigComponent,AddComponent
     },
     created() {
         
@@ -100,15 +106,34 @@ export default {
             },
             ruleInfo:{
                 visible:false
+            },
+            recordInfo:{
+                visible:false
+            },
+            configInfo:{
+                visible:false,
+                id:""
+            },
+            addInfo:{
+                visible:false
             }
         }
     },
 	methods: {
+        handleAdd:function(){
+            this.addInfo.visible=true;
+        },
         handleTime:function(){
             this.timeInfo.visible=true;
         },
         handleRule:function(){
             this.ruleInfo.visible=true;
+        },
+        handleRecord:function(){
+            this.recordInfo.visible=true;
+        },
+        handleConfig:function(){
+            this.configInfo.visible=true;
         },
         backTime:function(){
 
