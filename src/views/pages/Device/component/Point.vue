@@ -14,9 +14,9 @@
                 </div>
             </div>
             <div class="btn">
-                <el-button type="primary">更新</el-button>
-                <el-button type="primary" plain>批量导入</el-button>
+                <el-button type="primary" plain>更新</el-button>
                 <el-button type="primary" plain>批量删除</el-button>
+                <el-button type="primary" plain>批量导入</el-button>
                 <el-button type="primary" plain>批量导出</el-button>
             </div>
         </div>

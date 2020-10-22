@@ -53,12 +53,6 @@
             :params="initParams"
             :columns="tableColumns" ref="thisRef">   
             <el-table-column slot="prepend" type="selection"></el-table-column>
-            <template slot-scope="scope" slot="preview-handle">
-                <p class="table_handle">
-                    <span>确认</span>
-                    <span>屏蔽</span>
-                </p>
-            </template>
         </el-table-pagination>
     </div>
 </template>

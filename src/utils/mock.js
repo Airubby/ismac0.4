@@ -258,7 +258,9 @@ const getdata = function(){
                         "component": "PlanStatement",
                         "iconfont": "",
                         "language": "PlanStatement",
-                        "relation":[]
+                        "relation":[
+                            {"key":"planStatementConfig","component":"PlanStatementConfig"}
+                        ]
                     },
                     {
                         "key": "configStatement",

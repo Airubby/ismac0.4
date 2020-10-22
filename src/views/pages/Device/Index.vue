@@ -63,7 +63,22 @@
             </div>
             <div class="btn">
                 <el-button type="primary" @click="handleTemp()">创建模板</el-button>
-                <el-button type="primary" plain>批量导入</el-button>
+                <el-upload
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    class="upload-btn"
+                    ref="upload"
+                    :on-success="onSuccess"
+                    :on-error="onError"
+                    :on-change="onChange"
+                    :before-upload="beforeUpload"
+                    :show-file-list="false"
+                    :file-list="fileList"
+                    :limit="1"
+                    name="file"
+                    accept=".json,.png"
+                    :auto-upload="false">
+                    <el-button type="primary" plain slot="trigger">批量导入</el-button>
+                </el-upload>
             </div>
         </div>
         <el-table-pagination
@@ -196,6 +211,12 @@ export default {
             }
             .searchbox{
                 margin-right: @boxMargin;
+            }
+            .btn{
+                display: flex;
+                .upload-btn{
+                    margin-left: @btnMargin;
+                }
             }
         }
         .item-color{

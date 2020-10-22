@@ -10,7 +10,7 @@
                                     <i slot="suffix" class="el-input__icon el-icon-circle-close" @click="clearCRT" v-show="initParams.fileTechweb"></i>
                                     <template slot="append">
                                         <el-upload
-                                            class="avatar-uploader"
+                                            class="btn"
                                             action="https://jsonplaceholder.typicode.com/posts/"
                                             ref="upload"
                                             :on-success="onSuccess"

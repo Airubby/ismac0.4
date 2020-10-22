@@ -26,7 +26,13 @@
             :params="initParams"
             :columns="tableColumns" ref="thisRef">   
             <el-table-column slot="prepend" type="selection"></el-table-column>
-            <template slot-scope="scope" slot="preview-handle">
+            <template v-slot:preview-e="scope">
+                <span :class="['table-item',scope.row.e=='1'?'table-item-normal':'table-item-alarm']"></span>{{scope.row.e=="1"?"在线":"离线"}}
+            </template>
+            <template v-slot:preview-f="scope">
+                <span :class="['table-item',scope.row.f=='1'?'table-item-normal':'table-item-alarm']"></span>{{scope.row.f=="1"?"运行中":"未启用"}}
+            </template>
+            <template v-slot:preview-handle="scope">
                 <p class="table_handle">
                     <span>解耦</span>
                     <span>编辑</span>
@@ -53,15 +59,15 @@ export default {
             thisVue:this,
             initParams:{},
             tableData:[
-                {'a':"admin",b:"管理员",'c':"2020-3-10~2021-2-22",d:'15225252525',e:"123@qq.com",f:"正常",g:"在线",h:'WEB'}
+                {'a':"admin",b:"管理员",'c':"2020-3-10~2021-2-22",d:'15225252525',e:"1",f:"2",g:"阿达的",h:'WEB'}
             ],
             tableColumns:[
                 { prop: 'a', label: '设备编号',minWidth:10},
                 { prop: 'b', label: '设备名称',minWidth:10},
                 { prop: 'c', label: '位置',minWidth:10},
                 { prop: 'd', label: '采集通道',minWidth:10},
-                { prop: 'e', label: '在线状态',minWidth:10},
-                { prop: 'f', label: '告警状态',minWidth:10},
+                { prop: 'e', label: '在线状态',slotName:'preview-e',minWidth:10},
+                { prop: 'f', label: '告警状态',slotName:'preview-f',minWidth:10},
                 { prop: 'g', label: '测点',minWidth:10},
                 { prop: 'handle', label: '操作',slotName:'preview-handle',width:140},
             ]
@@ -93,6 +99,19 @@ export default {
             }
             .searchbox{
                 margin-right: @boxMargin;
+            }
+        }
+        .table-item{
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: @itemMargin;
+            &.table-item-normal{
+                background: @normalColor;
+            }
+            &.table-item-alarm{
+                background: @alarmColor;
             }
         }
     }

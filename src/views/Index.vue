@@ -80,10 +80,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Vue from 'vue'
 export default {
     name: 'index',
     components: { },
     created () {
+        console.log(this.$theme)
         this.date=this.setClock();
     },
     mounted() {
@@ -94,10 +96,12 @@ export default {
     computed:{
         getLanguage:function(){
             let language=this.$store.getters.language;
-            if(language=="zh"){
-                return "中文"
-            }else{
+            if(language=="en"){
+                document.title="T-block";
                 return "English"
+            }else{
+                document.title="小微产品0.4";
+                return "中文"
             }
         },
     },
@@ -136,7 +140,8 @@ export default {
             return vDate;
         },
         changeTheme:function(theme){
-            this.$store.dispatch('setTheme',theme);
+            // this.$store.dispatch('setTheme',theme);
+            Vue.prototype.$theme=theme;
             sessionStorage.setItem("theme", theme);
         },
     }
@@ -144,7 +149,9 @@ export default {
 </script>
 <style lang="less" scoped>
     .module-theme(...){
-        
+        .el-dropdown-menu__item.themeActive{
+            color: @activeColor;
+        }
         .content-flex{
             display: flex;
         }

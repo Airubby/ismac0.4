@@ -34,6 +34,12 @@
             :params="initParams"
             :columns="tableColumns" ref="thisRef">   
             <el-table-column slot="prepend" type="selection"></el-table-column>
+            <template v-slot:preview-g="scope">
+                <span :class="['table-item',scope.row.g=='1'?'table-item-normal':'table-item-alarm']"></span>{{scope.row.g=="1"?"在线":"离线"}}
+            </template>
+            <template v-slot:preview-f="scope">
+                <span :class="['table-item',scope.row.f=='1'?'table-item-normal':'table-item-alarm']"></span>{{scope.row.f=="1"?"正常":"停用"}}
+            </template>
             <template v-slot:preview-handle="scope">
                 <p class="table_handle">
                     <span>重置密码</span>
@@ -76,7 +82,7 @@ export default {
 
             },
             tableData:[
-                {'a':"admin",b:"管理员",'c':"2020-3-10~2021-2-22",d:'15225252525',e:"123@qq.com",f:"正常",g:"在线",h:'WEB'}
+                {'a':"admin",b:"管理员",'c':"2020-3-10~2021-2-22",d:'15225252525',e:"123@qq.com",f:"1",g:"2",h:'WEB'}
             ],
             tableColumns:[
                 { prop: 'a', label: '用户名',minWidth:10},
@@ -84,8 +90,8 @@ export default {
                 { prop: 'c', label: '有效期',minWidth:10},
                 { prop: 'd', label: '手机',minWidth:10},
                 { prop: 'e', label: '邮箱',minWidth:10},
-                { prop: 'f', label: '使用状态',minWidth:10},
-                { prop: 'g', label: '在线状态',minWidth:10},
+                { prop: 'f', label: '使用状态',slotName:'preview-f',minWidth:10},
+                { prop: 'g', label: '在线状态',slotName:'preview-g',minWidth:10},
                 { prop: 'h', label: '登录源',minWidth:10},
                 { prop: 'handle', label: '操作',slotName:'preview-handle',width:240},
             ],
@@ -131,6 +137,18 @@ export default {
 </script>
 <style lang="less" scoped>
     .module-theme(...){
-        
+        .table-item{
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: @itemMargin;
+            &.table-item-normal{
+                background: @normalColor;
+            }
+            &.table-item-alarm{
+                background: @alarmColor;
+            }
+        }
     }
 </style>

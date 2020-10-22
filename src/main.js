@@ -38,8 +38,8 @@ function getServerConfig() {
     return new Promise ((resolve, reject) => {
         axios.get('/serverConfig.json').then((result) => {
         console.log(result)
-        let config = result.data;
-        let reqcon=config.reqConnection;
+        let config = result;
+        let reqcon=result.reqConnection;
         let website=reqcon.website,port=reqcon.port?reqcon.port:"",postfix=reqcon.postfix;
         if(reqcon.website==""||reqcon.website.indexOf("127.0.0.1")!=-1||reqcon.website.indexOf("localhost")!=-1){
             website=window.document.location.origin;

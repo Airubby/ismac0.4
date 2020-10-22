@@ -133,5 +133,10 @@ export default {
             margin-bottom: @boxMargin;
             float: right;
         }
+        .relative-content{
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
     }
 </style>

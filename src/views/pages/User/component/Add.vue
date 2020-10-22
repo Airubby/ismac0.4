@@ -36,14 +36,13 @@
                         <el-col :span="12">
                             <el-form-item label='账号有效期' prop="name">
                                 <el-date-picker
-                                    is-range
                                     v-model="initParams.name"
+                                    type="datetimerange"
                                     format="yyyy-MM-dd HH:mm:ss"
                                     value-format="yyyy-MM-dd HH:mm:ss"
-                                    range-separator='~'
-                                    start-placeholder='开始时间'
-                                    end-placeholder='结束时间'
-                                    >
+                                    range-separator="~"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期">
                                 </el-date-picker>
                             </el-form-item>
                         </el-col>

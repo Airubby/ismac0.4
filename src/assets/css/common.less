@@ -43,7 +43,23 @@
     .dialog-content{
         padding: 15px 30px 0 30px;;
     }
+    .el-input-group__append, .el-input-group__prepend{
+        padding: 0;
+        background-color: transparent;
+        border-left: 1px solid @activeColor;
+        border-right: 1px solid @activeColor;
+        border-color: @activeColor;
+        color: @activeColor;
+        cursor: pointer;
+        .btn{
+            padding: 0 20px;
+        }
+    }
+
     /****/
+    .el-form-item--small .el-form-item__content, .el-form-item--small .el-form-item__label{
+        line-height: 30px;
+    }
     color: @color;
     .el-table__header{
         th{
@@ -73,7 +89,7 @@
     .el-form-item__label,
     .el-dropdown,.el-dropdown-menu__item,
     .el-select-dropdown__item,
-    .el-date-editor .el-range-separator,.el-date-editor .el-range-input,.el-date-table th,
+    .el-date-editor .el-range-separator,.el-date-editor .el-range-input,.el-date-table th,.el-time-spinner__item,.el-time-panel__btn,.el-picker-panel__icon-btn,.el-date-picker__header-label,.el-month-table td .cell,.el-year-table td .cell,
     .el-checkbox,
     .el-radio,.el-radio__input.is-checked+.el-radio__label{
         color: @color;
@@ -114,9 +130,6 @@
         background-color: @activeColor;
         border-color: @activeColor;
     }
-    .el-checkbox__input.is-disabled+span.el-checkbox__label{
-        color: @disabledColor   
-    }
     .el-checkbox__input.is-disabled .el-checkbox__inner{
         background-color: @disabledBg;
         border-color: @disabledBg;
@@ -151,16 +164,19 @@
         border-color: @activeColor;
         color: @activeColor;
     }
-    
+    .el-time-spinner__item:hover:not(.disabled):not(.active){
+        background: transparent;
+        color: @activeColor;
+    }
     .el-picker-panel,.el-picker-panel__footer{
         background: @boxBg;
         color: @color;
         border-color: @lineColor;
     }
-    .el-date-range-picker__time-header,.el-date-table th,.el-date-range-picker__content.is-left{
+    .el-date-range-picker__time-header,.el-date-table th,.el-date-range-picker__content.is-left,.el-time-panel__footer,.el-time-panel__content::after, .el-time-panel__content::before,.el-date-picker__header--bordered{
         border-color: @lineColor;
     }
-    .el-date-table td.next-month, .el-date-table td.prev-month{
+    .el-checkbox__input.is-disabled+span.el-checkbox__label{
         color: @disabledColor;
     }
     .el-picker-panel__footer{
@@ -173,8 +189,10 @@
     .el-date-table td.end-date span, .el-date-table td.start-date span{
         background-color: @activeColor;
     }
-    .el-date-table td.in-range div, .el-date-table td.in-range div:hover{
+    .el-date-table td.next-month, .el-date-table td.prev-month,.el-date-table td.disabled div,.el-month-table td.disabled .cell,.el-year-table td.disabled .cell,
+    .el-date-table td.in-range div, .el-date-table td.in-range div:hover,.el-date-table td.disabled div,.el-month-table td.disabled .cell{
         background-color: @disabledBg; 
+        color: @disabledColor;
     }
     .el-input.is-disabled .el-input__inner{
         background-color: @disabledBg;
@@ -191,10 +209,12 @@
         color: @color;
         padding: 0 @boxMargin;
     }
-    .el-tabs__item.is-active,.el-tabs__item:hover{
+    .el-tabs__item.is-active,.el-tabs__item:hover,
+    .el-time-spinner__item.active:not(.disabled),.el-time-panel__btn.confirm,.el-year-table td .cell:hover, .el-year-table td.current:not(.disabled) .cell,.el-month-table td .cell:hover{
         color: @activeColor;
     }
-    .el-message-box{
+    .el-message-box,
+    .el-time-panel{
         background: @contentBg;
         border-color: @contentBg;
     }
@@ -229,16 +249,7 @@
         padding: 15px 20px;
         text-align: right;
     }
-    .el-input-group__append, .el-input-group__prepend{
-        padding: 0;
-        background-color: @activeColor;
-        border-color: @activeColor;
-        color: @bgColor;
-        .avatar-uploader{
-            padding: 0 20px;
-        }
-    }
-
+    
     .el-form-item--small.el-form-item{
         margin-bottom: @boxMargin;
     }
