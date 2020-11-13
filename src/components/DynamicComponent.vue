@@ -126,6 +126,7 @@ export default {
                 let tempData=null;
                 new Promise ((resolve, reject) => {
                     axios.get(`${_this.pathUrl}`).then((result) => {
+                        debugger
                         tempData = compiler.parseComponent(result.data);
                         resolve();
                     }).catch((error) => {

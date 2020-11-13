@@ -101,7 +101,7 @@ export default {
             this.adjust();
         })
         window.onresize = ()=> {  
-            clearTimeout(timeout);  
+            clearTimeout(this.timeout);  
             this.timeout = setTimeout( () =>{ 
                 this.adjust(); 
             }, 100);//页面大小变化，重新加载页面以刷新MAP  
@@ -114,8 +114,9 @@ export default {
     },
 	methods: {
         adjust:function(){
+            
             if(!document.getElementById("mapimg").complete){
-                clearTimeout(timeout);  
+                clearTimeout(this.timeout);  
                 this.timeout = setTimeout( () =>{ 
                     this.adjust(); 
                 }, 400);//页面大小变化，重新加载页面以刷新MAP  

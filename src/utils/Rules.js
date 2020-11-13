@@ -1,6 +1,6 @@
 const reqMessage="该字段不能为空";
 const ruleMessage="填写格式错误";
-const checkPhone = (rule, value, callback) => {
+export const checkPhone = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));
@@ -16,7 +16,7 @@ const checkPhone = (rule, value, callback) => {
 		callback();
 	}
 };
-const checkPassword = (rule, value, callback) => {
+export const checkPassword = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));
@@ -36,7 +36,7 @@ const checkPassword = (rule, value, callback) => {
 		callback();
 	}
 };
-const checkPort = (rule, value, callback) => {
+export const checkPort = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));
@@ -51,7 +51,7 @@ const checkPort = (rule, value, callback) => {
 		callback();
 	}
 };
-const checkIP = (rule, value, callback) => {
+export const checkIP = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));
@@ -68,7 +68,7 @@ const checkIP = (rule, value, callback) => {
 		callback();
 	}
 };
-const checkIDCard = (rule, value, callback) => {
+export const checkIDCard = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));
@@ -84,12 +84,13 @@ const checkIDCard = (rule, value, callback) => {
 		callback();
 	}
 };
-const checkEmail = (rule, value, callback) => {
+export const checkEmail = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));
 		}else{
-			let reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+            // let reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+            let reg=/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
 			if(reg.test(value)){
 				callback()
 			}else{
@@ -100,7 +101,7 @@ const checkEmail = (rule, value, callback) => {
 		callback();
 	}
 };
-const checkNumber = (rule, value, callback) => {
+export const checkNumber = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));

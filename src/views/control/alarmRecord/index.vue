@@ -183,11 +183,19 @@ export default {
             myChart.setOption(option);
         },
         copy:function(){
-            this.$refs.inp.select();
-            let flag=document.execCommand("copy");
-            if(flag){
-                this.$message.success("复制成功");
-            }
+            this.$prompt('复制理由', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                inputPattern: /\S/,
+                inputErrorMessage: '不能为空'
+            }).then(({ value }) => {
+                this.$refs.inp.select();
+                let flag=document.execCommand("copy");
+                if(flag){
+                    this.$message.success("复制成功");
+                }
+            });
+            
         },
         checkChange:function(node,flag,data){
             console.log(node)

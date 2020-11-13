@@ -70,6 +70,8 @@
                     :params="initParams"
                     :showPagination="true"
                     :showSelectAll="true"
+                    v-scrollBar="'table'"
+                    :height="'440px'"
                     :columns="table_columns" ref="thisRef">   
                     <el-table-column slot="prepend" type="selection"></el-table-column>
                     <template slot-scope="scope" slot="preview-handle">
@@ -104,11 +106,11 @@ export default {
                 timegroup:'',
             },
             table_columns:[
-              { prop: 'code', label: '卡号',minWidth:10},
-              { prop: 'type', label: '类型',minWidth:10},
-              { prop: 'user', label: '领卡人',minWidth:10},
-              { prop: 'indate', label: '有效期',minWidth:10,sortable:true},
-              { prop: 'timegroup', label: '时间组',minWidth:10},
+              { prop: 'code', label: '卡号',minWidth:"400px"},
+              { prop: 'type', label: '类型',minWidth:"400px"},
+              { prop: 'user', label: '领卡人',minWidth:"400px"},
+              { prop: 'indate', label: '有效期',minWidth:"400px",sortable:true},
+              { prop: 'timegroup', label: '时间组',minWidth:"400px"},
               { prop: 'handle', label: '操作',slotName:'preview-handle',width:150},
             ],
             table_data:[],

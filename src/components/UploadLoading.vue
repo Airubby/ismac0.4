@@ -36,15 +36,14 @@ export default {
         middleFn:function(){
             this.timer=setInterval(()=>{
                 if(this.progress===90){
-                    //finished: 1成功，2失败，0默认
-                    if(this.dialogInfo.finished===1){
+                    //finished: true成功，false失败
+                    if(this.dialogInfo.finished===true){
                         clearInterval(this.timer);
                         this.time=100;
                         this.endFn();
-                    }else if(this.dialogInfo.finished===2){
+                    }else if(this.dialogInfo.finished===false){
                         clearInterval(this.timer);
-                        this.dialogInfo.visible=false;
-                        this.$emit("backInfo")
+                        this.finishedFn()
                     }
                 }else{
                     this.progress+=1;
@@ -56,12 +55,15 @@ export default {
                 if(this.progress===100){
                     clearInterval(this.timer);
                     this.timer=null;
-                    this.dialogInfo.visible=false;
-                    this.$emit("backInfo")
+                    this.finishedFn()
                 }else{
                     this.progress+=1;
                 }
             },this.time)
+        },
+        finishedFn:function(){
+            this.dialogInfo.visible=false;
+            this.$emit("backInfo")
         }
 
     },
@@ -89,6 +91,8 @@ export default {
         }
         .loading-info{
             margin-top: 10px;
+            text-align: center;
+            font-size: 16px;
         }
     }
 </style>

@@ -111,14 +111,13 @@ function getServerConfig() {
             if(config.mock){
                 import(`@/utils/newMock.js`)
             }
-            resolve();
+            setTimeout(()=>{
+                resolve();
+            },1000)
         }).then(()=>{
             import(`./permission.js`)
-        })
-        resolve();
-        }).catch((error) => {
-            console.log(error)
-            reject()
+            })
+            resolve();
         })
     })
 }

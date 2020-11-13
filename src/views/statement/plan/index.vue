@@ -7,9 +7,11 @@
             </el-breadcrumb>
         </div>
         <div class="public_content">
-            <h2>list树形列表转真树形结构</h2>
-            <div style="margin:30px 0;">{{data}}</div>
+            <h2 style="margin:30px 0;">list树形列表转真树形结构</h2>
+            <div>{{data}}</div>
             <div>{{tree}}</div>
+            <h2 style="margin:30px 0;">N秒内连续变化不做操作，超过N秒没变化了才操作最后一次变化的数据</h2>
+
         </div>
     </div>
 </template>
@@ -31,11 +33,34 @@ export default {
                 {id:"210",name:"类21",pid:"20"},
                 {id:"310",name:"类321",pid:"210"},
             ],
-            tree:[]
+            tree:[],
+
+            timer:null,  //定时器
+            lastTime:null,  //记录最后的时间
+            time:1000,  //多少秒内连续变化不操作
         }
     },
 	methods: {
-        
+        flushHandle:function(){
+            clearTimeout(this.timer);
+            this.timer=null;
+            let _this=this;
+            if(this.lastTime===null){
+                //第一次都要操作
+                console.log("变化了，第一次得操作")
+            }else{
+                let thisTime=new Date();
+                if(thisTime.getTime()-this.lastTime.getTime()>this.time){
+                    //超过了限定的秒数
+                    console.log("超过了限定的秒数，操作变化的数据")
+                }else{
+                    this.timer=setTimeout(() => {
+                        _this.flushHandle();
+                    }, _this.time);
+                }
+            }
+            this.lastTime=new Date();
+        }
 	},
     components: {
         
