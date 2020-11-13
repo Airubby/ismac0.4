@@ -57,6 +57,13 @@
     }
 
     /****/
+    .el-input__prefix{
+        display: flex;
+        align-items: center;
+    }
+    .el-form-item--small .el-form-item__content{
+        height: 32px;
+    }
     .el-form-item--small .el-form-item__content, .el-form-item--small .el-form-item__label{
         line-height: 30px;
     }
@@ -66,6 +73,7 @@
             padding: 12px 0;
         }
     }
+
     .el-table thead{
         color: @bgColor;
     }
@@ -121,7 +129,7 @@
         border-color: @lineColor;
     }
     .el-checkbox__inner,
-    .el-radio__inner{
+    .el-radio__inner,.el-radio.is-bordered{
         background-color: transparent;
         border-color: @color;
     }
@@ -173,7 +181,10 @@
         color: @color;
         border-color: @lineColor;
     }
-    .el-date-range-picker__time-header,.el-date-table th,.el-date-range-picker__content.is-left,.el-time-panel__footer,.el-time-panel__content::after, .el-time-panel__content::before,.el-date-picker__header--bordered{
+    .el-date-range-picker__time-header,.el-date-table th,
+    .el-date-range-picker__content.is-left,.el-time-panel__footer,.el-time-panel__content::after,
+    .el-time-panel__content::before,.el-date-picker__header--bordered,.el-date-picker__time-header,
+    .el-time-range-picker__body{
         border-color: @lineColor;
     }
     .el-checkbox__input.is-disabled+span.el-checkbox__label{
@@ -190,9 +201,26 @@
         background-color: @activeColor;
     }
     .el-date-table td.next-month, .el-date-table td.prev-month,.el-date-table td.disabled div,.el-month-table td.disabled .cell,.el-year-table td.disabled .cell,
-    .el-date-table td.in-range div, .el-date-table td.in-range div:hover,.el-date-table td.disabled div,.el-month-table td.disabled .cell{
+    .el-date-table td.in-range div, .el-date-table td.in-range div:hover,.el-date-table td.disabled div,.el-month-table td.disabled .cell,
+    .el-range-editor.is-disabled input{
         background-color: @disabledBg; 
         color: @disabledColor;
+    }
+    .el-tag.el-tag--info{
+        background-color: @disabledBg;
+        border-color: @disabledBg; 
+        color: @disabledColor;
+        max-width: 70%;
+        overflow: hidden;
+    }
+    .el-select .el-tag__close.el-icon-close{
+        background-color:@disabledColor;
+    }
+    .el-tag.el-tag--info .el-tag__close{
+        color: @bgColor;
+    }
+    .el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover{
+        background-color: @activeBg;
     }
     .el-input.is-disabled .el-input__inner{
         background-color: @disabledBg;

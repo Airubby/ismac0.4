@@ -26,7 +26,7 @@ service.interceptors.response.use(
 	response => {
 		loadingService&&loadingService.close();
 		const res = response.data;
-		if(res.err_code&&res.err_code=="-1"&&store.getters.infoFlag){
+		if(res.hasOwnProperty("err_code")&&res.err_code=="-1"&&store.getters.infoFlag){
 			store.dispatch('setInfoFlag',false);
 			Notification.warning("请登录系统");
 			router.push({path:'/login'});
@@ -101,7 +101,7 @@ export default {
 		}
 		return new Promise((resolve,reject)=>{
 			service.post(url,params,{responseType:"blob"}).then(response=>{
-				let blob=new Blob([response.data],{type: "application/vnd.ms-excel;charset=utf-8"});
+				let blob=new Blob([response],{type: "application/vnd.ms-excel;charset=utf-8"});
 				let link = document.createElement('a');
 				link.href=window.URL.createObjectURL(blob);
 				if(params.filename){

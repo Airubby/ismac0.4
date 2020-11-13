@@ -1,6 +1,6 @@
 const theme = {
   state: {
-    theme:'',
+    theme:'blue',
     show:true,
   },
   mutations: {

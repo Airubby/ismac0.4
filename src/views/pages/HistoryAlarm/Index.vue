@@ -12,8 +12,8 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item prop="alarm" label="对象" class="form-item">
-                    <el-select v-model="initParams.alarm" placeholder="请选择">
+                <el-form-item prop="obj" label="对象" class="form-item">
+                    <el-select v-model="initParams.obj" placeholder="请选择" multiple collapse-tags>
                         <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -75,10 +75,13 @@ export default {
             ],
             initParams:{
                 alarm:"",
+                obj:"",
                 date:""
             },
             rules:{
-
+                alarm:[
+                    {required: true, message: '不能为空', trigger: 'blur'}
+                ]
             },
             tableData:[
                 {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},

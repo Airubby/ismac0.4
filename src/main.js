@@ -46,11 +46,13 @@ function getServerConfig() {
         }
         let ajaxUrl=website+(port?(":"+port):"")+postfix;
         store.dispatch('setAjaxUrl',ajaxUrl);
-        store.dispatch('setLanguage',Cookies.get('language') || config.language);
+        store.dispatch('setLanguage',Cookies.get('language') || config.language||'zh');
+        
         store.dispatch('setConfig',config.config);
         Vue.prototype.$ajaxUrl=ajaxUrl;
         Vue.prototype.$webSocket=config.webSocket;
         Vue.prototype.$theme = sessionStorage.getItem("theme") || config.theme || 'blue';
+        Vue.prototype.$lang=Cookies.get('language') || config.language||'zh';
         const enLocale=config.enLang
         const zhLocale=config.zhLang
         Vue.use(VueI18n)
@@ -77,14 +79,13 @@ function getServerConfig() {
                 import(`@/utils/Mock.js`)
             }
             setTimeout(()=>{
-                resolve();
+            resolve();
             },1000)
         }).then(()=>{
             import(`./permission.js`)
         })
         resolve();
         }).catch((error) => {
-            console.log(error)
             reject()
         })
     })

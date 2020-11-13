@@ -13,6 +13,10 @@
     "theme":"blue",
     "language":"zh",
     "zhLang":{
+        "Ups":"UPS",
+        "UpsSys":"UPS系统",
+        "Cool":"制冷",
+        "AirSys":"空调",
         "Monitor":"监控管理",
         "DeviceStatus":"设备状态",
         "DeviceLayout":"设备布局",
@@ -70,6 +74,10 @@
         "Partysu":"小清新"
     },
     "enLang":{
+        "Ups":"UPS",
+        "UpsSys":"UPS System",
+        "Cool":"Cool",
+        "AirSys":"Air",
         "Monitor":"Monitor",
         "DeviceStatus":"Device Status",
         "DeviceLayout":"Device Layout",

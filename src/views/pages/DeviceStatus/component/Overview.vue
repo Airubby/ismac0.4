@@ -1,10 +1,12 @@
 <template>
     <div class="content">
-        概览
+        <DynamicComponent :pathUrl="`/template/event.vue`" :templateData="initParams" templateUrl="/template"></DynamicComponent>
     </div>
 </template>
 <script>
+import DynamicComponent from '@/components/DynamicComponent'
 export default {
+    components:{DynamicComponent},
     mixins:[],
     filters:{
         
@@ -17,7 +19,9 @@ export default {
     },
     data(){
         return{
-            
+            initParams:{
+                type:"event",
+            },
         }
     },
     computed: {
@@ -25,9 +29,6 @@ export default {
 	methods: {
         
 	},
-    components: {
-        
-    }
 }
 </script>
 <style lang="less" scoped>

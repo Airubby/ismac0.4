@@ -31,10 +31,10 @@
                         {{getLanguage}}<i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>
+                        <el-dropdown-item :class="[$lang=='zh'?'active':'','dropdown-item']">
                             <span @click="setLanguage('zh')">中文</span>
                         </el-dropdown-item>
-                        <el-dropdown-item>
+                        <el-dropdown-item :class="[$lang=='en'?'active':'','dropdown-item']">
                             <span @click="setLanguage('en')">English</span>
                         </el-dropdown-item>
                     </el-dropdown-menu>
@@ -46,10 +46,10 @@
                         <i class="icon-skin"></i>{{$t("SkinPeeler")}}
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item :class="[$theme=='partysu'?'themeActive':'','dropdown-item']">
+                        <el-dropdown-item :class="[$theme=='partysu'?'active':'','dropdown-item']">
                             <span @click="changeTheme('partysu')">{{$t("Partysu")}}</span>
                         </el-dropdown-item>
-                        <el-dropdown-item :class="[$theme=='blue'?'themeActive':'','dropdown-item']">
+                        <el-dropdown-item :class="[$theme=='blue'?'active':'','dropdown-item']">
                             <span @click="changeTheme('blue')">{{$t("TechnologyBlue")}}</span>
                         </el-dropdown-item>
                     </el-dropdown-menu>
@@ -122,7 +122,8 @@ export default {
     methods: {
         setLanguage:function(language){
             this.$i18n.locale = language
-            this.$store.dispatch('setLanguage', language)
+            this.$store.dispatch('setLanguage', language);
+            Vue.prototype.$lang=language;
             this.vWeek=[this.$t("SUN"),this.$t("Mon"),this.$t("Tues"),this.$t("Wed"),this.$t("Thurs"),this.$t("Fir"),this.$t("Sat")];
         },
         setClock:function(){
@@ -140,7 +141,7 @@ export default {
             return vDate;
         },
         changeTheme:function(theme){
-            // this.$store.dispatch('setTheme',theme);
+            this.$store.dispatch('setTheme',theme);
             Vue.prototype.$theme=theme;
             sessionStorage.setItem("theme", theme);
         },
@@ -149,7 +150,7 @@ export default {
 </script>
 <style lang="less" scoped>
     .module-theme(...){
-        .el-dropdown-menu__item.themeActive{
+        .el-dropdown-menu__item.active{
             color: @activeColor;
         }
         .content-flex{
@@ -175,8 +176,8 @@ export default {
                             vertical-align: middle;
                             text-align: center;
                             font-size: 14px;
-                            width: calc(100% - 6px);
-                            border-left: 6px solid @navBg;
+                            width: calc(100% - 4px);
+                            border-left: 4px solid @navBg;
                             .nav-box-con-img{
                                 width: 30px;
                                 height: 30px;
@@ -253,6 +254,9 @@ export default {
                         font-size: 24px;
                         vertical-align: middle;
                         margin-right: 8px;
+                        &:before{
+                            color: @color;
+                        }
                     }
                     .top-user{
                         display: flex;

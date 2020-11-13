@@ -8,7 +8,7 @@
                         <div>屏蔽【**机房1/1号温湿度】的所有事件**********</div>
                     </el-col>
                     <el-col :span="4" class="row-col row-col-btn">
-                        <el-button type="primary">取消规则</el-button>
+                        <el-button type="primary" plain>取消规则</el-button>
                     </el-col>
                     <el-col :span="8" class="row-col">
                         <div class="title">屏蔽处理</div>

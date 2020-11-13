@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <div class="top">
-            <el-button type="primary">新增规则</el-button>
+            <el-button type="primary" @click="addRule()">新增规则</el-button>
         </div>
         <el-table-pagination
             :url="$ajaxUrl+'/getTable'"
@@ -20,13 +20,15 @@
             </template>
         </el-table-pagination>
         <show-rule :dialogInfo="ruleInfo" v-if="ruleInfo.visible"></show-rule>
+        <add-rule :dialogInfo="addInfo" v-if="addInfo.visible"></add-rule>
     </div>
 </template>
 <script>
 import ShowRule from './component/ShowRule'
+import AddRule from './component/AddRule'
 export default {
     components: {
-        ShowRule
+        ShowRule,AddRule
     },
     created() {
         
@@ -77,10 +79,16 @@ export default {
             ruleInfo:{
                 visible:false,
                 id:""
+            },
+            addInfo:{
+                visible:false
             }
         }
     },
 	methods: {
+        addRule:function(){
+            this.addInfo.visible=true;
+        },
         handleRule:function(item){
             this.ruleInfo.id=item.id;
             this.ruleInfo.visible=true;

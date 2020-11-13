@@ -39,7 +39,7 @@
                         </div>
                     </el-scrollbar>
                 </div>
-                <el-button type="primary" plain class="add-btn"><i class="el-icon-plus"></i></el-button>
+                <el-button type="primary" plain class="add-btn" @click="enterAddTemp()"><i class="el-icon-plus"></i></el-button>
             </div>
             <div class="config-right">
                 <el-form class="search-top" :model="initParams" :rules="rules" @submit.native.prevent ref="ValidateForm" label-position="top" >
@@ -61,7 +61,7 @@
                     </div>
                     <div class="btn">
                         <el-form-item class="form-item" prop="" :label="`\u3000`">
-                            <el-button type="primary" >新建</el-button>
+                            <el-button type="primary" @click="enterAddPlan()">新建</el-button>
                             <el-button type="primary" plain >批量删除</el-button>
                         </el-form-item>
                     </div>
@@ -134,6 +134,12 @@ export default {
         }
     },
 	methods: {
+        enterAddPlan:function(){
+            this.$router.push({name:'planStatementAddPlan'});
+        },
+        enterAddTemp:function(){
+            this.$router.push({name:'planStatementAddTemp'});
+        },
         resetForm() {
             this.$refs['ValidateForm'].resetFields();
         },

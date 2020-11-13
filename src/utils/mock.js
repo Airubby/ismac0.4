@@ -20,8 +20,9 @@ Mock.setup({
 // const getdata = function(){
 //     let datalist = []
 // 	for (let i = 0; i < 20; i += 1) {
-//         const o = {  //mockjs模拟随机生成数据，生成20条
+//         const o = Mock.mock({  //mockjs模拟随机生成数据，生成20条
 //             email:Random.email(),
+//             phone:/^1[345789]\d{9}$/,  //手机号
 //             ip:Random.ip(),
 //             city:Random.city(),  //城市  传 prefix 参数 表示 带省前缀
 //             county:Random.county(),   //县城  传 prefix 参数 表示 带省前缀
@@ -32,6 +33,7 @@ Mock.setup({
 //             datatime:Random.datetime(), //传参 yy-MM-dd a HH:mm:ss
 //             time:Random.time('A HH:mm:ss'),
 //             name: Random.cword(4, 16), // 随机生成任意名称
+//             name1: Random.first(), // 随机生成任意名称
 //             personName: Random.cname(),  //生成姓名
 //             string: Random.string(10),  //min,max
 //             float:Random.float(60, 100, 3, 5),  // min,max,dmin,dmax
@@ -39,8 +41,9 @@ Mock.setup({
 //             boolean:Random.boolean(),  // 1,1,true
 //             number: Random.string('number', 1, 5),  //数字型字符串1-5位
 //             content: Random.csentence(10, 32),
+//             "arr|1":["aaa","bbb"],  //自定义展示
 //             "matchID":"match1"  //自定义写死
-//         }
+//         })
 //         datalist.push(o)
 //     }
 // 	return{
@@ -75,6 +78,36 @@ const getdata = function(){
                         "component": "DeviceLayout",
                         "iconfont": "",
                         "language": "DeviceLayout",
+                        "relation":[]
+                    },
+                ]
+            },
+            {
+                "key": "ups",
+                "component": "Ups",
+                "iconfont": "icon-monitor",
+                "language": "Ups",
+                "children":[
+                    {
+                        "key": "upsSys",
+                        "component": "UpsSys",
+                        "iconfont": "",
+                        "language": "UpsSys",
+                        "relation":[]
+                    },
+                ]
+            },
+            {
+                "key": "cool",
+                "component": "Cool",
+                "iconfont": "icon-monitor",
+                "language": "Cool",
+                "children":[
+                    {
+                        "key": "airSys",
+                        "component": "AirSys",
+                        "iconfont": "",
+                        "language": "AirSys",
                         "relation":[]
                     },
                 ]
@@ -259,7 +292,9 @@ const getdata = function(){
                         "iconfont": "",
                         "language": "PlanStatement",
                         "relation":[
-                            {"key":"planStatementConfig","component":"PlanStatementConfig"}
+                            {"key":"planStatementConfig","component":"PlanStatementConfig"},
+                            {"key":"planStatementAddPlan","component":"PlanStatementAddPlan"},
+                            {"key":"planStatementAddTemp","component":"PlanStatementAddTemp"},
                         ]
                     },
                     {

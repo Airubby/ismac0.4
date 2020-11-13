@@ -7,12 +7,16 @@
 				<div class="loncom_login_input">
 					<el-form :model="user" :rules="rules" ref="form" status-icon>
 						<el-form-item prop="userid" class="loncom_user">
-							<el-input v-model.trim="user.userid" placeholder="请输入账号" ref="customerInput"></el-input>
+							<el-input v-model.trim="user.userid" size="large" placeholder="请输入账号" ref="customerInput">
+                                <i slot="prefix" class="icon-user"></i>
+                            </el-input>
 						</el-form-item>
 						<el-form-item prop="psword" class="loncom_pass">
-							<el-input type="password" v-model.trim="user.psword" ref="psinput" placeholder="请输入密码" @keyup.native="keyLogin($event,'userName')"></el-input>
+							<el-input type="password" size="large" v-model.trim="user.psword" ref="psinput" placeholder="请输入密码" @keyup.native="keyLogin($event,'userName')">
+                                <i slot="prefix" class="icon-password"></i>
+                            </el-input>
 						</el-form-item>
-						<el-button type="primary" @click="loginIn()" @keydown="keyLogin($event)">登录</el-button>
+						<el-button type="primary" size="large" class="btn" plain @click="loginIn()" @keydown="keyLogin($event)">登录</el-button>
 					</el-form>
 				</div>
 			</div>
@@ -131,12 +135,12 @@ export default {
             width: 100%;
             height: 100%;
             position: relative;
-            background: #141835;
+            background: @bodyBg;
         }
         .loncom_login {
             width: 100%;
             height: 220px;
-            background: #1C2340 url(@loginBg) no-repeat right bottom;
+            background: @contentBg url(@loginBg) no-repeat right bottom;
             position: absolute;
             top: 50%;
             margin-top: -110px;
@@ -150,9 +154,8 @@ export default {
             top: 50%;
             margin-left: -175px;
             margin-top: -210px;
-            background: #272D4A;
+            background: @boxBg;
             padding: 20px 25px;
-            border-top: 10px solid #1C2340;
         }
         
         .loncom_login_con .loncom_logo_img {
@@ -166,10 +169,22 @@ export default {
             text-align: center;
             font-style: normal;
             font-size: 24px;
-            color: #4A78FF;
+            color: @activeColor;
             font-weight: bold;
             margin: 20px 0;
         }
-        
+        .btn{
+            width: 100%;
+        }
+        .icon-user{
+            font-size: 22px;
+            &:before{
+                color: @color;
+            }
+        }
+        .icon-password{
+            color: @color;
+            font-size: 20px;
+        }
     }
 </style>

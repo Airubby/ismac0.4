@@ -1,3 +1,5 @@
 export default {
-    GetTable:"/getTable"
+    GetTable:"/getTable",
+    GetList:"/getList"
+
 }
