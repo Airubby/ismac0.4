@@ -44,6 +44,8 @@ import 'videojs-flash'
 import 'videojs-contrib-hls/dist/videojs-contrib-hls'
 Vue.use(VueVideoPlayer)
 
+import draggable from '@/utils/VueDraggable'
+Vue.use(draggable)
 // import breadcrumb from '@/components/Breadcrumb'
 // Vue.use(breadcrumb)
 
