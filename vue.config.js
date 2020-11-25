@@ -1,4 +1,5 @@
 const isProduction = process.env.NODE_ENV === 'production';
+const TerserPlugin = require('terser-webpack-plugin')
 module.exports = {
     // 基本路径
     publicPath: '/',
@@ -8,9 +9,83 @@ module.exports = {
     outputDir: 'dist',
     // eslint-loader 是否在保存的时候检查
     lintOnSave: false,
-    chainWebpack: config => {},
+    chainWebpack: config => {
+        // 压缩代码
+        config.optimization.minimize(true);
+        // 分割代码
+        config.optimization.splitChunks({
+            chunks: 'all'
+        })
+    },
     //公共代码抽离
-    configureWebpack: config => {},
+    configureWebpack: config => {
+        const myConfig = {}
+        if (isProduction) {
+            //3.js代码整合
+            let optimization= {
+                //去掉打印console信息
+                minimizer: [new TerserPlugin({ terserOptions: { compress: { drop_console: true } } })],
+                //整合代码
+                splitChunks: {
+                    cacheGroups: {
+                        vendor:{
+                            chunks:"all",
+                            test: /node_modules/,
+                            name:"vendor",
+                            minChunks: 1,
+                            maxInitialRequests: 5,
+                            minSize: 0,
+                            priority:100,
+                        },
+                        common: {
+                            chunks:"all",
+                            test:/[\\/]src[\\/]js[\\/]/,
+                            name: "common",
+                            minChunks: 2,
+                            maxInitialRequests: 5,
+                            minSize: 0,
+                            priority:60
+                        },
+                        styles: {
+                            name: 'styles',
+                            test: /\.(le|sa|sc|c)ss$/,
+                            chunks: 'all',
+                            enforce: true,
+                        },
+                        runtimeChunk: {
+                            name: 'manifest'
+                        }
+                    } 
+                },
+                
+            }
+            Object.assign(config, {
+                optimization
+            })
+
+        }
+        if (!isProduction) {
+            /**
+             * 关闭host check，方便使用ngrok之类的内网转发工具
+             */
+            myConfig.devServer = {
+                disableHostCheck: true
+            }
+            let optimization={
+                minimizer:[
+                    new TerserPlugin({
+                        cache: true,
+                        // 将多线程关闭  webpack会92%卡住的问题
+                        parallel: false
+                    })
+                ]
+            }
+            Object.assign(config, {
+                optimization
+            })
+        }
+        return myConfig
+    },
     // 生产环境是否生成 sourceMap 文件
     productionSourceMap: false,
     // css相关配置

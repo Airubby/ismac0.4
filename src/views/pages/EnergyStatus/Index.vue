@@ -1,5 +1,10 @@
 <template>
     <div class="content">
+        <div class="energy-btn">
+            <template v-for="(item,index) in btnList">
+                <el-button :type="item.active?'primary':'text'" size="mini" :key="index" @click="clickBtn(index)">{{item.name}}</el-button>
+            </template>
+        </div>
         <div class="energy_top">
             <div class="energy_top_box" id="pueCon"></div>
             <div class="energy_top_box" id="fzlCon"></div>
@@ -40,10 +45,21 @@ export default {
         return{
             borderColor:"",
             color:"",
-            lineColor:""
+            lineColor:"",
+            btnList:[
+                {name:"今日",active:true},
+                {name:"本月",active:false},
+                {name:"本年",active:false},
+            ]
         }
     },
 	methods: {
+        clickBtn:function(index){
+            for(let i=0;i<this.btnList.length;i++){
+                this.btnList[i].active=false;
+            }
+            this.btnList[index].active=true;
+        },
         initFzl:function(ID,title,value){
             // 基于准备好的dom，初始化echarts实例
             var myChart = echarts.init(document.getElementById(ID));
@@ -373,15 +389,20 @@ export default {
 </script>
 <style lang="less" scoped>
     .module-theme(...){
+        .energy-btn{
+            width: 100%;
+            height: 30px;
+            text-align: right;
+        }
         .energy_top{
             display: flex;
             justify-content: center;
-            height: 200px;
+            height: 170px;
             .energy_top_box{
                 width: 33.33%;
-                height:200px;
+                height:170px;
                 text-align: center;
-                line-height: 200px;
+                line-height: 170px;
                 font-size: 22px;
             }
         }
