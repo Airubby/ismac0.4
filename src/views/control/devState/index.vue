@@ -81,12 +81,12 @@
                 </div>
             </el-scrollbar>
         </div>
-        <webSocket :wsInfo="table_data" :sendInfo="{cmd:'alarm',changeSend:true}" :matchInfo="['value:state','isalarm:alarmstyle']"></webSocket>
+        <WebSocket :wsInfo="table_data" :sendInfo="{cmd:'alarm',changeSend:true}" :matchInfo="['value:state','isalarm:alarmstyle']"></WebSocket>
     </div>
 </template>
 
 <script>
-import webSocket from '@/components/webSocket.vue'
+import WebSocket from '@/components/WebSocket.vue'
 export default {
     created() {
         
@@ -164,7 +164,7 @@ export default {
 
 	},
     components: {
-        webSocket
+        WebSocket
     },
     watch: {
         'initParams.type':function(val){

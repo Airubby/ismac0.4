@@ -21,6 +21,7 @@
         <div class="color">字体颜色随主题全局变量设置改变</div>
         <div class="bg">字体颜色随主题全局变量设置改变</div>
         <div class="bgimg">背景图片</div>
+        <div>$set的值：{{initParams.setvalue}}</div>
     </div>
 </template>
 1
@@ -31,6 +32,8 @@ import Api from './config/api'
 export default {
     mixins:[LangMixins],
     created() {
+        // this.$set( target, key, value )
+        this.$set(this.initParams,"setvalue","动态set的值")
         this.$api.post(Api.gethomemock,{}).then(res=>{
             console.log(res)
         })
@@ -69,6 +72,9 @@ export default {
                 {name:"一般",number:0,id:'3'},
                 {name:"提示",number:0,id:'4'},
             ],
+            initParams:{
+
+            }
         }
     },
 	methods: {

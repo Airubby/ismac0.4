@@ -3,6 +3,7 @@ const getters = {
   languageZh: state => state.app.languageZh,
   languageEn: state => state.app.languageEn,
   getWSData: state => state.app.wsData,
+  sendMsg:state=>state.app.sendMsg,
   AjaxUrl: state => state.app.AjaxUrl,
   loginUrl: state => state.app.loginUrl,
   isview:state=>state.app.viewState,

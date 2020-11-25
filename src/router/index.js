@@ -28,6 +28,12 @@ export const syncRouter=[
       meta: { title: 'test'},
       component: () => import('@/views/test/index.vue'),
     },
+    {
+        path: '/test1',
+        name: 'test1',
+        meta: { title: 'test'},
+        component: () => import('@/views/test/index1.vue'),
+      },
     { path: '*', component: () => import('@/views/errorPage/Loading') }, //这个不要给meta的键值对
     { path: '/404',name:'404',meta: { title: '404'}, 
       component: () => import('@/views/errorPage/404') 

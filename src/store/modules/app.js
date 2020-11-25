@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 const app = {
   state: {
     wsData:{},
+    sendMsg:"", //存储当前的send的信息，如果断开了，再连接上的时候，再次发送订阅信息
     AjaxUrl:Cookies.get('AjaxUrl')||'',
     loginUrl:Cookies.get('loginUrl')||'',
     // 中英文
@@ -22,6 +23,9 @@ const app = {
   mutations: {
     setwsData(state,wsData){
         state.wsData=wsData;
+    },
+    SET_SENDMSG(state,sendMsg){
+        state.sendMsg=sendMsg;
     },
     setAjaxUrl(state,ajaxUrl){
         state.AjaxUrl=ajaxUrl;
@@ -68,6 +72,9 @@ const app = {
   actions: {
     setwsData({commit},wsData){
         commit('setwsData',wsData)
+    },
+    setSendMsg(state,sendMsg){
+        commit('SET_SENDMSG',wsData)
     },
     setAjaxUrl({commit},ajaxUrl){
         commit('setAjaxUrl',ajaxUrl)

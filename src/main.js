@@ -4,7 +4,7 @@ import axios from 'axios'
 import App from '@/App.vue'
 import {router} from '@/router/index'
 import store from '@/store/index'
-import request from '@/utils/request'
+import Request from '@/utils/Request'
 import newRequest from '@/utils/newRequest'
 
 // import 'element-ui/lib/theme-chalk/index.css'
@@ -51,7 +51,7 @@ Vue.use(draggable)
 
 // 将API方法绑定到全局
 Vue.prototype.$api = newRequest
-Vue.prototype.$r=request
+Vue.prototype.$r=Request
 
 //绑定工具函数到全局
 Vue.prototype.$tool = Tool

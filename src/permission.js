@@ -4,7 +4,7 @@ import store from '@/store/index'
 // import NProgress from 'nprogress' // Progress 进度条
 // import 'nprogress/nprogress.css'// Progress 进度条样式
 import { Loading } from 'element-ui'
-import request from './utils/request'
+import Request from './utils/Request'
 import {Decrypt} from './utils/AEScrypt'
 
 routerGo();
@@ -23,7 +23,7 @@ function filterAsyncRouter(url, roles) {
 function getInfo(){  //刷新页面重新获取权限
     return new Promise(function(resolve, reject){
         console.log(Decrypt(sessionStorage.roleid))
-        request.get('/getLimit',{"roleid":Decrypt(sessionStorage.roleid)},res=>{
+        Request.get('/getLimit',{"roleid":Decrypt(sessionStorage.roleid)},res=>{
             if(res.err_code=="0"){
                 if(res.data.length>0){
                     store.dispatch('setAuthInfo',res.data);

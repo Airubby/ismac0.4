@@ -14,11 +14,12 @@
                         <div class="his-con-line"><em v-for="item in 36"></em></div>
                         <div class="his-con-line his-con-linel"><em v-for="item in 10"></em></div>
                         <div class="his-con-line his-con-linel his-con-liner"><em v-for="item in 10"></em></div>
-                        <div class="list-group" 
+                        <div class="list-con" 
                             @drop='dropDev($event,data1)'
                             @touchstart='dropDev($event,data1)'
                             @dragover='allowDrop($event)'>
-                            <draggable class="list-group" 
+                            <div class="info-show" v-if="data1.length<=0">机柜存放区</div>
+                            <draggable class="list-con" 
                             :list="data1" 
                             v-bind="dragOptions"
                             @start="drag = true"
@@ -39,9 +40,9 @@
                         @drop='dropDev($event)'
                         @touchstart='dropDev($event)'
                         @dragover='allowDrop($event)'>
-                            <div class="cen-img" v-for="item in imgarr.cenimg">
+                            <!-- <div class="cen-img" v-for="item in imgarr.cenimg">
                                 <img :src="'/images/'+item+'.png'">
-                            </div>
+                            </div> -->
                         </div>
                         <div class="his-cendoor his-cendoor-right" :class="{'his-cendoor-close':rightDoor}"></div>
                     </div>
@@ -49,11 +50,12 @@
                         <div class="his-con-line"><em v-for="item in 36"></em></div>
                         <div class="his-con-line his-con-linel"><em v-for="item in 10"></em></div>
                         <div class="his-con-line his-con-linel his-con-liner"><em v-for="item in 10"></em></div>
-                        <div class="list-group" 
+                        <div class="list-con" 
                             @drop='dropDev($event,data2)'
                             @touchstart='dropDev($event,data2)'
                             @dragover='allowDrop($event)'>
-                            <draggable class="list-group" 
+                            <div class="info-show" v-if="data2.length<=0">机柜存放区</div>
+                            <draggable class="list-con" 
                                 :list="data2"
                                 v-bind="dragOptions"
                                 @start="drag = true"
@@ -61,9 +63,9 @@
                                 @change="log" 
                                 handle=".his-conbox">
                                 <transition-group class="list-group" type="transition" :name="!drag ? 'flip-list' : null">
-                                <div class="his-conbox list-group-item" :key="index" :class="{'his-conbox1':item.type=='kt'}" v-for="(item,index) in data2">
-                                    <cabinet-component :type="item.type" :title="item.title"></cabinet-component>
-                                </div>
+                                    <div class="his-conbox list-group-item" :key="index" :class="{'his-conbox1':item.type=='kt'}" v-for="(item,index) in data2">
+                                        <cabinet-component :type="item.type" :title="item.title"></cabinet-component>
+                                    </div>
                                 </transition-group>
                             </draggable>
                         </div>
@@ -125,6 +127,7 @@ export default {
                 {title:'精密空调',type:'kt'},
                 {title:'管控单元',type:'gk'},
                 {title:'冷量分配单元',type:'llfp'},
+                // {title:"柱子",type:""}
             ],
             drag: false,
             activeDrag:{},
@@ -276,6 +279,20 @@ export default {
                 margin: 0 auto;
                 display: flex;
                 position: relative;
+                .list-con{
+                    width: 100%;
+                    height: 100%;
+                }
+                .info-show{
+                    width: 100%;
+                    height: 100%;
+                    text-align: center;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #409EFF;
+                    font-size: 20px;
+                }
                 .list-group{
                     width: 100%;
                     height: 100%;

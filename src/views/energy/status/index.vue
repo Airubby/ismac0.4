@@ -44,16 +44,16 @@
                 </div>
             </div>
         </div>
-        <webSocket :wsInfo="wsData" :sendInfo='{cmd:"subdata",returnFn:true,changeSend:true}' @backInfo="backInfo"></webSocket>
+        <WebSocket :wsInfo="wsData" :sendInfo='{cmd:"subdata",returnFn:true,changeSend:true}' @backInfo="backInfo"></WebSocket>
     </div>
 </template>
 
 <script>
 import Rules from "@/utils/Rules"
-import webSocket from "@/components/webSocket"
+import WebSocket from "@/components/WebSocket"
 export default {
     components: {
-        webSocket
+        WebSocket
     },
     filters:{
         capitalize: function (value,_this) {

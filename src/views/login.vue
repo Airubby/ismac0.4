@@ -21,13 +21,13 @@
 </template>
 
 <script>
-import request from '@/utils/request'
+import Request from '@/utils/Request'
 import {Encrypt,Decrypt} from '@/utils/AEScrypt'
 export default {
 	created () {
 		this.$store.dispatch('setInfoFlag',true);
 		//可以动态设置接口信息，根据不同的接口从不同的服务器上啦数据
-		request.service.defaults.baseURL=this.$store.getters.AjaxUrl;  //初始化的时候配置文件中的请求前缀还没写入request的baseURL中的
+		Request.service.defaults.baseURL=this.$store.getters.AjaxUrl;  //初始化的时候配置文件中的请求前缀还没写入request的baseURL中的
   	},
 	mounted() {
 		this.$nextTick(function () {
