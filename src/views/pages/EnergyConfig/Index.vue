@@ -1,12 +1,16 @@
 <template>
     <div class="content">
-        <el-tabs v-model="activeName">
-            <el-tab-pane label='电量模型' name="first">
-                <battery-model></battery-model>
+        <el-tabs v-model="activeName" class="content">
+            <el-tab-pane label='电量模型' name="first" class="content">
+                <battery-model v-if="activeName=='first'" ref="tabs"></battery-model>
             </el-tab-pane>
-            <el-tab-pane label='群控配置' name="second">
-                <group-config></group-config>
+            <el-tab-pane label='群控配置' name="second" class="content">
+                <group-config v-if="activeName=='second'" ref="tabs"></group-config>
             </el-tab-pane>
+            <div class="tabs-btn">
+                <el-button type="text" @click="exportConfig()">导出配置</el-button>
+                <el-button type="text" @click="importConfig()">导入配置</el-button>
+            </div>
         </el-tabs>
     </div>
 </template>
@@ -28,16 +32,23 @@ export default {
             activeName:"first"
         }
     },
-    computed: {
-    },
 	methods: {
-        
+        exportConfig:function(){
+            this.$refs.tabs.exportConfig();
+        },
+        importConfig:function(){
+
+        }
 	},
     
 }
 </script>
 <style lang="less" scoped>
     .module-theme(...){
-        
+        .tabs-btn{
+            position: absolute;
+            top: -50px;
+            right: 0;
+        }
     }
 </style>

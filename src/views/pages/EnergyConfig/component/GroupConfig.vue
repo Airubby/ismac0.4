@@ -19,7 +19,9 @@ export default {
     computed: {
     },
 	methods: {
-        
+        exportConfig:function(){
+            console.log("config 导出")
+        }
 	},
     components: {
         
