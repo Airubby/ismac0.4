@@ -65,6 +65,7 @@
                             </el-tab-pane>
                             <div class="tabs-btn">
                                 <el-button type="text">清空</el-button>
+                                <el-divider direction="vertical"></el-divider>
                                 <el-button type="text">公式编辑器</el-button>
                             </div>
                         </el-tabs>
