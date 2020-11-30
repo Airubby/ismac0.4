@@ -169,7 +169,7 @@ const getdata = function(){
                         "language": "CoolingAnalysis"
                     },
                     {
-                        "key": "eEnergyConfig",
+                        "key": "energyConfig",
                         "component": "EnergyConfig",
                         "iconfont": "",
                         "language": "EnergyConfig"

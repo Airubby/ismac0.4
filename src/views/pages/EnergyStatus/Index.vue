@@ -17,6 +17,7 @@
     </div>
 </template>
 <script>
+import {FormatDate} from '@/utils/Tool'
 import echarts from 'echarts'
 import 'echarts-liquidfill';
 export default {
@@ -47,10 +48,12 @@ export default {
             color:"",
             lineColor:"",
             btnList:[
-                {name:"今日",active:true},
-                {name:"本月",active:false},
-                {name:"本年",active:false},
-            ]
+                {name:"今日",active:true,type:"day"},
+                {name:"本月",active:false,type:"month"},
+                {name:"本年",active:false,type:"year"},
+            ],
+            begintime:"",
+            endtime:""
         }
     },
 	methods: {
@@ -59,6 +62,17 @@ export default {
                 this.btnList[i].active=false;
             }
             this.btnList[index].active=true;
+            if(this.btnList[index].type=="day"){
+                this.begintime=FormatDate("yyyy-MM-dd 00:00:00");
+                this.endtime=FormatDate("yyyy-MM-dd HH:mm:ss");
+            }else if(this.btnList[index].type=="month"){
+                this.begintime=FormatDate("yyyy-MM-01 00:00:00");
+                this.endtime=FormatDate("yyyy-MM-dd HH:mm:ss");
+            }else if(this.btnList[index].type=="year"){
+                this.begintime=FormatDate("yyyy-01-01 00:00:00");
+                this.endtime=FormatDate("yyyy-MM-dd HH:mm:ss");
+            }
+            console.log(this.begintime,this.endtime)
         },
         initFzl:function(ID,title,value){
             // 基于准备好的dom，初始化echarts实例
@@ -133,8 +147,8 @@ export default {
             return myChart;
         },
         initPue:function(ID,value,min,max,title,color){
-            var value=1.53,min=1,max=2.2,title="PUE";
-            var color=[[0.5,"#709CFD"],[1, '#223775']];
+            var value=1.53,min=0,max=5,title="PUE";
+            var color=[[value/max,"#709CFD"],[1, '#223775']];
             var myChart = echarts.init(document.getElementById(ID));
             var option = {
                 title:{
