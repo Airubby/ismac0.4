@@ -82,36 +82,36 @@ const getdata = function(){
                     },
                 ]
             },
-            {
-                "key": "ups",
-                "component": "Ups",
-                "iconfont": "icon-monitor",
-                "language": "Ups",
-                "children":[
-                    {
-                        "key": "upsSys",
-                        "component": "UpsSys",
-                        "iconfont": "",
-                        "language": "UpsSys",
-                        "relation":[]
-                    },
-                ]
-            },
-            {
-                "key": "cool",
-                "component": "Cool",
-                "iconfont": "icon-monitor",
-                "language": "Cool",
-                "children":[
-                    {
-                        "key": "airSys",
-                        "component": "AirSys",
-                        "iconfont": "",
-                        "language": "AirSys",
-                        "relation":[]
-                    },
-                ]
-            },
+            // {
+            //     "key": "ups",
+            //     "component": "Ups",
+            //     "iconfont": "icon-monitor",
+            //     "language": "Ups",
+            //     "children":[
+            //         {
+            //             "key": "upsSys",
+            //             "component": "UpsSys",
+            //             "iconfont": "",
+            //             "language": "UpsSys",
+            //             "relation":[]
+            //         },
+            //     ]
+            // },
+            // {
+            //     "key": "cool",
+            //     "component": "Cool",
+            //     "iconfont": "icon-monitor",
+            //     "language": "Cool",
+            //     "children":[
+            //         {
+            //             "key": "airSys",
+            //             "component": "AirSys",
+            //             "iconfont": "",
+            //             "language": "AirSys",
+            //             "relation":[]
+            //         },
+            //     ]
+            // },
             {
                 "key": "alarm",
                 "component": "Alarm",
@@ -198,7 +198,10 @@ const getdata = function(){
                         "key": "accessController",
                         "component": "AccessController",
                         "iconfont": "",
-                        "language": "AccessController"
+                        "language": "AccessController",
+                        "relation":[
+                            {"key":"accessControllerAdd","component":"AccessControllerAdd"}
+                        ]
                     },
                     {
                         "key": "timeGroup",
@@ -230,7 +233,10 @@ const getdata = function(){
                         "key": "videoConfig",
                         "component": "VideoConfig",
                         "iconfont": "",
-                        "language": "VideoConfig"
+                        "language": "VideoConfig",
+                        "relation":[
+                            {"key":"videoConfigAdd","component":"VideoConfigAdd"}
+                        ]
                     },
                 ]
             },
