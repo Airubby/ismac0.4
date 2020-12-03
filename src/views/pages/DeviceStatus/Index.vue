@@ -37,13 +37,13 @@
         <div class="center">
             <div class="title">筛选</div>
             <div class="searchbox">
-                <el-select v-model="initParams.alarm" placeholder="请选择">
+                <el-select v-model="initParams.alarm" clearable placeholder="请选择">
                     <el-option key="all" label="所有" value="all"></el-option>
                     <el-option key="1" label="关注" value="1"></el-option>
                 </el-select>
             </div>
             <div class="searchbox">
-                <el-select v-model="initParams.alarm" placeholder="请选择">
+                <el-select v-model="initParams.alarm" clearable placeholder="请选择">
                     <el-option key="all" label="所有" value="all"></el-option>
                     <el-option key="1" label="关注" value="1"></el-option>
                 </el-select>
