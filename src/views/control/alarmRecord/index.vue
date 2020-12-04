@@ -10,27 +10,49 @@
             <el-row>
                 <el-col :span="12"><el-input v-model="input" placeholder="请输入内容" ref="inp"></el-input></el-col>
                 <el-col :span="12"><el-button type="primary" @click="copy">复制</el-button></el-col>
+                <el-col :span="12">
+                    <div>{{$t("testLanguage")}}</div>
+                    <el-checkbox v-model="check">测试computed属性写入store</el-checkbox>
+                    <el-button type="primary" @click="treeDialog">弹窗$emit方式返回数据</el-button>
+                    <el-tree
+                    :data="treedata"
+                    show-checkbox
+                    node-key="id"
+                    ref="tree"
+                    check-strictly
+                    @node-click="nodeClick"
+                    @check-change="checkChange"
+                    :default-checked-keys="checkedKeys"
+                    :props="defaultProps">
+                    <span class="custom-tree-node" slot-scope="{ node, data }">
+                        <span :class="{'active':data.id==activeId}">{{ data.label }}</span>
+                        <span v-if="node.id==1" style="color:#f00;">
+                            判断展示
+                        </span>
+                        <span v-else style="color:#09c;">
+                            绑定图标按钮
+                        </span>
+                    </span>
+                    </el-tree>
+                    <div style="width:200px;height:200px;" id="echart"></div>
+                </el-col>
+                <el-col :span="12">
+                    <h2>下拉框带树形</h2>
+                    <el-select v-model="value6" placeholder="请选择">
+                        <el-input
+                        placeholder="输入关键字进行过滤"
+                        v-model="filterText" style="position:absolute;top:6px;z-index:9;margin:0 auto;">
+                        </el-input>
+                        <el-option :value="value6" :label="value7" class="selectTree">
+                            <el-tree show-checkbox ref="selecttree" node-key="id" class="filter-tree"
+                            :data="data" 
+                            :filter-node-method="filterNode"
+                            :props="defaultProps" @check-change="selsetchangeTree">
+                            </el-tree>
+                        </el-option>
+                    </el-select>
+                </el-col>
             </el-row>
-            <div>{{$t("testLanguage")}}</div>
-            <el-checkbox v-model="check">测试computed属性写入store</el-checkbox>
-            <el-button type="primary" @click="treeDialog">弹窗$emit方式返回数据</el-button>
-            <el-tree
-            :data="treedata"
-            show-checkbox
-            node-key="id"
-            ref="tree"
-            check-strictly
-            @check-change="checkChange"
-            :default-checked-keys="checkedKeys"
-            :props="defaultProps">
-            <span class="custom-tree-node" slot-scope="{ node, data }">
-                <span>{{ node.label }}</span>
-                <span v-if="node.id==1" style="color:#f00;">
-                    我是第一个
-                </span>
-            </span>
-            </el-tree>
-            <div style="width:200px;height:200px;" id="echart"></div>
         </div>
         <treeShow v-if="treeInfo.visible" :dialogInfo="treeInfo" v-on:backInfo="backTreeInfo"></treeShow>
         
@@ -66,41 +88,42 @@ export default {
     data(){
         return{
             input:"a345435345aa",
-            treedata: [{
-                id: 1,
-                label: '一级 1',
-                children: [{
-                    id: 4,
-                    label: '二级 1-1',
-                    children: [{
-                    id: 9,
-                    label: '三级 1-1-1'
-                    }, {
-                    id: 10,
-                    label: '三级 1-1-2'
-                    }]
-                }]
-                }, {
-                id: 2,
-                label: '一级 2',
-                children: [{
-                    id: 5,
-                    label: '二级 2-1'
-                }, {
-                    id: 6,
-                    label: '二级 2-2'
-                }]
-                }, {
-                id: 3,
-                label: '一级 3',
-                children: [{
-                    id: 7,
-                    label: '二级 3-1'
-                }, {
-                    id: 8,
-                    label: '二级 3-2'
-                }]
-            }],
+            treedata: [
+                {
+                    id: 1,
+                    label: '一级 1',
+                    children: [
+                        {
+                            id: 4,
+                            label: '二级 1-1',
+                            children: [
+                                {
+                                    id: 9,
+                                    label: '三级 1-1-1'
+                                }, 
+                                {
+                                    id: 10,
+                                    label: '三级 1-1-2'
+                                }
+                            ]
+                        }
+                    ]
+                }, 
+                {
+                    id: 2,
+                    label: '一级 2',
+                    children: [
+                        {
+                            id: 5,
+                            label: '二级 2-1'
+                        }, 
+                        {
+                            id: 6,
+                            label: '二级 2-2'
+                        }
+                    ]
+                }
+            ],
             defaultProps: {
                 children: 'children',
                 label: 'label'
@@ -109,7 +132,47 @@ export default {
             checkRadio:true,  //单选
             treeInfo:{
                 visible:false,
-            }
+            },
+            //下拉框带树形
+            filterText: '',
+            value6:'',
+            value7:'',
+            data: [{
+                label: '一级 1',
+                children: [{
+                label: '二级 1-1',
+                children: [{
+                    label: '三级 1-1-1'
+                }]
+                }]
+                }, {
+                    label: '一级 2',
+                    children: [{
+                    label: '二级 2-1',
+                    children: [{
+                        label: '三级 2-1-1'
+                    }]
+                    }, {
+                    label: '二级 2-2',
+                    children: [{
+                        label: '三级 2-2-1'
+                    }]
+                    }]
+                }, {
+                    label: '一级 3',
+                    children: [{
+                    label: '二级 3-1',
+                    children: [{
+                        label: '三级 3-1-1'
+                    }]
+                    }, {
+                    label: '二级 3-2',
+                    children: [{
+                        label: '三级 3-2-1'
+                    }]
+                }]
+            }],
+            activeId:""
         }
     },
 	methods: {
@@ -213,6 +276,9 @@ export default {
                 console.log(this.$refs.tree.getCheckedKeys());
             }
         },
+        nodeClick:function(data,node){
+            this.activeId=data.id;
+        },
         getCheckedKeys() {
             console.log(this.$refs.tree.getCheckedKeys());
         },
@@ -231,10 +297,37 @@ export default {
                 this.treeInfo.visible=true
             })
             
-        }
+        },
+        //下拉框带树形
+        selsetchangeTree:function(data,node){
+            console.log(data)
+            console.log(node)
+            let arrnode=this.$refs.tree.getCheckedNodes();
+            let name=[];
+            console.log(arrnode)
+            for(var i=0;i<arrnode.length;i++){
+                name.push(arrnode[i].label);
+            }
+            this.value7=name.toString();
+        },
+        filterNode(value, data) {
+            if (!value) return true;
+            return data.label.indexOf(value) !== -1;
+        },
+        
 	},
     components: {
         treeShow
-    }
+    },
+    watch: {
+        filterText(val) {
+            this.$refs.selecttree.filter(val);
+        }
+    },
 }
 </script>
+<style lang="less" scoped>
+    .custom-tree-node .active{
+        color: #f00;
+    }
+</style>
