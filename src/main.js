@@ -21,6 +21,7 @@ import '@/utils/Directive'  //自定义指令
 //加载全局组件
 import './components/Global/index.js'
 
+
 import './assets/css/basic.less'
 
 //绑定工具函数到全局

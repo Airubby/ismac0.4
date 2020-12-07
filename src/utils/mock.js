@@ -78,7 +78,9 @@ const getdata = function(){
                         "component": "DeviceLayout",
                         "iconfont": "",
                         "language": "DeviceLayout",
-                        "relation":[]
+                        "relation":[
+                            {"key":"deviceLayoutEdit","component":"DeviceLayoutEdit"}
+                        ]
                     },
                 ]
             },
