@@ -144,7 +144,6 @@ Vue.directive("scrollBar", {
                     }
                     
                 }
-                console.log(el)
                 //判断其样式是否存在position 并且position为"fixed", "absolute"或"relative"
                 //如果不符合条件，抛个错误。当然你也可以抛个警告然顺便给其position自动加上"relative"
                 //为什么要这么做呢，因为PerfectScrollbar实现原理就是对dom注入两个div，一个是x轴一个是y轴，他们两的position都是absolute。
@@ -152,7 +151,6 @@ Vue.directive("scrollBar", {
                 const rules = ["fixed", "absolute", "relative"];
                 if (!rules.includes(window.getComputedStyle(el, null).position)) {
                     el.style.position="relative";
-                    console.log(el)
                 // console.error(`perfect-scrollbar所在的容器的position属性必须是以下之一：${rules.join("、")}`)
                 }
                 el_scrollBar(el);//el上挂一份属性

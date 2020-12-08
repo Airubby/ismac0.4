@@ -15,7 +15,7 @@
             </div>
             <div class="btn">
                 <el-form-item class="form-item" prop="" :label="`\u3000`">
-                    <el-button type="primary" @click="handleUser()">新建</el-button>
+                    <el-button type="primary" @click="add()">新建</el-button>
                 </el-form-item>
             </div>
         </el-form>
@@ -55,7 +55,7 @@
 export default {
     created() {
         // this.getList();
-        this.getGroup();
+        // this.getGroup();
     },
     mounted() {
         
@@ -102,7 +102,7 @@ export default {
         },
         //获取时间组
         getGroup:function(){
-            this.$r.post("/access/timegroup/gettimegroup",{grouptype:'2'},r=>{
+            this.$api.post("/access/timegroup/gettimegroup",{grouptype:'2'}).then(r=>{
                 console.log(r)
                 if(r.err_code=='0'){
                     this.timeGroup=r.data?r.data:[];
@@ -137,7 +137,7 @@ export default {
 				type: 'warning'
 			}).then(() => {
 				
-                this.$r.post("/access/mode/deleteaccessmode",{id:row.id},r=>{
+                this.$api.post("/access/mode/deleteaccessmode",{id:row.id}).then( r=>{
                     console.log(r)
                     if(r.err_code=='0'){
                         this.$message.success(r.err_msg);
@@ -152,13 +152,11 @@ export default {
         },
         //新建
         add:function(){
-            this.$router.push({name:'accessCardImpowerAdd'});
+            this.$router.push({name:'cardAuthorizeAdd'});
         },
-        edit:function(row){
-            this.$router.push({name:'accessCardImpowerAdd',query:{
-                params:JSON.stringify({"id":row.id})
-            }});
-        }
+        edit:function(item){
+            this.$router.push({name:'cardAuthorizeAdd',query:{params:JSON.stringify({"id":item.id})}});
+        },
 	},
 }
 </script>

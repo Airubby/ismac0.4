@@ -13,10 +13,21 @@
                 <div class="layout-box">
                     <div class="layout-box-con">
                         <div class="layout-box-panel" :style="panelStyle">
+                            <div class="layout-panel-other">
+                                <div class="layout-panel-othercon" 
+                                id="panel-topcon"
+                                @drop='dragtopDevFinish($event)'
+                                @touchstart='dragtopDevFinish($event)'
+                                @dragover='allowDrop($event)'>
+                                    <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
+                                        <img :src="devitem.imgsrc" draggable="true" @dragstart="dragDevStart($event,devitem)">
+                                    </span>
+                                </div>
+                            </div>
                             <div class="layout-panel-top layout-panel-con">
                                 <div class="layout-list-con" 
-                                    @drop='dropDev($event,topData)'
-                                    @touchstart='dropDev($event,topData)'
+                                    @drop='dragFinish($event,topData)'
+                                    @touchstart='dragFinish($event,topData)'
                                     @dragover='allowDrop($event)'>
                                     <div class="layout-info-show" v-if="topData.length<=0">机柜存放区</div>
                                     <draggable class="layout-list-con" 
@@ -39,19 +50,21 @@
                             <div class="layout-panel-cen">
                                 <div class="panel-cendoor" :class="{'panel-cendoor-close':leftDoor}"></div>
                                 <div class="panel-cencon"
-                                @drop='dropDev($event)'
-                                @touchstart='dropDev($event)'
+                                id="panel-con"
+                                @drop='dragDevFinish($event)'
+                                @touchstart='dragDevFinish($event)'
                                 @dragover='allowDrop($event)'>
-                                    <!-- <div class="cen-img" v-for="item in imgarr.cenimg">
-                                        <img :src="'/images/'+item+'.png'">
-                                    </div> -->
+                                    <div class="layout-info-show" v-if="devData.length<=0">设备存放区</div>
+                                    <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devData" :key="index">
+                                        <img :src="devitem.imgsrc" draggable="true" @dragstart="dragDevStart($event,devitem)">
+                                    </span>
                                 </div>
                                 <div class="panel-cendoor panel-cendoor-right" :class="{'panel-cendoor-close':rightDoor}"></div>
                             </div>
                             <div class="layout-panel-bottom layout-panel-con">
                                 <div class="layout-list-con" 
-                                    @drop='dropDev($event,bottomData)'
-                                    @touchstart='dropDev($event,bottomData)'
+                                    @drop='dragFinish($event,bottomData)'
+                                    @touchstart='dragFinish($event,bottomData)'
                                     @dragover='allowDrop($event)'>
                                     <div class="layout-info-show" v-if="bottomData.length<=0">机柜存放区</div>
                                     <draggable class="layout-list-con" 
@@ -71,6 +84,17 @@
                                     </draggable>
                                 </div>
                             </div>
+                            <div class="layout-panel-other">
+                                <div class="layout-panel-othercon" 
+                                id="panel-bottomcon"
+                                @drop='dragbottomDevFinish($event)'
+                                @touchstart='dragbottomDevFinish($event)'
+                                @dragover='allowDrop($event)'>
+                                    <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index">
+                                        <img :src="devitem.imgsrc" draggable="true" @dragstart="dragDevStart($event,devitem)">
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -82,12 +106,17 @@
                     <el-collapse v-model="activeItem" accordion>
                         <el-collapse-item title="动态柜子" name="first" key="first">
                             <div class="collapse-con">
-                                <div class="collapse-box" :key="index" v-for="(item,index) in list" draggable="true" @dragend="dragDevEnd()" @dragstart="dragDevStart($event,item)">{{item.title}}</div>
+                                <div class="collapse-box" :key="index" v-for="(item,index) in list" draggable="true" @dragend="dragEnd()" @dragstart="dragStart($event,item)">{{item.title}}</div>
                             </div>
                         </el-collapse-item>
-                        <el-collapse-item title="预置设备" name="second" key="second">
+                        <el-collapse-item title="预置柜子" name="second" key="second">
                             <div class="collapse-con">
-                                <div class="collapse-box" :key="index" v-for="(item,index) in list" draggable="true" @dragend="dragDevEnd()" @dragstart="dragDevStart($event,item)">{{item.title}}</div>
+                                <div class="collapse-box" :key="index" v-for="(item,index) in list" draggable="true" @dragend="dragEnd()" @dragstart="dragStart($event,item)">{{item.title}}</div>
+                            </div>
+                        </el-collapse-item>
+                        <el-collapse-item title="预置设备" name="third" key="third">
+                            <div class="collapse-con">
+                                <div class="collapse-box" :key="index" v-for="(item,index) in devlist" draggable="true" @dragstart="dragDevStart($event,item)">{{item.title}}</div>
                             </div>
                         </el-collapse-item>
                     </el-collapse>
@@ -101,6 +130,7 @@
 import Draggable from './component/Draggable'
 import LayoutSet from './component/LayoutSet'
 import Cabinet from './component/Cabinet'
+import uuid from 'uuid-random';
 export default {
     components: {LayoutSet,Draggable,Cabinet},
     mixins:[],
@@ -118,7 +148,7 @@ export default {
             layoutInfo:{
                 visible:false,
             },
-            activeItem:"first",
+            activeItem:"third",
             list:[
                 {title:'配电单元',type:'pd'},
                 {title:'整流柜',type:'zl'},
@@ -129,12 +159,21 @@ export default {
                 {title:'冷量分配单元',type:'llfp'},
                 // {title:"柱子",type:""}
             ],
+            devlist:[
+                {title:'烟感',type:'yg',offsetX:"",oglFlip:false,offsetY:"",imgsrc:"/images/device/smoke.png",imgsrcAlarm:"/images/device/smoke-alarm.png"},
+                {title:'漏水',type:'ls',offsetX:"",oglFlip:false,offsetY:"",imgsrc:"/images/device/thalposis.png",imgsrcAlarm:"/images/device/thalposis-alarm.png"},
+                {title:'视频',type:'sp',offsetX:"",oglFlip:false,offsetY:"",imgsrc:"/images/device/webcam.png",imgsrcAlarm:"/images/device/webcam-alarm.png"}
+            ],
             leftDoor:false,
             rightDoor:false,
             drag: false,
-            activeDrag:{},
+            activeDrag:null,
             topData:[],
-            bottomData:[]
+            bottomData:[],
+            activeDevDrag:null,
+            devData:[],
+            devtopData:[],
+            devbottomData:[]
         }
     },
     computed: {
@@ -152,28 +191,25 @@ export default {
             let width=70*max+176;
             return "width:"+width+"px";
         },
+        panelDevStyle(){
+            return function(item){
+                return `left:${item.offsetX}px;top:${item.offsetY}px`;
+            }
+        }
     },
 	methods: {
         init:function(info){
             console.log(info)
         },
-        handleSure:function(){
-
-        },
-        handleSet:function(){
-            this.layoutInfo.visible=true;
-        },
-        handlePanel:function(){
-
-        },
-        dragDevStart:function(evt,item){
+        dragStart:function(evt,item){
             this.activeDrag=item;
         },
-        dragDevEnd:function(){
-            this.activeDrag={};
+        dragEnd:function(){
+            this.activeDrag=null;
         },
-        dropDev:function(evt,data){
-            if(JSON.stringify(this.activeDrag)!="{}"){
+        dragFinish:function(evt,data){
+            console.log(this.activeDrag)
+            if(this.activeDrag){
                 data.push(this.activeDrag)
             }
         },
@@ -182,6 +218,94 @@ export default {
         },
         stopP:function(ev){
             ev.stopPropagation();
+        },
+        dragDevStart:function(evt,item){
+            console.log(item)
+            evt.dataTransfer.setData("data",JSON.stringify(item));
+            this.activeDevDrag=evt;
+        },
+        dragDevFinish:function(ev){
+            this.handleDevFinish(ev,"panel-con",this.devData)
+        },
+        dragtopDevFinish:function(ev){
+            this.handleDevFinish(ev,"panel-topcon",this.devtopData)
+        },
+        dragbottomDevFinish:function(ev){
+            this.handleDevFinish(ev,"panel-bottomcon",this.devbottomData)
+        },
+        handleDevFinish:function(ev,domID,devData){
+            let item = JSON.parse(ev.dataTransfer.getData("data"));
+            if(item.id){
+                let width=document.getElementById(domID).offsetWidth;
+                let height=document.getElementById(domID).offsetHeight;
+                if(ev.clientX<this.activeDevDrag.clientX){ //向左拖动
+                    if(ev.offsetX-this.activeDevDrag.offsetX<0){ //左边拖出地图了，或者向左拖动了一点点
+                        if(ev.x+this.activeDevDrag.offsetX>this.activeDevDrag.x){ //向左移动了一点
+                            item.offsetX=item.offsetX-(this.activeDevDrag.offsetX-ev.offsetX)<0?0:item.offsetX-(this.activeDevDrag.offsetX-ev.offsetX);
+                        }else{
+                            item.offsetX=0;
+                        }
+                    }else{
+                        item.offsetX=ev.offsetX-this.activeDevDrag.offsetX
+                    }
+                }else{ //向右拖动
+                    if(ev.offsetX<this.activeDevDrag.target.offsetWidth){ //拖动了一点点
+                        if(this.activeDevDrag.target.offsetLeft+(ev.offsetX-this.activeDevDrag.offsetX)>width-this.activeDevDrag.target.offsetWidth){
+                            item.offsetX=width-this.activeDevDrag.target.offsetWidth;
+                        }else{
+                            item.offsetX=this.activeDevDrag.target.offsetLeft+(ev.offsetX-this.activeDevDrag.offsetX);
+                        }
+                    }else{
+                        if(ev.offsetX+(this.activeDevDrag.target.offsetWidth-this.activeDevDrag.offsetLeft)>width-this.activeDevDrag.target.offsetWidth){
+                            item.offsetX=width-this.activeDevDrag.target.offsetWidth;
+                        }else{
+                            item.offsetX=ev.offsetX-this.activeDevDrag.offsetX
+                        }
+                    }
+                }
+                if(ev.clientY<this.activeDevDrag.clientY){ //向上拖动
+                    if(ev.offsetY-this.activeDevDrag.offsetY<0){ //上边拖出地图了，或者向上拖动了一点点
+                        if(ev.y+this.activeDevDrag.offsetY>this.activeDevDrag.y){ //向上移动了一点
+                            item.offsetY=item.offsetY-(this.activeDevDrag.offsetY-ev.offsetY)<0?0:item.offsetY-(this.activeDevDrag.offsetY-ev.offsetY);
+                        }else{
+                            item.offsetY=0;
+                        }
+                    }else{
+                        item.offsetY=ev.offsetY-this.activeDevDrag.offsetY;
+                    }
+                }else{ //向下拖动
+                    if(ev.offsetY<this.activeDevDrag.target.offsetHeight){  //拖动一点点
+                        if(item.offsetY+(ev.offsetY-this.activeDevDrag.offsetY)>height-this.activeDevDrag.target.offsetHeight){
+                            item.offsetY=height-this.activeDevDrag.target.offsetHeight;
+                        }else{
+                            item.offsetY=item.offsetY+(ev.offsetY-this.activeDevDrag.offsetY);
+                        }
+                    }else{
+                        if(ev.offsetY+(this.activeDevDrag.target.offsetHeight-this.activeDevDrag.offsetY)>height-this.activeDevDrag.target.offsetHeight){
+                            item.offsetY=height-this.activeDevDrag.target.offsetHeight;
+                        }else{
+                            item.offsetY=ev.offsetY-this.activeDevDrag.offsetY;
+                        }
+                    }
+                }
+                for(let i=0;i<devData.length;i++){
+                    if(item.id==devData[i].id){
+                        devData[i].offsetX=item.offsetX;
+                        devData[i].offsetY=item.offsetY;
+                    }
+                }
+            }else{
+                item.offsetX=ev.offsetX;
+                item.offsetY=ev.offsetY;
+                item.id=uuid();
+                devData.push(item)
+            }
+        },
+        handleSure:function(){
+
+        },
+        handleSet:function(){
+            this.layoutInfo.visible=true;
         },
         hiddenPanel:function(){
             // for(let i=0;i<this.$el.querySelectorAll('.panel-conbox').length;i++){
@@ -225,10 +349,9 @@ export default {
                 vertical-align: middle;
                 text-align: center;
                 .layout-box-panel{
-                    min-width: 300px;
+                    min-width: 600px;
                     max-width: 100%;
                     height: 540px;
-                    padding: 40px 0;
                     display: inline-block;
                     position: relative;
                     .layout-panel-con{
@@ -250,7 +373,7 @@ export default {
                             align-items: center;
                             justify-content: center;
                             color: @color;
-                            font-size: 20px;
+                            font-size: 16px;
                             position: absolute;
                         }
                         .layout-list-group{
@@ -273,7 +396,7 @@ export default {
                     }
                     .layout-panel-cen{
                         width:100%;
-                        height: calc(100% - 300px);
+                        height: calc(100% - 380px);
                         display: flex;
                         .panel-cendoor{
                             width: 88px;
@@ -326,13 +449,19 @@ export default {
                         .panel-cencon{
                             width: calc(100% - 176px);
                             height: 100%;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            .cen-img{
-                                margin: 0 10px;
-                                img{
-                                    width: 40px;
+                            position: relative;
+                            .layout-info-show{
+                                width: 100%;
+                                height: 100%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            }
+                            .panel-span{
+                                position: absolute;
+                                cursor: move;
+                                &.oglFlip{
+                                    transform: rotateX(180deg);
                                 }
                             }
                         }
@@ -342,6 +471,23 @@ export default {
                     }
                     .layout-panel-bottom{
                         border-top: none;
+                    }
+                    .layout-panel-other{
+                        width: 100%;
+                        height: 40px;
+                        padding: 0 80px;
+                        .layout-panel-othercon{
+                            width: 100%;
+                            height: 100%;
+                            position: relative;
+                            .panel-span{
+                                position: absolute;
+                                cursor: move;
+                                &.oglFlip{
+                                    transform: rotateX(180deg);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -381,8 +527,8 @@ export default {
                 }
                 /deep/ .el-collapse-item__header {
                     background: @activeBg;
-                    color: @activeColor;
-                    border: none;
+                    color: @color;
+                    border-bottom-color: @normalBg;
                     padding-left: 20px;
                 }
                 /deep/ .el-collapse-item__wrap{

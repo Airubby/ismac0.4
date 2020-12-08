@@ -194,7 +194,10 @@ const getdata = function(){
                         "key": "cardAuthorize",
                         "component": "CardAuthorize",
                         "iconfont": "",
-                        "language": "CardAuthorize"
+                        "language": "CardAuthorize",
+                        "relation":[
+                            {"key":"cardAuthorizeAdd","component":"CardAuthorizeAdd"}
+                        ]
                     },
                     {
                         "key": "accessController",
