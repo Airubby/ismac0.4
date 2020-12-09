@@ -4,6 +4,7 @@
 @import '~@/assets/css/blueTheme.less';
 @import '~@/assets/css/partysuTheme.less';
 .module-theme(...){
+    color: @color;
     //table上面的条件筛选
     .search-top{
         color: @color;
@@ -72,7 +73,6 @@
     .el-form-item--small .el-form-item__content, .el-form-item--small .el-form-item__label{
         line-height: 30px;
     }
-    color: @color;
     .el-table__header{
         th{
             padding: 12px 0;
@@ -286,7 +286,10 @@
     .el-form-item--small.el-form-item{
         margin-bottom: @boxMargin;
     }
-
+    .el-color-picker__panel,.el-color-picker__trigger,.el-color-picker__color{
+        background-color: transparent;
+        border-color: @lineColor;
+    }
     .el-tree{
         background: transparent;
         color: @color;

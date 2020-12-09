@@ -7,9 +7,9 @@
                         <el-col :span="20">
                             <el-form-item label='类型' prop="type">
                                 <el-select v-model="initParams.type" placeholder="请选择">
-                                    <el-option key="1" label="单排" value="1"></el-option>
-                                    <el-option key="2" label="双排" value="2"></el-option>
-                                    <el-option key="3" label="自定义" value="3"></el-option>
+                                    <el-option key="one" label="单排" value="one"></el-option>
+                                    <el-option key="two" label="双排" value="two"></el-option>
+                                    <el-option key="auto" label="自定义" value="auto"></el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
@@ -32,8 +32,7 @@ export default {
     data(){
         return{
             initParams:{
-                type:"1",
-                
+                type:"two",
             },
             rules: {
                 

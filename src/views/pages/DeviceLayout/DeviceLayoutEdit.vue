@@ -20,7 +20,7 @@
                                 @touchstart='dragtopDevFinish($event)'
                                 @dragover='allowDrop($event)'>
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
-                                        <img :src="devitem.imgsrc" draggable="true" @dragstart="dragDevStart($event,devitem)">
+                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devtopData')" draggable="true" @dragstart="dragDevStart($event,devitem)">
                                     </span>
                                 </div>
                             </div>
@@ -39,8 +39,8 @@
                                     handle=".panel-conbox">
                                         <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
                                             <template  v-for="(item,tindex) in topData">
-                                            <div class="panel-conbox list-group-item" :key="tindex" :class="{'list-group-halfitem':item.type=='kt'}">
-                                                <cabinet :type="item.type" :title="item.title" :index="tindex" @close="close(tindex,topData)"></cabinet>
+                                            <div class="panel-conbox list-group-item" @dblclick="devClick(item,'topData')" :key="tindex" :class="{'list-group-halfitem':item.category=='kt'}">
+                                                <cabinet :background="item.background" :name="item.name" :index="tindex" @close="close(tindex,topData)"></cabinet>
                                             </div>
                                             </template>
                                         </transition-group>
@@ -56,7 +56,7 @@
                                 @dragover='allowDrop($event)'>
                                     <div class="layout-info-show" v-if="devData.length<=0">设备存放区</div>
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devData" :key="index">
-                                        <img :src="devitem.imgsrc" draggable="true" @dragstart="dragDevStart($event,devitem)">
+                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devData')" draggable="true" @dragstart="dragDevStart($event,devitem)">
                                     </span>
                                 </div>
                                 <div class="panel-cendoor panel-cendoor-right" :class="{'panel-cendoor-close':rightDoor}"></div>
@@ -76,8 +76,8 @@
                                     handle=".panel-conbox">
                                         <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
                                             <template  v-for="(item,tindex) in bottomData">
-                                            <div class="panel-conbox list-group-item" :key="tindex" :class="{'list-group-halfitem':item.type=='kt'}">
-                                                <cabinet :type="item.type" :title="item.title" :index="tindex" @close="close(tindex,bottomData)"></cabinet>
+                                            <div class="panel-conbox list-group-item" @dblclick="devClick(item,'bottomData')" :key="tindex" :class="{'list-group-halfitem':item.category=='kt'}">
+                                                <cabinet :background="item.background" :name="item.name" :index="tindex" @close="close(tindex,bottomData)"></cabinet>
                                             </div>
                                             </template>
                                         </transition-group>
@@ -91,7 +91,7 @@
                                 @touchstart='dragbottomDevFinish($event)'
                                 @dragover='allowDrop($event)'>
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index">
-                                        <img :src="devitem.imgsrc" draggable="true" @dragstart="dragDevStart($event,devitem)">
+                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devbottomData')" draggable="true" @dragstart="dragDevStart($event,devitem)">
                                     </span>
                                 </div>
                             </div>
@@ -106,17 +106,17 @@
                     <el-collapse v-model="activeItem" accordion>
                         <el-collapse-item title="动态柜子" name="first" key="first">
                             <div class="collapse-con">
-                                <div class="collapse-box" :key="index" v-for="(item,index) in list" draggable="true" @dragend="dragEnd()" @dragstart="dragStart($event,item)">{{item.title}}</div>
+                                <div class="collapse-box" :key="index" v-for="(item,index) in list" draggable="true" @dragend="dragEnd()" @dragstart="dragStart($event,item)">{{item.name}}</div>
                             </div>
                         </el-collapse-item>
                         <el-collapse-item title="预置柜子" name="second" key="second">
                             <div class="collapse-con">
-                                <div class="collapse-box" :key="index" v-for="(item,index) in list" draggable="true" @dragend="dragEnd()" @dragstart="dragStart($event,item)">{{item.title}}</div>
+                                <div class="collapse-box" :key="index" v-for="(item,index) in list" draggable="true" @dragend="dragEnd()" @dragstart="dragStart($event,item)">{{item.name}}</div>
                             </div>
                         </el-collapse-item>
                         <el-collapse-item title="预置设备" name="third" key="third">
                             <div class="collapse-con">
-                                <div class="collapse-box" :key="index" v-for="(item,index) in devlist" draggable="true" @dragstart="dragDevStart($event,item)">{{item.title}}</div>
+                                <div class="collapse-box" :key="index" v-for="(item,index) in devlist" draggable="true" @dragstart="dragDevStart($event,item)">{{item.name}}</div>
                             </div>
                         </el-collapse-item>
                     </el-collapse>
@@ -124,15 +124,17 @@
             </div>
         </div>
         <layout-set v-if="layoutInfo.visible" :dialogInfo="layoutInfo" @backInfo="init"></layout-set>
+        <rack-dev-set v-if="rackDevInfo.visible" :dialogInfo="rackDevInfo" @backInfo="changeInfo"></rack-dev-set>
     </div>
 </template>
 <script>
 import Draggable from './component/Draggable'
 import LayoutSet from './component/LayoutSet'
 import Cabinet from './component/Cabinet'
+import RackDevSet from './component/RackDevSet'
 import uuid from 'uuid-random';
 export default {
-    components: {LayoutSet,Draggable,Cabinet},
+    components: {LayoutSet,Draggable,Cabinet,RackDevSet},
     mixins:[],
     filters:{
         
@@ -150,30 +152,37 @@ export default {
             },
             activeItem:"third",
             list:[
-                {title:'配电单元',type:'pd'},
-                {title:'整流柜',type:'zl'},
-                {title:'电池柜',type:'dc'},
-                {title:'设备单元',type:'jg'},
-                {title:'精密空调',type:'kt'},
-                {title:'管控单元',type:'gk'},
-                {title:'冷量分配单元',type:'llfp'},
-                // {title:"柱子",type:""}
+                {name:'配电单元',devid:"",pointid:"",background:""},
+                {name:'整流柜',devid:"",pointid:"",background:""},
+                {name:'电池柜',devid:"",pointid:"",background:""},
+                {name:'设备单元',devid:"",pointid:"",background:""},
+                {name:'精密空调',devid:"",pointid:"",background:""},
+                {name:'管控单元',devid:"",pointid:"",background:""},
+                {name:'冷量分配单元',devid:"",pointid:"",background:""},
             ],
             devlist:[
-                {title:'烟感',type:'yg',offsetX:"",oglFlip:false,offsetY:"",imgsrc:"/images/device/smoke.png",imgsrcAlarm:"/images/device/smoke-alarm.png"},
-                {title:'漏水',type:'ls',offsetX:"",oglFlip:false,offsetY:"",imgsrc:"/images/device/thalposis.png",imgsrcAlarm:"/images/device/thalposis-alarm.png"},
-                {title:'视频',type:'sp',offsetX:"",oglFlip:false,offsetY:"",imgsrc:"/images/device/webcam.png",imgsrcAlarm:"/images/device/webcam-alarm.png"}
+                {name:'烟感',offsetX:"",oglFlip:false,offsetY:"",imgsrc:"/images/device/smoke.png",imgsrcAlarm:"/images/device/smoke-alarm.png"},
+                {name:'漏水',offsetX:"",oglFlip:false,offsetY:"",imgsrc:"/images/device/thalposis.png",imgsrcAlarm:"/images/device/thalposis-alarm.png"},
+                {name:'视频',offsetX:"",oglFlip:false,offsetY:"",imgsrc:"/images/device/webcam.png",imgsrcAlarm:"/images/device/webcam-alarm.png"}
             ],
-            leftDoor:false,
-            rightDoor:false,
             drag: false,
             activeDrag:null,
+            activeDevDrag:null,
+
+            editType:"",
+            leftDoor:false,
+            rightDoor:false,
             topData:[],
             bottomData:[],
-            activeDevDrag:null,
             devData:[],
             devtopData:[],
-            devbottomData:[]
+            devbottomData:[],
+
+            rackDevInfo:{
+                visible:false,
+                item:null,
+                type:null
+            }
         }
     },
     computed: {
@@ -198,8 +207,44 @@ export default {
         }
     },
 	methods: {
+        devClick:function(item,type){
+            this.rackDevInfo.item=item;
+            this.rackDevInfo.type=type;
+            this.rackDevInfo.visible=true;
+        },
+        changeInfo:function(info){
+            for(let i=0;i<this[info.type].length;i++){
+                if(info.uuid==this[info.type][i].uuid){
+                    this[info.type][i]=Object.assign(this[info.type][i],info);
+                }
+            }
+        },
         init:function(info){
             console.log(info)
+            this.editType=info.type;
+            this.leftDoor=false;
+            this.rightDoor=false;
+            this.topData=[];
+            this.bottomData=[];
+            this.devData=[];
+            this.devtopData=[];
+            this.devbottomData=[];
+        },
+        handleSure:function(){
+            let json={
+                editType:this.editType,
+                leftDoor:this.leftDoor,
+                rightDoor:this.rightDoor,
+                topData:this.topData,
+                bottomData:this.bottomData,
+                devData:this.devData,
+                devtopData:this.devtopData,
+                devbottomData:this.devbottomData,
+            }
+            sessionStorage.setItem("layoutJson",JSON.stringify(json));
+            this.$api.post("",{json:JSON.stringify(json)}).then(res=>{
+
+            })
         },
         dragStart:function(evt,item){
             this.activeDrag=item;
@@ -210,7 +255,8 @@ export default {
         dragFinish:function(evt,data){
             console.log(this.activeDrag)
             if(this.activeDrag){
-                data.push(this.activeDrag)
+                this.activeDrag["uuid"]=uuid();
+                data.push(JSON.parse(JSON.stringify(this.activeDrag)))
             }
         },
         allowDrop:function (ev) {
@@ -220,7 +266,6 @@ export default {
             ev.stopPropagation();
         },
         dragDevStart:function(evt,item){
-            console.log(item)
             evt.dataTransfer.setData("data",JSON.stringify(item));
             this.activeDevDrag=evt;
         },
@@ -234,83 +279,82 @@ export default {
             this.handleDevFinish(ev,"panel-bottomcon",this.devbottomData)
         },
         handleDevFinish:function(ev,domID,devData){
-            let item = JSON.parse(ev.dataTransfer.getData("data"));
-            if(item.id){
-                let width=document.getElementById(domID).offsetWidth;
-                let height=document.getElementById(domID).offsetHeight;
-                if(ev.clientX<this.activeDevDrag.clientX){ //向左拖动
-                    if(ev.offsetX-this.activeDevDrag.offsetX<0){ //左边拖出地图了，或者向左拖动了一点点
-                        if(ev.x+this.activeDevDrag.offsetX>this.activeDevDrag.x){ //向左移动了一点
-                            item.offsetX=item.offsetX-(this.activeDevDrag.offsetX-ev.offsetX)<0?0:item.offsetX-(this.activeDevDrag.offsetX-ev.offsetX);
-                        }else{
-                            item.offsetX=0;
-                        }
-                    }else{
-                        item.offsetX=ev.offsetX-this.activeDevDrag.offsetX
-                    }
-                }else{ //向右拖动
-                    if(ev.offsetX<this.activeDevDrag.target.offsetWidth){ //拖动了一点点
-                        if(this.activeDevDrag.target.offsetLeft+(ev.offsetX-this.activeDevDrag.offsetX)>width-this.activeDevDrag.target.offsetWidth){
-                            item.offsetX=width-this.activeDevDrag.target.offsetWidth;
-                        }else{
-                            item.offsetX=this.activeDevDrag.target.offsetLeft+(ev.offsetX-this.activeDevDrag.offsetX);
-                        }
-                    }else{
-                        if(ev.offsetX+(this.activeDevDrag.target.offsetWidth-this.activeDevDrag.offsetLeft)>width-this.activeDevDrag.target.offsetWidth){
-                            item.offsetX=width-this.activeDevDrag.target.offsetWidth;
+            let data=ev.dataTransfer.getData("data");
+            if(data){
+                let item = JSON.parse(data);
+                if(item.uuid){
+                    let width=document.getElementById(domID).offsetWidth;
+                    let height=document.getElementById(domID).offsetHeight;
+                    //拖拽的设备点击的那个点相对于设备自己的偏移this.img_ev.offsetX,this.img_ev.offsetY
+                    //拖拽的设备点击的那个点相对于右边电子地图的偏移量，拖拽后放手的那刻ev.offsetX,ev.offsetY
+                    if(ev.clientX<this.activeDevDrag.clientX){ //向左拖动
+                        if(ev.offsetX-this.activeDevDrag.offsetX<0){ //左边拖出地图了，或者向左拖动了一点点
+                            if(ev.x+this.activeDevDrag.offsetX>this.activeDevDrag.x){ //向左移动了一点
+                                item.offsetX=item.offsetX-(this.activeDevDrag.offsetX-ev.offsetX)<0?0:item.offsetX-(this.activeDevDrag.offsetX-ev.offsetX);
+                            }else{
+                                item.offsetX=0;
+                            }
                         }else{
                             item.offsetX=ev.offsetX-this.activeDevDrag.offsetX
                         }
-                    }
-                }
-                if(ev.clientY<this.activeDevDrag.clientY){ //向上拖动
-                    if(ev.offsetY-this.activeDevDrag.offsetY<0){ //上边拖出地图了，或者向上拖动了一点点
-                        if(ev.y+this.activeDevDrag.offsetY>this.activeDevDrag.y){ //向上移动了一点
-                            item.offsetY=item.offsetY-(this.activeDevDrag.offsetY-ev.offsetY)<0?0:item.offsetY-(this.activeDevDrag.offsetY-ev.offsetY);
+                    }else{ //向右拖动
+                        if(ev.offsetX<this.activeDevDrag.target.offsetWidth){ //拖动了一点点
+                            if(this.activeDevDrag.target.offsetLeft+(ev.offsetX-this.activeDevDrag.offsetX)>width-this.activeDevDrag.target.offsetWidth){
+                                item.offsetX=width-this.activeDevDrag.target.offsetWidth;
+                            }else{
+                                item.offsetX=this.activeDevDrag.target.offsetLeft+(ev.offsetX-this.activeDevDrag.offsetX);
+                            }
                         }else{
-                            item.offsetY=0;
+                            if(ev.offsetX+(this.activeDevDrag.target.offsetWidth-this.activeDevDrag.offsetLeft)>width-this.activeDevDrag.target.offsetWidth){
+                                item.offsetX=width-this.activeDevDrag.target.offsetWidth;
+                            }else{
+                                item.offsetX=ev.offsetX-this.activeDevDrag.offsetX
+                            }
                         }
-                    }else{
-                        item.offsetY=ev.offsetY-this.activeDevDrag.offsetY;
                     }
-                }else{ //向下拖动
-                    if(ev.offsetY<this.activeDevDrag.target.offsetHeight){  //拖动一点点
-                        if(item.offsetY+(ev.offsetY-this.activeDevDrag.offsetY)>height-this.activeDevDrag.target.offsetHeight){
-                            item.offsetY=height-this.activeDevDrag.target.offsetHeight;
-                        }else{
-                            item.offsetY=item.offsetY+(ev.offsetY-this.activeDevDrag.offsetY);
-                        }
-                    }else{
-                        if(ev.offsetY+(this.activeDevDrag.target.offsetHeight-this.activeDevDrag.offsetY)>height-this.activeDevDrag.target.offsetHeight){
-                            item.offsetY=height-this.activeDevDrag.target.offsetHeight;
+                    if(ev.clientY<this.activeDevDrag.clientY){ //向上拖动
+                        if(ev.offsetY-this.activeDevDrag.offsetY<0){ //上边拖出地图了，或者向上拖动了一点点
+                            if(ev.y+this.activeDevDrag.offsetY>this.activeDevDrag.y){ //向上移动了一点
+                                item.offsetY=item.offsetY-(this.activeDevDrag.offsetY-ev.offsetY)<0?0:item.offsetY-(this.activeDevDrag.offsetY-ev.offsetY);
+                            }else{
+                                item.offsetY=0;
+                            }
                         }else{
                             item.offsetY=ev.offsetY-this.activeDevDrag.offsetY;
                         }
+                    }else{ //向下拖动
+                        if(ev.offsetY<this.activeDevDrag.target.offsetHeight){  //拖动一点点
+                            if(item.offsetY+(ev.offsetY-this.activeDevDrag.offsetY)>height-this.activeDevDrag.target.offsetHeight){
+                                item.offsetY=height-this.activeDevDrag.target.offsetHeight;
+                            }else{
+                                item.offsetY=item.offsetY+(ev.offsetY-this.activeDevDrag.offsetY);
+                            }
+                        }else{
+                            if(ev.offsetY+(this.activeDevDrag.target.offsetHeight-this.activeDevDrag.offsetY)>height-this.activeDevDrag.target.offsetHeight){
+                                item.offsetY=height-this.activeDevDrag.target.offsetHeight;
+                            }else{
+                                item.offsetY=ev.offsetY-this.activeDevDrag.offsetY;
+                            }
+                        }
                     }
-                }
-                for(let i=0;i<devData.length;i++){
-                    if(item.id==devData[i].id){
-                        devData[i].offsetX=item.offsetX;
-                        devData[i].offsetY=item.offsetY;
+                    for(let i=0;i<devData.length;i++){
+                        if(item.uuid==devData[i].uuid){
+                            devData[i].offsetX=item.offsetX;
+                            devData[i].offsetY=item.offsetY;
+                        }
                     }
+                }else{
+                    item.offsetX=ev.offsetX;
+                    item.offsetY=ev.offsetY;
+                    item.uuid=uuid();
+                    devData.push(item)
                 }
-            }else{
-                item.offsetX=ev.offsetX;
-                item.offsetY=ev.offsetY;
-                item.id=uuid();
-                devData.push(item)
             }
-        },
-        handleSure:function(){
-
         },
         handleSet:function(){
             this.layoutInfo.visible=true;
         },
         hiddenPanel:function(){
-            // for(let i=0;i<this.$el.querySelectorAll('.panel-conbox').length;i++){
-            //     this.$el.querySelectorAll(".panel-conbox")[i].classList.remove("active");
-            // }
             this.$el.querySelector("#detail").style.right="-200px";
         },
         handlePanel:function(ev){
@@ -319,7 +363,6 @@ export default {
         },  
         close:function(index,data){
             data.splice(index, 1);
-            console.log(this.topData);
         },
         log: function(evt) {
             console.log(evt);

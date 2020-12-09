@@ -1,28 +1,31 @@
 <template>
-    <div :class="['_cabinet',type,{'gray':grayFlag}]">
+    <div :class="['_cabinet']" :style="bg">
         <!--type 'pd':配电单元，'zl':整流柜，'dc':电池柜，'jg':设备单元，'kt':精密空调，'llfp':冷量分配单元，'gk':管控单元-->
-        <div class="img" v-if="type">
-            <!-- <img :src="require('@/assets/images/lsp_'+type+'.png')"> -->
-        </div>
-        <div class="title">{{title}}</div>
+        <!-- <div class="img" v-if="type">
+            <img :src="require('@/assets/images/lsp_'+type+'.png')">
+        </div> -->
+        <div class="img"></div>
+        <div class="title">{{name}}</div>
         <i class="el-icon-delete icon-btn" @click="$emit('close',index)"></i>
     </div>
 </template>
 <script>
 export default {
     created () {
-        // this.tcolor=this.color?this.color:"#F2F2F2";
-        // console.log(this.tcolor)
-    },
-    mounted() {
         
+    },
+    computed:{
+        bg(){
+            let color=this.background?this.background:"#D2D2D2";
+            return 'background:'+color;
+        }
     },
     data(){
         return{
-           tcolor:'',
+           
         }
     },
-    props:['type','grayFlag','title','index'],
+    props:['background','name','index'],
 }
 </script>
 
@@ -38,6 +41,7 @@ export default {
             right: 3px;
             display: none;
             cursor: pointer;
+            color: #fff;
         }
         &:hover{
             .icon-btn{
@@ -57,30 +61,6 @@ export default {
             margin: 0 auto;
             color: #fff;
             font-size: 16px;
-        }
-        &.pd{
-            background: #D8645B;
-        }
-        &.zl{
-            background: #8CBECF;
-        }
-        &.dc{
-            background: #F2B747;
-        }
-        &.kt{
-            background: #588EEA;
-        }
-        &.jg{
-            background: #75B899;
-        }
-        &.gk{
-            background: #55A1E2;
-        }
-        &.llfp{
-            background: #55A1E2;
-        }
-        &.gray{
-            background: #F2F2F2;
         }
     }
 </style>
