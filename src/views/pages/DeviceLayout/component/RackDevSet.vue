@@ -4,7 +4,7 @@
             <div class="dialog-content">
                 <el-form ref="ValidateForm" :model="initParams" :rules="rules" label-position="top">
                     <el-row :gutter="30">
-                        <div>
+                        <div v-if="initParams.type=='topData'||initParams.type=='bottomData'">
                             <el-col :span="12">
                                 <el-form-item label='名称' prop="name">
                                     <el-input v-model="initParams.name"></el-input>

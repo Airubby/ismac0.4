@@ -20,6 +20,7 @@
                                 @touchstart='dragtopDevFinish($event)'
                                 @dragover='allowDrop($event)'>
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
+                                        <i class="el-icon-delete icon-btn" @click="remove(index,devtopData)"></i>
                                         <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devtopData')" draggable="true" @dragstart="dragDevStart($event,devitem)">
                                     </span>
                                 </div>
@@ -40,7 +41,7 @@
                                         <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
                                             <template  v-for="(item,tindex) in topData">
                                             <div class="panel-conbox list-group-item" @dblclick="devClick(item,'topData')" :key="tindex" :class="{'list-group-halfitem':item.category=='kt'}">
-                                                <cabinet :background="item.background" :name="item.name" :index="tindex" @close="close(tindex,topData)"></cabinet>
+                                                <cabinet :background="item.background" :name="item.name" :showClose="true" :index="tindex" @close="remove(tindex,topData)"></cabinet>
                                             </div>
                                             </template>
                                         </transition-group>
@@ -56,6 +57,7 @@
                                 @dragover='allowDrop($event)'>
                                     <div class="layout-info-show" v-if="devData.length<=0">设备存放区</div>
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devData" :key="index">
+                                        <i class="el-icon-delete icon-btn" @click="remove(index,devData)"></i>
                                         <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devData')" draggable="true" @dragstart="dragDevStart($event,devitem)">
                                     </span>
                                 </div>
@@ -77,7 +79,7 @@
                                         <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
                                             <template  v-for="(item,tindex) in bottomData">
                                             <div class="panel-conbox list-group-item" @dblclick="devClick(item,'bottomData')" :key="tindex" :class="{'list-group-halfitem':item.category=='kt'}">
-                                                <cabinet :background="item.background" :name="item.name" :index="tindex" @close="close(tindex,bottomData)"></cabinet>
+                                                <cabinet :background="item.background" :name="item.name" :showClose="true" :index="tindex" @close="remove(tindex,bottomData)"></cabinet>
                                             </div>
                                             </template>
                                         </transition-group>
@@ -91,6 +93,7 @@
                                 @touchstart='dragbottomDevFinish($event)'
                                 @dragover='allowDrop($event)'>
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index">
+                                        <i class="el-icon-delete icon-btn" @click="remove(index,devbottomData)"></i>
                                         <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devbottomData')" draggable="true" @dragstart="dragDevStart($event,devitem)">
                                     </span>
                                 </div>
@@ -123,7 +126,7 @@
                 </el-scrollbar>
             </div>
         </div>
-        <layout-set v-if="layoutInfo.visible" :dialogInfo="layoutInfo" @backInfo="init"></layout-set>
+        <layout-set v-if="layoutInfo.visible" :dialogInfo="layoutInfo" @backInfo="reset"></layout-set>
         <rack-dev-set v-if="rackDevInfo.visible" :dialogInfo="rackDevInfo" @backInfo="changeInfo"></rack-dev-set>
     </div>
 </template>
@@ -140,13 +143,18 @@ export default {
         
     },
     created() {
-        
+        let params = this.$route.query.params;
+        if(params){
+            this.hint="edit";
+            this.init(JSON.parse(params).id)
+        }
     },
     mounted() {
         
     },
     data(){
         return{
+            hint:"add",
             layoutInfo:{
                 visible:false,
             },
@@ -207,6 +215,24 @@ export default {
         }
     },
 	methods: {
+        init:function(){
+            let layoutJson=sessionStorage.getItem("layoutJson");
+            console.log(layoutJson)
+            if(layoutJson){
+                let json=JSON.parse(layoutJson);
+                this.editType=json.editType;
+                this.leftDoor=json.leftDoor;
+                this.rightDoor=json.rightDoor;
+                this.topData=json.topData;
+                this.bottomData=json.bottomData;
+                this.devData=json.devData;
+                this.devtopData=json.devtopData;
+                this.devbottomData=json.devbottomData;
+            }
+            // this.$api.post("",{}).then(res=>{
+
+            // })
+        },
         devClick:function(item,type){
             this.rackDevInfo.item=item;
             this.rackDevInfo.type=type;
@@ -219,7 +245,7 @@ export default {
                 }
             }
         },
-        init:function(info){
+        reset:function(info){
             console.log(info)
             this.editType=info.type;
             this.leftDoor=false;
@@ -242,9 +268,10 @@ export default {
                 devbottomData:this.devbottomData,
             }
             sessionStorage.setItem("layoutJson",JSON.stringify(json));
-            this.$api.post("",{json:JSON.stringify(json)}).then(res=>{
+            this.$message.success("保存成功");
+            // this.$api.post("",{json:JSON.stringify(json)}).then(res=>{
 
-            })
+            // })
         },
         dragStart:function(evt,item){
             this.activeDrag=item;
@@ -361,9 +388,10 @@ export default {
             ev.stopPropagation();
             this.$el.querySelector("#detail").style.right="0px";
         },  
-        close:function(index,data){
+        remove:function(index,data){
             data.splice(index, 1);
         },
+
         log: function(evt) {
             console.log(evt);
         }
@@ -392,7 +420,7 @@ export default {
                 vertical-align: middle;
                 text-align: center;
                 .layout-box-panel{
-                    min-width: 600px;
+                    min-width: 300px;
                     max-width: 100%;
                     height: 540px;
                     display: inline-block;
@@ -503,6 +531,19 @@ export default {
                             .panel-span{
                                 position: absolute;
                                 cursor: move;
+                                .icon-btn{
+                                    position: absolute;
+                                    top: -8px;
+                                    right: -8px;
+                                    display: none;
+                                    cursor: pointer;
+                                    color: @color;
+                                }
+                                &:hover{
+                                    .icon-btn{
+                                        display: block;
+                                    }
+                                }
                                 &.oglFlip{
                                     transform: rotateX(180deg);
                                 }
@@ -526,6 +567,19 @@ export default {
                             .panel-span{
                                 position: absolute;
                                 cursor: move;
+                                .icon-btn{
+                                    position: absolute;
+                                    top: -8px;
+                                    right: -8px;
+                                    display: none;
+                                    cursor: pointer;
+                                    color: @color;
+                                }
+                                &:hover{
+                                    .icon-btn{
+                                        display: block;
+                                    }
+                                }
                                 &.oglFlip{
                                     transform: rotateX(180deg);
                                 }

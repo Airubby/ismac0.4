@@ -72,8 +72,9 @@
 </template>
 <script>
 import Draggable from './component/Draggable'
+import Cabinet from './component/Cabinet'
 export default {
-    components: {Draggable},
+    components: {Draggable,Cabinet},
     mixins:[],
     filters:{
         
@@ -115,15 +116,27 @@ export default {
             devData:[],
             devtopData:[],
             devbottomData:[],
+            
         }
     },
 	methods: {
         init:function(){
-            let json=sessionStorage.getItem("layoutJson");
-            console.log(json)
-            this.$api.post("",{}).then(res=>{
+            let layoutJson=sessionStorage.getItem("layoutJson");
+            console.log(layoutJson)
+            if(layoutJson){
+                let json=JSON.parse(layoutJson);
+                this.editType=json.editType;
+                this.leftDoor=json.leftDoor;
+                this.rightDoor=json.rightDoor;
+                this.topData=json.topData;
+                this.bottomData=json.bottomData;
+                this.devData=json.devData;
+                this.devtopData=json.devtopData;
+                this.devbottomData=json.devbottomData;
+            }
+            // this.$api.post("",{}).then(res=>{
 
-            })
+            // })
         },
         enterEdit:function(item){
             this.$router.push({name:'deviceLayoutEdit',query:{params:JSON.stringify({"id":item.id})}});
@@ -263,7 +276,6 @@ export default {
                             }
                             .panel-span{
                                 position: absolute;
-                                cursor: move;
                                 &.oglFlip{
                                     transform: rotateX(180deg);
                                 }
@@ -286,7 +298,6 @@ export default {
                             position: relative;
                             .panel-span{
                                 position: absolute;
-                                cursor: move;
                                 &.oglFlip{
                                     transform: rotateX(180deg);
                                 }

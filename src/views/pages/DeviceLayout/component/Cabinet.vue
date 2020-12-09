@@ -6,7 +6,7 @@
         </div> -->
         <div class="img"></div>
         <div class="title">{{name}}</div>
-        <i class="el-icon-delete icon-btn" @click="$emit('close',index)"></i>
+        <i class="el-icon-delete icon-btn" @click="$emit('close',index)" v-if="showClose"></i>
     </div>
 </template>
 <script>
@@ -25,7 +25,7 @@ export default {
            
         }
     },
-    props:['background','name','index'],
+    props:['background','name','index','showClose'],
 }
 </script>
 
