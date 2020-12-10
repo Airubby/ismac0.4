@@ -12,7 +12,59 @@
             <div class="scrollbar" v-scrollBar>
                 <div class="layout-box">
                     <div class="layout-box-con">
-                        <div class="layout-box-panel" :style="panelStyle">
+                        <div class="layout-box-panel layout-box-onepanel" :style="panelStyle" v-if="editType=='one'">
+                            <div class="layout-panel-other">
+                                <div class="layout-panel-othercon" 
+                                id="panel-topcon"
+                                @drop='dragtopDevFinish($event)'
+                                @touchstart='dragtopDevFinish($event)'
+                                @dragover='allowDrop($event)'>
+                                    <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
+                                        <i class="el-icon-delete icon-btn" @click="remove(index,devtopData)"></i>
+                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devtopData')" draggable="true" @dragstart="dragDevStart($event,devitem)">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="layout-panel-cen">
+                                <div class="panel-cendoor" :class="{'panel-cendoor-close':leftDoor}"></div>
+                                <div class="panel-cencon">
+                                    <div class="layout-list-con"
+                                    @drop='dragFinish($event,topData)'
+                                    @touchstart='dragFinish($event,topData)'
+                                    @dragover='allowDrop($event)'>
+                                        <div class="layout-info-show" v-if="topData.length<=0">机柜存放区</div>
+                                        <draggable class="layout-list-con" 
+                                        :list="topData" 
+                                        v-bind="dragOptions"
+                                        @start="drag = true"
+                                        @end="drag = false"
+                                        handle=".panel-conbox">
+                                            <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
+                                                <template  v-for="(item,tindex) in topData">
+                                                <div class="panel-conbox list-group-item" @dblclick="devClick(item,'topData')" :key="tindex" :class="{'list-group-halfitem':item.category=='kt'}">
+                                                    <cabinet :background="item.background" :name="item.name" :showClose="true" :index="tindex" @close="remove(tindex,topData)"></cabinet>
+                                                </div>
+                                                </template>
+                                            </transition-group>
+                                        </draggable>
+                                    </div>
+                                </div>
+                                <div class="panel-cendoor panel-cendoor-right" :class="{'panel-cendoor-close':rightDoor}"></div>
+                            </div>
+                            <div class="layout-panel-other">
+                                <div class="layout-panel-othercon" 
+                                id="panel-bottomcon"
+                                @drop='dragbottomDevFinish($event)'
+                                @touchstart='dragbottomDevFinish($event)'
+                                @dragover='allowDrop($event)'>
+                                    <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index">
+                                        <i class="el-icon-delete icon-btn" @click="remove(index,devbottomData)"></i>
+                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devbottomData')" draggable="true" @dragstart="dragDevStart($event,devitem)">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layout-box-panel" :style="panelStyle" v-if="editType=='two'">
                             <div class="layout-panel-other">
                                 <div class="layout-panel-othercon" 
                                 id="panel-topcon"
@@ -36,7 +88,6 @@
                                     v-bind="dragOptions"
                                     @start="drag = true"
                                     @end="drag = false"
-                                    @change="log" 
                                     handle=".panel-conbox">
                                         <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
                                             <template  v-for="(item,tindex) in topData">
@@ -74,7 +125,6 @@
                                     v-bind="dragOptions"
                                     @start="drag = true"
                                     @end="drag = false"
-                                    @change="log" 
                                     handle=".panel-conbox">
                                         <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
                                             <template  v-for="(item,tindex) in bottomData">
@@ -119,7 +169,9 @@
                         </el-collapse-item>
                         <el-collapse-item title="预置设备" name="third" key="third">
                             <div class="collapse-con">
-                                <div class="collapse-box" :key="index" v-for="(item,index) in devlist" draggable="true" @dragstart="dragDevStart($event,item)">{{item.name}}</div>
+                                <div class="collapse-boximg" :key="index" v-for="(item,index) in devlist" draggable="true" @dragstart="dragDevStart($event,item)">
+                                    <img :src="item.imgsrc" />
+                                </div>
                             </div>
                         </el-collapse-item>
                     </el-collapse>
@@ -169,16 +221,37 @@ export default {
                 {name:'冷量分配单元',devid:"",pointid:"",background:""},
             ],
             devlist:[
-                {name:'烟感',offsetX:"",oglFlip:false,offsetY:"",imgsrc:"/images/device/smoke.png",imgsrcAlarm:"/images/device/smoke-alarm.png"},
-                {name:'漏水',offsetX:"",oglFlip:false,offsetY:"",imgsrc:"/images/device/thalposis.png",imgsrcAlarm:"/images/device/thalposis-alarm.png"},
-                {name:'视频',offsetX:"",oglFlip:false,offsetY:"",imgsrc:"/images/device/webcam.png",imgsrcAlarm:"/images/device/webcam-alarm.png"}
+                {
+                    name:'烟感',offsetX:"",oglFlip:false,offsetY:"",
+                    imgsrc:"/images/device/smoke.png",imgsrcAlarm:"/images/device/smoke-alarm.png"
+                },
+                {
+                    name:'漏水',offsetX:"",oglFlip:false,offsetY:"",
+                    imgsrc:"/images/device/thalposis.png",imgsrcAlarm:"/images/device/thalposis-alarm.png"
+                },
+                {
+                    name:'视频',offsetX:"",oglFlip:false,offsetY:"",
+                    imgsrc:"/images/device/webcam.png",imgsrcAlarm:"/images/device/webcam-alarm.png"
+                },
+                {
+                    name:'烟感',offsetX:"",oglFlip:false,offsetY:"",
+                    imgsrc:"/images/device/smoke.png",imgsrcAlarm:"/images/device/smoke-alarm.png"
+                },
+                {
+                    name:'漏水',offsetX:"",oglFlip:false,offsetY:"",
+                    imgsrc:"/images/device/thalposis.png",imgsrcAlarm:"/images/device/thalposis-alarm.png"
+                },
+                {
+                    name:'视频',offsetX:"",oglFlip:false,offsetY:"",
+                    imgsrc:"/images/device/webcam.png",imgsrcAlarm:"/images/device/webcam-alarm.png"
+                }
             ],
             drag: false,
             activeDrag:null,
             activeDevDrag:null,
 
-            editType:"",
-            leftDoor:false,
+            editType:"one",
+            leftDoor:true,
             rightDoor:false,
             topData:[],
             bottomData:[],
@@ -217,7 +290,6 @@ export default {
 	methods: {
         init:function(){
             let layoutJson=sessionStorage.getItem("layoutJson");
-            console.log(layoutJson)
             if(layoutJson){
                 let json=JSON.parse(layoutJson);
                 this.editType=json.editType;
@@ -246,9 +318,8 @@ export default {
             }
         },
         reset:function(info){
-            console.log(info)
             this.editType=info.type;
-            this.leftDoor=false;
+            this.leftDoor=true;
             this.rightDoor=false;
             this.topData=[];
             this.bottomData=[];
@@ -309,13 +380,15 @@ export default {
             let data=ev.dataTransfer.getData("data");
             if(data){
                 let item = JSON.parse(data);
+                let width=document.getElementById(domID).offsetWidth;
+                let height=document.getElementById(domID).offsetHeight;
+                console.log("activeDevDrag:",this.activeDevDrag,"ev:",ev)
+                //拖拽的设备自己的宽高this.activeDevDrag.target.offsetWidth,this.activeDevDrag.target.offsetHeight
+                //拖拽的设备点击的那个点相对于设备自己的偏移this.activeDevDrag.offsetX,this.activeDevDrag.offsetY
+                //拖拽的设备点击的那个点相对于接收面板的偏移量，拖拽后放手的那刻ev.offsetX,ev.offsetY
                 if(item.uuid){
-                    let width=document.getElementById(domID).offsetWidth;
-                    let height=document.getElementById(domID).offsetHeight;
-                    //拖拽的设备点击的那个点相对于设备自己的偏移this.img_ev.offsetX,this.img_ev.offsetY
-                    //拖拽的设备点击的那个点相对于右边电子地图的偏移量，拖拽后放手的那刻ev.offsetX,ev.offsetY
                     if(ev.clientX<this.activeDevDrag.clientX){ //向左拖动
-                        if(ev.offsetX-this.activeDevDrag.offsetX<0){ //左边拖出地图了，或者向左拖动了一点点
+                        if(ev.offsetX-this.activeDevDrag.offsetX<0){ //左边拖出画布了，或者向左拖动了一点点
                             if(ev.x+this.activeDevDrag.offsetX>this.activeDevDrag.x){ //向左移动了一点
                                 item.offsetX=item.offsetX-(this.activeDevDrag.offsetX-ev.offsetX)<0?0:item.offsetX-(this.activeDevDrag.offsetX-ev.offsetX);
                             }else{
@@ -325,18 +398,11 @@ export default {
                             item.offsetX=ev.offsetX-this.activeDevDrag.offsetX
                         }
                     }else{ //向右拖动
-                        if(ev.offsetX<this.activeDevDrag.target.offsetWidth){ //拖动了一点点
-                            if(this.activeDevDrag.target.offsetLeft+(ev.offsetX-this.activeDevDrag.offsetX)>width-this.activeDevDrag.target.offsetWidth){
-                                item.offsetX=width-this.activeDevDrag.target.offsetWidth;
-                            }else{
-                                item.offsetX=this.activeDevDrag.target.offsetLeft+(ev.offsetX-this.activeDevDrag.offsetX);
-                            }
+                        //ev.offsetX-this.activeDevDrag.offsetX<this.activeDevDrag.target.offsetWidth-this.activeDevDrag.offsetX
+                        if(ev.offsetX<this.activeDevDrag.target.offsetWidth){ //拖动了一点点,可能拖动一点点就拖出画布了
+                            item.offsetX=item.offsetX+(ev.offsetX-this.activeDevDrag.offsetX)+this.activeDevDrag.target.offsetWidth>width?width-this.activeDevDrag.target.offsetWidth:item.offsetX+(ev.offsetX-this.activeDevDrag.offsetX);
                         }else{
-                            if(ev.offsetX+(this.activeDevDrag.target.offsetWidth-this.activeDevDrag.offsetLeft)>width-this.activeDevDrag.target.offsetWidth){
-                                item.offsetX=width-this.activeDevDrag.target.offsetWidth;
-                            }else{
-                                item.offsetX=ev.offsetX-this.activeDevDrag.offsetX
-                            }
+                            item.offsetX=ev.offsetX+(this.activeDevDrag.target.offsetWidth-this.activeDevDrag.offsetX)>width?width-this.activeDevDrag.target.offsetWidth:ev.offsetX-this.activeDevDrag.offsetX;
                         }
                     }
                     if(ev.clientY<this.activeDevDrag.clientY){ //向上拖动
@@ -350,18 +416,11 @@ export default {
                             item.offsetY=ev.offsetY-this.activeDevDrag.offsetY;
                         }
                     }else{ //向下拖动
-                        if(ev.offsetY<this.activeDevDrag.target.offsetHeight){  //拖动一点点
-                            if(item.offsetY+(ev.offsetY-this.activeDevDrag.offsetY)>height-this.activeDevDrag.target.offsetHeight){
-                                item.offsetY=height-this.activeDevDrag.target.offsetHeight;
-                            }else{
-                                item.offsetY=item.offsetY+(ev.offsetY-this.activeDevDrag.offsetY);
-                            }
+                        //ev.offsetY-this.activeDevDrag.offsetY<this.activeDevDrag.target.offsetHeight-this.activeDevDrag.offsetY
+                        if(ev.offsetY<this.activeDevDrag.target.offsetHeight){  //拖动一点点,可能拖动一点点就拖出画布了
+                            item.offsetY=item.offsetY+(ev.offsetY-this.activeDevDrag.offsetY)+this.activeDevDrag.target.offsetHeight>height?height-this.activeDevDrag.target.offsetHeight:item.offsetY+(ev.offsetY-this.activeDevDrag.offsetY); 
                         }else{
-                            if(ev.offsetY+(this.activeDevDrag.target.offsetHeight-this.activeDevDrag.offsetY)>height-this.activeDevDrag.target.offsetHeight){
-                                item.offsetY=height-this.activeDevDrag.target.offsetHeight;
-                            }else{
-                                item.offsetY=ev.offsetY-this.activeDevDrag.offsetY;
-                            }
+                            item.offsetY=ev.offsetY+(this.activeDevDrag.target.offsetHeight-this.activeDevDrag.offsetY)>height?height-this.activeDevDrag.target.offsetHeight:ev.offsetY-this.activeDevDrag.offsetY;
                         }
                     }
                     for(let i=0;i<devData.length;i++){
@@ -371,8 +430,20 @@ export default {
                         }
                     }
                 }else{
-                    item.offsetX=ev.offsetX;
-                    item.offsetY=ev.offsetY;
+                    if(ev.offsetX-this.activeDevDrag.offsetX<0){
+                        item.offsetX=0;
+                    }else if(ev.offsetX+(this.activeDevDrag.target.offsetWidth-this.activeDevDrag.offsetX)>width){
+                        item.offsetX=width-this.activeDevDrag.target.offsetWidth;
+                    }else{
+                        item.offsetX=ev.offsetX-this.activeDevDrag.offsetX
+                    }
+                    if(ev.offsetY-this.activeDevDrag.offsetY<0){
+                        item.offsetY=0;
+                    }else if(ev.offsetY+(this.activeDevDrag.target.offsetHeight-this.activeDevDrag.offsetY)>height){
+                        item.offsetY=height-this.activeDevDrag.target.offsetHeight;
+                    }else{
+                        item.offsetY=ev.offsetY-this.activeDevDrag.offsetY
+                    }
                     item.uuid=uuid();
                     devData.push(item)
                 }
@@ -391,10 +462,6 @@ export default {
         remove:function(index,data){
             data.splice(index, 1);
         },
-
-        log: function(evt) {
-            console.log(evt);
-        }
 	},
     
 }
@@ -420,7 +487,7 @@ export default {
                 vertical-align: middle;
                 text-align: center;
                 .layout-box-panel{
-                    min-width: 300px;
+                    min-width: 600px;
                     max-width: 100%;
                     height: 540px;
                     display: inline-block;
@@ -559,7 +626,6 @@ export default {
                     .layout-panel-other{
                         width: 100%;
                         height: 40px;
-                        padding: 0 80px;
                         .layout-panel-othercon{
                             width: 100%;
                             height: 100%;
@@ -587,6 +653,43 @@ export default {
                         }
                     }
                 }
+                .layout-box-onepanel{
+                    min-width: 300px;
+                    max-width: 100%;
+                    height: 320px;
+                    display: inline-block;
+                    position: relative;
+                    .layout-panel-cen{
+                        width:100%;
+                        height: calc(100% - 80px);
+                        display: flex;
+                        .panel-cencon{
+                            border-top: 8px solid @lineColor;
+                            border-bottom: 8px solid @lineColor;
+                            .layout-list-con{
+                                width: 100%;
+                                height: 100%;
+                                .layout-list-group{
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    .list-group-item{
+                                        width: 180%;
+                                        height: 100%;
+                                        padding: 0 1px;
+                                        cursor: pointer;
+                                        &.active{
+                                            background: #838FA3;
+                                        }
+                                        &.list-group-halfitem{
+                                            width: 100%;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         .detail{
@@ -607,6 +710,9 @@ export default {
                 transition: all 0.5s ease-in;
                 .collapse-con{
                     padding: 10px 10px 0;
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
                     .collapse-box{
                         width: 100%;
                         margin: 5px 0;
@@ -617,6 +723,11 @@ export default {
                             background: @activeBg;
                             color: @activeColor;
                         }
+                    }
+                    .collapse-boximg{
+                        display: inline-block;
+                        margin: 5px;
+                        cursor: move;
                     }
                 }
                 /deep/ .el-collapse{
