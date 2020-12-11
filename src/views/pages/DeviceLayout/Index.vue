@@ -200,7 +200,7 @@ export default {
                 vertical-align: middle;
                 text-align: center;
                 .layout-box-panel{
-                    min-width: 300px;
+                    min-width: 400px;
                     max-width: 100%;
                     height: 540px;
                     display: inline-block;

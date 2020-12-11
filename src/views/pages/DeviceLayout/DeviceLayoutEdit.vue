@@ -12,68 +12,15 @@
             <div class="scrollbar" v-scrollBar>
                 <div class="layout-box">
                     <div class="layout-box-con">
-                        <div class="layout-box-panel layout-box-onepanel" :style="panelStyle" v-if="editType=='one'">
-                            <div class="layout-panel-other">
-                                <div class="layout-panel-othercon" 
-                                id="panel-topcon"
-                                @drop='dragtopDevFinish($event)'
-                                @touchstart='dragtopDevFinish($event)'
-                                @dragover='allowDrop($event)'>
-                                    <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
-                                        <i class="el-icon-delete icon-btn" @click="remove(index,devtopData)"></i>
-                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devtopData')" draggable="true" @dragstart="dragDevStart($event,devitem)">
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="layout-panel-cen">
-                                <div class="panel-cendoor" :class="{'panel-cendoor-close':leftDoor}"></div>
-                                <div class="panel-cencon">
-                                    <div class="layout-list-con"
-                                    @drop='dragFinish($event,topData)'
-                                    @touchstart='dragFinish($event,topData)'
-                                    @dragover='allowDrop($event)'>
-                                        <div class="layout-info-show" v-if="topData.length<=0">机柜存放区</div>
-                                        <draggable class="layout-list-con" 
-                                        :list="topData" 
-                                        v-bind="dragOptions"
-                                        @start="drag = true"
-                                        @end="drag = false"
-                                        handle=".panel-conbox">
-                                            <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
-                                                <template  v-for="(item,tindex) in topData">
-                                                <div class="panel-conbox list-group-item" @dblclick="devClick(item,'topData')" :key="tindex" :class="{'list-group-halfitem':item.category=='kt'}">
-                                                    <cabinet :background="item.background" :name="item.name" :showClose="true" :index="tindex" @close="remove(tindex,topData)"></cabinet>
-                                                </div>
-                                                </template>
-                                            </transition-group>
-                                        </draggable>
-                                    </div>
-                                </div>
-                                <div class="panel-cendoor panel-cendoor-right" :class="{'panel-cendoor-close':rightDoor}"></div>
-                            </div>
-                            <div class="layout-panel-other">
-                                <div class="layout-panel-othercon" 
-                                id="panel-bottomcon"
-                                @drop='dragbottomDevFinish($event)'
-                                @touchstart='dragbottomDevFinish($event)'
-                                @dragover='allowDrop($event)'>
-                                    <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index">
-                                        <i class="el-icon-delete icon-btn" @click="remove(index,devbottomData)"></i>
-                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devbottomData')" draggable="true" @dragstart="dragDevStart($event,devitem)">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
                         <div class="layout-box-panel" :style="panelStyle" v-if="editType=='two'">
                             <div class="layout-panel-other">
-                                <div class="layout-panel-othercon" 
-                                id="panel-topcon"
-                                @drop='dragtopDevFinish($event)'
-                                @touchstart='dragtopDevFinish($event)'
+                                <div class="layout-panel-othercon" id="devtopData"
+                                @drop='dragDevFinish($event,"devtopData")'
+                                @touchstart='dragDevFinish($event,"devtopData")'
                                 @dragover='allowDrop($event)'>
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
                                         <i class="el-icon-delete icon-btn" @click="remove(index,devtopData)"></i>
-                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devtopData')" draggable="true" @dragstart="dragDevStart($event,devitem)">
+                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devtopData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devtopData')">
                                     </span>
                                 </div>
                             </div>
@@ -101,15 +48,14 @@
                             </div>
                             <div class="layout-panel-cen">
                                 <div class="panel-cendoor" :class="{'panel-cendoor-close':leftDoor}"></div>
-                                <div class="panel-cencon"
-                                id="panel-con"
-                                @drop='dragDevFinish($event)'
-                                @touchstart='dragDevFinish($event)'
+                                <div class="panel-cencon" id="devData"
+                                @drop='dragDevFinish($event,"devData")'
+                                @touchstart='dragDevFinish($event,"devData")'
                                 @dragover='allowDrop($event)'>
                                     <div class="layout-info-show" v-if="devData.length<=0">设备存放区</div>
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devData" :key="index">
                                         <i class="el-icon-delete icon-btn" @click="remove(index,devData)"></i>
-                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devData')" draggable="true" @dragstart="dragDevStart($event,devitem)">
+                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devData')">
                                     </span>
                                 </div>
                                 <div class="panel-cendoor panel-cendoor-right" :class="{'panel-cendoor-close':rightDoor}"></div>
@@ -137,14 +83,13 @@
                                 </div>
                             </div>
                             <div class="layout-panel-other">
-                                <div class="layout-panel-othercon" 
-                                id="panel-bottomcon"
-                                @drop='dragbottomDevFinish($event)'
-                                @touchstart='dragbottomDevFinish($event)'
+                                <div class="layout-panel-othercon" id="devbottomData"
+                                @drop='dragDevFinish($event,"devbottomData")'
+                                @touchstart='dragDevFinish($event,"devbottomData")'
                                 @dragover='allowDrop($event)'>
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index">
                                         <i class="el-icon-delete icon-btn" @click="remove(index,devbottomData)"></i>
-                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devbottomData')" draggable="true" @dragstart="dragDevStart($event,devitem)">
+                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devbottomData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devbottomData')">
                                     </span>
                                 </div>
                             </div>
@@ -249,6 +194,8 @@ export default {
             drag: false,
             activeDrag:null,
             activeDevDrag:null,
+            activeDevitemDrag:null,
+            activeDevdataDrag:null,
 
             editType:"one",
             leftDoor:true,
@@ -363,18 +310,57 @@ export default {
         stopP:function(ev){
             ev.stopPropagation();
         },
-        dragDevStart:function(evt,item){
+        dragDevStart:function(evt,item,dataArr){
             evt.dataTransfer.setData("data",JSON.stringify(item));
             this.activeDevDrag=evt;
+            this.activeDevitemDrag=item;
+            this.activeDevdataDrag=dataArr;
         },
-        dragDevFinish:function(ev){
-            this.handleDevFinish(ev,"panel-con",this.devData)
+        dragDevFinish:function(ev,dataArr){
+            //data是数据源的key也是dom的id；用的同一个名称
+            if(this.activeDevitemDrag){
+                if(this.activeDevdataDrag==undefined){ //初次拖进来
+                    this.handleDevFinish(ev,dataArr,this[dataArr]);
+                }else{
+                    if(this.activeDevdataDrag==dataArr){ //在本区域拖动
+                        this.handleDevFinish(ev,dataArr,this[dataArr]);
+                    }else{ //跨区拖动了
+                        this.handleDevOtherFinish(ev,dataArr,this[this.activeDevdataDrag]);
+                    }
+                }
+            }
         },
-        dragtopDevFinish:function(ev){
-            this.handleDevFinish(ev,"panel-topcon",this.devtopData)
-        },
-        dragbottomDevFinish:function(ev){
-            this.handleDevFinish(ev,"panel-bottomcon",this.devbottomData)
+        handleDevOtherFinish:function(ev,domID,devData){
+            console.log("ev:",ev,"activeDev:",this.activeDevDrag)
+            console.log(this.activeDevDrag.target.offsetWidth)
+            let data=ev.dataTransfer.getData("data");
+            if(data){
+                let item = JSON.parse(data);
+                let width=document.getElementById(domID).offsetWidth;
+                let height=document.getElementById(domID).offsetHeight;
+                if(ev.offsetX-this.activeDevDrag.target.offsetWidth<0){
+                    item.offsetX=0;
+                }else if(ev.offsetX+this.activeDevDrag.target.offsetWidth>width){
+                    item.offsetX=width-this.activeDevDrag.target.offsetWidth;
+                }else{
+                    item.offsetX=ev.offsetX;
+                }
+                if(ev.offsetY-this.activeDevDrag.target.offsetHeight<0){
+                    item.offsetY=0;
+                }else if(ev.offsetY+this.activeDevDrag.target.offsetHeight>height){
+                    item.offsetY=height-this.activeDevDrag.target.offsetHeight;
+                }else{
+                    item.offsetY=ev.offsetY;
+                }
+                for(let i=0;i<devData.length;i++){
+                    if(item.uuid==devData[i].uuid){
+                        devData[i].offsetX=item.offsetX;
+                        devData[i].offsetY=item.offsetY;
+                        this[domID].push(devData[i]);
+                        devData.splice(i,1);
+                    }
+                }
+            }
         },
         handleDevFinish:function(ev,domID,devData){
             let data=ev.dataTransfer.getData("data");
@@ -487,7 +473,7 @@ export default {
                 vertical-align: middle;
                 text-align: center;
                 .layout-box-panel{
-                    min-width: 600px;
+                    min-width: 400px;
                     max-width: 100%;
                     height: 540px;
                     display: inline-block;
