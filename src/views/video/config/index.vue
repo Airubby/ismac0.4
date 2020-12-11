@@ -27,9 +27,11 @@
                             @change="log" 
                             handle=".his-conbox">
                                 <transition-group class="list-group" type="transition" :name="!drag ? 'flip-list' : null">
-                                    <div class="his-conbox list-group-item" :key="index" :class="{'his-conbox1':item.type=='kt'}" v-for="(item,index) in data1">
-                                        <cabinet-component :type="item.type" :title="item.title" :index="index" @close="close(index,data1)"></cabinet-component>
+                                    <template  v-for="(item,tindex) in data1">
+                                    <div class="his-conbox list-group-item" :key="tindex" :class="{'his-conbox1':item.type=='kt'}">
+                                        <cabinet-component :type="item.type" :title="item.title" :index="tindex" @close="close(tindex,data1)"></cabinet-component>
                                     </div>
+                                    </template>
                                 </transition-group>
                             </draggable>
                         </div>
@@ -63,9 +65,11 @@
                                 @change="log" 
                                 handle=".his-conbox">
                                 <transition-group class="list-group" type="transition" :name="!drag ? 'flip-list' : null">
-                                    <div class="his-conbox list-group-item" :key="index" :class="{'his-conbox1':item.type=='kt'}" v-for="(item,index) in data2">
+                                    <template  v-for="(item,tindex) in data2">
+                                    <div class="his-conbox list-group-item" :key="tindex" :class="{'his-conbox1':item.type=='kt'}">
                                         <cabinet-component :type="item.type" :title="item.title"></cabinet-component>
                                     </div>
+                                    </template>
                                 </transition-group>
                             </draggable>
                         </div>
@@ -90,7 +94,7 @@
 </template>
 
 <script>
-import draggable from '@/utils/VueDraggable'
+import draggable from './Draggable'
 import cabinetComponent from './cabinet.vue'
 export default {
     components: {
@@ -292,6 +296,7 @@ export default {
                     justify-content: center;
                     color: #409EFF;
                     font-size: 20px;
+                    position: absolute;
                 }
                 .list-group{
                     width: 100%;

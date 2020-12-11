@@ -35,13 +35,21 @@
                 <div class="pt20">
                     <h2>webSocket及验证封装</h2>
                     <el-form :model="ValidateForm" :rules="rulesForm" ref="Form">
-                    <el-form-item prop="phone" label="手机验证">
-                        <el-input v-model="ValidateForm.phone"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="submitFormT()">提交</el-button>
-                    </el-form-item>
-                </el-form>
+                        <el-form-item prop="phone" label="手机验证">
+                            <el-input v-model="ValidateForm.phone"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="submitFormT()">提交</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+                <div class="pt20">
+                    <h2>属性问题</h2>
+                    <div>
+                        <p>判断对象是否有某个属性：obj.hasOwnProperty('name')  //true 自身属性</p>
+                        <p>获取dom距离浏览器左侧及头部的距离：document.getElementById(ID).getBoundingClientRect()</p>
+                        <p>说明：width:dom宽度；left:dom左侧距离浏览器左边的距离；right:dom右侧距离浏览左边的距离；x:距离浏览器左边的距离</p>
+                    </div>
                 </div>
             </div>
         </div>

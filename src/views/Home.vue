@@ -183,6 +183,13 @@ export default {
             get(){
                 return this.$store.getters.isview
             },
+        },
+        //计算传参过来
+        fn(){
+            return function(info){
+                console.log("info是传过来的计算参数")
+                return ""
+            }
         }
     },
 	methods: {
