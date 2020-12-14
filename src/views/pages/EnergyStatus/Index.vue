@@ -36,7 +36,7 @@ export default {
     mounted() {
         this.initPue("pueCon");
         this.initFzl("fzlCon","负载率",0.5);
-        this.initPie("energyCon","能效分布",)
+        this.initPie("energyCon","能效分布")
         let xData=["2020-10","2020-11","2020-12"]
         let pueData=[1,3,2];
         let fzlData=[30,50,76];

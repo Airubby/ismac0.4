@@ -175,11 +175,7 @@
         border-color: @activeColor;
         color: @bgColor;
     }
-    .el-button--primary.is-plain{
-        background-color: transparent;
-        border-color: @activeColor;
-        color: @activeColor;
-    }
+    
     .el-time-spinner__item:hover:not(.disabled):not(.active){
         background: transparent;
         color: @activeColor;
@@ -255,10 +251,15 @@
         background: @contentBg;
         border-color: @contentBg;
     }
-    .el-message-box__btns .el-button{
-        background: transparent;
+    .el-button--primary.is-plain,
+    .el-message-box__btns .el-button,
+    .el-color-dropdown__btns .el-button{
+        background-color: transparent;
         border-color: @activeColor;
         color: @activeColor;
+    }
+    .el-color-dropdown__btns .el-button--text{
+        border-color: transparent;
     }
     .el-message-box__btns .el-button.el-button--primary{
         background: @activeColor;

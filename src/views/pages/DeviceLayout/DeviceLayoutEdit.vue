@@ -12,15 +12,65 @@
             <div class="scrollbar" v-scrollBar>
                 <div class="layout-box">
                     <div class="layout-box-con">
+                        <div class="layout-box-panel layout-box-onepanel" :style="panelStyle" v-if="editType=='one'">
+                            <div class="layout-panel-other">
+                                <div class="layout-panel-othercon" id="devtopData"
+                                @drop='dragDevFinish($event,"devtopData")'
+                                @touchstart='dragDevFinish($event,"devtopData")'
+                                @dragover='allowDrop($event)'>
+                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
+                                        <i class="el-icon-delete icon-btn" @click="remove(index,devtopData)"></i>
+                                        <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devtopData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devtopData')">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="layout-panel-cen">
+                                <div class="panel-cendoor" :class="{'panel-cendoor-close':leftDoor}"></div>
+                                <div class="panel-cencon">
+                                    <div class="layout-list-con"
+                                    @drop='dragFinish($event,topData)'
+                                    @touchstart='dragFinish($event,topData)'
+                                    @dragover='allowDrop($event)'>
+                                        <div class="layout-info-show" v-if="topData.length<=0">机柜存放区</div>
+                                        <draggable class="layout-list-con" 
+                                        :list="topData" 
+                                        v-bind="dragOptions"
+                                        @start="drag = true"
+                                        @end="drag = false"
+                                        handle=".panel-conbox">
+                                            <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
+                                                <template  v-for="(item,tindex) in topData">
+                                                <div class="panel-conbox list-group-item" @click="devClick($event,item,'topData')" :key="tindex" :class="{'list-group-halfitem':item.category=='air'}">
+                                                    <cabinet :background="item.background" :name="item.name" :showClose="true" :index="tindex" @close="remove(tindex,topData)"></cabinet>
+                                                </div>
+                                                </template>
+                                            </transition-group>
+                                        </draggable>
+                                    </div>
+                                </div>
+                                <div class="panel-cendoor panel-cendoor-right" :class="{'panel-cendoor-close':rightDoor}"></div>
+                            </div>
+                            <div class="layout-panel-other">
+                                <div class="layout-panel-othercon" id="devbottomData"
+                                @drop='dragDevFinish($event,"devbottomData")'
+                                @touchstart='dragDevFinish($event,"devbottomData")'
+                                @dragover='allowDrop($event)'>
+                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index">
+                                        <i class="el-icon-delete icon-btn" @click="remove(index,devbottomData)"></i>
+                                        <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devbottomData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devbottomData')">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="layout-box-panel" :style="panelStyle" v-if="editType=='two'">
                             <div class="layout-panel-other">
                                 <div class="layout-panel-othercon" id="devtopData"
                                 @drop='dragDevFinish($event,"devtopData")'
                                 @touchstart='dragDevFinish($event,"devtopData")'
                                 @dragover='allowDrop($event)'>
-                                    <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
+                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
                                         <i class="el-icon-delete icon-btn" @click="remove(index,devtopData)"></i>
-                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devtopData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devtopData')">
+                                        <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devtopData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devtopData')">
                                     </span>
                                 </div>
                             </div>
@@ -38,7 +88,7 @@
                                     handle=".panel-conbox">
                                         <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
                                             <template  v-for="(item,tindex) in topData">
-                                            <div class="panel-conbox list-group-item" @dblclick="devClick(item,'topData')" :key="tindex" :class="{'list-group-halfitem':item.category=='kt'}">
+                                            <div class="panel-conbox list-group-item" @click="devClick($event,item,'topData')" :key="tindex" :class="{'list-group-halfitem':item.category=='air'}">
                                                 <cabinet :background="item.background" :name="item.name" :showClose="true" :index="tindex" @close="remove(tindex,topData)"></cabinet>
                                             </div>
                                             </template>
@@ -53,9 +103,9 @@
                                 @touchstart='dragDevFinish($event,"devData")'
                                 @dragover='allowDrop($event)'>
                                     <div class="layout-info-show" v-if="devData.length<=0">设备存放区</div>
-                                    <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devData" :key="index">
+                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devData" :key="index">
                                         <i class="el-icon-delete icon-btn" @click="remove(index,devData)"></i>
-                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devData')">
+                                        <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devData')">
                                     </span>
                                 </div>
                                 <div class="panel-cendoor panel-cendoor-right" :class="{'panel-cendoor-close':rightDoor}"></div>
@@ -74,7 +124,7 @@
                                     handle=".panel-conbox">
                                         <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
                                             <template  v-for="(item,tindex) in bottomData">
-                                            <div class="panel-conbox list-group-item" @dblclick="devClick(item,'bottomData')" :key="tindex" :class="{'list-group-halfitem':item.category=='kt'}">
+                                            <div class="panel-conbox list-group-item" @click="devClick($event,item,'bottomData')" :key="tindex" :class="{'list-group-halfitem':item.category=='air'}">
                                                 <cabinet :background="item.background" :name="item.name" :showClose="true" :index="tindex" @close="remove(tindex,bottomData)"></cabinet>
                                             </div>
                                             </template>
@@ -87,9 +137,9 @@
                                 @drop='dragDevFinish($event,"devbottomData")'
                                 @touchstart='dragDevFinish($event,"devbottomData")'
                                 @dragover='allowDrop($event)'>
-                                    <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index">
+                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index">
                                         <i class="el-icon-delete icon-btn" @click="remove(index,devbottomData)"></i>
-                                        <img :src="devitem.imgsrc" @dblclick="devClick(devitem,'devbottomData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devbottomData')">
+                                        <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devbottomData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devbottomData')">
                                     </span>
                                 </div>
                             </div>
@@ -99,7 +149,7 @@
             </div>
         </div>
         <div class="detail" id="detail" @click="stopP($event)">
-            <div class="side-bar">
+            <div class="side-bar" v-show="isPanel">
                 <el-scrollbar class="scrollbar">
                     <el-collapse v-model="activeItem" accordion>
                         <el-collapse-item title="动态柜子" name="first" key="first">
@@ -115,12 +165,91 @@
                         <el-collapse-item title="预置设备" name="third" key="third">
                             <div class="collapse-con">
                                 <div class="collapse-boximg" :key="index" v-for="(item,index) in devlist" draggable="true" @dragstart="dragDevStart($event,item)">
-                                    <img :src="item.imgsrc" />
+                                    <img :src="item.imgsrc" :title="item.name" />
                                 </div>
                             </div>
                         </el-collapse-item>
                     </el-collapse>
                 </el-scrollbar>
+            </div>
+            <div v-show="!isPanel" class="side-bar">
+                <div class="edit-form">
+                    <el-scrollbar class="scrollbar">
+                        <div class="edit-form-con">
+                            <el-form ref="ValidateForm" :model="initParams" :rules="rules" label-position="top">
+                                <el-row :gutter="30">
+                                    <el-col :span="24">
+                                        <el-form-item label='名称' prop="name">
+                                            <el-input v-model="initParams.name"></el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                    <div v-if="type=='topData'||type=='bottomData'">
+                                        <el-col :span="24">
+                                            <el-form-item label='类型' prop="category">
+                                                <el-select v-model="initParams.category" placeholder="请选择">
+                                                    <el-option key="air" label="空调" value="air"></el-option>
+                                                    <el-option key="rack" label="柜子" value="rack"></el-option>
+                                                </el-select>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="24">
+                                            <el-form-item label='背景色' prop="background">
+                                                <el-color-picker v-model="initParams.background" :predefine="predefineColors"></el-color-picker>
+                                            </el-form-item>
+                                        </el-col>
+                                    </div>
+                                    <div v-if="initParams.type&&initParams.type=='video'">
+                                        <el-col :span="24">
+                                            <el-form-item label='关联视频通道' prop="pointid" class="height-auto">
+                                                <el-tree
+                                                    :data="videoTree"
+                                                    show-checkbox
+                                                    node-key="id"
+                                                    ref="videotree"
+                                                    :default-checked-keys="initParams.pointid"
+                                                    :props="defaultProps"
+                                                    @check-change="handleCheckChange">
+                                                </el-tree>
+                                            </el-form-item>
+                                        </el-col>
+                                    </div>
+                                    <div v-else>
+                                        <el-col :span="24">
+                                            <el-form-item label='关联设备' prop="devid">
+                                                <el-select
+                                                    v-model="initParams.devid"
+                                                    multiple
+                                                    collapse-tags>
+                                                    <el-option
+                                                    v-for="item in devOptions"
+                                                    :key="item.id"
+                                                    :label="item.name"
+                                                    :value="item.id">
+                                                    </el-option>
+                                                </el-select>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="24">
+                                            <el-form-item label='关联测点' prop="pointid" class="height-auto">
+                                                <el-tree
+                                                    :data="pointTree"
+                                                    show-checkbox
+                                                    node-key="id"
+                                                    ref="tree"
+                                                    :default-checked-keys="initParams.pointid"
+                                                    :props="defaultProps">
+                                                </el-tree>
+                                            </el-form-item>
+                                        </el-col>
+                                    </div>
+                                </el-row>
+                            </el-form>
+                        </div>
+                    </el-scrollbar>
+                </div>
+                <div class="edit-btn">
+                    <el-button type="primary" plain @click="sureEdit()">保存</el-button>
+                </div>
             </div>
         </div>
         <layout-set v-if="layoutInfo.visible" :dialogInfo="layoutInfo" @backInfo="reset"></layout-set>
@@ -156,41 +285,63 @@ export default {
                 visible:false,
             },
             activeItem:"third",
+            isPanel:true,
+            predefineColors:["#D8645B","#8CBECF","#F2B747","#588EEA","#75B899","#55A1E2"],
+            type:"",
+            initParams:{
+                name:"",
+                category:"rack",
+                background:"",
+                devid:[],
+                pointid:[],
+                devInfo:[],
+                type:"",
+            },
+            rules: {
+                name:[
+                    { required: true, message: '非空', trigger: 'blur' },
+                ],
+                category:[
+                    { required: true, message: '非空', trigger: 'blur' },
+                ]
+            },
             list:[
-                {name:'配电单元',devid:"",pointid:"",background:""},
-                {name:'整流柜',devid:"",pointid:"",background:""},
-                {name:'电池柜',devid:"",pointid:"",background:""},
-                {name:'设备单元',devid:"",pointid:"",background:""},
-                {name:'精密空调',devid:"",pointid:"",background:""},
-                {name:'管控单元',devid:"",pointid:"",background:""},
-                {name:'冷量分配单元',devid:"",pointid:"",background:""},
+                {name:'配电单元',devInfo:[],devid:[],pointid:[],devid:[],pointid:[],background:""},
+                {name:'整流柜',devInfo:[],devid:[],pointid:[],background:""},
+                {name:'电池柜',devInfo:[],devid:[],pointid:[],background:""},
+                {name:'设备单元',devInfo:[],devid:[],pointid:[],background:""},
+                {name:'精密空调',devInfo:[],devid:[],pointid:[],background:""},
+                {name:'管控单元',devInfo:[],devid:[],pointid:[],background:""},
+                {name:'冷量分配单元',devInfo:[],devid:[],pointid:[],background:""},
             ],
             devlist:[
                 {
-                    name:'烟感',offsetX:"",oglFlip:false,offsetY:"",
+                    name:'烟感',offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],
                     imgsrc:"/images/device/smoke.png",imgsrcAlarm:"/images/device/smoke-alarm.png"
                 },
                 {
-                    name:'漏水',offsetX:"",oglFlip:false,offsetY:"",
+                    name:'漏水',offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],
                     imgsrc:"/images/device/thalposis.png",imgsrcAlarm:"/images/device/thalposis-alarm.png"
                 },
                 {
-                    name:'视频',offsetX:"",oglFlip:false,offsetY:"",
+                    name:'视频',offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],video:{},type:"video",
                     imgsrc:"/images/device/webcam.png",imgsrcAlarm:"/images/device/webcam-alarm.png"
                 },
                 {
-                    name:'烟感',offsetX:"",oglFlip:false,offsetY:"",
+                    name:'烟感',offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],
                     imgsrc:"/images/device/smoke.png",imgsrcAlarm:"/images/device/smoke-alarm.png"
                 },
                 {
-                    name:'漏水',offsetX:"",oglFlip:false,offsetY:"",
+                    name:'漏水',offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],
                     imgsrc:"/images/device/thalposis.png",imgsrcAlarm:"/images/device/thalposis-alarm.png"
                 },
                 {
-                    name:'视频',offsetX:"",oglFlip:false,offsetY:"",
+                    name:'视频',offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],video:{},type:"video",
                     imgsrc:"/images/device/webcam.png",imgsrcAlarm:"/images/device/webcam-alarm.png"
                 }
             ],
+
+            
             drag: false,
             activeDrag:null,
             activeDevDrag:null,
@@ -210,7 +361,18 @@ export default {
                 visible:false,
                 item:null,
                 type:null
-            }
+            },
+
+            devOptions:[
+                {id:"1",name:"设备1"},{id:"2",name:"设备2"},{id:"3",name:"设备3"},{id:"4",name:"设备4"}
+            ],
+            defaultProps: {
+                children: 'children',
+                label: 'name'
+            },
+            pointTree:[],
+            videoTree:[],
+            isVideo:false,
         }
     },
     computed: {
@@ -252,10 +414,107 @@ export default {
 
             // })
         },
-        devClick:function(item,type){
-            this.rackDevInfo.item=item;
-            this.rackDevInfo.type=type;
-            this.rackDevInfo.visible=true;
+        devClick:function(ev,item,type){
+            console.log(item)
+            this.type=type;
+            this.initParams=Object.assign(this.initParams,item);
+            this.initParams.type=item.type?item.type:"";
+            this.isPanel=false;
+            ev.stopPropagation();
+            this.$el.querySelector("#detail").style.right="0px";
+        },
+        changeDev:function(info){
+            console.log(info)
+            let point=[
+                {
+                    id: "1",
+                    name: '设备1',
+                    children: [
+                        {
+                            id: "11",
+                            name: '测点 1-1',
+                        },
+                        {
+                            id: "12",
+                            name: '测点 1-2',
+                        }
+                    ]
+                }, 
+                {
+                    id: "2",
+                    name: '设备2',
+                    children: [
+                        {
+                            id: "21",
+                            name: '测点 2-1',
+                        },
+                        {
+                            id: "22",
+                            name: '测点 2-2',
+                        }
+                    ]
+                }, 
+                {
+                    id: "3",
+                    name: '设备3',
+                    children: [
+                        {
+                            id: "31",
+                            name: '测点 3-1',
+                        }
+                    ]
+                }, 
+                {
+                    id: "4",
+                    name: '设备4',
+                    children: [
+                        {
+                            id: "41",
+                            name: '测点 4-1',
+                        }
+                    ]
+                }
+            ]
+            let arr=[];
+            for(let i=0;i<info.length;i++){
+                for(let j=0;j<point.length;j++){
+                    if(info[i]==point[j].id){
+                        arr.push(point[j]);
+                    }
+                }
+            }
+            this.pointTree=arr;
+        },
+        handleCheckChange:function(node,checked){
+            if(this.$refs.videotree.getCheckedNodes().length%2===0){
+                if(checked){
+                    this.$refs.videotree.setCheckedNodes([node]);
+                }else{
+                    this.$refs.videotree.setCheckedNodes([]);
+                }        
+            }
+        },
+        sureEdit:function(){
+            console.log(this.$refs.tree.getCheckedNodes())
+            if(this.initParams.type&&this.initParams.type=="video"){
+                this.initParams.devInfo=this.$refs.videotree.getCheckedNodes();
+            }else{
+                let checkNode=this.$refs.tree.getCheckedNodes(),arr=[];
+                for(let i=0;i<checkNode.length;i++){
+                    if(!checkNode.children||checkNode.children.length==0){
+                        arr.push(checkNode[i]);
+                    }   
+                }
+                this.initParams.pointid=this.$refs.tree.getCheckedKeys();
+                this.initParams.devInfo=arr;
+            }
+            
+            for(let i=0;i<this[this.type].length;i++){
+                if(this.initParams.uuid==this[this.type][i].uuid){
+                    this[this.type][i]=Object.assign(this[this.type][i],this.initParams);
+                }
+            }
+            this.hiddenPanel();
         },
         changeInfo:function(info){
             for(let i=0;i<this[info.type].length;i++){
@@ -338,19 +597,33 @@ export default {
                 let item = JSON.parse(data);
                 let width=document.getElementById(domID).offsetWidth;
                 let height=document.getElementById(domID).offsetHeight;
-                if(ev.offsetX-this.activeDevDrag.target.offsetWidth<0){
+                // if(ev.offsetX-this.activeDevDrag.target.offsetWidth<0){
+                //     item.offsetX=0;
+                // }else if(ev.offsetX+this.activeDevDrag.target.offsetWidth>width){
+                //     item.offsetX=width-this.activeDevDrag.target.offsetWidth;
+                // }else{
+                //     item.offsetX=ev.offsetX;
+                // }
+                // if(ev.offsetY-this.activeDevDrag.target.offsetHeight<0){
+                //     item.offsetY=0;
+                // }else if(ev.offsetY+this.activeDevDrag.target.offsetHeight>height){
+                //     item.offsetY=height-this.activeDevDrag.target.offsetHeight;
+                // }else{
+                //     item.offsetY=ev.offsetY;
+                // }
+                if(ev.offsetX-this.activeDevDrag.offsetX<0){
                     item.offsetX=0;
-                }else if(ev.offsetX+this.activeDevDrag.target.offsetWidth>width){
+                }else if(ev.offsetX+(this.activeDevDrag.target.offsetWidth-this.activeDevDrag.offsetX)>width){
                     item.offsetX=width-this.activeDevDrag.target.offsetWidth;
                 }else{
-                    item.offsetX=ev.offsetX;
+                    item.offsetX=ev.offsetX-this.activeDevDrag.offsetX
                 }
-                if(ev.offsetY-this.activeDevDrag.target.offsetHeight<0){
+                if(ev.offsetY-this.activeDevDrag.offsetY<0){
                     item.offsetY=0;
-                }else if(ev.offsetY+this.activeDevDrag.target.offsetHeight>height){
+                }else if(ev.offsetY+(this.activeDevDrag.target.offsetHeight-this.activeDevDrag.offsetY)>height){
                     item.offsetY=height-this.activeDevDrag.target.offsetHeight;
                 }else{
-                    item.offsetY=ev.offsetY;
+                    item.offsetY=ev.offsetY-this.activeDevDrag.offsetY
                 }
                 for(let i=0;i<devData.length;i++){
                     if(item.uuid==devData[i].uuid){
@@ -439,17 +712,29 @@ export default {
             this.layoutInfo.visible=true;
         },
         hiddenPanel:function(){
-            this.$el.querySelector("#detail").style.right="-200px";
+            this.$el.querySelector("#detail").style.right="-250px";
         },
         handlePanel:function(ev){
+            this.isPanel=true;
             ev.stopPropagation();
             this.$el.querySelector("#detail").style.right="0px";
         },  
         remove:function(index,data){
-            data.splice(index, 1);
+            this.$confirm("确定删除？","提示",{
+                confirmButtonText:"确定",
+                cancelButtonText:"取消",
+                type:"warning"
+            }).then(()=>{
+                data.splice(index, 1);
+            })
+            
         },
 	},
-    
+    watch:{
+        "initParams.devid":function(info){
+            this.changeDev(info);
+        }
+    }
 }
 </script>
 <style lang="less" scoped>
@@ -508,7 +793,7 @@ export default {
                                 width: 180%;
                                 height: 100%;
                                 padding: 0 1px;
-                                cursor: pointer;
+                                cursor: move;
                                 &.active{
                                     background: #838FA3;
                                 }
@@ -663,7 +948,7 @@ export default {
                                         width: 180%;
                                         height: 100%;
                                         padding: 0 1px;
-                                        cursor: pointer;
+                                        cursor: move;
                                         &.active{
                                             background: #838FA3;
                                         }
@@ -679,12 +964,12 @@ export default {
             }
         }
         .detail{
-            width: 200px;
+            width: 250px;
             height: 100%;
             position: absolute;
-            right: -200px;
+            right: -250px;
             top:0;
-            background: @normalBg;
+            background: @boxBg;
             color:@color;
             z-index: 999;
             transition: All 0.4s ease-in-out;
@@ -694,6 +979,7 @@ export default {
                 display: block;
                 z-index: 999;
                 transition: all 0.5s ease-in;
+                position: relative;
                 .collapse-con{
                     padding: 10px 10px 0;
                     display: flex;
@@ -741,6 +1027,26 @@ export default {
                 /deep/ .el-collapse-item__content{
                     padding-bottom: 10px;
                 }
+                .edit-form{
+                    height: calc(100% - 50px);
+                    .edit-form-con{
+                        width: 100%;
+                        padding: 10px;
+                        overflow: hidden;
+                    }
+                }
+                .edit-btn{
+                    width: 100%;
+                    height: 40px;
+                    padding: 0 10px;
+                    position: absolute;
+                    bottom: 0;
+                    text-align: right;
+                }
+                /deep/ .height-auto .el-form-item__content{
+                    height: auto;
+                }
+                
             }
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <el-dialog title='设置' :visible.sync="dialogInfo.visible" width="900px" v-dialogDrag :close-on-click-modal="false" :append-to-body="true">
-        <el-scrollbar style="height:220px;" class="scrollbar">
+        <el-scrollbar style="height:250px;" class="scrollbar">
             <div class="dialog-content">
                 <el-form ref="ValidateForm" :model="initParams" :rules="rules" label-position="top">
                     <el-row :gutter="30">
@@ -11,6 +11,14 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
+                                <el-form-item label='类型' prop="category">
+                                    <el-select v-model="initParams.category" placeholder="请选择">
+                                        <el-option key="air" label="空调" value="air"></el-option>
+                                        <el-option key="rack" label="柜子" value="rack"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="24">
                                 <el-form-item label='背景色' prop="background">
                                     <el-color-picker v-model="initParams.background" :predefine="predefineColors"></el-color-picker>
                                 </el-form-item>
@@ -54,12 +62,16 @@ export default {
             initParams:{
                 type:"",
                 name:"",
+                category:"",
                 background:"",
                 devid:"",
                 pointid:""
             },
             rules: {
                 name:[
+                    { required: true, message: '非空', trigger: 'blur' },
+                ],
+                category:[
                     { required: true, message: '非空', trigger: 'blur' },
                 ]
             },
