@@ -62,11 +62,12 @@
                         method='get' 
                         max-height="250"
                         :show-pagination="true"
-                        :show-select-all="false"
+                        :show-select-all="true"
                         :params="initParams"
                         @selection-change="selectChange"
                         @select-all="selectAll"
                         :webSocketInfo="table_data"
+                        :data="table_data"
                         @resultData="resultData"
                         select-id="id"
                         :columns="table_columns" ref="thisRef">   
@@ -81,7 +82,7 @@
                 </div>
             </el-scrollbar>
         </div>
-        <WebSocket :wsInfo="table_data" :sendInfo="{cmd:'alarm',changeSend:true}" :matchInfo="['value:state','isalarm:alarmstyle']"></WebSocket>
+        <!-- <WebSocket :wsInfo="table_data" :sendInfo="{cmd:'alarm',changeSend:true}" :matchInfo="['value:state','isalarm:alarmstyle']"></WebSocket> -->
     </div>
 </template>
 
@@ -93,7 +94,7 @@ export default {
     },
     mounted() {
         let temp="breadcrumb"
-        this.$refs.thisRef.setSelect([{id:'2'}])
+        this.$refs.thisRef.setSelect([{id:'2'},{id:'11'},{id:'23'}])
         this.currentView=temp;
     },
     data(){
@@ -113,7 +114,13 @@ export default {
               { prop: 'jieru', label: '告警状态',minWidth:10},
               { prop: 'handle', label: '操作',slotName:'preview-handle',width:120},
             ],
-            table_data:[{code:"13"}],
+            table_data:[
+                // {code:"13",id:"1"},{code:"13",id:"2"},{code:"13",id:"3"},{code:"13",id:"4"},{code:"13",id:"5"},
+                // {code:"13",id:"6"},{code:"13",id:"7"},{code:"13",id:"8"},{code:"13",id:"9"},{code:"13",id:"10"},
+                // {code:"13",id:"11"},{code:"13",id:"12"},{code:"13",id:"13"},{code:"13",id:"14"},{code:"13",id:"15"},
+                // {code:"13",id:"16"},{code:"13",id:"17"},{code:"13",id:"18"},{code:"13",id:"19"},{code:"13",id:"20"},
+                // {code:"13",id:"21"},{code:"13",id:"22"},{code:"13",id:"23"},{code:"13",id:"24"},{code:"13",id:"25"}
+            ],
             backSelect:{},
         }
     },
@@ -138,28 +145,31 @@ export default {
             }});
         },
         selectChange:function(selection){
-            if(selection.length>0){
-                if(this.backSelect&&JSON.stringify(this.backSelect)!="{}"){
-                    for(let i=0;i<selection.length;i++){
-                        if(this.backSelect.id!=selection[i].id){
-                            this.$refs.thisRef.clearSelect();
-                            this.$refs.thisRef.setRowSelection(selection[i],true)
-                            this.backSelect=selection[i];
-                        }
-                    }
-                }else{
-                    this.backSelect=selection[0];
-                }
+            console.log(selection)
+            // if(selection.length>0){
+            //     if(this.backSelect&&JSON.stringify(this.backSelect)!="{}"){
+            //         for(let i=0;i<selection.length;i++){
+            //             if(this.backSelect.id!=selection[i].id){
+            //                 this.$refs.thisRef.clearSelect();
+            //                 this.$refs.thisRef.setRowSelection(selection[i],true)
+            //                 this.backSelect=selection[i];
+            //             }
+            //         }
+            //     }else{
+            //         this.backSelect=selection[0];
+            //     }
                 
-            }else{
-                this.backSelect={};
-            }
+            // }else{
+            //     this.backSelect={};
+            // }
         },
         selectAll:function(selection){
             console.log(selection)
         },
         resultData:function(info){
-            this.table_data=info.data;
+            console.log("!!!!!!!!!!!!!!!!!!!!!!",info)
+            //异步获取的时候用得到
+            // this.table_data=info.data;
         },
 
 	},

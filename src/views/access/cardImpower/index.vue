@@ -61,6 +61,7 @@
                     <el-button @click="moreDelete">批量删除</el-button>
                     <el-button @click="assignment">权限分配</el-button>
                     <el-button @click="removePermissions">权限清除</el-button>
+                    <h2>table滚动条问题</h2>
                 </div>
                 <el-table-pagination
                     :url="$ajaxUrl+'/getTable'"

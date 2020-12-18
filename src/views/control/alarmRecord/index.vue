@@ -23,6 +23,7 @@
                     @node-click="nodeClick"
                     @check-change="checkChange"
                     :default-checked-keys="checkedKeys"
+                    :default-expanded-keys="expandedKeys"
                     :props="defaultProps">
                     <span class="custom-tree-node" slot-scope="{ node, data }">
                         <span :class="{'active':data.id==activeId}">{{ data.label }}</span>
@@ -129,6 +130,7 @@ export default {
                 label: 'label'
             },
             checkedKeys:[5],
+            expandedKeys:[6],
             checkRadio:true,  //单选
             treeInfo:{
                 visible:false,
