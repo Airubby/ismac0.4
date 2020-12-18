@@ -7,7 +7,7 @@
                     <span>mysql；192.168.0.11:3306；note</span>
                 </div>
             </div>
-            <div class="box-right">
+            <div class="box-right" @click="editSet('storeSetInfo')">
                 <span class="el-icon-edit-outline"></span>
             </div>
         </div>
@@ -18,7 +18,7 @@
                     <span>定义数据存储范围和存储时间</span>
                 </div>
             </div>
-            <div class="box-right">
+            <div class="box-right" @click="editSet('storeRangeInfo')">
                 <span class="el-icon-edit-outline"></span>
             </div>
         </div>
@@ -26,17 +26,24 @@
             <div class="box-left">
                 <div class="box-title">转储设置</div>
                 <div class="box-content">
-                    <span>转储设置</span>
+                    <span>依米康.龙控微模块 | 0300 | 四川省成都高新西区科园南二路2号</span>
                 </div>
             </div>
             <div class="box-right">
                 <span class="el-icon-edit-outline"></span>
             </div>
         </div>
+        <store-set v-if="storeSetInfo.visible" :dialogInfo="storeSetInfo"></store-set>
+        <store-range v-if="storeRangeInfo.visible" :dialogInfo="storeRangeInfo"></store-range>
     </div>
 </template>
 <script>
+import StoreSet from './component/StoreSet'
+import StoreRange from './component/StoreRange'
 export default {
+    components: {
+        StoreSet,StoreRange
+    },
     created() {
         
     },
@@ -45,17 +52,23 @@ export default {
     },
     data(){
         return{
-            
+            initParams:{
+                name:""
+            },
+            storeSetInfo:{
+                visible:false
+            },
+            storeRangeInfo:{
+                visible:false
+            }
         }
     },
-    computed: {
-    },
 	methods: {
-        
+        editSet:function(type){
+            this[type].visible=true;
+        }
 	},
-    components: {
-        
-    }
+    
 }
 </script>
 <style lang="less" scoped>

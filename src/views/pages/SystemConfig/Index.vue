@@ -54,6 +54,19 @@
         </div>
         <div class="list-box">
             <div class="box-left">
+                <div class="box-title">运行信息</div>
+                <div class="box-content">
+                    <span>CPU(45.6%)</span>
+                    <span>内存(32.8%)</span>
+                    <span>硬盘(12.2%)</span>
+                </div>
+            </div>
+            <div class="box-right">
+                <span class="el-icon-edit-outline"></span>
+            </div>
+        </div>
+        <div class="list-box">
+            <div class="box-left">
                 <div class="box-title">供应商信息</div>
                 <div class="box-content">
                     <span>厂商名称</span>
@@ -77,7 +90,18 @@
                 <span class="el-icon-edit-outline"></span>
             </div>
         </div>
-        <div>
+        <div class="list-box">
+            <div class="box-left">
+                <div class="box-title">定时任务</div>
+                <div class="box-content">
+                    <span>定时任务</span>
+                </div>
+            </div>
+            <div class="box-right">
+                
+            </div>
+        </div>
+        <div class="list-btn">
             <el-button type="primary" plain>重启网关</el-button>
             <el-button type="primary" plain>重启服务</el-button>
         </div>
@@ -136,6 +160,9 @@ export default {
                 cursor: pointer;
                 color: @activeColor;
             }
+        }
+        .list-btn{
+            margin-bottom: @boxMargin;
         }
     }
 </style>

@@ -133,6 +133,7 @@
     </div>
 </template>
 <script>
+import { fabric } from "fabric";
 import Draggable from './component/Draggable'
 import Cabinet from './component/Cabinet'
 import echarts from 'echarts'

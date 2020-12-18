@@ -49,18 +49,7 @@
     .dialog-content{
         padding: 15px 30px 0 30px;;
     }
-    .el-input-group__append, .el-input-group__prepend{
-        padding: 0;
-        background-color: transparent;
-        border-left: 1px solid @activeColor;
-        border-right: 1px solid @activeColor;
-        border-color: @activeColor;
-        color: @activeColor;
-        cursor: pointer;
-        .btn{
-            padding: 0 20px;
-        }
-    }
+    
 
     /****/
     .el-input__prefix{
@@ -287,7 +276,8 @@
     .el-form-item--small.el-form-item{
         margin-bottom: @boxMargin;
     }
-    .el-color-picker__panel,.el-color-picker__trigger,.el-color-picker__color{
+    .el-color-picker__panel,.el-color-picker__trigger,.el-color-picker__color,
+    .el-input-group__append, .el-input-group__prepend{
         background-color: transparent;
         border-color: @lineColor;
     }
@@ -298,6 +288,7 @@
     .el-divider{
         background-color:@lineColor;
     }
+    
     /*时间下拉*/
     .el-date-editor--daterange.el-input, 
     .el-date-editor--daterange.el-input__inner, 

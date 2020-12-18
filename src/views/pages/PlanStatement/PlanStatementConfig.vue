@@ -5,10 +5,8 @@
         </div>
         <div class="config-con">
             <div class="config-left">
-                <el-input placeholder="请输入内容" v-model="initParams.search">
-                    <template slot="append">
-                        <div class="btn">搜索</div>
-                    </template>
+                <el-input placeholder="请输入内容" v-model="initParams.search" class="btn">
+                    <el-button slot="append" type="primary" plain>搜索</el-button>
                 </el-input>
                 <div class="search-box">共搜索到22个模板</div>
                 <div class="search-con scrollbar">
@@ -230,5 +228,15 @@ export default {
                 }
             }
         }
+        .btn{
+            /deep/ .el-input-group__append{
+                border-top: 1px solid @activeColor;
+                border-bottom: 1px solid @activeColor;
+                .el-button{
+                    border-radius: 0 4px 4px 0;
+                }
+            }
+        }
+        
     }
 </style>

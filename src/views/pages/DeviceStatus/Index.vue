@@ -5,33 +5,35 @@
                 <p><span>24</span></p>
                 <div>接入设备总数</div>
             </div>
-            <div class="top-box">
-                <p><i :class="['icon-ups',true?'active':'']"></i></p>
-                <div>UPS:2</div>
-            </div>
-            <div class="top-box">
-                <p><i :class="['icon-ammeter']"></i></p>
-                <div>电表:2</div>
-            </div>
-            <div class="top-box">
-                <p><i :class="['icon-arrayabinet']"></i></p>
-                <div>列头柜:2</div>
-            </div>
-            <div class="top-box">
-                <p><i :class="['icon-air']"></i></p>
-                <div>空调:2</div>
-            </div>
-            <div class="top-box">
-                <p><i :class="['icon-humiture']"></i></p>
-                <div>温湿度:2</div>
-            </div>
-            <div class="top-box">
-                <p><i :class="['icon-leakage']"></i></p>
-                <div>漏水:2</div>
-            </div>
-            <div class="top-box">
-                <p><i :class="['icon-smoke']"></i></p>
-                <div>烟感:2</div>
+            <div class="top-list" v-scrollBar> 
+                <div class="top-box">
+                    <p><i :class="['icon-ups',true?'active':'']"></i></p>
+                    <div>UPS:2</div>
+                </div>
+                <div class="top-box">
+                    <p><i :class="['icon-ammeter']"></i></p>
+                    <div>电表:2</div>
+                </div>
+                <div class="top-box">
+                    <p><i :class="['icon-arrayabinet']"></i></p>
+                    <div>列头柜:2</div>
+                </div>
+                <div class="top-box">
+                    <p><i :class="['icon-air']"></i></p>
+                    <div>空调:2</div>
+                </div>
+                <div class="top-box">
+                    <p><i :class="['icon-humiture']"></i></p>
+                    <div>温湿度:2</div>
+                </div>
+                <div class="top-box">
+                    <p><i :class="['icon-leakage']"></i></p>
+                    <div>漏水:2</div>
+                </div>
+                <div class="top-box">
+                    <p><i :class="['icon-smoke']"></i></p>
+                    <div>烟感:2</div>
+                </div>
             </div>
         </div>
         <div class="center">
@@ -129,6 +131,7 @@ export default {
             justify-content: space-around;
             align-items: center;
             .top-box{
+                min-width: 100px;
                 text-align: center;
                 p{
                     height: 60px;
@@ -147,6 +150,14 @@ export default {
                     &.active:before{
                         color: @alarmColor
                     }
+                }
+            }
+            .top-list{
+                width: calc(100% - 120px);
+                display: flex;
+                align-items: center;
+                .top-box{
+                    width: 100%;
                 }
             }
         }

@@ -3,6 +3,7 @@
         <div class="layout-top">
             <el-button type="primary" plain @click="$router.back(-1)">返回</el-button>
             <div>
+                <el-button type="primary" @click="test()">测试</el-button>
                 <el-button type="primary" @click="handleSure()">保存</el-button>
                 <el-button type="primary" plain @click="handleSet()">布局设置</el-button>
                 <el-button type="primary" plain @click="handlePanel($event)">布局面板</el-button>
@@ -10,7 +11,10 @@
         </div>
         <div class="layout-con">
             <div class="scrollbar" v-scrollBar>
-                <div class="layout-box">
+                <div v-if="editType=='auto'" id="canvas-box" @drop='drop($event)' @touchstart='drop($event)' @dragover='allowDrop($event)'>
+                    <!-- <canvas id="designCanvas"></canvas> -->
+                </div>
+                <div v-else class="layout-box">
                     <div class="layout-box-con">
                         <div class="layout-box-panel layout-box-onepanel" :style="panelStyle" v-if="editType=='one'">
                             <div class="layout-panel-other">
@@ -257,6 +261,7 @@
     </div>
 </template>
 <script>
+import { fabric } from "fabric";
 import Draggable from './component/Draggable'
 import LayoutSet from './component/LayoutSet'
 import Cabinet from './component/Cabinet'
@@ -269,14 +274,14 @@ export default {
         
     },
     created() {
+        
+    },
+    mounted() {
         let params = this.$route.query.params;
         if(params){
             this.hint="edit";
             this.init(JSON.parse(params).id)
         }
-    },
-    mounted() {
-        
     },
     data(){
         return{
@@ -284,7 +289,7 @@ export default {
             layoutInfo:{
                 visible:false,
             },
-            activeItem:"third",
+            activeItem:"first",
             isPanel:true,
             predefineColors:["#D8645B","#8CBECF","#F2B747","#588EEA","#75B899","#55A1E2"],
             type:"",
@@ -327,18 +332,6 @@ export default {
                     name:'视频',offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],video:{},type:"video",
                     imgsrc:"/images/device/webcam.png",imgsrcAlarm:"/images/device/webcam-alarm.png"
                 },
-                {
-                    name:'烟感',offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],
-                    imgsrc:"/images/device/smoke.png",imgsrcAlarm:"/images/device/smoke-alarm.png"
-                },
-                {
-                    name:'漏水',offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],
-                    imgsrc:"/images/device/thalposis.png",imgsrcAlarm:"/images/device/thalposis-alarm.png"
-                },
-                {
-                    name:'视频',offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],video:{},type:"video",
-                    imgsrc:"/images/device/webcam.png",imgsrcAlarm:"/images/device/webcam-alarm.png"
-                }
             ],
 
             
@@ -348,7 +341,7 @@ export default {
             activeDevitemDrag:null,
             activeDevdataDrag:null,
 
-            editType:"one",
+            editType:"two",
             leftDoor:true,
             rightDoor:false,
             topData:[],
@@ -373,6 +366,13 @@ export default {
             pointTree:[],
             videoTree:[],
             isVideo:false,
+
+            zoomPoint:"",//中心点
+            zoom:1, //缩放比例
+            viewportTransform:null, //拖动画布后，存的距离上左的间距arr[0]比率；arr[4]左右移动的距离；arr[5]上下移动距离
+            design:null,
+            initWidth:"",
+            initHeight:""
         }
     },
     computed: {
@@ -402,6 +402,13 @@ export default {
             if(layoutJson){
                 let json=JSON.parse(layoutJson);
                 this.editType=json.editType;
+                if(this.editType=="auto"){
+                    this.$nextTick(()=>{
+                        document.getElementById("canvas-box").innerHTML='<canvas id="designCanvas"></canvas>';
+                        this.initCanvas();
+                    })
+                    return;
+                }
                 this.leftDoor=json.leftDoor;
                 this.rightDoor=json.rightDoor;
                 this.topData=json.topData;
@@ -525,6 +532,15 @@ export default {
         },
         reset:function(info){
             this.editType=info.type;
+            if(this.editType=="auto"){
+                this.$nextTick(()=>{
+                    document.getElementById("canvas-box").innerHTML='<canvas id="designCanvas"></canvas>';
+                    this.initCanvas();
+                })
+                return;
+            }else{
+                document.getElementById("canvas-box").innerHTML="";
+            }
             this.leftDoor=true;
             this.rightDoor=false;
             this.topData=[];
@@ -729,6 +745,153 @@ export default {
             })
             
         },
+        initCanvas:function(){
+            let _this=this;
+            this.design =new fabric.Canvas('designCanvas',{backgroundColor:''});
+            let dom=document.getElementById("canvas-box");
+            this.initWidth=dom.offsetWidth;
+            this.initHeight=dom.offsetHeight;
+            this.design.setWidth(dom.offsetWidth);
+            this.design.setHeight(dom.offsetHeight);
+            this.zoomPoint = new fabric.Point(this.design.width / 2 , this.design.height / 2);
+
+            this.setCanvasBg();
+            window.onresize=function(){
+                //先还原缩放比例与位置
+                _this.design.setZoom(1);
+                _this.design.absolutePan({x:0, y:0});
+
+                let nowWidth=dom.offsetWidth;
+                let nowHeight=dom.offsetHeight;
+                let zoomX=nowWidth/_this.initWidth;
+                let zoomY=nowHeight/_this.initHeight;
+                _this.zoom=Math.min(zoomX, zoomY);
+                //计算平移坐标
+                let panX=(_this.initWidth-nowWidth*zoomX)/2;
+                let panY=(_this.initHeight-nowHeight*zoomY)/2;
+                //开始平移
+                _this.design.absolutePan({x:panX, y:panY});
+                _this.design.zoomToPoint(_this.zoomPoint, _this.zoom);
+                //obj.setCoords();    _this.design.calcOffset(); 
+            };
+            document.onkeydown=function(event){
+                if (_this && _this._isDestroyed) {return}  //摧毁组件了就不执行下面了，不然其他地方input框又可能不能输入下面的快捷键
+                var ev = event || window.event || arguments.callee.caller.arguments[0];
+                if(ev){
+                    switch(ev.keyCode){
+                        case 46 :// 点击删除
+                            _this.removeObject();
+                            break;
+                        case 83:
+                            ev.preventDefault(); 
+                            if(ev.ctrlKey){
+                                _this.saveDesign();
+                            }
+                            break;
+                    }
+                }
+            }
+            _this.design.on('mouse:wheel', function(opt) {
+                console.log(this)
+                var delta = opt.e.deltaY;
+                _this.zoom = _this.design.getZoom();
+                _this.zoom *= 0.999 ** delta;
+                if (_this.zoom > 20) _this.zoom = 20;
+                if (_this.zoom < 0.01) _this.zoom = 0.01;
+                this.zoomToPoint(_this.zoomPoint, _this.zoom);
+                // this.setZoom(_this.zoom);
+                opt.e.preventDefault();
+                opt.e.stopPropagation();
+                _this.viewportTransform=this.viewportTransform;
+            });
+            _this.design.on('mouse:down', function(opt) {
+                var evt = opt.e;
+                if (evt.altKey === true) {
+                    this.isDragging = true;
+                    this.selection = false;
+                    this.lastPosX = evt.clientX;
+                    this.lastPosY = evt.clientY;
+                }
+            });
+            _this.design.on('mouse:move', function(opt) {
+                if (this.isDragging) {
+                    var e = opt.e;
+                    var vpt = this.viewportTransform;
+                    vpt[4] += e.clientX - this.lastPosX;
+                    vpt[5] += e.clientY - this.lastPosY;
+                    this.requestRenderAll();
+                    this.lastPosX = e.clientX;
+                    this.lastPosY = e.clientY;
+                    _this.viewportTransform=this.viewportTransform;
+                }
+            });
+            _this.design.on('mouse:up', function(opt) {
+                this.isDragging = false;
+                this.selection = true;
+            });
+        },
+        setCanvasBg:function(){
+            let _this=this;
+            fabric.Image.fromURL('images/device/room.png', function (oimg) { 
+                let bgWidth=oimg._element.width;
+                let bgHeight=oimg._element.height;
+                let zoom=1,left=0,top=0;
+                if(_this.design.width/oimg._element.width-_this.design.height/oimg._element.height<0){  //y轴没占满，
+                    zoom=_this.design.width/oimg._element.width;
+                    top=(_this.design.height-bgHeight*zoom)/2
+                }else{
+                    zoom=_this.design.height/oimg._element.height;
+                    left=(_this.design.width-bgWidth*zoom)/2
+                }
+                _this.design.setBackgroundImage('images/device/room.png', _this.design.renderAll.bind(_this.design),{
+                    scaleX: zoom,
+                    scaleY: zoom,
+                    left:left,
+                    top:top,
+                });
+            });
+        },
+        drop:function(ev){
+            let _this=this;
+            var object="";
+            // //开始缩放
+            this.design.zoomToPoint(this.zoomPoint, this.zoom);
+            var json=JSON.parse(ev.dataTransfer.getData("data"));
+            var left=ev.offsetX;
+            var top=ev.offsetY;
+            //viewportTransform[0] 存的缩放比例；viewportTransform[4]X轴移动距离；this.viewportTransform[5]Y轴移动距离
+            if(this.viewportTransform){
+                left=(left-this.viewportTransform[4])/this.zoom;
+                top=(top-this.viewportTransform[5])/this.zoom;
+            }
+            fabric.Image.fromURL(json.imgsrc, function(object){
+                object["data"]=json;
+                object.set({
+                    left: left,
+                    top: top,
+                });
+                _this.addObject(object)
+            });
+        },
+        addObject:function(object){
+            let _this=this;
+            object.toObject = (function (toObject) {//赋值自定义属性
+                return function (properties) {
+                    return fabric.util.object.extend(toObject.call(this, properties), {
+                        data: this.data
+                    });
+                };
+            })(object.toObject);
+            this.design.add(object);
+        },
+        test:function(){
+            console.log(this.design)
+            console.log(this.design.contextCache)
+            this.design.renderAndResetBound();
+            this.design.calcOffset() //都需要调用calcOffset; 
+            this.design.requestRenderAll();
+
+        }
 	},
     watch:{
         "initParams.devid":function(info){
@@ -748,6 +911,11 @@ export default {
             width: 100%;
             height: calc(100% - 50px);
             position: relative;
+            #canvas-box{
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
         }
         .layout-box{
             width: 100%;
