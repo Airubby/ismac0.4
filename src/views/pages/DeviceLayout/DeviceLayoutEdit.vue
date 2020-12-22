@@ -1,5 +1,5 @@
 <template>
-    <div class="content" @click="hiddenPanel($event)">
+    <div class="content">
         <div class="layout-top">
             <el-button type="primary" plain @click="$router.back(-1)">返回</el-button>
             <div>
@@ -11,12 +11,12 @@
         </div>
         <div class="layout-con">
             <div class="scrollbar" v-scrollBar>
-                <div v-if="editType=='auto'" id="canvas-box" @drop='drop($event)' @touchstart='drop($event)' @dragover='allowDrop($event)'>
-                    <!-- <canvas id="designCanvas"></canvas> -->
+                <div v-show="editType=='auto'" id="canvas-box" @drop='drop($event)' @touchstart='drop($event)' @dragover='allowDrop($event)'>
+                    <canvas id="designCanvas"></canvas>
                 </div>
-                <div v-else class="layout-box">
+                <div class="layout-box" v-show="editType=='one'||editType=='two'" @click="hiddenPanel($event)">
                     <div class="layout-box-con">
-                        <div class="layout-box-panel layout-box-onepanel" :style="panelStyle" v-if="editType=='one'">
+                        <div class="layout-box-panel layout-box-onepanel" :style="panelStyle" v-show="editType=='one'">
                             <div class="layout-panel-other">
                                 <div class="layout-panel-othercon" id="devtopData"
                                 @drop='dragDevFinish($event,"devtopData")'
@@ -66,7 +66,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="layout-box-panel" :style="panelStyle" v-if="editType=='two'">
+                        <div class="layout-box-panel" :style="panelStyle" v-show="editType=='two'">
                             <div class="layout-panel-other">
                                 <div class="layout-panel-othercon" id="devtopData"
                                 @drop='dragDevFinish($event,"devtopData")'
@@ -267,6 +267,7 @@ import LayoutSet from './component/LayoutSet'
 import Cabinet from './component/Cabinet'
 import RackDevSet from './component/RackDevSet'
 import uuid from 'uuid-random';
+import {filterNull} from '@/utils/Tool'
 export default {
     components: {LayoutSet,Draggable,Cabinet,RackDevSet},
     mixins:[],
@@ -289,7 +290,7 @@ export default {
             layoutInfo:{
                 visible:false,
             },
-            activeItem:"first",
+            activeItem:"third",
             isPanel:true,
             predefineColors:["#D8645B","#8CBECF","#F2B747","#588EEA","#75B899","#55A1E2"],
             type:"",
@@ -311,7 +312,7 @@ export default {
                 ]
             },
             list:[
-                {name:'配电单元',devInfo:[],devid:[],pointid:[],devid:[],pointid:[],background:""},
+                {name:'配电单元',devInfo:[],devid:[],pointid:[],background:""},
                 {name:'整流柜',devInfo:[],devid:[],pointid:[],background:""},
                 {name:'电池柜',devInfo:[],devid:[],pointid:[],background:""},
                 {name:'设备单元',devInfo:[],devid:[],pointid:[],background:""},
@@ -341,7 +342,7 @@ export default {
             activeDevitemDrag:null,
             activeDevdataDrag:null,
 
-            editType:"two",
+            editType:"auto",
             leftDoor:true,
             rightDoor:false,
             topData:[],
@@ -539,7 +540,7 @@ export default {
                 })
                 return;
             }else{
-                document.getElementById("canvas-box").innerHTML="";
+                if(document.getElementById("canvas-box"))document.getElementById("canvas-box").innerHTML="";
             }
             this.leftDoor=true;
             this.rightDoor=false;
@@ -561,6 +562,8 @@ export default {
                 devbottomData:this.devbottomData,
             }
             sessionStorage.setItem("layoutJson",JSON.stringify(json));
+            console.log(JSON.stringify(json));
+            console.log(filterNull(json));
             this.$message.success("保存成功");
             // this.$api.post("",{json:JSON.stringify(json)}).then(res=>{
 
@@ -727,7 +730,8 @@ export default {
         handleSet:function(){
             this.layoutInfo.visible=true;
         },
-        hiddenPanel:function(){
+        hiddenPanel:function(ev){
+            console.log("!!!!!!!!!!!!!!!!!!!!!")
             this.$el.querySelector("#detail").style.right="-250px";
         },
         handlePanel:function(ev){
@@ -805,12 +809,24 @@ export default {
                 _this.viewportTransform=this.viewportTransform;
             });
             _this.design.on('mouse:down', function(opt) {
+                console.log(opt)
                 var evt = opt.e;
                 if (evt.altKey === true) {
                     this.isDragging = true;
                     this.selection = false;
                     this.lastPosX = evt.clientX;
                     this.lastPosY = evt.clientY;
+                }
+                if(opt.target){
+                    
+                    // _this.type=opt.target.data.type;
+                    // _this.initParams=Object.assign(_this.initParams,opt.target.data);
+                    // _this.initParams.type=opt.target.data.type?opt.target.data.type:"";
+                    // _this.isPanel=false;
+                    
+                    _this.devClick(evt,opt.target.data,opt.target.data.type);
+                }else{
+                    _this.hiddenPanel();
                 }
             });
             _this.design.on('mouse:move', function(opt) {

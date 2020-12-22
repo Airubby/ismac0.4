@@ -20,7 +20,8 @@ import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
 import '@/utils/Directive'  //自定义指令
 //加载全局组件
 import './components/Global/index.js'
-
+// import Contextmenu from "vue-contextmenujs"
+// Vue.use(Contextmenu);
 
 import './assets/css/basic.less'
 

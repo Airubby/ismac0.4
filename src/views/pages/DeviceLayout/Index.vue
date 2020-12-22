@@ -218,7 +218,7 @@ export default {
             // })
         },
         enterEdit:function(item){
-            this.$router.push({name:'deviceLayoutEdit',query:{params:JSON.stringify({"id":item.id})}});
+            this.$router.push({name:'deviceLayoutEdit',query:{params:JSON.stringify({"id":"1111"})}});
         },
         initPue:function(ID,value,min,max,title,color){
             var value=1.53,min=0,max=5,title="PUE";
