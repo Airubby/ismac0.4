@@ -267,7 +267,6 @@ import LayoutSet from './component/LayoutSet'
 import Cabinet from './component/Cabinet'
 import RackDevSet from './component/RackDevSet'
 import uuid from 'uuid-random';
-import {filterNull} from '@/utils/Tool'
 export default {
     components: {LayoutSet,Draggable,Cabinet,RackDevSet},
     mixins:[],
@@ -561,9 +560,13 @@ export default {
                 devtopData:this.devtopData,
                 devbottomData:this.devbottomData,
             }
+            if(this.editType=="auto"){
+                json["designCanvas"]=this.design.toDatalessJSON();
+                json["initWidth"]=this.initWidth;
+                json["initHeight"]=this.initHeight;
+            }
             sessionStorage.setItem("layoutJson",JSON.stringify(json));
             console.log(JSON.stringify(json));
-            console.log(filterNull(json));
             this.$message.success("保存成功");
             // this.$api.post("",{json:JSON.stringify(json)}).then(res=>{
 
@@ -752,18 +755,21 @@ export default {
         initCanvas:function(){
             let _this=this;
             this.design =new fabric.Canvas('designCanvas',{backgroundColor:''});
+            fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
+            
             let dom=document.getElementById("canvas-box");
             this.initWidth=dom.offsetWidth;
             this.initHeight=dom.offsetHeight;
             this.design.setWidth(dom.offsetWidth);
             this.design.setHeight(dom.offsetHeight);
             this.zoomPoint = new fabric.Point(this.design.width / 2 , this.design.height / 2);
-
+            this.design.absolutePan({x:-this.design.width / 2, y:-this.design.height / 2});
+            _this.design.zoomToPoint(_this.zoomPoint, _this.zoom);
             this.setCanvasBg();
             window.onresize=function(){
                 //先还原缩放比例与位置
                 _this.design.setZoom(1);
-                _this.design.absolutePan({x:0, y:0});
+                _this.design.absolutePan({x:-_this.design.width / 2, y:-_this.design.height / 2});
 
                 let nowWidth=dom.offsetWidth;
                 let nowHeight=dom.offsetHeight;
@@ -774,7 +780,7 @@ export default {
                 let panX=(_this.initWidth-nowWidth*zoomX)/2;
                 let panY=(_this.initHeight-nowHeight*zoomY)/2;
                 //开始平移
-                _this.design.absolutePan({x:panX, y:panY});
+                _this.design.absolutePan({x:panX-_this.design.width / 2, y:panY-_this.design.height / 2});
                 _this.design.zoomToPoint(_this.zoomPoint, _this.zoom);
                 //obj.setCoords();    _this.design.calcOffset(); 
             };
@@ -829,18 +835,6 @@ export default {
                     _this.hiddenPanel();
                 }
             });
-            _this.design.on('mouse:move', function(opt) {
-                if (this.isDragging) {
-                    var e = opt.e;
-                    var vpt = this.viewportTransform;
-                    vpt[4] += e.clientX - this.lastPosX;
-                    vpt[5] += e.clientY - this.lastPosY;
-                    this.requestRenderAll();
-                    this.lastPosX = e.clientX;
-                    this.lastPosY = e.clientY;
-                    _this.viewportTransform=this.viewportTransform;
-                }
-            });
             _this.design.on('mouse:up', function(opt) {
                 this.isDragging = false;
                 this.selection = true;
@@ -862,8 +856,8 @@ export default {
                 _this.design.setBackgroundImage('images/device/room.png', _this.design.renderAll.bind(_this.design),{
                     scaleX: zoom,
                     scaleY: zoom,
-                    left:left,
-                    top:top,
+                    // left:left,
+                    // top:top,
                 });
             });
         },
@@ -873,12 +867,13 @@ export default {
             // //开始缩放
             this.design.zoomToPoint(this.zoomPoint, this.zoom);
             var json=JSON.parse(ev.dataTransfer.getData("data"));
-            var left=ev.offsetX;
-            var top=ev.offsetY;
+            var left=ev.offsetX-this.initWidth/2;
+            var top=ev.offsetY-this.initHeight/2;
+            console.log(ev,this.zoomPoint,this.zoom,this.viewportTransform)
             //viewportTransform[0] 存的缩放比例；viewportTransform[4]X轴移动距离；this.viewportTransform[5]Y轴移动距离
             if(this.viewportTransform){
-                left=(left-this.viewportTransform[4])/this.zoom;
-                top=(top-this.viewportTransform[5])/this.zoom;
+                left=(left-(this.viewportTransform[4]-this.initWidth/2))/this.zoom;
+                top=(top-(this.viewportTransform[5]-this.initHeight/2))/this.zoom;
             }
             fabric.Image.fromURL(json.imgsrc, function(object){
                 object["data"]=json;
