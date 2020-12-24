@@ -202,10 +202,11 @@ export default {
 
             zoomPoint:"",//中心点
             zoom:1, //缩放比例
-            viewportTransform:null, //拖动画布后，存的距离上左的间距arr[0]比率；arr[4]左右移动的距离；arr[5]上下移动距离
             design:null,
             initWidth:"",
-            initHeight:""
+            initHeight:"",
+            panX:0,
+            panY:0
             
         }
     },
@@ -236,23 +237,23 @@ export default {
         initCanvas:function(json){
             let _this=this;
             console.log(JSON.parse(sessionStorage.getItem("layoutJson")));
-            this.design =new fabric.Canvas('designCanvas',{backgroundColor:'',selection: false});
-            this.design.hoverCursor = 'default'; // 设置对象hover的光标为默认
+            this.design =new fabric.Canvas('designCanvas',{
+                hoverCursor:"pointer"
+            });
             let dom=document.getElementById("canvas-box");
             this.initWidth=json.initWidth;
             this.initHeight=json.initHeight;
-            // this.initWidth=dom.offsetWidth;
-            // this.initHeight=dom.offsetHeight;
             this.design.setWidth(dom.offsetWidth);
             this.design.setHeight(dom.offsetHeight);
-            // this.zoomPoint = new fabric.Point(this.design.width / 2 , this.design.height / 2);
             this.design.loadFromJSON(json.designCanvas, function() {
                 _this.resizeCanvas();
+                _this.design.forEachObject(item=>{
+                    item.set("selectable",false);
+                })
                 window.onresize=function(){
                     _this.resizeCanvas();
                 };
             });
-            // this.setCanvasBg();
             
             _this.design.on('mouse:wheel', function(opt) {
                 console.log(this)
@@ -265,69 +266,39 @@ export default {
                 // this.setZoom(_this.zoom);
                 opt.e.preventDefault();
                 opt.e.stopPropagation();
-                _this.viewportTransform=this.viewportTransform;
             });
             _this.design.on('mouse:down', function(opt) {
-                
+                var evt = opt.e;
+                if(opt.target){
+                    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                }
             });
-        },
-        zoomToFitCanvas:function(info){
-            console.log(info)
-            if(info.backgroundImage){
-                let bgWidth=info.backgroundImage.width*info.backgroundImage.scaleX;
-                let bgHeight=info.backgroundImage.height*info.backgroundImage.scaleY;
-                let dom=document.getElementById("canvas-box");
-                let nowWidth=dom.offsetWidth;
-                let nowHeight=dom.offsetHeight;
-                let zoomX=nowWidth/bgWidth;
-                let zoomY=nowHeight/bgHeight;
-                this.zoom=Math.min(zoomX, zoomY);
-                //计算平移坐标
-                let panX=(nowWidth*zoomX-bgWidth)/2;
-                let panY=(nowHeight*zoomY-bgHeight)/2;
-                //开始平移
-                this.design.absolutePan({x:panX, y:panY});
-                this.design.zoomToPoint(this.zoomPoint, this.zoom);
-            }
+            _this.design.on('mouse:up', function(opt) {
+                this.isDragging = false;
+                this.selection = true;
+            });
         },
         resizeCanvas:function(){
             let _this=this;
+            let dom=document.getElementById("canvas-box");
+            _this.design.setWidth(dom.offsetWidth);
+            _this.design.setHeight(dom.offsetHeight);
             //先还原缩放比例与位置
             _this.design.setZoom(1);
-            _this.design.absolutePan({x:0, y:0});
-            let dom=document.getElementById("canvas-box");
+            _this.design.absolutePan({x:-_this.initWidth / 2, y:-_this.initHeight / 2});
+
             let nowWidth=dom.offsetWidth;
             let nowHeight=dom.offsetHeight;
             let zoomX=nowWidth/_this.initWidth;
             let zoomY=nowHeight/_this.initHeight;
             _this.zoom=Math.min(zoomX, zoomY);
+            _this.zoomPoint = new fabric.Point(_this.design.width / 2 , _this.design.height / 2);
             //计算平移坐标
-            let panX=(_this.initWidth-nowWidth*zoomX)/2;
-            let panY=(_this.initHeight-nowHeight*zoomY)/2;
+            _this.panX=_this.initWidth / 2  - (_this.initWidth-nowWidth)/2;
+            _this.panY=_this.initHeight / 2 - (_this.initHeight-nowHeight)/2;
             //开始平移
-            _this.design.absolutePan({x:panX, y:panY});
+            _this.design.absolutePan({x:-_this.panX, y:-_this.panY});
             _this.design.zoomToPoint(_this.zoomPoint, _this.zoom);
-        },
-        setCanvasBg:function(){
-            let _this=this;
-            fabric.Image.fromURL('images/device/room.png', function (oimg) { 
-                let bgWidth=oimg._element.width;
-                let bgHeight=oimg._element.height;
-                let zoom=1,left=0,top=0;
-                if(_this.design.width/oimg._element.width-_this.design.height/oimg._element.height<0){  //y轴没占满，
-                    zoom=_this.design.width/oimg._element.width;
-                    top=(_this.design.height-bgHeight*zoom)/2
-                }else{
-                    zoom=_this.design.height/oimg._element.height;
-                    left=(_this.design.width-bgWidth*zoom)/2
-                }
-                _this.design.setBackgroundImage('images/device/room.png', _this.design.renderAll.bind(_this.design),{
-                    scaleX: zoom,
-                    scaleY: zoom,
-                    left:left,
-                    top:top,
-                });
-            });
         },
         enterEdit:function(item){
             this.$router.push({name:'deviceLayoutEdit',query:{params:JSON.stringify({"id":"1111"})}});

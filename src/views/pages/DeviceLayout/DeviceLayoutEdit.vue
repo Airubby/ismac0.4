@@ -369,10 +369,11 @@ export default {
 
             zoomPoint:"",//中心点
             zoom:1, //缩放比例
-            viewportTransform:null, //拖动画布后，存的距离上左的间距arr[0]比率；arr[4]左右移动的距离；arr[5]上下移动距离
             design:null,
             initWidth:"",
-            initHeight:""
+            initHeight:"",
+            panX:0,
+            panY:0
         }
     },
     computed: {
@@ -405,7 +406,7 @@ export default {
                 if(this.editType=="auto"){
                     this.$nextTick(()=>{
                         document.getElementById("canvas-box").innerHTML='<canvas id="designCanvas"></canvas>';
-                        this.initCanvas();
+                        this.initCanvas(json);
                     })
                     return;
                 }
@@ -752,37 +753,31 @@ export default {
             })
             
         },
-        initCanvas:function(){
+        initCanvas:function(json){
             let _this=this;
             this.design =new fabric.Canvas('designCanvas',{backgroundColor:''});
             fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
-            
-            let dom=document.getElementById("canvas-box");
-            this.initWidth=dom.offsetWidth;
-            this.initHeight=dom.offsetHeight;
-            this.design.setWidth(dom.offsetWidth);
-            this.design.setHeight(dom.offsetHeight);
-            this.zoomPoint = new fabric.Point(this.design.width / 2 , this.design.height / 2);
-            this.design.absolutePan({x:-this.design.width / 2, y:-this.design.height / 2});
-            _this.design.zoomToPoint(_this.zoomPoint, _this.zoom);
-            this.setCanvasBg();
+            if(json){
+                this.initWidth=json.initWidth;
+                this.initHeight=json.initHeight;
+                this.design.loadFromJSON(json.designCanvas, function() {
+                    _this.resizeCanvas();
+                });
+            }else{
+                let dom=document.getElementById("canvas-box");
+                this.initWidth=dom.offsetWidth;
+                this.initHeight=dom.offsetHeight;
+                this.panX=dom.offsetWidth/2;
+                this.panY=dom.offsetHeight/2;
+                this.design.setWidth(dom.offsetWidth);
+                this.design.setHeight(dom.offsetHeight);
+                this.zoomPoint = new fabric.Point(this.panX , this.panY);
+                this.design.absolutePan({x:-this.panX, y:-this.panY});
+                this.design.zoomToPoint(_this.zoomPoint, _this.zoom);
+                this.setCanvasBg();
+            }
             window.onresize=function(){
-                //先还原缩放比例与位置
-                _this.design.setZoom(1);
-                _this.design.absolutePan({x:-_this.design.width / 2, y:-_this.design.height / 2});
-
-                let nowWidth=dom.offsetWidth;
-                let nowHeight=dom.offsetHeight;
-                let zoomX=nowWidth/_this.initWidth;
-                let zoomY=nowHeight/_this.initHeight;
-                _this.zoom=Math.min(zoomX, zoomY);
-                //计算平移坐标
-                let panX=(_this.initWidth-nowWidth*zoomX)/2;
-                let panY=(_this.initHeight-nowHeight*zoomY)/2;
-                //开始平移
-                _this.design.absolutePan({x:panX-_this.design.width / 2, y:panY-_this.design.height / 2});
-                _this.design.zoomToPoint(_this.zoomPoint, _this.zoom);
-                //obj.setCoords();    _this.design.calcOffset(); 
+                _this.resizeCanvas();
             };
             document.onkeydown=function(event){
                 if (_this && _this._isDestroyed) {return}  //摧毁组件了就不执行下面了，不然其他地方input框又可能不能输入下面的快捷键
@@ -802,20 +797,16 @@ export default {
                 }
             }
             _this.design.on('mouse:wheel', function(opt) {
-                console.log(this)
                 var delta = opt.e.deltaY;
                 _this.zoom = _this.design.getZoom();
                 _this.zoom *= 0.999 ** delta;
                 if (_this.zoom > 20) _this.zoom = 20;
                 if (_this.zoom < 0.01) _this.zoom = 0.01;
                 this.zoomToPoint(_this.zoomPoint, _this.zoom);
-                // this.setZoom(_this.zoom);
                 opt.e.preventDefault();
                 opt.e.stopPropagation();
-                _this.viewportTransform=this.viewportTransform;
             });
             _this.design.on('mouse:down', function(opt) {
-                console.log(opt)
                 var evt = opt.e;
                 if (evt.altKey === true) {
                     this.isDragging = true;
@@ -840,6 +831,28 @@ export default {
                 this.selection = true;
             });
         },
+        resizeCanvas:function(){
+            let _this=this;
+            let dom=document.getElementById("canvas-box");
+            _this.design.setWidth(dom.offsetWidth);
+            _this.design.setHeight(dom.offsetHeight);
+            //先还原缩放比例与位置
+            _this.design.setZoom(1);
+            _this.design.absolutePan({x:-_this.initWidth / 2, y:-_this.initHeight / 2});
+
+            let nowWidth=dom.offsetWidth;
+            let nowHeight=dom.offsetHeight;
+            let zoomX=nowWidth/_this.initWidth;
+            let zoomY=nowHeight/_this.initHeight;
+            _this.zoom=Math.min(zoomX, zoomY);
+            _this.zoomPoint = new fabric.Point(_this.design.width / 2 , _this.design.height / 2);
+            //计算平移坐标
+            _this.panX=_this.initWidth / 2  - (_this.initWidth-nowWidth)/2;
+            _this.panY=_this.initHeight / 2 - (_this.initHeight-nowHeight)/2;
+            //开始平移
+            _this.design.absolutePan({x:-_this.panX, y:-_this.panY});
+            _this.design.zoomToPoint(_this.zoomPoint, _this.zoom);
+        },
         setCanvasBg:function(){
             let _this=this;
             fabric.Image.fromURL('images/device/room.png', function (oimg) { 
@@ -862,19 +875,15 @@ export default {
             });
         },
         drop:function(ev){
+            console.log(this.design)
             let _this=this;
             var object="";
             // //开始缩放
             this.design.zoomToPoint(this.zoomPoint, this.zoom);
             var json=JSON.parse(ev.dataTransfer.getData("data"));
-            var left=ev.offsetX-this.initWidth/2;
-            var top=ev.offsetY-this.initHeight/2;
-            console.log(ev,this.zoomPoint,this.zoom,this.viewportTransform)
-            //viewportTransform[0] 存的缩放比例；viewportTransform[4]X轴移动距离；this.viewportTransform[5]Y轴移动距离
-            if(this.viewportTransform){
-                left=(left-(this.viewportTransform[4]-this.initWidth/2))/this.zoom;
-                top=(top-(this.viewportTransform[5]-this.initHeight/2))/this.zoom;
-            }
+            var left=(ev.offsetX-this.panX)/this.zoom;
+            var top=(ev.offsetY-this.panY)/this.zoom;
+            console.log(ev,this.zoomPoint,this.zoom,this.panX)
             fabric.Image.fromURL(json.imgsrc, function(object){
                 object["data"]=json;
                 object.set({
