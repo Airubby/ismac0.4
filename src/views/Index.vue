@@ -55,7 +55,7 @@
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
-            <div class="index-right-top-list">
+            <div class="index-right-top-list" @click="enterBigScreen">
                 <i class="icon-screen"></i>{{$t("BigScreen")}}
             </div>
             <div class="index-right-top-list">
@@ -145,6 +145,9 @@ export default {
             Vue.prototype.$theme=theme;
             sessionStorage.setItem("theme", theme);
         },
+        enterBigScreen(){
+            this.$router.push({path:'/bigScreen'});
+        }
     }
 }
 </script>

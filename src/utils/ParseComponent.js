@@ -153,7 +153,7 @@ export default {
                 let tempData=null;
                 new Promise ((resolve, reject) => {
                     axios.get(`${_this.pathUrl}`).then((result) => {
-                        tempData = compiler.parseComponent(result.data);
+                        tempData = compiler.parseComponent(result);
                         resolve();
                     }).catch((error) => {
                         reject()

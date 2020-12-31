@@ -26,10 +26,12 @@ service.interceptors.response.use(
 	response => {
 		loadingService&&loadingService.close();
 		const res = response.data;
-		if(res.hasOwnProperty("err_code")&&res.err_code=="-1"&&store.getters.infoFlag){
-			store.dispatch('setInfoFlag',false);
-			Notification.warning("请登录系统");
-			router.push({path:'/login'});
+		if(res.hasOwnProperty("err_code")&&res.err_code=="-1"){
+			if(store.getters.infoFlag){
+                store.dispatch('setInfoFlag',false);
+                Notification.warning("请登录系统");
+                router.push({path:'/bigScreen'});
+            }
 			return Promise.reject("请登录系统");
 		}
 		return response.data;
@@ -117,6 +119,15 @@ export default {
 				reject(error)
 			})
 		})
+    },
+    downloadFile:function(url,params){
+		let link = document.createElement('a');
+        link.href=url;
+        link.setAttribute("download",url);
+        document.body.appendChild(link);
+        link.click();
+        window.URL.revokeObjectURL(link.href); // 释放URL 对象
+        document.body.removeChild(link);// 下载完成移除元素
 	},
 	service:service
 }

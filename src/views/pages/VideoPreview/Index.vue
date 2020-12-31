@@ -1,6 +1,7 @@
 <template>
     <div class="content">
-        <div class="video-top">
+        <video id="videoElement"></video>
+        <!-- <div class="video-top">
             <el-button @click="changeImage(1,0)" type="primary" :plain="btntype[0]"><i class="el-icon-one"></i></el-button>
             <el-button @click="changeImage(2,1)" type="primary" :plain="btntype[1]"><i class="el-icon-two"></i></el-button>
             <el-button @click="changeImage(4,2)" type="primary" :plain="btntype[2]"><i class="el-icon-menu"></i></el-button>
@@ -17,7 +18,7 @@
                 </div>
             </template>
         </div>
-        <getVideo :dialogInfo="videoInfo" v-if="videoInfo.visible"></getVideo>
+        <getVideo :dialogInfo="videoInfo" v-if="videoInfo.visible"></getVideo> -->
     </div>
 </template>
 <script>
@@ -27,6 +28,11 @@ import 'vue-video-player/src/custom-theme.css'
 import 'videojs-flash'
 import 'videojs-contrib-hls/dist/videojs-contrib-hls'
 import getVideo from './component/Video.vue'
+
+
+import flvjs from 'flv.js'
+
+
 export default {
     components: {
         getVideo,videoPlayer
@@ -35,7 +41,16 @@ export default {
         
     },
     mounted() {
-        
+        if (flvjs.isSupported()) {
+            var videoElement = document.getElementById('videoElement');
+            var flvPlayer = flvjs.createPlayer({
+                type: 'flv',
+                url: 'http://example.com/flv/video.flv'
+            });
+            flvPlayer.attachMediaElement(videoElement);
+            flvPlayer.load();
+            flvPlayer.play();
+        }
     },
     data(){
         return{

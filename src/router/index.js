@@ -13,6 +13,18 @@ export const syncRouter=[
         name: 'Login',
         component: () => import('@/views/Login.vue'),
     },
+    {
+        path: '/test',
+        name: 'test',
+        meta:{ title: '大屏'},
+        component: () => import('@/views/Test.vue'),
+    },
+    {
+        path: '/bigScreen',
+        name: 'BigScreen',
+        meta:{ title: '大屏'},
+        component: () => import('@/views/BigScreen/Index.vue'),
+    },
     { path: '*', component: () => import('@/views/errorPage/Loading') },
     { path: '/404',name:'404',meta: { title: '404'}, component: () => import('@/views/errorPage/404') },
   

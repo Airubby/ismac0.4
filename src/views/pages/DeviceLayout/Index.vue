@@ -263,6 +263,7 @@ export default {
                 if (_this.zoom > 20) _this.zoom = 20;
                 if (_this.zoom < 0.01) _this.zoom = 0.01;
                 this.zoomToPoint(_this.zoomPoint, _this.zoom);
+                _this.mouseWheel();
                 // this.setZoom(_this.zoom);
                 opt.e.preventDefault();
                 opt.e.stopPropagation();

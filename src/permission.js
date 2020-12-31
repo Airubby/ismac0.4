@@ -35,7 +35,7 @@ async function routerGo(){
         await getInfo();
     }
     router.beforeEach((to, from, next) => {
-        const whiteList = ['/login','/401','/404'] // 不重定向白名单
+        const whiteList = ['/login','/test','/bigScreen','/401','/404'] // 不重定向白名单
         // let token=store.getters.token;
         if(sessionStorage.roleid){
             if (to.path!=="/"&&whiteList.indexOf(to.path) !== -1) {
@@ -52,7 +52,7 @@ async function routerGo(){
             if (to.path!=="/"&&whiteList.indexOf(to.path) !== -1) {
                 next()
             } else {
-                next('/login')
+                next('/bigScreen')
             }
         }
     

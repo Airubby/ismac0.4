@@ -1,14 +1,19 @@
 import Vue from 'vue'
 import store from '@/store/index'
+import { mapGetters } from 'vuex'
 export default {
 	created () {
 		this.init();
+    },
+    computed:{
+        ...mapGetters([
+            'sendMsg'
+        ]),
     },
 	data() {
         return {
 			//"ws://echo.websocket.org"
 			wsAddress:null,
-			sendMsg:null,
 			ws:null,
        }
 	},
@@ -48,7 +53,7 @@ export default {
 		onopenWS:function(event){
 			console.log("创建连接成功！");
 			if(this.sendMsg!=""&&this.sendMsg!=null){
-				ws.send(sendMsg);
+				this.ws.send(this.sendMsg);
 			}
 		},
 		onmessageWS:function(result){
@@ -75,4 +80,9 @@ export default {
 		this.ws=null;
 		Vue.prototype.$ws=this.ws;
     },
+    watch:{
+        sendMsg:function(val){
+            this.onopenWS();
+        }
+    }
 }

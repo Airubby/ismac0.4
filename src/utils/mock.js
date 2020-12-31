@@ -395,4 +395,23 @@ const getdata = function(){
     }
 }
 
+const getBigScreen=function(){
+    return{
+        err_code:0,
+        err_msg:"成功",
+        data:[
+            {
+                "key": "home",
+                "isIndex": "true",
+                "pathUrl": "/template/home",
+                "pointData":[
+                    {"key":"name","devid":"1","pointid":"1-1"},
+                    {"key":"detail","devid":"2","pointid":"2-1"},
+                ],
+                "routeData":[]
+            },
+        ]
+    }
+}
 Mock.mock(RegExp('/getMockData' + ".*"), /get|post/i,getdata) 
+Mock.mock(RegExp('/getBigInfo' + ".*"), /get|post/i,getBigScreen) 
