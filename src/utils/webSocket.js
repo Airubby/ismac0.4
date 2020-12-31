@@ -53,7 +53,7 @@ export default {
 		onopenWS:function(event){
 			console.log("创建连接成功！");
 			if(this.sendMsg!=""&&this.sendMsg!=null){
-				this.ws.send(sendMsg);
+				this.ws.send(this.sendMsg);
 			}
 		},
 		onmessageWS:function(result){
@@ -80,4 +80,9 @@ export default {
 		this.ws=null;
 		Vue.prototype.$ws=this.ws;
     },
+    watch:{
+        sendMsg:function(val){
+            this.onopenWS();
+        }
+    }
 }

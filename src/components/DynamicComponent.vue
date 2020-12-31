@@ -126,7 +126,7 @@ export default {
                 let tempData=null;
                 new Promise ((resolve, reject) => {
                     axios.get(`${_this.pathUrl}`).then((result) => {
-                        debugger
+                        //axios高版本的返回的result就是数据了，不用再result.data
                         tempData = compiler.parseComponent(result.data);
                         resolve();
                     }).catch((error) => {

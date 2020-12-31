@@ -36,13 +36,13 @@
                         <span>设备列表</span>
                         <div class="fr">
                             <div style="width:150px" class="fl ml10">
-                                <el-select v-model="initParams.guanzhu" :placeholder='$t("hint.select")'>
+                                <el-select v-model="initParams.guanzhu" clearable :placeholder='$t("hint.select")'>
                                     <el-option label="23" value="shanghai"></el-option>
                                     <el-option label="234" value="beijing"></el-option>
                                 </el-select>
                             </div>
                             <div style="width:150px" class="fl ml10">
-                                <el-select v-model="initParams.type" :placeholder='$t("hint.select")'>
+                                <el-select v-model="initParams.type" clearable :placeholder='$t("hint.select")'>
                                     <el-option label="23" value="shanghai"></el-option>
                                     <el-option label="234" value="beijing"></el-option>
                                 </el-select>

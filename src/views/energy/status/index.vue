@@ -7,6 +7,7 @@
             </el-breadcrumb>
         </div>
         <div class="public_content">
+            <el-scrollbar class="scrollbar">
             <div class="pd20">
                 <h2>form表单中循环展示的验证问题及监听问题</h2>
                 <el-form :model="dynamicValidateForm" :rules="rules" @submit.native.prevent ref="ValidateForm" label-width="100px" class="demo-dynamic">
@@ -51,7 +52,33 @@
                         <p>说明：width:dom宽度；left:dom左侧距离浏览器左边的距离；right:dom右侧距离浏览左边的距离；x:距离浏览器左边的距离</p>
                     </div>
                 </div>
+                <div class="pt20">
+                    <h2>时间间隔内连续变化不刷新</h2>
+                    <div>
+                        <pre>
+                            flush:function(){
+                                let _this=this;
+                                clearTimeout(timer);
+                                this.timer=null;
+                                if(this.lastTime==null){
+                                    console.log("刷新")
+                                }else{
+                                    let lastTime=new Date();
+                                    if(lastTime.getTime()-this.lastTime.getTime()>1000){ //时间超过了一秒
+                                        console.log("刷新")
+                                    }else{
+                                        this.timer=setTimeout(() => {
+                                            _this.flush();
+                                        }, 1000);
+                                    }
+                                }
+                                this.lastTime=new Date();
+                            }
+                        </pre>
+                    </div>
+                </div>
             </div>
+            </el-scrollbar>
         </div>
         <WebSocket :wsInfo="wsData" :sendInfo='{cmd:"subdata",returnFn:true,changeSend:true}' @backInfo="backInfo"></WebSocket>
     </div>
@@ -132,7 +159,9 @@ export default {
                     { required: true, trigger: ['blur', 'change'] ,reqMessage:"不能为空",ruleMessage:"手机格式错误",validator: Rules.checkPhone},
                 ],
             },
-            wsData:[]
+            wsData:[],
+            timer:null,
+            lastTime:null,
         }
     },
 	methods: {
@@ -161,6 +190,24 @@ export default {
         },
         backInfo:function(info){
             console.log(info)
+        },
+        flush:function(){
+            let _this=this;
+            clearTimeout(timer);
+            this.timer=null;
+            if(this.lastTime==null){
+                console.log("刷新")
+            }else{
+                let lastTime=new Date();
+                if(lastTime.getTime()-this.lastTime.getTime()>1000){ //时间超过了一秒
+                    console.log("刷新")
+                }else{
+                    this.timer=setTimeout(() => {
+                        _this.flush();
+                    }, 1000);
+                }
+            }
+            this.lastTime=new Date();
         }
 	},
     watch:{

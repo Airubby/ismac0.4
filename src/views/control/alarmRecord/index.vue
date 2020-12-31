@@ -130,6 +130,7 @@ export default {
                 label: 'label'
             },
             checkedKeys:[5],
+            //this.$nextTick(() => {this.$refs.tree.setCheckedKeys([key]);});   异步获取树形给默认勾选
             expandedKeys:[6],
             checkRadio:true,  //单选
             treeInfo:{

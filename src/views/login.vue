@@ -25,7 +25,7 @@ import Request from '@/utils/Request'
 import {Encrypt,Decrypt} from '@/utils/AEScrypt'
 export default {
 	created () {
-		this.$store.dispatch('setInfoFlag',true);
+		
 		//可以动态设置接口信息，根据不同的接口从不同的服务器上啦数据
 		Request.service.defaults.baseURL=this.$store.getters.AjaxUrl;  //初始化的时候配置文件中的请求前缀还没写入request的baseURL中的
   	},
@@ -76,10 +76,12 @@ export default {
 					this.user.psword=Encrypt(this.user.psword);
 					this.$api.post("/login",this.user,{text:"登录信息提交中..."}).then(res=>{
 						console.log(res)
-						this.$message.success(res.msg);
+                        // this.$message.success(res.msg);
+                        this.$notify.success(res.msg)
 						sessionStorage.roleid=Encrypt(res.data.roleid);  //刷新页面的时候用userid获取权限问题；
 						this.getLimit(res.data.roleid)  //获取权限
-						sessionStorage.loginInfo= JSON.stringify(res.data);
+                        sessionStorage.loginInfo= JSON.stringify(res.data);
+                        this.$store.dispatch('setInfoFlag',true);
 					})
 					// this.$r.post('/login', this.user, r => {
 					// 	console.log(r);

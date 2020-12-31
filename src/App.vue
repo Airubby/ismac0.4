@@ -18,7 +18,7 @@ import { mapGetters } from 'vuex'
       }
     },
     created () {
-        if(/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)){
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent)){
           // store.dispatch('setDevType',true);
         }else{
           // store.dispatch('setDevType',false);
