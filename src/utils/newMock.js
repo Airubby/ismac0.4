@@ -273,7 +273,7 @@ const gettable=function(){
         total:12,
         data:
         [
-            {id:'1',code:'12',type:'普通',user:"小呆",indate:'2019-23-21',timegroup:'时间1',jieru:'323',zw:'123',zl:'234'},
+            {id:'1',code:'12',type:'普通普通普通普通普通普通普通普通普通普通普通普通普通普通普通普通普通普通普通普通普通普通普通普通普通普通',user:"小呆",indate:'2019-23-21',timegroup:'时间1',jieru:'323',zw:'123',zl:'234'},
             {id:'2',code:'122',type:'普通',user:"小呆2",indate:'2019-23-22',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
             {id:'3',code:'123',type:'普通',user:"小呆3",indate:'2019-23-21',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},
             {id:'4',code:'124',type:'普通',user:"小呆4",indate:'2019-23-24',timegroup:'时间2',jieru:'232',zw:'123',zl:'234'},

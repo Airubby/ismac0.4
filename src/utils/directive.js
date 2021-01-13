@@ -47,7 +47,7 @@ Vue.directive('dialogDrag', {
             }else {
                 styL = +sty.left.replace(/\px/g, '');
                 styT = +sty.top.replace(/\px/g, '');
-            };
+            }
             
             document.onmousemove = function (e) {
                 // 通过事件委托，计算移动的距离 
@@ -115,6 +115,10 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
     .el-table--scrollable-x .el-table__body-wrapper > .ps__rail-x,
     .el-table--scrollable-y .el-table__body-wrapper > .ps__rail-y {
         display: block !important;
+        background-color: transparent !important;
+    }
+    .ps .ps__rail-x:hover,.ps .ps__rail-x.ps--clicking,
+    .ps .ps__rail-y:hover,.ps .ps__rail-y.ps--clicking{
         background-color: transparent !important;
     }
  * @param {HTMLElement} el - 必填。dom元素

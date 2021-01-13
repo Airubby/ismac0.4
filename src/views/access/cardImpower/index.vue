@@ -68,6 +68,8 @@
                     list-field="data" 
                     total-field="total"
                     method='get' 
+                    type="local"
+                    :data="table_data"
                     :params="initParams"
                     :showPagination="true"
                     :showSelectAll="true"
@@ -110,7 +112,7 @@ export default {
               { prop: 'code', label: '卡号',minWidth:"400px"},
               { prop: 'type', label: '类型',minWidth:"400px"},
               { prop: 'user', label: '领卡人',minWidth:"400px"},
-              { prop: 'indate', label: '有效期',minWidth:"400px",sortable:true},
+              { prop: 'time', label: '有效期',minWidth:"400px",sortable:true},
               { prop: 'timegroup', label: '时间组',minWidth:"400px"},
               { prop: 'handle', label: '操作',slotName:'preview-handle',width:150},
             ],
@@ -124,7 +126,11 @@ export default {
 	methods: {
         //查询
         searchFN:function(){
-            this.$refs.thisRef.searchHandler(false);
+            // this.$refs.thisRef.searchHandler(false);
+            this.$r.post("/getMockData",{},r=>{
+                console.log(r)
+                this.table_data=r.data;
+            })
         },
         //重置
         reset:function(){

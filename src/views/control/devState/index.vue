@@ -56,15 +56,18 @@
                         </div>
                     </div>
                     <el-table-pagination
+                        v-scrollBar="'table'"
                         :url="$ajaxUrl+'/getTable'"
                         list-field="data" 
                         total-field="total"
                         method='get' 
+                        :highlight-current-row="true"
                         max-height="250"
                         :show-pagination="true"
                         :show-select-all="true"
                         :params="initParams"
                         @selection-change="selectChange"
+                        @current-change="handleCurrentChange"
                         @select-all="selectAll"
                         :webSocketInfo="table_data"
                         :data="table_data"
@@ -107,12 +110,12 @@ export default {
                 name:'',
             },
             table_columns:[
-              { prop: 'code', label: '设备名称',slotName:'preview-name',minWidth:10},
-              { prop: 'type', label: '设备类型',minWidth:10},
-              { prop: 'indate', label: '位置',minWidth:10},
-              { prop: 'timegroup', label: '监控状态',minWidth:10},
-              { prop: 'jieru', label: '告警状态',minWidth:10},
-              { prop: 'handle', label: '操作',slotName:'preview-handle',width:120},
+              { prop: 'code', label: '设备名称',slotName:'preview-name'},
+              { prop: 'type', label: '设备类型',sortable:true,width:"500px"},
+              { prop: 'indate', label: '位置',minWidth:"300px"},
+              { prop: 'timegroup', label: '监控状态'},
+              { prop: 'jieru', label: '告警状态'},
+              { prop: 'handle', label: '操作',fixed:"right",slotName:'preview-handle',width:120},
             ],
             table_data:[
                 // {code:"13",id:"1"},{code:"13",id:"2"},{code:"13",id:"3"},{code:"13",id:"4"},{code:"13",id:"5"},
@@ -163,11 +166,18 @@ export default {
             //     this.backSelect={};
             // }
         },
+        handleCurrentChange(val){
+            console.log(val)
+            this.currentRow = val;
+        },
         selectAll:function(selection){
             console.log(selection)
         },
         resultData:function(info){
             console.log("!!!!!!!!!!!!!!!!!!!!!!",info)
+            this.$nextTick(()=>{
+                this.$refs.thisRef.setSelect([{id:'2'},{id:'11'},{id:'23'}])
+            })
             //异步获取的时候用得到
             // this.table_data=info.data;
         },
