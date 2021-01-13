@@ -3,14 +3,15 @@
         <el-form class="search-top" :model="initParams" :rules="rules" @submit.native.prevent ref="ValidateForm" label-position="top" >
             <div class="search">
                 <el-form-item prop="alarm" label="角色">
-                    <el-select v-model="initParams.alarm" placeholder="请选择">
+                    <!-- <el-select v-model="initParams.alarm" placeholder="请选择">
                         <el-option
                         v-for="item in options"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
                         </el-option>
-                    </el-select>
+                    </el-select> -->
+                    <el-input placeholder="请输入内容" v-model.trim="initParams.name" clearable></el-input>
                 </el-form-item>
                 <el-form-item class="form-item" prop="" :label="`\u3000`">
                     <el-button type="primary" @click="submitForm()">提交</el-button>

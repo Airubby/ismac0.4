@@ -7,7 +7,7 @@
                     <div class="btn">
                         <el-button type="text">导入</el-button>
                         <el-button type="text">导出</el-button>
-                        <el-button type="text">设置</el-button>
+                        <el-button type="text" @click="setScreen">设置</el-button>
                     </div>
                 </div>
                 <div class="search-con scrollbar">
@@ -82,13 +82,15 @@
                 </el-scrollbar>
             </div>
         </div>
+        <set-screen v-if="setInfo.visible" :dialogInfo="setInfo"></set-screen>
     </div>
 </template>
 <script>
 import Databind from './component/Databind'
 import ReciprocalJunction from './component/ReciprocalJunction'
+import SetScreen from './component/SetScreen'
 export default {
-    components:{Databind,ReciprocalJunction},
+    components:{Databind,ReciprocalJunction,SetScreen},
     created() {
         
     },
@@ -121,15 +123,18 @@ export default {
                 { prop: 'indate', label: '描述',minWidth:20},
                 { prop: 'timegroup', label: '订阅用户',minWidth:20},
                 { prop: 'handle', label: '操作',slotName:'preview-handle',width:100},
-            ]
+            ],
+            setInfo:{
+                visible:false
+            }
         }
     },
 	methods: {
         clickTemp:function(index){
             this.tempid=index;
         },
-        enterAddPlan:function(){
-            this.$router.push({name:'planStatementAddPlan'});
+        setScreen:function(){
+            this.setInfo.visible=true;
         },
         resetForm() {
             this.$refs['ValidateForm'].resetFields();

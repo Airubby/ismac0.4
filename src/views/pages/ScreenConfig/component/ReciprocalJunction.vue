@@ -12,14 +12,17 @@
             <el-table-column slot="prepend" type="selection"></el-table-column>
             <template v-slot:preview-handle="scope">
                 <p class="table_handle">
-                    <span>配置</span>
+                    <span @click="config(scope.row)">配置</span>
                 </p>
             </template>
         </el-table-pagination>
+        <set-route v-if="routeInfo.visible" :dialogInfo="routeInfo"></set-route>
     </div>
 </template>
 <script>
+import SetRoute from './SetRoute'
 export default {
+    components: { SetRoute},
     created() {
         
     },
@@ -46,16 +49,19 @@ export default {
                 { prop: 'c', label: '路由地址',minWidth:20},
                 { prop: 'handle', label: '操作',slotName:'preview-handle',width:60},
             ],
+            routeInfo:{
+                visible:false,
+            }
         }
     },
     computed: {
     },
 	methods: {
-        
+        config:function(row){
+            this.routeInfo.visible=true;
+        }
 	},
-    components: {
-        
-    }
+    
 }
 </script>
 <style lang="less" scoped>

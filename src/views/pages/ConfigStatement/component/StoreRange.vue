@@ -115,8 +115,5 @@ export default {
         .color{
             color:@alarmColor;
         }
-        /deep/ .height-auto .el-form-item__content{
-            height: auto;
-        }
     }
 </style>

@@ -375,7 +375,12 @@ const getdata = function(){
                         "key": "linkageStrategies",
                         "component": "LinkageStrategies",
                         "iconfont": "",
-                        "language": "LinkageStrategies"
+                        "language": "LinkageStrategies",
+                        "relation":[
+                            {"key":"linkageStrategiesAdd","component":"LinkageStrategiesAdd"},
+                            {"key":"linkageStrategiesEvent","component":"LinkageStrategiesEvent"},
+                            {"key":"linkageStrategiesAction","component":"LinkageStrategiesAction"},
+                        ]
                     },
                     {
                         "key": "screenConfig",

@@ -13,7 +13,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="24">
-                            <el-form-item label='存储位置' prop="name" class="height-auto">
+                            <el-form-item label='存储位置' prop="name">
                                 <el-col :span="6" class="mb">
                                     <el-select v-model="initParams.name" placeholder="请选择">
                                         <el-option key="1" label="mysql" value="1"></el-option>
@@ -88,9 +88,6 @@ export default {
         }
         .color{
             color:@alarmColor;
-        }
-        /deep/ .height-auto .el-form-item__content{
-            height: auto;
         }
     }
 </style>

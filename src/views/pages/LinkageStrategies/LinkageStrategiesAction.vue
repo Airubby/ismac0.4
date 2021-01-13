@@ -1,8 +1,11 @@
 <template>
     <div class="content">
+        <div class="mb">
+            <span class="mr">动作配置</span><el-button type="primary" plain @click="$router.back(-1)">返回</el-button>
+        </div>
         <el-form class="search-top" :model="initParams" :rules="rules" @submit.native.prevent ref="ValidateForm" label-position="top" >
             <div class="search">
-                <el-form-item prop="alarm" label="状态">
+                <el-form-item prop="alarm" label="类型">
                     <el-select v-model="initParams.alarm" placeholder="请选择">
                         <el-option
                         v-for="item in options"
@@ -12,18 +15,6 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item prop="alarm" label="有效期" class="form-item">
-                    <el-date-picker
-                    style="width:360px"
-                    v-model="initParams.alarm"
-                    type="datetimerange"
-                    format="yyyy-MM-dd HH:mm:ss"
-                    value-format="yyyy-MM-dd HH:mm:ss"
-                    range-separator="~"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期">
-                    </el-date-picker>
-                </el-form-item>
                 <el-form-item class="form-item" prop="" :label="`\u3000`">
                     <el-button type="primary" @click="submitForm()">提交</el-button>
                     <el-button type="primary" plain @click="resetForm()">重置</el-button>
@@ -31,9 +22,7 @@
             </div>
             <div class="btn">
                 <el-form-item class="form-item" prop="" :label="`\u3000`">
-                    <el-button type="primary" @click="handlePage('linkageStrategiesAdd')">新建</el-button>
-                    <el-button type="primary" plain @click="handlePage('linkageStrategiesEvent')">事件配置</el-button>
-                    <el-button type="primary" plain @click="handlePage('linkageStrategiesAction')">动作配置</el-button>
+                    <el-button type="primary" @click="handleAdd">新建</el-button>
                 </el-form-item>
             </div>
         </el-form>
@@ -52,19 +41,18 @@
             </template>
             <template v-slot:preview-handle="scope">
                 <p class="table_handle">
-                    <span @click="handleStatu(scope.row)">{{scope.row.g=="1"?"停用":"启用"}}</span>
-                    <span>执行日志</span>
-                    <span @click="handleUser(scope.row)">编辑</span>
+                    <span @click="handleAdd(scope.row)">编辑</span>
                     <span>删除</span>
                 </p>
             </template>
         </el-table-pagination>
+        <action-add v-if="eventAddInfo.visible" :dialogInfo="eventAddInfo"></action-add>
     </div>
 </template>
 <script>
+import ActionAdd from './component/ActionAdd'
 export default {
-    components: {
-    },
+    components: {ActionAdd},
     created() {
         
     },
@@ -90,33 +78,32 @@ export default {
             ],
             tableColumns:[
                 { prop: 'a', label: '名称',minWidth:10},
-                { prop: 'b', label: '类型',minWidth:10},
-                { prop: 'c', label: '有效期',minWidth:10},
-                { prop: 'd', label: '描述',minWidth:10},
-                { prop: 'e', label: '状态',slotName:'preview-f',minWidth:10},
-                { prop: 'f', label: '创建人',minWidth:10},
-                { prop: 'handle', label: '操作',slotName:'preview-handle',width:200},
+                { prop: 'e', label: '动作类型',slotName:'preview-f',minWidth:10},
+                { prop: 'f', label: '最近执行时间',minWidth:10},
+                { prop: 'handle', label: '操作',slotName:'preview-handle',width:100},
             ],
+            eventAddInfo:{
+                visible:false,
+                data:null
+            },
         }
     },
-    computed: {
-    },
 	methods: {
-        backInfo:function(){
-
-        },
-        resetForm:function() {
-            this.$refs['ValidateForm'].resetFields();
-        },
-        submitForm:function() {
+        //保存的操作
+        handleSure:function(){
             this.$refs['ValidateForm'].validate((valid) => {
-                if (valid) {
+                if(valid){ //验证通过
                     
                 }
-            });
+            })
         },
-        handlePage:function(path){
-            this.$router.push({name:path});
+        handleAdd:function(row){
+            if(row){
+                this.eventAddInfo.data=row;
+            }else{
+                this.eventAddInfo.data=null;
+            }
+            this.eventAddInfo.visible=true;
         },
 	},
     
@@ -124,18 +111,11 @@ export default {
 </script>
 <style lang="less" scoped>
     .module-theme(...){
-        .table-item{
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: @itemMargin;
-            &.table-item-normal{
-                background: @normalColor;
-            }
-            &.table-item-alarm{
-                background: @alarmColor;
-            }
+        .mb{
+            margin-bottom: @boxMargin;
+        }
+        .mr{
+            margin-right: @boxMargin;
         }
     }
 </style>

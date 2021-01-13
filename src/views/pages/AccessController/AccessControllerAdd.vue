@@ -1,88 +1,94 @@
 <template>
     <div class="content">
-        <el-button type="primary" plain @click="$router.back(-1)">返回</el-button>
-        <el-form ref="ValidateForm" :model="initParams" :rules="rules" label-position="top" class="form-box">
-            <div class="card_title">
-                <div class="title">基本信息</div>
-            </div>
-            <el-row :gutter="30">
-                <el-col :span="8">
-                    <el-form-item label='设备模板' prop="name">
-                        <el-input v-model="initParams.name" disabled></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                    <el-form-item label='设备名' prop="name">
-                        <el-input v-model="initParams.name"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                    <el-form-item label='设备编码' prop="name">
-                        <el-input v-model="initParams.name"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                    <el-form-item label='安装位置' prop="name">
-                        <el-input v-model="initParams.name"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                    <el-form-item label='维保期限' prop="name">
-                        <el-date-picker
-                            is-range
-                            v-model="initParams.name"
-                            format="yyyy-MM-dd HH:mm:ss"
-                            value-format="yyyy-MM-dd HH:mm:ss"
-                            range-separator='~'
-                            start-placeholder='开始时间'
-                            end-placeholder='结束时间'
-                            >
-                        </el-date-picker>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                    <el-form-item label='负责人' prop="name">
-                        <el-input v-model="initParams.name"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <div class="card_title">
-                <div class="title">通讯参数</div>
-            </div>
-            <el-row :gutter="30">
-                <el-col :span="8">
-                    <el-form-item label='接入点' prop="name">
-                        <el-select v-model="initParams.name" placeholder="请选择">
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                    <el-form-item label='接口类型' prop="name">
-                        <el-select v-model="initParams.name" placeholder="请选择">
-                            <el-option key="1" label="类型" value="1"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                    <el-form-item label='协议驱动' prop="name">
-                        <el-select v-model="initParams.name" placeholder="请选择">
-                            <el-option key="1" label="类型" value="1"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                    <el-form-item label='通道参数' prop="name">
-                        <el-input v-model="initParams.name"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                    <el-form-item label='通讯地址' prop="name">
-                        <el-input v-model="initParams.name"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <handle-btn @handleClick="handleSure()" class="box-btn"></handle-btn>
-        </el-form>
+        <div class="relative-content">
+            <el-scrollbar class="scrollbar">
+                <div class="scrollbar-content">
+                    <el-button type="primary" plain @click="$router.back(-1)">返回</el-button>
+                    <el-form ref="ValidateForm" :model="initParams" :rules="rules" label-position="top" class="form-box">
+                        <div class="card_title">
+                            <div class="title">基本信息</div>
+                        </div>
+                        <el-row :gutter="30">
+                            <el-col :span="8">
+                                <el-form-item label='设备模板' prop="name">
+                                    <el-input v-model="initParams.name" disabled></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label='设备名' prop="name">
+                                    <el-input v-model="initParams.name"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label='设备编码' prop="name">
+                                    <el-input v-model="initParams.name"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label='安装位置' prop="name">
+                                    <el-input v-model="initParams.name"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label='维保期限' prop="name">
+                                    <el-date-picker
+                                        is-range
+                                        v-model="initParams.name"
+                                        format="yyyy-MM-dd HH:mm:ss"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        range-separator='~'
+                                        start-placeholder='开始时间'
+                                        end-placeholder='结束时间'
+                                        >
+                                    </el-date-picker>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label='负责人' prop="name">
+                                    <el-input v-model="initParams.name"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <div class="card_title">
+                            <div class="title">通讯参数</div>
+                        </div>
+                        <el-row :gutter="30">
+                            <el-col :span="8">
+                                <el-form-item label='接入点' prop="name">
+                                    <el-select v-model="initParams.name" placeholder="请选择">
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label='接口类型' prop="name">
+                                    <el-select v-model="initParams.name" placeholder="请选择">
+                                        <el-option key="1" label="类型" value="1"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label='协议驱动' prop="name">
+                                    <el-select v-model="initParams.name" placeholder="请选择">
+                                        <el-option key="1" label="类型" value="1"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label='通道参数' prop="name">
+                                    <el-input v-model="initParams.name"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label='通讯地址' prop="name">
+                                    <el-input v-model="initParams.name"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                    </el-form>
+                </div>
+            </el-scrollbar>
+        </div>
+        <handle-btn @handleClick="handleSure()" class="box-btn"></handle-btn>
     </div>
 </template>
 <script>
@@ -130,13 +136,19 @@ export default {
             margin-bottom: @itemMargin;
         }
         .box-btn{
-            margin-bottom: @boxMargin;
+            margin-right: @boxMargin;
             float: right;
+        }
+        .content{
+            padding: 0;
         }
         .relative-content{
             width: 100%;
-            height: 100%;
+            height: calc(100% - 45px);
             position: relative;
+            .scrollbar-content{
+                padding: 15px 15px 0;
+            }
         }
     }
 </style>

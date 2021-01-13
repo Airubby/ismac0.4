@@ -117,6 +117,10 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
         display: block !important;
         background-color: transparent !important;
     }
+    .ps .ps__rail-x:hover,.ps .ps__rail-x.ps--clicking,
+    .ps .ps__rail-y:hover,.ps .ps__rail-y.ps--clicking{
+        background-color: transparent !important;
+    }
  * @param {HTMLElement} el - 必填。dom元素
  */
 const el_scrollBar = (el) => {
