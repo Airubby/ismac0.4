@@ -39,12 +39,21 @@
                 </el-col>
                 <el-col :span="12">
                     <h2>下拉框带树形</h2>
-                    <el-select v-model="value6" placeholder="请选择">
+                    <!-- <el-select v-model="value6" placeholder="请选择">
                         <el-input
                         placeholder="输入关键字进行过滤"
                         v-model="filterText" style="position:absolute;top:6px;z-index:9;margin:0 auto;">
                         </el-input>
                         <el-option :value="value6" :label="value7" class="selectTree">
+                            <el-tree show-checkbox ref="selecttree" node-key="id" class="filter-tree"
+                            :data="data" 
+                            :filter-node-method="filterNode"
+                            :props="defaultProps" @check-change="selsetchangeTree">
+                            </el-tree>
+                        </el-option>
+                    </el-select> -->
+                    <el-select v-model="value6" filterable :filter-method="filterMethod" placeholder="请选择">
+                        <el-option :value="filterText" :label="value7" class="selectTree">
                             <el-tree show-checkbox ref="selecttree" node-key="id" class="filter-tree"
                             :data="data" 
                             :filter-node-method="filterNode"
@@ -317,6 +326,9 @@ export default {
             if (!value) return true;
             return data.label.indexOf(value) !== -1;
         },
+        filterMethod:function(val){
+            this.$refs.selecttree.filter(val);
+        }
         
 	},
     components: {

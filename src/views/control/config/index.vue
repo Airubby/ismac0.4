@@ -24,7 +24,7 @@
                     type="local" 
                     border
                     :params="initParams"
-                    :data="table_data"
+                    :data="tableData"
                     :page-sizes="[4]"
                     :showPagination="true"
                     :show-select-all="true"
@@ -52,29 +52,99 @@
 
 export default {
     created() {
-        this.getInfo()
+        // this.getInfo()
     },
     mounted() {
-        
+        this.getSpanArr(this.tableData, this.mergeKeys)
     },
     data(){
         return{
             initParams:{
                 user:''
             },
-            table_data:[
+            tableData:[{
+                name: ' 氮肥、复合肥',
+                proportion: '15.23%',
+                ingredients: '尿素',
+                indexName: '全国均价:尿素(含氮46%,国产)（元/公斤)',
+                value: '2.04',
+                value2: '2.00%',
+                value3: '	13.97%'
+            },
+            {
+                name: ' 氮肥、复合肥',
+                proportion: '15.23%',
+                ingredients: '三元复合肥',
+                indexName: '全国均价:三元复合肥(氯基,含氮磷钾各15%,国产)（元/公斤)',
+                value: '2.74',
+                value2: '0.37%',
+                value3: '	2.24%'
+            },
+            {
+                name: ' 氮肥、复合肥',
+                proportion: '15.23%',
+                ingredients: '三元复合肥',
+                indexName: '全国均价:三元复合肥(硫基,含氮磷钾各15%,国产)（元/公斤)',
+                value: '3.05',
+                value2: '0.33%',
+                value3: '	2.35%'
+            },
+            {
+                name: ' 种子生产',
+                proportion: '6.83%',
+                ingredients: '玉米种子',
+                indexName: '平均售价:玉米种子（元/公斤）',
+                value: '3.05',
+                value2: '-16.06%',
+                value3: '	-5.70%'
+            },
             ],
             table_columns:[
-               { prop: 'user', label: '设备名称',slotName:'preview-name',minWidth:10},
-              { prop: 'type', label: '设备类型',slotName:'preview-type',minWidth:10},
-              { prop: 'indate', label: '位置',minWidth:10},
-              { prop: 'timegroup', label: '监控状态',minWidth:10},
-              { prop: 'jieru', label: '告警状态',minWidth:10},
-              { prop: 'handle', label: '操作',slotName:'preview-handle',width:120},
+               { prop: 'name', label: '设备名称',minWidth:10},
+              { prop: 'proportion', label: '设备类型',minWidth:10},
+              { prop: 'ingredients', label: '位置',minWidth:10},
+              { prop: 'indexName', label: '监控状态',minWidth:10},
+              { prop: 'value', label: '告警状态',minWidth:10},
+              { prop: 'value2', label: '状态',minWidth:10},
             ],
+            mergeData: {},
+            //合并行的记录
+            mergeProp: {},
+            //mergeData中每项的索引
+            mergeKeys: ['name', 'proportion', 'ingredients','value','value2'],
         }
     },
 	methods: {
+        getSpanArr(tableData, keyName) {
+            keyName.forEach((kitem, k) =>{
+                tableData.forEach((data, i) =>{
+                    if (i === 0) {
+                        this.mergeData[kitem] = this.mergeData[kitem] || []
+                        this.mergeData[kitem].push(1) 
+                        this.mergeProp[kitem] = 0
+                    } else {
+                        // 判断当前元素与上一个元素是否相同
+                        if (data[kitem] === tableData[i - 1][kitem]) {
+                            this.mergeData[kitem][this.mergeProp[kitem]] += 1
+                            this.mergeData[kitem].push(0)
+                        } else {
+                            this.mergeData[kitem].push(1) 
+                            this.mergeProp[kitem] = i
+                        }
+                    }
+                })
+            }) 
+        },
+        spanMethod:function({ row, column, rowIndex, columnIndex }){
+            if (this.mergeKeys.includes(column.property)) {
+                const _row = this.mergeData[column.property][rowIndex] 
+                const _col = _row > 0 ? 1 : 0
+                return {
+                    rowspan: _row,
+                    colspan: _col
+                }
+            }
+        },
         search:function(){
             this.$refs.thisRef.searchHandler(true);
         },
@@ -82,14 +152,14 @@ export default {
             // this.$r.get("/getEditTable",{},r=>{
             //     console.log(r)
             //     if(r.err_code=="0"){
-            //         this.table_data=r.data;
+            //         this.tableData=r.data;
             //     }else{
             //         this.$message.warning(r.err_msg);
             //     }
             // })
             this.$r.get("/getTable",{},r=>{
                 if(r.err_code=="0"){
-                    this.table_data=r.data;
+                    this.tableData=r.data;
                 }else{
                     this.$message.warning(r.err_msg);
                 }
@@ -103,37 +173,19 @@ export default {
         del:function(row,index){
             // console.log(row)
             // console.log(index);
-            // this.table_data=this.table_data.filter((item)=>{
+            // this.tableData=this.tableData.filter((item)=>{
             //     return item !="";
             // })
-            this.table_data.forEach((item, index, arr)=> {
+            this.tableData.forEach((item, index, arr)=> {
                 let flag=this.$tool.equalsObj(item,row)
                 if(flag){
-                    this.table_data.splice(index, 1);
-                    console.log(this.table_data)
+                    this.tableData.splice(index, 1);
+                    console.log(this.tableData)
                     this.$refs.thisRef.searchHandler(true);
                 }
             });
         },
-        timesectionAdd:function(){
-
-        },
-        spanMethod:function({ row, column, rowIndex, columnIndex }){
-             if (columnIndex === 0) {
-                if (rowIndex % 2 === 0) {
-                    return {
-                        rowspan: 2,
-                        colspan: 1
-                    };
-                } else {
-                    return {
-                        rowspan: 0,
-                        colspan: 0
-                    };
-                }
-            }
-        }
-	},
+	},                                                          
     components: {
         
     }
