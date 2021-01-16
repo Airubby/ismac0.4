@@ -30,7 +30,7 @@ service.interceptors.response.use(
 			if(store.getters.infoFlag){
                 store.dispatch('setInfoFlag',false);
                 Notification.warning("请登录系统");
-                router.push({path:'/bigScreen'});
+                router.push({path:'/login'});
             }
 			return Promise.reject("请登录系统");
 		}

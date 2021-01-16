@@ -27,14 +27,14 @@ const formatStyle = (sty, css, componentId) => {
     return cssText
 }
 const $require = (filepath, scriptContext) => {
-    console.log(path)
-    console.log(path.dirname(`${filepath}`))
-    console.log(path.extname(`${filepath}`))
-    console.log(path.isAbsolute(`${filepath}`))
-    console.log(path.normalize(`${filepath}`))
-    console.log(__dirname)
+    // console.log(path)
+    // console.log(path.dirname(`${filepath}`))
+    // console.log(path.extname(`${filepath}`))
+    // console.log(path.isAbsolute(`${filepath}`))
+    // console.log(path.normalize(`${filepath}`))
+    // console.log(__dirname)
     console.log("!!!!!!!!!!!!!!!!!!!!!!!")
-    const filename = path.resolve("/template/home/", `./${filepath}`); 
+    const filename = path.resolve(__dirname, `./${filepath}`); 
     console.log(filename) 
     const module = { exports: {} }  
     let code = scriptContext ? scriptContext : $readFileSync(filename)  
@@ -45,8 +45,6 @@ const $require = (filepath, scriptContext) => {
 }
 const $readFileSync=(filename)=>{
     fetch(filename).then(res => {
-        console.log(res)
-        console.log(res.json())
         return res.json();
     }).then(sfc => {    
         console.log(sfc)
@@ -78,7 +76,7 @@ export default {
         
     },
     mounted() {
-        this.getComponent();
+        // this.getComponent();
     },
     data(){
         return{
@@ -101,7 +99,6 @@ export default {
                 document.getElementById(styleID).innerHTML="";
                 document.getElementById(styleID).appendChild(document.createTextNode(style))
             }else{
-                let head=document.getElementsByTagName("head")[0];
                 let styleDom=document.createElement("style");
                 styleDom.type="text/css";
                 styleDom.id=styleID;
@@ -143,7 +140,7 @@ export default {
             let tempData=null;
             new Promise ((resolve, reject) => {
                 //`${_this.pathUrl}`
-                axios.get("/template/home/Index.vue").then((result) => {
+                axios.get(`${_this.pathUrl}`).then((result) => {
                     tempData = compiler.parseComponent(result);
                     resolve();
                 }).catch((error) => {

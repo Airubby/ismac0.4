@@ -27,6 +27,8 @@ import './assets/css/basic.less'
 Vue.prototype.$tool = Tool
 Vue.prototype.$store = store
 Vue.prototype.$axios = axios
+import ThreeMap from './utils/ThreeMap.js';
+Vue.prototype.$ThreeMap=ThreeMap;
 
 Vue.prototype.publicPath=process.env.BASE_URL
 
