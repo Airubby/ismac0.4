@@ -41,7 +41,6 @@ service.interceptors.response.use(
 		loadingService&&loadingService.close();
 		Notification.error('服务器错误，请联系管理人员！');
 		router.push({path:'/login'});
-		return error.response;
 		return Promise.reject("重新登录");
 		
 	}
