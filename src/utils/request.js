@@ -69,7 +69,7 @@ export default {
 			})
 		})
 	},
-	post: function (url, params, loadInfo) {
+	post: function (url, params={}, loadInfo) {
 		let info=Object.assign({},Info,loadInfo);
 		if(info.isLoading){
 			loadingService=Loading.service(info)
@@ -83,7 +83,7 @@ export default {
 		})
 	},
 	//post请求参数放url中
-	postQuery: function (url, params, loadInfo) {
+	postQuery: function (url, params={}, loadInfo) {
 		let info=Object.assign({},Info,loadInfo);
 		if(info.isLoading){
 			loadingService=Loading.service(info)
@@ -96,7 +96,7 @@ export default {
 			})
 		})
 	},
-	exportFile:function(url, params, loadInfo){
+	exportFile:function(url, params={}, loadInfo){
 		let info=Object.assign({},Info,loadInfo);
 		if(info.isLoading){
 			loadingService=Loading.service(info)
@@ -120,7 +120,7 @@ export default {
 			})
 		})
     },
-    downloadFile:function(url,params){
+    downloadFile:function(url,params={}){
 		let link = document.createElement('a');
         link.href=url;
         link.setAttribute("download",url);
