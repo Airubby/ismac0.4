@@ -3,7 +3,7 @@
         <div class="top">
             <div class="top-box">
                 <p><span>24</span></p>
-                <div>接入设备总数</div>
+                <div>{{$t("AllDev")}}</div>
             </div>
             <div class="top-list" v-scrollBar> 
                 <div class="top-box">
@@ -85,7 +85,13 @@ export default {
         
     },
     created() {
-        
+        console.log(this.$Api)
+        // this.$api.post(this.$Api.GetList,{}).then(res=>{
+        //     console.log(res)
+        //     if(res.err_code==0){
+        //         this.tableData=res.data.item;
+        //     }
+        // })
     },
     mounted() {
         

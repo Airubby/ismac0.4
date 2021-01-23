@@ -54,7 +54,13 @@ export default {
         
     },
     created() {
-        
+        console.log(this.$Api)
+        this.$api.post(this.$Api.GetList,{}).then(res=>{
+            console.log(res)
+            if(res.err_code==0){
+                this.tableData=res.data.item;
+            }
+        })
     },
     mounted() {
         
@@ -62,6 +68,7 @@ export default {
     data(){
         return{
             activeName:'first',
+            tableData:[]
         }
     },
     computed: {

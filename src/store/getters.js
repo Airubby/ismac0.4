@@ -11,6 +11,7 @@ const getters = {
     config: state=>state.user.config,
     currentConfig:state=>state.user.currentConfig,
     currentComponent:state=>state.user.currentComponent,
+    languageApi:state=>state.user.languageApi,
 
     getTheme: state => state.theme.theme,
     showTheme:state=>state.theme.show,

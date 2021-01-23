@@ -49,7 +49,7 @@
             </div>
         </div>
         <el-table-pagination
-            :url='$ajaxUrl+tablePath'
+            :url='$ajaxUrl+$Api.GetTable'
             list-field="data.item" 
             total-field="data.total"
             :data="tableData"
@@ -77,15 +77,15 @@
     </div>
 </template>
 <script>
-import Api from './config/Api'
-import Language from './config/Language'
+// import Api from './config/Api'
+// import Language from './config/Language'
 import AlarmSureSet from './component/AlarmSureSet'
 import AlarmMask from './component/AlarmMask'
 export default {
     components: {
         AlarmSureSet,AlarmMask
     },
-    mixins:[Language],
+    // mixins:[Language],
     filters:{
         alarmShow: function (value,_this) {
             if (!value) return ''
@@ -101,12 +101,8 @@ export default {
         }
     },
     created() {
-        // this.$api.post(Api.GetTable,{}).then(res=>{
-        //     console.log(res)
-        //     if(res.err_code==0){
-        //         this.tableData=res.data.item;
-        //     }
-        // })
+        console.log(this.$Api)
+        
     },
     mounted() {
         
@@ -114,7 +110,6 @@ export default {
     data(){
         return{
             thisVue:this,
-            tablePath:Api.GetTable,
             initParams:{},
             tableData:[],
             tableColumns:[

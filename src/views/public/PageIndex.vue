@@ -13,7 +13,7 @@ export default {
         ...mapGetters([
             'currentComponent'
         ]),
-	}
+    },
 }
 </script>
 <style lang="less" scoped>

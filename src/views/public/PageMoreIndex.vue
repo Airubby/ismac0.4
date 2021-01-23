@@ -1,8 +1,8 @@
 <template>
 	<div class="content" v-if="currentConfig.children&&currentConfig.children.length>0">
         <ul class="content-nav">
-            <template v-for="item in currentConfig.children">
-                <li>
+            <template v-for="(item,index) in currentConfig.children">
+                <li :key="index">
                     <router-link :to="{name:item.key}">
                         {{$t(item.language)}}
                     </router-link>
@@ -22,7 +22,7 @@ export default {
         ...mapGetters([
             'currentConfig'
         ]),
-	}
+    },
 }
 </script>
 <style lang="less" scoped>

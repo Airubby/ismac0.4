@@ -38,7 +38,7 @@ export default {
     },
     computed:{
         ...mapGetters([
-            'config'
+            'config','languageApi'
         ]),
     },
 	methods: {
@@ -71,20 +71,37 @@ export default {
                 this.changeRoute();
             }
         },
+        setLangApi:function(name){
+            this.languageApi.forEach(filePath => {
+                // console.log(filePath)
+                if(filePath.split("/").indexOf(name)!=-1&&filePath.indexOf("Language")!=-1){
+                    let config= require('@/views/pages/'+name+filePath.split(name)[1]);
+                    this.$i18n.setLocaleMessage('zh',Object.assign(this.$i18n.getLocaleMessage('zh'),config.zhLang))
+                    this.$i18n.setLocaleMessage('en',Object.assign(this.$i18n.getLocaleMessage('en'),config.enLang))
+                }
+                if(filePath.split("/").indexOf(name)!=-1&&filePath.indexOf("Api")!=-1){
+                    let config= require('@/views/pages/'+name+filePath.split(name)[1]);
+                    Vue.prototype.$Api=config.default;
+                    // console.log(config,config.default)
+                }
+            });
+        },
         changeRoute:function(){
-            if(this.config&&this.config.length>0){
+            if(this.config&&this.config.length>0&&this.$route.name){
+                this.$store.dispatch('setCurrentComponent',this.$route.meta.componentName);
+                this.setLangApi(this.$route.meta.pathName)
                 for(let i=0;i<this.config.length;i++){
                     if(this.config[i].children&&this.config[i].children.length>0){
                         for(let j=0;j<this.config[i].children.length;j++){
                             if(this.$route.name==this.config[i].children[j].key){
                                 this.enterPage(this.config[i]);
-                                break;
+                                return;
                             }
                             if(this.config[i].children[j].relation&&this.config[i].children[j].relation.length>0){
                                 for(let m=0;m<this.config[i].children[j].relation.length;m++){
                                     if(this.$route.name==this.config[i].children[j].relation[m].key){
                                         this.enterPage(this.config[i]);
-                                        break;
+                                        return;
                                     }
                                 }
                             }
@@ -92,11 +109,11 @@ export default {
                     }else{
                         if(this.$route.name==this.config[i].key){
                             this.enterPage(this.config[i]);
-                            break;
+                            return;
                         }
                     }
                 }
-                this.$store.dispatch('setCurrentComponent',this.$route.meta.componentName);
+                
             }
             
         },
@@ -161,7 +178,6 @@ export default {
                 }).then(()=>{
                     if(tempData){
                         let r=this.getComponentOption(tempData)
-                        console.log(r)
                         let temp=compiler.compile(r.template)  //编译成render函数
                         //这个地方生成编译后的dom  temp.render   注意:生成的编译文件中去掉\n;编译的源组件中不能有模板字符串`
                         this.setStyle(r.styles);
@@ -197,11 +213,9 @@ export default {
     watch:{
         $route(to,from){
             this.changeRoute();
-            console.log(this.$route)
         },
         config:{
             handler:function(val,oldval){
-                console.log("config改变")
                 this.setComponent();
             },
             deep: true, 

@@ -9,7 +9,8 @@ const user = {
         token:Cookies.get('token')||'token888',
         config:[], //所有导航
 		currentConfig:{},  //当前导航
-		currentComponent:"",  //当前组件
+        currentComponent:"",  //当前组件
+        languageApi:[], //语言及api的路径地址
     },
     mutations: {
         SET_TOKEN(state,token){
@@ -30,6 +31,7 @@ const user = {
                     redirect:redirect,
                     children:[]
                 }
+                //pathName是动态注入语言及api判断用的
                 if(data.length>0){
                     let arr=[];
                     for(let i=0;i<data.length;i++){
@@ -39,7 +41,7 @@ const user = {
                                 children.push({
                                     path: `${rootPath}/`+data[i].key+"/"+data[i].children[j].key,
                                     name: data[i].children[j].key,
-                                    meta:{componentName:data[i].children[j].component},
+                                    meta:{componentName:data[i].children[j].component,pathName:data[i].children[j].component},
                                     component: () => import(`@/views/public/${PageIndex}.vue`),
                                 })
                                 if(data[i].children[j].relation&&data[i].children[j].relation.length>0){
@@ -47,7 +49,7 @@ const user = {
                                         children.push({
                                             path: `${rootPath}/`+data[i].key+"/"+data[i].children[j].key+"/"+data[i].children[j].relation[m].key,
                                             name: data[i].children[j].relation[m].key,
-                                            meta:{componentName:data[i].children[j].relation[m].component},
+                                            meta:{componentName:data[i].children[j].relation[m].component,pathName:data[i].children[j].component},
                                             component: () => import(`@/views/public/${PageIndex}.vue`),
                                         })
                                     }
@@ -58,7 +60,7 @@ const user = {
                             arr.push({
                                 path: `${rootPath}/`+data[i].key,
                                 name: data[i].key,
-                                meta:{componentName:data[i].component},
+                                meta:{componentName:data[i].component,pathName:data[i].component},
                                 component: () => import(`@/views/public/${PageMoreIndex}.vue`),
                                 redirect:children[0].path,
                                 children:children
@@ -67,15 +69,15 @@ const user = {
                             arr.push({
                                 path: `${rootPath}/`+data[i].key,
                                 name: data[i].key,
-                                meta:{componentName:data[i].component},
+                                meta:{componentName:data[i].component,pathName:data[i].component},
                                 component: () => import(`@/views/public/${PageIndex}.vue`),
                             });
                             if(data[i].relation&&data[i].relation.length>0){
                                 for(let m=0;m<data[i].relation.length;m++){
-                                    children.push({
+                                    arr.push({
                                         path: `${rootPath}/`+data[i].key+"/"+data[i].relation[m].key,
                                         name: data[i].relation[m].key,
-                                        meta:{componentName:data[i].relation[m].component},
+                                        meta:{componentName:data[i].relation[m].component,pathName:data[i].component},
                                         component: () => import(`@/views/public/${PageIndex}.vue`),
                                     })
                                 }
@@ -94,7 +96,10 @@ const user = {
 		},
 		SET_CURRENTCOMPONENT(state,currentComponent){
 			state.currentComponent=currentComponent
-		},
+        },
+        SET_LANGUAGEAPI(state,info){
+            state.languageApi=info
+        }
     },
     actions: {
         setToken({ commit }, token) {
@@ -111,7 +116,10 @@ const user = {
 		},
 		setCurrentComponent({ commit }, currentComponent){
 			commit('SET_CURRENTCOMPONENT', currentComponent)
-		},
+        },
+        setLanguageApi({commit},info){
+            commit('SET_LANGUAGEAPI',info);
+        }
     }
 
 }

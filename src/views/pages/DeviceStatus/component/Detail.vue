@@ -41,7 +41,12 @@ export default {
         
     },
     created() {
-        
+        this.$api.post(this.$Api.GetList,{}).then(res=>{
+            console.log(res)
+            if(res.err_code==0){
+                this.tableData=res.data.item;
+            }
+        })
     },
     mounted() {
         

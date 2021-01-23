@@ -18,6 +18,20 @@ export default {
         Request.service.defaults.baseURL=store.state.AjaxUrl;
         // 将API方法绑定到全局
         Vue.prototype.$api = Request
+
+        //动态注入语言及API
+        const requireLang = require.context(
+            // 其组件目录的相对路径
+            "@/views/pages",
+            // 是否查询其子目录
+            true,
+            // 匹配基础组件文件名的正则表达式
+            /(Language|Api)+\.(js)$/
+        )
+        this.$store.dispatch('setLanguageApi',requireLang.keys())
+        
+
+
     },
     computed:{
         ...mapGetters([
