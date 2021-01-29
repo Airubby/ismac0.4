@@ -389,6 +389,12 @@ const getdata = function(){
                         "language": "ScreenConfig"
                     },
                     {
+                        "key": "objectConfig",
+                        "component": "ObjectConfig",
+                        "iconfont": "",
+                        "language": "ObjectConfig"
+                    },
+                    {
                         "key": "systemConfig",
                         "component": "SystemConfig",
                         "iconfont": "",

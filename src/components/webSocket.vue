@@ -1,9 +1,13 @@
 <template>
+    <span>
+    <!-- template这个的存在的,span可以不要 -->
+    </span>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import store from '@/store/index'
 export default {
-    name:'webSocket',
+    name:'WebSocket',
     created () {
         
     },
@@ -60,7 +64,8 @@ export default {
     methods:{
        send:function(){
             if(this.$ws&&this.$ws.readyState==1){
-                this.$ws.send(JSON.stringify(this.sInfo))
+                // this.$ws.send(JSON.stringify(this.sInfo))
+                store.dispatch('setSendMsg',JSON.stringify(this.sInfo));
             }else{
                 setTimeout(()=>{
                     if(this.sendFlag){
@@ -83,9 +88,7 @@ export default {
                     }
                 }
             }else{  //对象
-                if(this.sendInfo.cmd=="subcount"){
-
-                }
+                
             }
             this.sInfo.data=arr;
             this.send();
@@ -106,9 +109,10 @@ export default {
                     }else{
                         for(let i=0;i<val.data.length;i++){
                             for(let j=0;j<this.wsInfo.length;j++){
-                                //:matchInfo="['value:state','isalarm:alarmstyle']"  冒号前是推送端的key，冒号后是本地展示的key
-                                if(this.matchInfo){
-                                    if(val.data[i].devid==this.wsInfo[j].devid&&(this.wsInfo[j].pointid?(val.data[i].pointid==this.wsInfo[j].pointid):true)){
+                                if(val.data[i].devid==this.wsInfo[j].devid&&(this.wsInfo[j].pointid?(val.data[i].pointid==this.wsInfo[j].pointid):true)){
+                                    //:matchInfo="['value:state','isalarm:alarmstyle']"  冒号前是推送端的key，冒号后是本地展示的key
+                                    this.wsInfo[j]=Object.assign(this.wsInfo[j],val.data[i]);
+                                    if(this.matchInfo){
                                         for(let n=0;n<this.matchInfo.length;n++){
                                             let item=this.matchInfo[n].split(":");
                                             this.wsInfo[j][item[1]]=val.data[i][item[0]];
@@ -119,8 +123,6 @@ export default {
                         }
                     }
                 }
-            }else if(val.cmd=="subcount"){
-
             }
             // if(this.wsInfo instanceof Array){ //数组的时候
             //     if(val&&val.length>0){
@@ -152,6 +154,7 @@ export default {
         },
     },
     //wsInfo:匹配的数据源；sendInfo:{cmd:"alarm",returnFn:true,changeSend:true}下发的指令信息；matchInfo:匹配显示的字段
+    //:matchInfo="['value:state','isalarm:alarmstyle']"  冒号前是推送端的key，冒号后是本地展示的key
     //returnFn为true,将推送来的数据返回到父组件函数处理；changeSend为true,匹配数据源改变时重新下发信息
     props:["wsInfo","sendInfo","matchInfo"],
     components:{}

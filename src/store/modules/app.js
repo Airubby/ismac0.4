@@ -43,7 +43,7 @@ const app = {
         setwsData({commit},wsData){
             commit('setwsData',wsData)
         },
-        setSendMsg(state,sendMsg){
+        setSendMsg({commit},sendMsg){
             commit('SET_SENDMSG',sendMsg)
         },
         setAjaxUrl({commit},ajaxUrl){

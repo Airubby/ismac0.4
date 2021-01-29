@@ -33,6 +33,10 @@
         line-height: 32px;
         font-size: 16px;
         overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
         .title{
             height: 18px;
             line-height: 18px;
@@ -52,14 +56,17 @@
     .el-notification__content{
         margin:0;
     }
-
+    .el-badge__content{
+        height: 20px;
+        border-color: transparent;
+    }
     /****/
     .el-input__prefix{
         display: flex;
         align-items: center;
     }
     .el-form-item--small .el-form-item__content{
-        height: 32px;
+        min-height: 32px;
     }
     .el-form-item--small .el-form-item__content, .el-form-item--small .el-form-item__label{
         line-height: 30px;

@@ -54,6 +54,7 @@
             total-field="data.total"
             :data="tableData"
             method='post' 
+            :webSocketInfo="tableData"
             :params="initParams"
             :columns="tableColumns" ref="thisRef">   
             <el-table-column slot="prepend" type="selection"></el-table-column>
@@ -74,6 +75,8 @@
         </el-table-pagination>
         <alarm-sure-set :dialogInfo="suresetInfo" v-if="suresetInfo.visible"></alarm-sure-set>
         <alarm-mask :dialogInfo="maskInfo" v-if="maskInfo.visible"></alarm-mask>
+        <!-- 本地data 设置v-if="tableData.length>0" -->
+        <!-- <WebSocket :wsInfo="tableData" :sendInfo="{cmd:'alarm',changeSend:true}" :matchInfo="['value:state','isalarm:alarmstyle']"></WebSocket> -->
     </div>
 </template>
 <script>
@@ -81,9 +84,10 @@
 // import Language from './config/Language'
 import AlarmSureSet from './component/AlarmSureSet'
 import AlarmMask from './component/AlarmMask'
+import WebSocket from '@/components/WebSocket.vue'
 export default {
     components: {
-        AlarmSureSet,AlarmMask
+        AlarmSureSet,AlarmMask,WebSocket
     },
     // mixins:[Language],
     filters:{

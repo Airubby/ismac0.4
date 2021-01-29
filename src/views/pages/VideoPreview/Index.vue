@@ -91,7 +91,7 @@ export default {
                     controlBar: {
                         timeDivider: false,  //当前时间和持续时间的分隔符
                         durationDisplay: false,  //显示持续时间
-                        remainingTimeDisplay: false,  //是否显示剩余时间功能
+                        remainingTimeDisplay: false,  //是否显示剩余时间功能
                         currentTimeDisplay: false, // 当前时间
                         volumeControl: true, // 声音控制键
                         playToggle: true, // 暂停和播放键

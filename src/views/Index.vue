@@ -3,8 +3,8 @@
     <div class="content-left">
         <ul class="scrollbar">
             <el-scrollbar>
-                <template v-for="item in $store.getters.config">
-                    <li>
+                <template v-for="(item,index) in $store.getters.config">
+                    <li :key="index">
                         <router-link :to="{name:item.key}">
                             <div class="nav-box">
                                 <div class="nav-box-con">
@@ -72,18 +72,20 @@
             </div>
       </div>
       <div class="content-body">
-        <router-view  v-if="isRouterAlive"/>
+        <router-view  />
       </div>
     </div>
+    <alarm-video v-if="videoInfo.visible" :dialogInfo="videoInfo"></alarm-video>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex'
 import Vue from 'vue'
+import AlarmVideo from '@/components/AlarmVideo'
 export default {
     name: 'index',
-    components: { },
+    components: { AlarmVideo},
     created () {
         console.log(this.$theme)
         this.date=this.setClock();
@@ -107,7 +109,6 @@ export default {
     },
     data(){
         return{
-            isRouterAlive:true,
             date:{
                 year:'',
                 month:'',
@@ -116,7 +117,10 @@ export default {
                 minutes:'',
                 seconds:''
             },
-            vWeek: [this.$t("SUN"),this.$t("Mon"),this.$t("Tues"),this.$t("Wed"),this.$t("Thurs"),this.$t("Fir"),this.$t("Sat")]
+            vWeek: [this.$t("SUN"),this.$t("Mon"),this.$t("Tues"),this.$t("Wed"),this.$t("Thurs"),this.$t("Fir"),this.$t("Sat")],
+            videoInfo:{
+                visible:true
+            }
         }
     },
     methods: {
@@ -127,7 +131,7 @@ export default {
             this.vWeek=[this.$t("SUN"),this.$t("Mon"),this.$t("Tues"),this.$t("Wed"),this.$t("Thurs"),this.$t("Fir"),this.$t("Sat")];
         },
         setClock:function(){
-            let vWeek,vDate={};
+            let vDate={};
             // vWeek = ["星期天","星期一","星期二","星期三","星期四","星期五","星期六"];
             // vWeek = ["SUN","Mon","Tues","Wed","Thurs","Fir","Sat"];
             let date =  new Date();
