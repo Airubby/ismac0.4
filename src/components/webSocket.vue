@@ -61,7 +61,7 @@ export default {
     methods:{
        send:function(){
             if(this.$ws&&this.$ws.readyState==1){
-                this.$ws.send(JSON.stringify(this.sInfo))
+                // this.$ws.send(JSON.stringify(this.sInfo))
                 store.dispatch('setSendMsg',JSON.stringify(this.sInfo));
             }else{
                 setTimeout(()=>{
@@ -154,6 +154,7 @@ export default {
         },
     },
     //wsInfo:匹配的数据源；sendInfo:{cmd:"alarm",returnFn:true,changeSend:true}下发的指令信息；matchInfo:匹配显示的字段
+    //:matchInfo="['value:state','isalarm:alarmstyle']"  冒号前是推送端的key，冒号后是本地展示的key
     //returnFn为true,将推送来的数据返回到父组件函数处理；changeSend为true,匹配数据源改变时重新下发信息
     props:["wsInfo","sendInfo","matchInfo"],
     components:{}

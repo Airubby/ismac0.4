@@ -24,7 +24,6 @@
         <div>$set的值：{{initParams.setvalue}}</div>
     </div>
 </template>
-1
 
 <script>
 import LangMixins from './config/language'
@@ -84,7 +83,7 @@ export default {
         play:function(){
             let utterThis = new window.SpeechSynthesisUtterance();
             utterThis.text=this.value;
-            utterThis.lang="zh-CN";  //使用语言
+            // utterThis.lang="en";  //使用语言 en-US 不赋值就是什么语言就什么语言播放
             utterThis.pitch=2; //表示说话的音高，数值，范围从0（最小）到2（最大）。默认值为1
             utterThis.rate=1;  // 语速，数值，默认值是1，范围是0.1到10，表示语速的倍数，例如2表示正常语速的两倍
             utterThis.volume=1;  //声音的音量，区间范围是0到1，默认是1

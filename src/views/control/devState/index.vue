@@ -62,7 +62,7 @@
                         total-field="total"
                         method='get' 
                         :highlight-current-row="true"
-                        max-height="250"
+                        max-height="650"
                         :show-pagination="true"
                         :show-select-all="true"
                         :params="initParams"
@@ -72,9 +72,9 @@
                         :webSocketInfo="table_data"
                         :data="table_data"
                         @resultData="resultData"
-                        select-id="id"
+                        row-key='id'
                         :columns="table_columns" ref="thisRef">   
-                        <el-table-column slot="prepend" type="selection"></el-table-column>
+                        <el-table-column slot="prepend" type="selection" align="center" :reserve-selection="true"></el-table-column>
                         <template slot-scope="scope" slot="preview-name">
                             <p class="table_handle"><span @click="detail(scope.row)">{{scope.row.code}}</span></p>
                         </template>
@@ -85,6 +85,7 @@
                 </div>
             </el-scrollbar>
         </div>
+        <!-- 本地数据设置v-if="table_data.length>0" -->
         <!-- <WebSocket :wsInfo="table_data" :sendInfo="{cmd:'alarm',changeSend:true}" :matchInfo="['value:state','isalarm:alarmstyle']"></WebSocket> -->
     </div>
 </template>
@@ -97,7 +98,11 @@ export default {
     },
     mounted() {
         let temp="breadcrumb"
-        this.$refs.thisRef.setSelect([{id:'2'},{id:'11'},{id:'23'}])
+        this.$nextTick(()=>{
+            //异步默认设置勾选需写在$nextTick中
+            this.$refs.thisRef.setSelect([{id:'2'},{id:'11'},{id:'23'}])
+        })
+        
         this.currentView=temp;
     },
     data(){
@@ -112,7 +117,7 @@ export default {
             table_columns:[
               { prop: 'code', label: '设备名称',slotName:'preview-name'},
               { prop: 'type', label: '设备类型',sortable:true,width:"500px"},
-              { prop: 'indate', label: '位置',minWidth:"300px"},
+              { prop: 'indate', label: '位置'},
               { prop: 'timegroup', label: '监控状态'},
               { prop: 'jieru', label: '告警状态'},
               { prop: 'handle', label: '操作',fixed:"right",slotName:'preview-handle',width:120},
@@ -128,6 +133,11 @@ export default {
         }
     },
 	methods: {
+        //勾选框设置了 :reserve-selection="true"  就要绑定这个
+        getRowKey:function(row){
+            return row.id
+        },
+        
         eyeon:function(row){
             this.$refs.thisRef.setSelect([this.backSelect])
             this.$r.post("/eyeon",{model:{id:row.id}},r=>{
@@ -174,10 +184,9 @@ export default {
             console.log(selection)
         },
         resultData:function(info){
-            console.log("!!!!!!!!!!!!!!!!!!!!!!",info)
-            this.$nextTick(()=>{
-                this.$refs.thisRef.setSelect([{id:'2'},{id:'11'},{id:'23'}])
-            })
+            // this.$nextTick(()=>{
+            //     this.$refs.thisRef.setSelect([{id:'2'},{id:'11'},{id:'23'}])
+            // })
             //异步获取的时候用得到
             // this.table_data=info.data;
         },

@@ -27,8 +27,8 @@
                     :props="defaultProps">
                     <span class="custom-tree-node" slot-scope="{ node, data }">
                         <span :class="{'active':data.id==activeId}">{{ data.label }}</span>
-                        <span v-if="node.id==1" style="color:#f00;">
-                            判断展示
+                        <span v-if="node.level==1" style="color:#f00;">
+                            第一级判断展示
                         </span>
                         <span v-else style="color:#09c;">
                             绑定图标按钮
@@ -39,7 +39,7 @@
                 </el-col>
                 <el-col :span="12">
                     <h2>下拉框带树形</h2>
-                    <!-- <el-select v-model="value6" placeholder="请选择">
+                    <el-select v-model="value6" placeholder="请选择">
                         <el-input
                         placeholder="输入关键字进行过滤"
                         v-model="filterText" style="position:absolute;top:6px;z-index:9;margin:0 auto;">
@@ -51,7 +51,7 @@
                             :props="defaultProps" @check-change="selsetchangeTree">
                             </el-tree>
                         </el-option>
-                    </el-select> -->
+                    </el-select>
                     <el-select v-model="value6" filterable :filter-method="filterMethod" placeholder="请选择">
                         <el-option :value="filterText" :label="value7" class="selectTree">
                             <el-tree show-checkbox ref="selecttree" node-key="id" class="filter-tree"
