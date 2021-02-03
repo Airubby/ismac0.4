@@ -164,7 +164,9 @@
         background-color: transparent;
         color: @activeColor;
     }
-    .el-select-dropdown__item.hover,.el-select-dropdown__item.selected{
+    .el-select-dropdown__item.hover,.el-select-dropdown__item.selected,
+    .el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover,
+    .el-select-dropdown.is-multiple .el-select-dropdown__item.selected{
         background-color:@activeBg;
         color: @activeColor;
     }
@@ -202,7 +204,7 @@
     .el-date-table td.end-date span, .el-date-table td.start-date span{
         background-color: @activeColor;
     }
-    .el-date-table td.next-month, .el-date-table td.prev-month,.el-date-table td.disabled div,.el-month-table td.disabled .cell,.el-year-table td.disabled .cell,
+    .el-date-table td.disabled div,.el-month-table td.disabled .cell,.el-year-table td.disabled .cell,
     .el-date-table td.in-range div, .el-date-table td.in-range div:hover,.el-date-table td.disabled div,.el-month-table td.disabled .cell,
     .el-range-editor.is-disabled input{
         background-color: @disabledBg; 
@@ -221,7 +223,6 @@
     .el-tag.el-tag--info .el-tag__close{
         color: @bgColor;
     }
-    .el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover,
     .el-tree-node__content:hover,.el-tree-node:focus>.el-tree-node__content{
         background-color: @activeBg;
     }

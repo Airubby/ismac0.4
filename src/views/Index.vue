@@ -119,7 +119,7 @@ export default {
             },
             vWeek: [this.$t("SUN"),this.$t("Mon"),this.$t("Tues"),this.$t("Wed"),this.$t("Thurs"),this.$t("Fir"),this.$t("Sat")],
             videoInfo:{
-                visible:true
+                visible:false
             }
         }
     },

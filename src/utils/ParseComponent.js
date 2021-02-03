@@ -203,7 +203,6 @@ export default {
                     // 这个动态导入会返回一个 `Promise` 对象。
                     () => import(`@/views/pages/${ComponentPackage}/${component}.vue`)
                 )
-                
                 //注册局部组件 @/views  必须在这个地方写，如果传参过来会报错
                 // this.$options.components["componentName"]=() => import(`@/views${_this.pathUrl}`);
                 // this.currentComponent = () => import(`@/views${_this.pathUrl}`);
