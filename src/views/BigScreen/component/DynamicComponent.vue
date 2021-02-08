@@ -85,9 +85,6 @@ export default {
         }
     },
 	methods: {
-        test(){
-            console.log("@@@@@@@@@@@@@@@@@@@")
-        },
         setStyle(styles){
             let styleID=uuidv4();
             let style="";

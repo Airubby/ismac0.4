@@ -411,26 +411,26 @@ const getBigScreen=function(){
         err_code:0,
         err_msg:"成功",
         data:[
-            // {
-            //     "key": "home",
-            //     "isIndex": "true",
-            //     "pathUrl": "/template/home",
-            //     "pointData":[
-            //         {"key":"name","devid":"1","pointid":"1-1"},
-            //         {"key":"detail","devid":"2","pointid":"2-1"},
-            //     ],
-            //     "routeData":[]
-            // },
             {
-                "key": "three",
+                "key": "home",
                 "isIndex": "true",
-                "pathUrl": "/template/three",
+                "pathUrl": "/template/home",
                 "pointData":[
                     {"key":"name","devid":"1","pointid":"1-1"},
                     {"key":"detail","devid":"2","pointid":"2-1"},
                 ],
                 "routeData":[]
             },
+            // {
+            //     "key": "three",
+            //     "isIndex": "true",
+            //     "pathUrl": "/template/three",
+            //     "pointData":[
+            //         {"key":"name","devid":"1","pointid":"1-1"},
+            //         {"key":"detail","devid":"2","pointid":"2-1"},
+            //     ],
+            //     "routeData":[]
+            // },
         ]
     }
 }
