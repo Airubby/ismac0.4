@@ -27,12 +27,6 @@ const formatStyle = (sty, css, componentId) => {
     return cssText
 }
 const $require = (filepath, scriptContext) => {
-    // console.log(path)
-    // console.log(path.dirname(`${filepath}`))
-    // console.log(path.extname(`${filepath}`))
-    // console.log(path.isAbsolute(`${filepath}`))
-    // console.log(path.normalize(`${filepath}`))
-    // console.log(__dirname)
     console.log("!!!!!!!!!!!!!!!!!!!!!!!")
     const filename = path.resolve(__dirname, `./${filepath}`); 
     console.log(filename) 
@@ -107,6 +101,7 @@ export default {
             // 生成data-u-id 
             const componentId = uuidv4();
             const template = sfc.template ? tagToUuid(sfc.template.content, componentId) : '' 
+            console.log(sfc)
             // 转化style（less、sass、stylus）  
             let styles = []  
             sfc.styles.forEach(sty => {    
@@ -137,6 +132,7 @@ export default {
             let tempData=null;
             new Promise ((resolve, reject) => {
                 //`${_this.pathUrl}`
+                console.log(_this.pathUrl)
                 axios.get(`${_this.pathUrl}`).then((result) => {
                     tempData = compiler.parseComponent(result);
                     resolve();
@@ -146,20 +142,21 @@ export default {
             }).then(()=>{
                 if(tempData){
                     let r=this.getComponentOption(tempData)
-                    let temp=compiler.compile(r.template)  //编译成render函数
+                    
+                    let temp=compiler.compile(r.template.trim())  //编译成render函数
                     //这个地方生成编译后的dom  temp.render   注意:生成的编译文件中去掉\n;编译的源组件中不能有模板字符串`
                     this.setStyle(r.styles);
-                    
+                    console.log(temp.render)
                     //注册全局组件
-                    // this.currentComponent=Vue.component('currentComponent',{
-                    //     render:new Function(temp.render),
-                    //     ...r.script
-                    // }) 
-                    //注册局部组件
-                    this.currentComponent={
+                    this.currentComponent=Vue.component('currentComponent',{
                         render:new Function(temp.render),
                         ...r.script
-                    }
+                    }) 
+                    //注册局部组件
+                    // this.currentComponent={
+                    //     render:new Function(temp.render),
+                    //     ...r.script
+                    // }
                 }
             });
         }

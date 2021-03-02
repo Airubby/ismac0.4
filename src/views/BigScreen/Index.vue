@@ -1,11 +1,12 @@
 <template>
 	<div class="content">
-		<DynamicComponent :pathUrl="pathUrl+'/Index.vue'" :templateData="initParams" :templateUrl="pathUrl"></DynamicComponent>
+		<DynamicComponent :pathUrl="tempUrl+'/Index.vue'" :templateData="initParams" :templateUrl="tempUrl"></DynamicComponent>
     </div>
 </template>
 
 <script>
 import DynamicComponent from './component/DynamicComponent'
+import { mapGetters } from 'vuex'
 export default {
     components:{DynamicComponent},
 	created () {
@@ -27,6 +28,14 @@ export default {
         //     });
         // }); 
     },
+    computed:{
+        ...mapGetters([
+            'tempUrl'
+        ]),
+    },
+    destroyed(){
+        this.$store.dispatch("setTempUrl","");
+    },
 	data(){
 		
 		return {
@@ -34,7 +43,6 @@ export default {
                 pointData:[],
                 routeData:[]
             },
-            pathUrl:"",
             remote:null
 		}
 	},
@@ -45,10 +53,9 @@ export default {
                     res.data.forEach(element => {
                         console.log(element)
                         if("true"==element.isIndex||true==element.isIndex){
-                            this.pathUrl=element.pathUrl;
                             this.initParams.pointData=element.pointData;
                             this.initParams.routeData=element.routeData;
-                            // this.$store.dispatch("setSendMsg",element.pointData);
+                            this.$store.dispatch("setTempUrl",element.pathUrl);
                         }
                     });
                 }

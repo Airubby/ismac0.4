@@ -10,6 +10,7 @@ const app = {
         language: Cookies.get('language') || 'zh',
         languageZh: {},
         languageEn: {},
+        tempUrl:"",
     },
     mutations: {
         setwsData(state,wsData){
@@ -37,7 +38,9 @@ const app = {
         SET_LANGUAGEEN: (state, language) => {
         state.languageEn = language
         },
-
+        SET_TEMPURL:(state, tempUrl) => {
+            state.tempUrl = tempUrl
+        },
     },
     actions: {
         setwsData({commit},wsData){
@@ -61,6 +64,9 @@ const app = {
         },
         setLanguageEn({ commit }, language) {
         commit('SET_LANGUAGEEN', language)
+        },
+        setTempUrl({ commit }, tempUrl) {
+            commit('SET_TEMPURL', tempUrl)
         },
     }
 

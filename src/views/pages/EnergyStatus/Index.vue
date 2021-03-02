@@ -1,14 +1,16 @@
 <template>
     <div class="content">
-        <div class="energy-btn">
-            <template v-for="(item,index) in btnList">
-                <el-button :type="item.active?'primary':'text'" size="mini" :key="index" @click="clickBtn(index)">{{item.name}}</el-button>
-            </template>
-        </div>
-        <div class="energy_top">
-            <div class="energy_top_box" id="pueCon"></div>
-            <div class="energy_top_box" id="fzlCon"></div>
-            <div class="energy_top_box" id="energyCon"></div>
+        <div class="energy-top">
+            <div class="energy-btn">
+                <template v-for="(item,index) in btnList">
+                    <el-button :type="item.active?'primary':'text'" size="mini" :key="index" @click="clickBtn(index)">{{item.name}}</el-button>
+                </template>
+            </div>
+            <div class="energy-top-con">
+                <div class="energy_top_box" id="pueCon"></div>
+                <div class="energy_top_box" id="fzlCon"></div>
+                <div class="energy_top_box" id="energyCon"></div>
+            </div>
         </div>
         <div class="card_title">
             <span class="title">能效趋势</span>
@@ -214,7 +216,7 @@ export default {
             return myChart; 
         },
         initPie:function(id,title,data){
-            var data=[{value:30,name:"IT能耗"},{value:100-30,name:"其它能耗"}]
+            var data=[{value:21.12,name:"IT能耗"},{value:78.88,name:"其它能耗"},{value:0,name:"供配电"},{value:0,name:"制冷"}]
             let myChart = echarts.init(document.getElementById(id))
             // 绘制图表
             myChart.setOption({
@@ -229,6 +231,10 @@ export default {
                         fontWeight:'normal'
                     },
                 },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{b}: {c} ({d}%)"
+                },
                 series:[{
                     type: 'pie',
                     radius: '70%',
@@ -236,6 +242,7 @@ export default {
                     data: data,
                     label: {
                         normal: {
+                            show:true,
                             formatter: '{per|{d}%}\n{b|{b}} ',
                             rich: {
                                 b: {
@@ -256,7 +263,7 @@ export default {
                     },
                     itemStyle:{
                        borderColor:this.borderColor,
-                       borderWidth:5
+                       borderWidth:3
                     }
                 }]
 
@@ -403,22 +410,32 @@ export default {
 </script>
 <style lang="less" scoped>
     .module-theme(...){
-        .energy-btn{
+        
+        .energy-top{
+            position: relative;
             width: 100%;
-            height: 30px;
-            text-align: right;
-        }
-        .energy_top{
-            display: flex;
-            justify-content: center;
-            height: 170px;
-            .energy_top_box{
-                width: 33.33%;
-                height:170px;
-                text-align: center;
-                line-height: 170px;
-                font-size: 22px;
+            height: 200px;
+            .energy-btn{
+                position: absolute;
+                right: 0;
+                width: 100%;
+                height: 30px;
+                text-align: right;
             }
+            .energy-top-con{
+                display: flex;
+                justify-content: center;
+                height: 100%;
+                .energy_top_box{
+                    width: 33.33%;
+                    padding-top: 30px;
+                    height:200px;
+                    text-align: center;
+                    line-height: 170px;
+                    font-size: 22px;
+                }
+            }
+            
         }
         .lineCon{
             width: 100%;

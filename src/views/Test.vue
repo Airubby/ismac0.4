@@ -2,6 +2,7 @@
 	<div class="content">
 		<a href="/template/aaa.xlsx" download="sfslf" style="color:#fff">tste</a>
         <span @click="down">ddddd</span>
+        <div class="energy_top_box" id="pueCon" style="width:200px;height:200px"></div>
     </div>
 </template>
 
@@ -11,7 +12,17 @@ export default {
         console.log("测试")
 	},
 	mounted() {
-		
+        let _this=this;
+        new Promise ((resolve, reject) => {
+            const s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.src = '/js/echarts.min.js';
+            document.head.appendChild(s);
+            s.onload=function(){
+                _this.initPue("pueCon")
+            }
+        })
+        
     },
 	data(){
 		return{
@@ -21,8 +32,76 @@ export default {
 	methods:{
 		down(){
             this.$api.downloadFile("/template/aaa.xlsx")
-        }
-		
+        },
+		initPue:function(ID,value,min,max,title,color){
+            console.log("---------------------------------")
+            console.log(echarts)
+            var value=1.53,min=0,max=5,title="PUE";
+            var color=[[value/max,"#709CFD"],[1, '#223775']];
+            var myChart = echarts.init(document.getElementById(ID));
+            var option = {
+                title:{
+                    text:"PUE",
+                    bottom:0,
+                    x:'center',
+                    textStyle:{
+                        color:this.color,
+                        fontSize:14,
+                        fontWeight:'normal'
+                    },
+                },
+                series: [
+                    {
+                        name: title,
+                        type: 'gauge',
+                        silent:true,
+                        radius:'90%',
+                        min:min,
+                        max:max,
+                        startAngle:180,
+                        endAngle:0,
+                        splitNumber:6,
+                        center: ['50%', '55%'],
+                        axisLine:{
+                            lineStyle:{
+                                color:color,
+                                width:'15',
+                            }
+                        },
+                        splitLine:{
+                            show:false,
+                        },
+                        axisLabel:{
+                            show:false,
+                            color:"#B3D6EF"
+                        },
+                        axisTick:{
+                            show:false
+                        },
+                        pointer:{
+                            length:'65%',
+                            width:'3%',
+                        },
+                        itemStyle:{
+                            color: "#709CFD"
+                        },
+                        detail: {
+                            show: true,
+                            formatter:value,
+                        },
+                        data: [{value: value}]
+                    }
+                ]
+            };
+            
+            myChart.setOption(option, true);
+            window.addEventListener("resize", () => {
+                setTimeout(function(){
+                    myChart.resize();
+                },0)
+            });
+            return myChart; 
+        },
 	},
 	watch:{
 			
