@@ -1,12 +1,12 @@
 <template>
-    <component :is="currentComponent" :templateData="templateData" :templateUrl="templateUrl"></component>
+    <component :is="currentComponent" :templateData="templateData" :dataObject="dataObject" :templateUrl="templateUrl" 
+    @selectPoint="selectPoint" @selectUrl="selectUrl"></component>
 </template>
 <script>
 import Vue from 'vue'
 import axios from 'axios'
 const compiler = require('vue-template-compiler')
 const path = require("path")
-import { uuid } from 'utilscore'
 // import stylus from 'stylus'
 // import sass from 'sass'
 import less from 'less'
@@ -26,14 +26,15 @@ const formatStyle = (sty, css, componentId) => {
     }  
     return cssText
 }
-const $require = (filepath, scriptContext) => {
-    const filename = path.resolve(__dirname, `./${filepath}`);  
-    const module = { exports: {} }  
-    let code = scriptContext ? scriptContext : fs.readFileSync(filename, 'utf-8')  
-    let exports = module.exports  
-    code = `(function($require,module,exports,__dirname,filename){${code}})($require,module,exports,__dirname,filename)`  
-    eval(code)  
-    return module.exports
+const $require = (filepath) => {
+    console.log("!!!!!!!!!!!!!!!!!!!!!!",filepath)
+    // const filename = path.resolve(__dirname, `./${filepath}`);  
+    // const module = { exports: {} }  
+    // let code = scriptContext ? scriptContext : fs.readFileSync(filename, 'utf-8')  
+    // let exports = module.exports  
+    // code = `(function($require,module,exports,__dirname,filename){${code}})($require,module,exports,__dirname,filename)`  
+    // eval(code)  
+    // return module.exports
 }
 export default {
     props:{
@@ -48,6 +49,12 @@ export default {
         //需要传给动态子组件的数据
         templateData:{
             type:Object,
+            default:function(){
+                return {}
+            }
+        },
+        dataObject:{
+            type: Object,
             default:function(){
                 return {}
             }
@@ -69,9 +76,18 @@ export default {
         }
     },
 	methods: {
+        selectPoint:function(key){
+            this.$emit("selectPoint",key)
+        },
+        selectUrl:function(key){
+            this.$emit("selectUrl",key)
+        },
         Init(){
-            this.styleID=uuid(16, 32).toLocaleLowerCase();
+            this.styleID=this.getRandom();
             this.getComponent();
+        },
+        getRandom(){
+            return Math.random().toString(36).substr(-8);
         },
         setStyle(styles){
             let style="";
@@ -93,8 +109,9 @@ export default {
         },
         getComponentOption(sfc){
             // 生成data-u-id 
-            const componentId = uuid(8, 16).toLocaleLowerCase();
+            const componentId = this.getRandom();
             const template = sfc.template ? tagToUuid(sfc.template.content, componentId) : '' 
+            console.log(sfc)
             // 转化style（less、sass、stylus）  
             let styles = []  
             sfc.styles.forEach(sty => {    
@@ -112,7 +129,6 @@ export default {
                 }  
             })  
             let options = {    
-                // script: sfc.script ? $require(null, sfc.script.content) : {},    
                 script: sfc.script ? eval(sfc.script.content): {},    
                 styles,    
                 template  
@@ -134,19 +150,22 @@ export default {
                 }).then(()=>{
                     if(tempData){
                         let r=this.getComponentOption(tempData)
-                        console.log(r)
-                        let temp=compiler.compile(r.template)  //编译成render函数
+                        let temp=compiler.compile(r.template.trim())  //编译成render函数
                         //这个地方生成编译后的dom  temp.render   注意:生成的编译文件中去掉\n;编译的源组件中不能有模板字符串`
                         this.setStyle(r.styles);
-                        
+                        const res = {}
+                        res.render = new Function(temp.render)
+                        res.staticRenderFns = temp.staticRenderFns.map(code => {
+                            return new Function(code)
+                        })
                         //注册全局组件
                         // this.currentComponent=Vue.component('currentComponent',{
-                        //     render:new Function(temp.render),
+                        //     ...res,
                         //     ...r.script
                         // }) 
                         //注册局部组件
                         this.currentComponent={
-                            render:new Function(temp.render),
+                            ...res,
                             ...r.script
                         }
                     }

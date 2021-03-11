@@ -1,18 +1,24 @@
 <template>
 	<div class="content">
-		<DynamicComponent :pathUrl="tempUrl+'/Index.vue'" :templateData="initParams" :templateUrl="tempUrl"></DynamicComponent>
+        <!-- templateData整个数据源；dataObject展示的数据绑定值；templateUrl模板路径 -->
+		<DynamicComponent :pathUrl="tempUrl+'/Index.vue'" :templateData="tempData" :dataObject="data" :templateUrl="tempUrl"></DynamicComponent>
+        <web-socket v-if="tempData.data.length>0" :wsInfo="tempData.data" :sendInfo="{cmd:'subdata',returnFn:true,changeSend:true}" @backInfo="handleBack"></web-socket>
     </div>
 </template>
 
 <script>
 import DynamicComponent from './component/DynamicComponent'
 import { mapGetters } from 'vuex'
+import WebSocket from '@/components/WebSocket'
 export default {
-    components:{DynamicComponent},
+    components:{DynamicComponent,WebSocket},
 	created () {
-        this.getInfo()
+        // this.getInfo()
 	},
 	mounted() {
+        this.$nextTick(()=>{
+            this.getInfo()
+        })
 		// fetch("/template/home/Index.vue").then(res => {
         //     return res.text();
         // }).then(sfc => {    
@@ -27,23 +33,24 @@ export default {
         //         template: options.template    
         //     });
         // }); 
+        setTimeout(() => {
+            this.data={
+                wendu:"10",
+                shidu:"20",
+            }
+        }, 5000);
     },
     computed:{
         ...mapGetters([
-            'tempUrl'
+            'tempUrl','tempData'
         ]),
     },
     destroyed(){
         this.$store.dispatch("setTempUrl","");
     },
 	data(){
-		
 		return {
-            initParams:{
-                pointData:[],
-                routeData:[]
-            },
-            remote:null
+            data:{},
 		}
 	},
 	methods:{
@@ -51,16 +58,29 @@ export default {
             this.$api.post("/getBigInfo",{}).then(res=>{
                 if(res.err_code=="0"){
                     res.data.forEach(element => {
-                        console.log(element)
                         if("true"==element.isIndex||true==element.isIndex){
-                            this.initParams.pointData=element.pointData;
-                            this.initParams.routeData=element.routeData;
                             this.$store.dispatch("setTempUrl",element.pathUrl);
+                            this.$store.dispatch("setTempData",element);
                         }
                     });
                 }
             })
         },
+        handleBack:function(info){
+            let data={};
+            for(let i=0;i<this.tempData.data.length;i++){
+                for(let j=0;j<info.length;j++){
+                    if(this.tempData.data[i].key==info[j].key){
+                        if(this.tempData.data[i].format){
+                            data[info[j].key]=JSON.parse(this.tempData.data[i].format)[info[j].value];
+                        }else{
+                            data[info[j].key]=info[j].value;
+                        }
+                    }
+                }
+            }
+            this.data=data;
+        }
 	},
 	watch:{
 			

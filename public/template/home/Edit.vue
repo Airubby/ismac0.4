@@ -26,10 +26,10 @@
 	                        <em class="wk-sbx" style="right:-68px"></em>
 	                        <em class="wk-tix"></em>
 	                        <ul>
-	                            <li id="fullscreen" onclick="switcFullScreen()"><img :src="templateUrl+'/images/fullscreen.png'"></li>
-	                            <li onclick="showAlarm()"><img :src="templateUrl+'/images/alarm.png'"></li>
+	                            <li id="fullscreen" @click="switcFullScreen()"><img :src="templateUrl+'/images/fullscreen.png'"></li>
+	                            <li @click="showAlarm()"><img :src="templateUrl+'/images/alarm.png'"></li>
 	                            <li><img :src="templateUrl+'/images/account.png'"></li>
-	                        	<li onclick="enterOld()"><img :src="templateUrl+'/images/manage.png'"></li>
+	                        	<li @click="enterOld()"><img :src="templateUrl+'/images/manage.png'"></li>
 	                        </ul>
 	                    </div>
 	                </div>
@@ -151,10 +151,10 @@
 	                <div class="cen-img"><div class="cen-img-con"><img :src="templateUrl+'/images/home.png'"></div></div>
 	                <div class="cen-bottom">
 	                    <ul id="sysMenu">
-	                        <li onclick="enterPage('url1')"><img :src="templateUrl+'/images/home-hj.png'"><div>环境系统</div></li>
-	                        <li onclick="enterPage('url2')"><img :src="templateUrl+'/images/home-kt.png'"><div>空调系统</div></li>
-	                        <li onclick="enterPage('url3')"><img :src="templateUrl+'/images/home-pd.png'"><div>配电系统</div></li>
-	                        <li onclick="enterPage('url4')"><img :src="templateUrl+'/images/home-it.png'"><div>安防系统</div></li>
+	                        <li @click="enterPage('hj')"><img :src="templateUrl+'/images/home-hj.png'"><div>环境系统</div></li>
+	                        <li @click="enterPage('kt')"><img :src="templateUrl+'/images/home-kt.png'"><div>空调系统</div></li>
+	                        <li @click="enterPage('pd')"><img :src="templateUrl+'/images/home-pd.png'"><div>配电系统</div></li>
+	                        <li @click="enterPage('af')"><img :src="templateUrl+'/images/home-it.png'"><div>安防系统</div></li>
 	                    </ul>
 	                </div>
 	            </div>
@@ -242,7 +242,7 @@
 	                                        <div class="loncom-block">
 	                                        	<div class="loncom-block-con">
 	                                        		<div class="num mainwd">
-                                                        <span class="numspan" id="mainwd">
+                                                        <span class="numspan" id="mainwd" @click="selectPoint('wendu')">
                                                             {{initParams.wendu}}
                                                         </span>
                                                     </div>
@@ -254,7 +254,7 @@
 	                                    	<div class="loncom-block">
 	                                        	<div class="loncom-block-con">
 	                                        		<div class="num mainsd">
-                                                        <span class="numspan" id="mainsd">{{initParams.shidu}}</span>
+                                                        <span class="numspan" id="mainsd" @click="selectPoint('shidu')">{{initParams.shidu}}</span>
                                                     </div>
 	                                        		<div>湿度</div>
 	                                        	</div>
@@ -899,15 +899,17 @@ module.exports = {
 		        myChart.setOption(option, true);
 		        return myChart;
 		},
-        enterPage:function(key){
-            for(let i=0;i<this.templateData.url.length;i++){
-                if(key==this.templateData.url[i].key){
-                    this.$store.dispatch("setTempUrl",this.templateData.url[i].pathUrl);
-                    this.$store.dispatch("setTempData",this.templateData);
+        
+        switcFullScreen:function(){
 
-                }
-            }
-            console.log(this.templateData)
+        },
+        enterOld:function(){},
+        showAlarm:function(){},
+        selectPoint:function(key){
+            this.$emit("selectPoint",key)
+        },
+        enterPage:function(key){
+            this.$emit("selectUrl",key)
         }
     },
     watch:{
@@ -925,6 +927,8 @@ module.exports = {
     .loncom_content{
     width: 100%;
     height: 100%;
+    min-width: 1200px;
+    min-height: 760px;
     overflow: hidden;
     position: relative;
     .loncom-index-body{
@@ -1605,7 +1609,6 @@ justify-content: center;
 }   
 .loncom-block .num{
 color: #B1BFF5;
-font-size: 28px;
 font-weight: bold;
 }
 .loncom-block .num .numspan{

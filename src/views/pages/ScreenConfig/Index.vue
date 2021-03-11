@@ -14,13 +14,13 @@
                     <el-scrollbar>
                         <div class="scrollbar-con">
                             <el-checkbox-group v-model="checkList">
-                                <div class="temp-box" v-for="(item,index) in 20" :key="item" :class="{'active':tempid===index}">
+                                <div class="temp-box" v-for="(item,index) in tempList" :key="index" :class="{'active':tempid===index}">
                                     <div class="checkbox">
                                         <el-checkbox :label="index">{{`\u3000`}}</el-checkbox>
                                     </div>
-                                    <div class="temp-boxcon" @click="clickTemp(index)">
+                                    <div class="temp-boxcon" @click="clickTemp(index,item)">
                                         <div class="temp-box-title">
-                                            <span class="title-con">配电系统</span>
+                                            <span class="title-con">{{item.name}}</span>
                                             <el-dropdown trigger="click">
                                                 <span class="el-icon-more"></span>
                                                 <el-dropdown-menu slot="dropdown">
@@ -31,7 +31,7 @@
                                             </el-dropdown>
                                         </div>
                                         <div class="temp-box-con">
-                                            说明：这里可以放一两项简单描述，不做操作，仅可点击查看详情
+                                            {{item.desc}}
                                         </div>
                                     </div>
                                 </div>
@@ -45,54 +45,62 @@
                 <el-scrollbar class="config-right-scrollbar">
                     <div class="config-right-con">
                         <div class="handle-btn">
-                            <handle-btn @handleClick="sureHandle()" btnName="保存"></handle-btn>
+                            <handle-btn btnName="保存"></handle-btn>
                         </div>
                         <div class="config-form">
                             <el-form ref="ValidateForm" :model="initParams" :rules="rules" label-position="top">
                                 <el-row :gutter="20">
-                                    <el-col :span="8">
+                                    <el-col :span="6">
                                         <el-form-item label='视图名称' prop="name">
                                             <el-input v-model="initParams.name"></el-input>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :span="16">
-                                        <el-form-item :label="`\u3000`" prop="name">
-                                            <el-checkbox v-model="initParams.checked">作为主页</el-checkbox>
+                                    <el-col :span="12">
+                                        <el-form-item label='描述' prop="desc">
+                                            <el-input v-model="initParams.desc"></el-input>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :span="8">
-                                        <el-form-item label='描述' prop="name">
-                                            <el-input v-model="initParams.name"></el-input>
+                                    <el-col :span="6">
+                                        <el-form-item :label="`\u3000`" prop="isIndex">
+                                            <el-checkbox v-model="initParams.isIndex">作为主页</el-checkbox>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
                             </el-form>
                         </div>
-                        <div class="content">
-                            <el-tabs v-model="activeName">
+                        <div class="content" v-scrollBar>
+                            <DynamicComponent v-if="pathUrl" :pathUrl="pathUrl+`/Edit.vue`" 
+                            @selectUrl="selectUrl"
+                            @selectPoint="selectPoint" :dataObject="data" :templateUrl="pathUrl"></DynamicComponent>
+                            <!-- <el-tabs v-model="activeName">
                                 <el-tab-pane label='数据绑定' name="first">
                                     <Databind></Databind>
                                 </el-tab-pane>
                                 <el-tab-pane label='交互连接' name="second">
                                     <reciprocal-junction></reciprocal-junction>
                                 </el-tab-pane>
-                            </el-tabs>
+                            </el-tabs> -->
                         </div>
                     </div>
                 </el-scrollbar>
             </div>
         </div>
         <set-screen v-if="setInfo.visible" :dialogInfo="setInfo"></set-screen>
+        <set-point v-if="pointInfo.visible" :dialogInfo="pointInfo" @backInfo="handleInfo"></set-point>
+        <set-route v-if="urlInfo.visible" :dialogInfo="urlInfo" @backInfo="handleUrl"></set-route>
     </div>
 </template>
 <script>
 import Databind from './component/Databind'
 import ReciprocalJunction from './component/ReciprocalJunction'
 import SetScreen from './component/SetScreen'
+import DynamicComponent from '@/components/DynamicComponent'
+import SetPoint from './component/SetPoint'
+import SetRoute from './component/SetRoute'
 export default {
-    components:{Databind,ReciprocalJunction,SetScreen},
+    components:{Databind,ReciprocalJunction,SetScreen,DynamicComponent,SetPoint,SetRoute},
     created() {
-        
+        this.getInfo();
     },
     mounted() {
         
@@ -102,53 +110,96 @@ export default {
             checkList:[],
             tempid:"",
             activeName:"first",
-            options:[
-                {value:"1",label:"设备"},
-            ],
+            tempList:[],
             initParams:{
-                search:""
+                name:"",
+                desc:"",
+                isIndex:false
             },
+            pathUrl:"",
+            tempData:{},
+            data:{},
+            pointInfo:{
+                key:"",
+                visible:false
+            },
+            urlInfo:{
+                key:"",
+                visible:false
+            },
+
+
+
             rules:{
 
             },
-            tableData:[
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-                {code:"1",type:"告警",indate:"告警",timegroup:"告警",jieru:"2020-12",jieru1:"2020-12"},
-            ],
-            tableColumns:[
-                { prop: 'code', label: '计划名称',minWidth:10},
-                { prop: 'type', label: '类型',minWidth:10},
-                { prop: 'indate', label: '描述',minWidth:20},
-                { prop: 'timegroup', label: '订阅用户',minWidth:20},
-                { prop: 'handle', label: '操作',slotName:'preview-handle',width:100},
-            ],
             setInfo:{
                 visible:false
             }
         }
     },
 	methods: {
-        clickTemp:function(index){
+        selectPoint:function(key){
+            this.pointInfo.key=key;
+            this.pointInfo.visible=true;
+        },
+        selectUrl:function(key){
+            this.urlInfo.key=key;
+            this.urlInfo.visible=true;
+        },
+        handleInfo:function(data){
+            let showNamme=data.devname+"-"+data.pointname;
+            this.data[this.pointInfo.key]=showNamme;
+            this.tempData.data.forEach((element,index) => {
+                if(element.key==this.pointInfo.key){
+                    this.tempData.data[index].devid=data.devid;
+                    this.tempData.data[index].pointid=data.pointid;
+                    this.tempData.data[index].showNamme=showNamme;
+                }
+            });
+        },
+        handleUrl:function(data){
+            this.tempData.url.forEach((element,index) => {
+                if(element.key==this.urlInfo.key){
+                    this.tempData.url[index].pathUrl=data.pathUrl;
+                }
+            });
+        },
+        getInfo(){
+            this.$api.post("/getBigInfo",{}).then(res=>{
+                console.log(res)
+                if(res.err_code=="0"){
+                    this.tempList=res.data;
+                }
+            })
+        },
+        clickTemp:function(index,item){
             this.tempid=index;
+            this.pathUrl=item.pathUrl;
+            this.tempData=item;
+            this.initParams=Object.assign(this.initParams,item);
         },
         setScreen:function(){
             this.setInfo.visible=true;
         },
-        resetForm() {
-            this.$refs['ValidateForm'].resetFields();
-        },
-        submitForm() {
-            this.$refs['ValidateForm'].validate((valid) => {
-                if (valid) {
-                    
+        setData:function(info){
+            let data={};
+            for(let i=0;i<this.tempData.data.length;i++){
+                for(let j=0;j<info.length;j++){
+                    if(this.tempData.data[i].key==info[j].key){
+                        data[info[j].key]=info[j].showNamme;
+                    }
                 }
-            });
-        },
+            }
+            this.data=data;
+            console.log(this.data)
+        }
 	},
     watch: {
-        
+        pathUrl:function(){
+            console.log(this.tempData)
+            this.setData(this.tempData.data)
+        }
     }
 }
 </script>

@@ -415,11 +415,13 @@ const getBigScreen=function(){
                 "key": "home",
                 "isIndex": true,
                 "pathUrl": "/template/home",
-                "pointData":[
-                    {"key":"name","devid":"1","pointid":"1-1"},
-                    {"key":"detail","devid":"2","pointid":"2-1"},
+                "name":"大屏首页",
+                "desc":"大屏首页",
+                "data":[
+                    {"key":"wendu","devid":"","pointid":"","desc":"首页温度","showNamme":"测点绑点"},
+                    {"key":"shidu","devid":"","pointid":"","desc":"首页湿度","showNamme":"测点绑点"},
                 ],
-                "routeData":[
+                "url":[
                     {"key":"three","pathUrl":"/template/three"}
                 ]
             },
@@ -427,11 +429,13 @@ const getBigScreen=function(){
                 "key": "three",
                 "isIndex": false,
                 "pathUrl": "/template/three",
-                "pointData":[
+                "name":"大屏3D",
+                "desc":"大屏3D",
+                "data":[
                     {"key":"name","devid":"1","pointid":"1-1"},
                     {"key":"detail","devid":"2","pointid":"2-1"},
                 ],
-                "routeData":[]
+                "url":[]
             },
         ]
     }

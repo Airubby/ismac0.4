@@ -4,9 +4,9 @@
             <el-button type="primary" plain @click="$router.back(-1)">返回</el-button>
             <div>
                 <el-button type="primary" @click="test()">测试</el-button>
-                <el-button type="primary" @click="handleSure()" v-show="name">保存</el-button>
+                <el-button type="primary" @click="handleSure()" v-show="name&&editType">保存</el-button>
                 <el-button type="primary" plain @click="handleSet()">布局设置</el-button>
-                <el-button type="primary" plain @click="handlePanel($event)" v-show="name">布局面板</el-button>
+                <el-button type="primary" plain @click="handlePanel($event)" v-show="name&&editType">布局面板</el-button>
             </div>
         </div>
         <div class="layout-con">
@@ -150,27 +150,75 @@
                         </div>
                     </div>
                 </div>
+                <div class="bipv-box" v-show="editType=='bipv'" @click="hiddenPanel($event)">
+                    <div class="bipv-box-con">
+                        <div class="bipv-box-panel" id="devtopDatabipv" style="background:#000"
+                        @drop='dragDevFinish($event,"devtopData")'
+                        @touchstart='dragDevFinish($event,"devtopData")'
+                        @dragover='allowDrop($event)'>
+                            <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
+                                <i class="el-icon-delete icon-btn" @click="remove(index,devtopData)"></i>
+                                <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devtopData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devtopData')">
+                            </span>
+                        </div>
+                        
+                        <div class="cabinet">
+                            <div class="cabinet-con" v-if="cabinetU.length>0">
+                                <div v-for="(item,index) in cabinetU" class="cabinet-u" :key="index">
+                                    <div class="cabinet-number" :class="{'firstU':index==0,'lastU':index==cabinetU.length-1}">
+                                        <span class="cabinet-number-box">{{item.index}}</span>
+                                        <span class="cabinet-number-box cabinet-number-boxr">
+                                            {{item.index}}
+                                            <em class="radio" :style="getStyle(item.lastvalue)" @click="setColorFn(item)"></em>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="bipv-list-con" id="topDatabipv"
+                                    @drop='dragCabinetFinish($event,"topData")'
+                                    @touchstart='dragCabinetFinish($event,"topData")'
+                                    @dragover='allowDrop($event)'>
+                                    <div class="bipv-list-drag">
+                                        <template  v-for="(item,tindex) in topData">
+                                            <div class="panel-conbox bipv-group-item" :style="cabinetStyle(item)" draggable=true @dragstart="dragDevStart($event,item,'topData')" @click="devClick($event,item,'topData')" :key="tindex">
+                                                <div class="cabinet-con-img" :style="{height:18*Number(item.ubit)+'px'}">
+                                                    <template v-for="index in Number(item.ubit)">
+                                                        <img src="./config/images/U.png" draggable=false :style="{bottom:18*(index-1)+'px'}" :key="index">
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="detail" id="detail" @click="stopP($event)">
             <div class="side-bar" v-show="isPanel">
                 <el-scrollbar class="scrollbar">
                     <el-collapse v-model="activeItem" accordion>
-                        <el-collapse-item title="动态柜子" name="first" key="first" v-show="editType!='auto'">
+                        <el-collapse-item title="动态柜子" name="first" key="first" v-show="editType=='one'||editType=='two'">
                             <div class="collapse-con">
                                 <div class="collapse-box" :key="index" v-for="(item,index) in list" draggable="true" @dragend="dragEnd()" @dragstart="dragStart($event,item)">{{item.name}}</div>
                             </div>
                         </el-collapse-item>
-                        <el-collapse-item title="预置柜子" name="second" key="second" v-show="editType!='auto'">
+                        <el-collapse-item title="预置柜子" name="second" key="second" v-show="editType=='one'||editType=='two'">
                             <div class="collapse-con">
                                 <div class="collapse-box" :key="index" v-for="(item,index) in list" draggable="true" @dragend="dragEnd()" @dragstart="dragStart($event,item)">{{item.name}}</div>
                             </div>
                         </el-collapse-item>
-                        <el-collapse-item title="预置设备" name="third" key="third">
+                        <el-collapse-item title="环境设备" name="third" key="third">
                             <div class="collapse-con">
-                                <div class="collapse-boximg" :key="index" v-for="(item,index) in devlist" draggable="true" @dragstart="dragDevStart($event,item)">
+                                <div class="collapse-boximg" :key="index" v-for="(item,index) in devlist" draggable="true" @dragend="dragDevEnd()" @dragstart="dragDevStart($event,item)">
                                     <img :src="item.imgsrc" :title="item.name" />
                                 </div>
+                            </div>
+                        </el-collapse-item>
+                        <el-collapse-item title="机柜设备" name="fifth" key="fifth" v-show="editType=='bipv'">
+                            <div class="collapse-con">
+                                <div class="collapse-box" :key="index" v-for="(item,index) in cabinetList" draggable="true" @dragend="dragDevEnd()" @dragstart="dragDevStart($event,item)">{{item.name}}</div>
                             </div>
                         </el-collapse-item>
                     </el-collapse>
@@ -275,7 +323,7 @@ import LayoutSet from './component/LayoutSet'
 import Cabinet from './component/Cabinet'
 import RackDevSet from './component/RackDevSet'
 import ImgSet from './component/ImgSet'
-import uuid from 'uuid-random';
+import uuid from 'uuid-random'
 export default {
     components: {LayoutSet,Draggable,Cabinet,RackDevSet,ImgSet},
     mixins:[],
@@ -291,15 +339,16 @@ export default {
             this.hint="edit";
             this.init(JSON.parse(params).id)
         }
+        this.initBIPV(42)
     },
     data(){
         return{
             hint:"add",
-            name:"",
+            name:"test",
             layoutInfo:{
                 visible:false,
             },
-            activeItem:"third",
+            activeItem:"fifth",
             isPanel:true,
             predefineColors:["#D8645B","#8CBECF","#F2B747","#588EEA","#75B899","#55A1E2"],
             type:"",  //类型devData ，devtopData  等等判断用
@@ -367,6 +416,7 @@ export default {
                 },
             ],
 
+
             
             drag: false,
             activeDrag:null,
@@ -374,7 +424,7 @@ export default {
             activeDevitemDrag:null,
             activeDevdataDrag:null,
 
-            editType:"auto",
+            editType:"bipv",
             leftDoor:true,
             rightDoor:false,
             topData:[],
@@ -390,7 +440,7 @@ export default {
             },
 
             devOptions:[
-                {id:"1",name:"设备1"},{id:"2",name:"设备2"},{id:"3",name:"设备3"},{id:"4",name:"设备4"}
+                {id:"1",name:"设备1",offsetB:""},{id:"2",name:"设备2",offsetB:""},{id:"3",name:"设备3",offsetB:""},{id:"4",name:"设备4",offsetB:""}
             ],
             defaultProps: {
                 children: 'children',
@@ -411,7 +461,19 @@ export default {
             initWidth:"",
             initHeight:"",
             panX:0,
-            panY:0
+            panY:0,
+
+            baseHeight:18,
+            ubit:42,
+            cabinetU:[],
+            color_list:[],
+            color_data:[],
+            cabinetList:[
+                {name:'设备3U',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",ubit:3},
+                {name:'设备8U',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",ubit:8},
+                {name:'设备1U',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",ubit:1},
+                {name:'设备4U',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",ubit:4},
+            ]
         }
     },
     computed: {
@@ -431,7 +493,13 @@ export default {
         },
         panelDevStyle(){
             return function(item){
+                console.log(item)
                 return `left:${item.offsetX}px;top:${item.offsetY}px`;
+            }
+        },
+        cabinetStyle(){
+            return function(item){
+                return `bottom:${item.offsetB}px;`;
             }
         }
     },
@@ -586,6 +654,7 @@ export default {
             this.devData=[];
             this.devtopData=[];
             this.devbottomData=[];
+            this.ubit=info.ubit
 
             if(this.editType=="auto"){
                 this.$nextTick(()=>{
@@ -614,6 +683,9 @@ export default {
                 json["initWidth"]=this.initWidth;
                 json["initHeight"]=this.initHeight;
             }
+            if(this.editType=="bipv"){
+                json["ubit"]=this.ubit;
+            }
             sessionStorage.setItem("layoutJson",JSON.stringify(json));
             console.log(JSON.stringify(json));
             this.$message.success("保存成功");
@@ -627,8 +699,13 @@ export default {
         dragEnd:function(){
             this.activeDrag=null;
         },
+        dragDevEnd:function(){
+            this.activeDevDrag=null;
+            this.activeDevitemDrag=null;
+            this.activeDevdataDrag=null;
+        },
         dragFinish:function(evt,data){
-            console.log(this.activeDrag)
+            console.log(this.activeDrag,evt,data)
             if(this.activeDrag){
                 this.activeDrag["uuid"]=uuid();
                 data.push(JSON.parse(JSON.stringify(this.activeDrag)))
@@ -708,7 +785,6 @@ export default {
         },
         handleDevFinish:function(ev,domID,devData){
             let data=ev.dataTransfer.getData("data");
-            console.log(data)
             if(data){
                 let item = JSON.parse(data);
                 let width=document.getElementById(domID+this.editType).offsetWidth;
@@ -974,6 +1050,132 @@ export default {
         changeImg:function(){
             this.imgInfo.visible=true;
         },
+        //一体化
+        dragCabinetFinish:function(evt,devData){
+            //总结1 . 满足max(A.start,B.start)<=min(A.end,B.end)，即重复 这里的等于的时候是两个设备挨着的状态
+            //总结2 . 满足A.end< B.start || A.start > B.end，即不重复
+            //Math.min.apply(null, [1, 2, 3]) 等价于 Math.min(1, 2, 3)
+            //必须用evt.dataTransfer.getData("data")传数据过来
+            let data=evt.dataTransfer.getData("data");
+            if(data){
+                let item = JSON.parse(data);
+                if(item.ubit){
+                    let height=this.baseHeight*Number(this.ubit);
+                    if(item.uuid){
+                        if(evt.clientY<this.activeDevDrag.clientY){ //向上拖动
+                            if(evt.offsetY-this.activeDevDrag.offsetY<0){ //上边拖出地图了，或者向上拖动了一点点
+                                if(evt.y+this.activeDevDrag.offsetY>this.activeDevDrag.y){ //向上移动了一点
+                                    console.log("一点点")
+                                    item.offsetY=item.offsetY-(this.activeDevDrag.offsetY-evt.offsetY)<0?0:item.offsetY-(this.activeDevDrag.offsetY-evt.offsetY);
+                                }else{
+                                    console.log("拖出去了")
+                                    item.offsetY=0;
+                                }
+                            }else{
+                                console.log("很多")
+                                item.offsetY=evt.offsetY-this.activeDevDrag.offsetY;
+                            }
+                        }else{ //向下拖动
+                            if(evt.offsetY<item.offsetH){  //拖动一点点,可能拖动一点点就拖出画布了
+                                item.offsetY=item.offsetY+(evt.offsetY-this.activeDevDrag.offsetY)+item.offsetH>height?height-item.offsetH:item.offsetY+(evt.offsetY-this.activeDevDrag.offsetY); 
+                            }else{
+                                item.offsetY=evt.offsetY+(item.offsetH-this.activeDevDrag.offsetY)>height?height-item.offsetH:evt.offsetY-this.activeDevDrag.offsetY;
+                            }
+                        }
+                        console.log("evt",evt,"this.activeDevDrag",this.activeDevDrag,"item",item)
+                        item.offsetB= height - Math.floor(item.offsetY/this.baseHeight)*this.baseHeight-item.offsetH;//以U位的最底部作为offsetY
+                        let flag=false;
+                        if(item.offsetB+item.offsetH>height){
+                            flag=true;
+                        }
+                        this[devData].forEach(element => {
+                            let start=[item.offsetB,element.offsetB],
+                                end=[item.offsetB+item.offsetH,element.offsetB+element.offsetH];  
+                            if(Math.max.apply(null,start)<Math.min.apply(null,end)&&item.uuid!=element.uuid){
+                                flag=true;
+                            }
+                        });
+                        if(!flag){
+                            this[devData].forEach(element => {
+                                if(item.uuid==element.uuid){
+                                    element.offsetY=Math.floor(item.offsetY/this.baseHeight)*this.baseHeight;
+                                    element.offsetB=item.offsetB;
+                                }
+                            });
+                        }else{
+                            this.$message.warning("所需U位不足，无法更换U位位置")
+                        }
+                    }else{
+                        item["offsetB"]= height - Math.ceil(evt.offsetY/this.baseHeight)*this.baseHeight;//以U位的最底部作为offsetY
+                        item["offsetH"]=this.baseHeight*Number(item.ubit);
+    
+                        let flag=false;
+                        if(item.offsetB+item.offsetH>height){
+                            flag=true;
+                        }
+                        this[devData].forEach(element => {
+                            let start=[item.offsetB,element.offsetB],
+                                end=[item.offsetB+item.offsetH,element.offsetB+element.offsetH];  
+                            if(Math.max.apply(null,start)<Math.min.apply(null,end)){
+                                flag=true;
+                            }
+                        });
+                        if(!flag){
+                            item["uuid"]=uuid();
+                            item["offsetY"]=Math.ceil(evt.offsetY/this.baseHeight)*this.baseHeight-item["offsetH"];
+                            this[devData].push(item)
+                        }else{
+                            this.$message.warning("所需U位不足，无法上架")
+                        }
+                    }
+                }
+            }
+            
+            
+        },
+        initBIPV:function(val){
+            for(let a=1;a<=val;a++){
+                let index=a;
+                if(index<10){
+                    index="0"+index;
+                }
+                if(this.color_list.length>0){
+                    let flag=false;
+                    for(let i=0;i<this.color_list.length;i++){
+                        if('L'+a===this.color_list[i].pointid){
+                            flag=true;
+                            let obj=Object.assign({},this.color_list[i]);
+                            obj["index"]=index;
+                            obj["show"]=true;
+                            this.cabinetU.push(obj);
+                        }
+                    }
+                    if(!flag){
+                        this.cabinetU.push({index:index,show:false});
+                    }
+                }else{
+                    this.cabinetU.push({index:index,show:false});
+                }
+            }
+            this.cabinetU.reverse();
+        },
+        getStyle:function(status){
+            let st=parseInt(status).toString();
+            let style={
+                background:"#73B34A",  //默认色
+            }
+            for(let i=0;i<this.color_data.length;i++){
+                if(st===this.color_data[i].code){
+                    style.background=this.color_data[i].color;
+                    return style;
+                }
+            }
+            return style;
+        },
+        checkMove:function(e){
+            console.log(e)
+            // return true;
+        },
         test:function(){
             console.log(this.design)
             console.log(this.design.contextCache)
@@ -1216,6 +1418,160 @@ export default {
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+        .bipv-box{
+            .bipv-box-con{
+                width: 400px;
+                padding: 50px 0;
+                position: relative;
+                .bipv-box-panel{
+                    width: 100%;
+                    height: 100%;
+                    position:absolute;
+                    top: 0;
+                    left: 0;
+                    overflow:auto;
+                    .panel-span{
+                        position: absolute;
+                        cursor: move;
+                        .icon-btn{
+                            position: absolute;
+                            top: -8px;
+                            right: -8px;
+                            display: none;
+                            cursor: pointer;
+                            color: @color;
+                        }
+                        &:hover{
+                            .icon-btn{
+                                display: block;
+                            }
+                        }
+                        &.oglFlip{
+                            transform: rotateX(180deg);
+                        }
+                    }
+                }
+                .cabinet{
+                    width: 192px;
+                    padding:6px 6px 15px;
+                    background: #141726;
+                    margin: 0 auto 15px auto;
+                    position: relative;
+                    z-index: 9;
+                    .cabinet-con{
+                        width: 100%;
+                        background: #0B0C14;
+                        position: relative;
+                        .cabinet-u{
+                            position: relative;
+                            width: 100%;
+                            height: 18px;
+                            background: #1E2238;
+                            border-left: 2px solid #414A75;
+                            border-top: 1px solid #0B0C14;
+                            border-bottom: 1px solid #0B0C14; 
+                            .cabinet-number{
+                                position: absolute;
+                                width: calc(100% + 86px);
+                                height: calc(100% + 2px);
+                                top: -1px;
+                                left: -44px;
+                                .cabinet-number-box{
+                                    width: 26px;
+                                    height: 100%;
+                                    background: #353C66;
+                                    color: #6A7498;
+                                    text-align: center;
+                                    display: block;
+                                    position: absolute;
+                                    left: 0;
+                                }
+                                .cabinet-number-boxr{
+                                    right: 0;
+                                    left: auto;
+                                    // .radio{
+                                    //     display: block;
+                                    //     width: 14px;
+                                    //     height: 14px;
+                                    //     background: #73B34A;
+                                    //     border-radius: 50%;
+                                    //     position: absolute;
+                                    //     top: 2px;
+                                    //     left: 35px;
+                                    //     cursor: pointer;
+                                    //     &.normal{
+                                    //         background: #0077E9;
+                                    //     }
+                                    //     &.alarm{
+                                    //         background: #FF4A4A;
+                                    //     }
+                                    // }
+                                }
+                                &.firstU{
+                                    .cabinet-number-box:before{
+                                        content: "";
+                                        width: 26px;
+                                        height: 6px;
+                                        background: #353C66;
+                                        position: absolute;
+                                        left: 0;
+                                        top: -6px; 
+                                    }
+                                }
+                                &.lastU{
+                                    .cabinet-number-box:before{
+                                        content: "";
+                                        width: 26px;
+                                        height: 15px;
+                                        background: #353C66;
+                                        position: absolute;
+                                        left: 0;
+                                        bottom: -15px; 
+                                    }
+                                }
+                            }
+                        }
+                        .cabinet-con-img{
+                            position: relative;
+                            width:178px;
+                            border-left: 1px solid transparent;
+                            border-right: 1px solid transparent;
+                            cursor: move;
+                            &:hover{
+                                border-color: @activeColor;
+                            }
+                            img{
+                                width: 100%;
+                                height: 18px;
+                                position: absolute;
+                            }
+                        }
+                    }
+                    &:before{
+                        content: "";
+                        width: 20px;
+                        height: 100%;
+                        background: #353C66;
+                    }
+                }
+                .bipv-list-con{
+                    position: absolute;
+                    top:0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 9;
+                    .bipv-list-drag{
+                        width: 100%;
+                        height: 100%;
+                        position: relative;
+                        .bipv-group-item{
+                            position: absolute;
                         }
                     }
                 }

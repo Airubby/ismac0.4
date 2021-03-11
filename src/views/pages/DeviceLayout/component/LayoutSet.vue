@@ -14,8 +14,14 @@
                                 <el-select v-model="initParams.type" placeholder="请选择">
                                     <el-option key="one" label="单排" value="one"></el-option>
                                     <el-option key="two" label="双排" value="two"></el-option>
+                                    <el-option key="bipv" label="一体化" value="bipv"></el-option>
                                     <el-option key="auto" label="自定义" value="auto"></el-option>
                                 </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="20" v-if="initParams.type=='bipv'">
+                            <el-form-item label='U位数' prop="ubit">
+                                <el-input v-model="initParams.ubit"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="20" v-if="initParams.type=='auto'">
@@ -62,8 +68,9 @@ export default {
         return{
             initParams:{
                 name:"",
-                type:"two",
-                background:""
+                type:"bipv",
+                background:"",
+                ubit:42
             },
             rules: {
                 

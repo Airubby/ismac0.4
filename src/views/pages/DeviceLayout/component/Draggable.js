@@ -1,3 +1,4 @@
+// Vue.Draggable
 import Sortable from "sortablejs";
 /**helper开始 */
 function getConsole() {

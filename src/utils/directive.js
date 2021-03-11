@@ -47,7 +47,7 @@ Vue.directive('dialogDrag', {
             }else {
                 styL = +sty.left.replace(/\px/g, '');
                 styT = +sty.top.replace(/\px/g, '');
-            };
+            }
             
             document.onmousemove = function (e) {
                 // 通过事件委托，计算移动的距离 
@@ -132,7 +132,7 @@ const el_scrollBar = (el) => {
         el._ps_ = new PerfectScrollbar(el, { suppressScrollX: false }); //suppressScrollX: false 不禁用x轴滚动
     }
 };
-//接着，自定义Vue指令,指令名你自己随便编一个，我们假定它叫scrollBar
+//接着，自定义Vue指令,指令名你自己随便编一个，我们假定它叫scrollBar；使用： v-scrollBar；在elementTable中绑定：v-scrollBar="'table'"
 Vue.directive("scrollBar", {
     //使用inserted钩子函数（初次创建dom）获取使用自定义指令处的dom
     inserted(el, binding, vnode) {

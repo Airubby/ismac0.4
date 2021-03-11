@@ -11,6 +11,10 @@ const app = {
         languageZh: {},
         languageEn: {},
         tempUrl:"",
+        tempData:{
+            data:[],
+            url:[]
+        },
     },
     mutations: {
         setwsData(state,wsData){
@@ -41,6 +45,9 @@ const app = {
         SET_TEMPURL:(state, tempUrl) => {
             state.tempUrl = tempUrl
         },
+        SET_TEMPDATA:(state, tempData) => {
+            state.tempData = tempData
+        },
     },
     actions: {
         setwsData({commit},wsData){
@@ -67,6 +74,9 @@ const app = {
         },
         setTempUrl({ commit }, tempUrl) {
             commit('SET_TEMPURL', tempUrl)
+        },
+        setTempData({ commit }, tempData) {
+            commit('SET_TEMPDATA', tempData)
         },
     }
 

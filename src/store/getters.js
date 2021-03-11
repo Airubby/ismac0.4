@@ -7,6 +7,7 @@ const getters = {
     AjaxUrl: state => state.app.AjaxUrl,
     loginUrl: state => state.app.loginUrl,
     tempUrl: state=>state.app.tempUrl,
+    tempData:state=>state.app.tempData,
     
     token: state => state.user.token,
     config: state=>state.user.config,

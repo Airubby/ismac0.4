@@ -49,8 +49,6 @@ function getServerConfig() {
         let ajaxUrl=website+(port?(":"+port):"")+postfix;
         store.dispatch('setAjaxUrl',ajaxUrl);
         store.dispatch('setLanguage',Cookies.get('language') || config.language||'zh');
-        
-        store.dispatch('setConfig',config.config);
         Vue.prototype.$ajaxUrl=ajaxUrl;
         Vue.prototype.$webSocket=config.webSocket;
         Vue.prototype.$theme = sessionStorage.getItem("theme") || config.theme || 'blue';

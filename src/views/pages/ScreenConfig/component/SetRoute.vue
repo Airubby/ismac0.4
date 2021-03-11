@@ -5,10 +5,9 @@
                 <el-form ref="ValidateForm" :model="initParams" :rules="rules" label-position="top">
                     <el-row :gutter="30">
                         <el-col :span="24">
-                            <el-form-item label='路由地址' prop="devid">
-                                <el-select v-model="initParams.devid" placeholder="请选择">
-                                    <el-option key="1" label="配电系统" value="1"></el-option>
-                                    <el-option key="2" label="空调系统" value="2"></el-option>
+                            <el-form-item label='路由地址' prop="pathUrl">
+                                <el-select v-model="initParams.pathUrl" placeholder="请选择">
+                                    <el-option :key="item.pathUrl" :label="item.name" :value="item.pathUrl" v-for="item in tempList"></el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
@@ -23,17 +22,17 @@
 <script>
 export default {
     created() {
-        
+        this.getInfo()
     },
     mounted() {
         
     },
     data(){
         return{
+            tempList:[],
             initParams:{
-                devid:"",
-                pointid:"",
-                format:"",
+                pathUrl:"",
+                urlName:"",
             },
             rules: {
                 devid:[
@@ -46,11 +45,27 @@ export default {
         }
     },
 	methods: {
+        changeUrl:function(val){
+            this.tempList.forEach(element => {
+                if(element.pathUrl==val){
+                    this.initParams.urlName=element.name
+                }
+            });
+        },
+        getInfo(){
+            this.$api.post("/getBigInfo",{}).then(res=>{
+                console.log(res)
+                if(res.err_code=="0"){
+                    this.tempList=res.data;
+                }
+            })
+        },
         //保存的操作
         dialogSure:function(){
             this.$refs['ValidateForm'].validate((valid) => {
                 if(valid){ //验证通过
-                    this.$emit("backInfo")
+                    this.$emit("backInfo",this.initParams)
+                    this.dialogInfo.visible=false;
                 }
             })
         },
