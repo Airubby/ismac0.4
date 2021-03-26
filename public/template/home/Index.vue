@@ -15,7 +15,7 @@
 	                <div class="row-cen">
 	                    <div class="title">
 	                        <em class="title-left"></em>
-	                        <div class="title-con">微模块设施监控系统<span class="title-bg"></span></div>
+	                        <div class="title-con aaa">微模块设施监控系统<span class="title-bg"></span></div>
 	                        <em class="title-right"></em>
 	                    </div>
 	                </div>

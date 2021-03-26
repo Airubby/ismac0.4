@@ -35,6 +35,7 @@ async function routerGo(){
         await getInfo();
     }
     router.beforeEach((to, from, next) => {
+        console.log("before!!!!!!!!!!!!!!!!!!!!!!")
         const whiteList = ['/login','/test','/bigScreen','/401','/404'] // 不重定向白名单
         // let token=store.getters.token;
         if(sessionStorage.roleid){

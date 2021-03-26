@@ -87,32 +87,35 @@ export default {
             });
         },
         changeRoute:function(){
+            console.log(this.$route)
             if(this.config&&this.config.length>0&&this.$route.name){
+                this.$store.dispatch('setLimits',this.$route.meta.limits);//设置功能权限
                 this.$store.dispatch('setCurrentComponent',this.$route.meta.componentName);
                 this.setLangApi(this.$route.meta.pathName)
-                for(let i=0;i<this.config.length;i++){
-                    if(this.config[i].children&&this.config[i].children.length>0){
-                        for(let j=0;j<this.config[i].children.length;j++){
-                            if(this.$route.name==this.config[i].children[j].key){
-                                this.enterPage(this.config[i]);
-                                return;
-                            }
-                            if(this.config[i].children[j].relation&&this.config[i].children[j].relation.length>0){
-                                for(let m=0;m<this.config[i].children[j].relation.length;m++){
-                                    if(this.$route.name==this.config[i].children[j].relation[m].key){
-                                        this.enterPage(this.config[i]);
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-                    }else{
-                        if(this.$route.name==this.config[i].key){
-                            this.enterPage(this.config[i]);
-                            return;
-                        }
-                    }
-                }
+                this.enterPage(this.$route.meta.config);
+                // for(let i=0;i<this.config.length;i++){
+                //     if(this.config[i].children&&this.config[i].children.length>0){
+                //         for(let j=0;j<this.config[i].children.length;j++){
+                //             if(this.$route.name==this.config[i].children[j].key){
+                //                 this.enterPage(this.config[i]);
+                //                 return;
+                //             }
+                //             if(this.config[i].children[j].relation&&this.config[i].children[j].relation.length>0){
+                //                 for(let m=0;m<this.config[i].children[j].relation.length;m++){
+                //                     if(this.$route.name==this.config[i].children[j].relation[m].key){
+                //                         this.enterPage(this.config[i]);
+                //                         return;
+                //                     }
+                //                 }
+                //             }
+                //         }
+                //     }else{
+                //         if(this.$route.name==this.config[i].key){
+                //             this.enterPage(this.config[i]);
+                //             return;
+                //         }
+                //     }
+                // }
                 
             }
             
@@ -157,7 +160,6 @@ export default {
                 }  
             })  
             let options = {    
-                // script: sfc.script ? $require(null, sfc.script.content) : {},    
                 script: sfc.script ? eval(sfc.script.content) : {},    
                 styles,    
                 template  
@@ -181,15 +183,19 @@ export default {
                         let temp=compiler.compile(r.template)  //编译成render函数
                         //这个地方生成编译后的dom  temp.render   注意:生成的编译文件中去掉\n;编译的源组件中不能有模板字符串`
                         this.setStyle(r.styles);
-                        
+                        const res = {}
+                        res.render = new Function(temp.render)
+                        res.staticRenderFns = temp.staticRenderFns.map(code => {
+                            return new Function(code)
+                        })
                         //注册全局组件
                         Vue.component(currentComponent,{
-                            render:new Function(temp.render),
+                            ...res,
                             ...r.script
                         }) 
                         //注册局部组件
                         // this.currentComponent={
-                        //     render:new Function(temp.render),
+                        //     ...res,
                         //     ...r.script
                         // }
                     }
@@ -211,6 +217,7 @@ export default {
     },
     watch:{
         $route(to,from){
+            console.log("change!!!!!!!!!!!!!!!")
             this.changeRoute();
         },
         config:{

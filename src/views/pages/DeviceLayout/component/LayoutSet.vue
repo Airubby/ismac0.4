@@ -68,7 +68,7 @@ export default {
         return{
             initParams:{
                 name:"",
-                type:"bipv",
+                type:"",
                 background:"",
                 ubit:42
             },

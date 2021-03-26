@@ -3,16 +3,59 @@
         <div class="layout-top">
             <el-button type="primary" plain @click="$router.back(-1)">返回</el-button>
             <div>
-                <el-button type="primary" @click="test()">测试</el-button>
-                <el-button type="primary" @click="handleSure()" v-show="name&&editType">保存</el-button>
-                <el-button type="primary" plain @click="handleSet()">布局设置</el-button>
-                <el-button type="primary" plain @click="handlePanel($event)" v-show="name&&editType">布局面板</el-button>
+                <el-button type="primary" @click="handleSure()" v-show="tempname">保存</el-button>
+                <el-button type="primary" plain @click="handleSet()">设置</el-button>
+                <el-button type="primary" plain @click="handlePanel($event)" v-show="tempname">面板</el-button>
             </div>
         </div>
         <div class="layout-con">
             <div class="scrollbar" v-scrollBar>
                 <div v-show="editType=='auto'" id="canvas-box" @drop='drop($event)' @touchstart='drop($event)' @dragover='allowDrop($event)'>
                     <canvas id="designCanvas"></canvas>
+                </div>
+                <div class="bipv-box" v-show="editType=='bipv'" @click="hiddenPanel($event)">
+                    <div class="bipv-box-con">
+                        <div class="bipv-box-panel" id="devtopDatabipv"
+                        @drop='dragDevFinish($event,"devtopData")'
+                        @touchstart='dragDevFinish($event,"devtopData")'
+                        @dragover='allowDrop($event)'>
+                            <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index" draggable="true" @dragstart="dragDevStart($event,devitem,'devtopData')">
+                                <i class="el-icon-delete icon-btn" @click="remove(index,devtopData)"></i>
+                                <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devtopData')">
+                            </span>
+                        </div>
+                        <div class="cabinet">
+                            <div class="cabinet-con" v-if="cabinetU.length>0">
+                                <div v-for="(item,index) in cabinetU" class="cabinet-u" :key="index">
+                                    <div class="cabinet-number" :class="{'firstU':index==0,'lastU':index==cabinetU.length-1}">
+                                        <span class="cabinet-number-box">{{item.index}}</span>
+                                        <span class="cabinet-number-box cabinet-number-boxr">
+                                            {{item.index}}
+                                            <em class="radio" :style="getStyle(item.lastvalue)" @click="setColorFn(item)"></em>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="bipv-list-con"
+                                    @drop='dragCabinetFinish($event,"devData")'
+                                    @touchstart='dragCabinetFinish($event,"devData")'
+                                    @dragover='allowDrop($event)'>
+                                    <div class="bipv-list-drag">
+                                        <template  v-for="(item,tindex) in devData">
+                                            <div class="panel-conbox bipv-group-item" :style="cabinetStyle(item)" draggable=true @dragstart="dragDevStart($event,item,'devData')" @click="devClick($event,item,'devData')" :key="tindex">
+                                                <div class="cabinet-con-img" :style="{height:baseHeight*Number(item.ubit)+'px'}">
+                                                    <i class="el-icon-delete icon-btn" @click="remove(tindex,devData)"></i>
+                                                    <div class="text">{{item.name}}</div>
+                                                    <template v-for="index in Number(item.ubit)">
+                                                        <img src="./config/images/U.png" draggable=false :style="{bottom:baseHeight*(index-1)+'px'}" :key="index">
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="layout-box" v-show="editType=='one'||editType=='two'" @click="hiddenPanel($event)">
                     <div class="layout-box-con">
@@ -22,9 +65,9 @@
                                 @drop='dragDevFinish($event,"devtopData")'
                                 @touchstart='dragDevFinish($event,"devtopData")'
                                 @dragover='allowDrop($event)'>
-                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
+                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index" draggable="true" @dragstart="dragDevStart($event,devitem,'devtopData')">
                                         <i class="el-icon-delete icon-btn" @click="remove(index,devtopData)"></i>
-                                        <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devtopData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devtopData')">
+                                        <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devtopData')">
                                     </span>
                                 </div>
                             </div>
@@ -35,7 +78,7 @@
                                     @drop='dragFinish($event,topData)'
                                     @touchstart='dragFinish($event,topData)'
                                     @dragover='allowDrop($event)'>
-                                        <div class="layout-info-show" v-if="topData.length<=0">机柜存放区</div>
+                                        <div class="layout-info-show" v-if="topData.length<=0">{{$t("CabinetQ")}}</div>
                                         <draggable class="layout-list-con" 
                                         :list="topData" 
                                         v-bind="dragOptions"
@@ -44,7 +87,7 @@
                                         handle=".panel-conbox">
                                             <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
                                                 <template  v-for="(item,tindex) in topData">
-                                                <div class="panel-conbox list-group-item" @click="devClick($event,item,'topData')" :key="tindex" :class="{'list-group-halfitem':item.category=='air'}">
+                                                <div class="panel-conbox list-group-item" @click="devClick($event,item,'topData')" :key="tindex" :class="{'list-group-halfitem':item.category=='AirControl'}">
                                                     <cabinet :background="item.background" :name="item.name" :showClose="true" :index="tindex" @close="remove(tindex,topData)"></cabinet>
                                                 </div>
                                                 </template>
@@ -59,9 +102,9 @@
                                 @drop='dragDevFinish($event,"devbottomData")'
                                 @touchstart='dragDevFinish($event,"devbottomData")'
                                 @dragover='allowDrop($event)'>
-                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index">
+                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index" draggable="true" @dragstart="dragDevStart($event,devitem,'devbottomData')">
                                         <i class="el-icon-delete icon-btn" @click="remove(index,devbottomData)"></i>
-                                        <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devbottomData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devbottomData')">
+                                        <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devbottomData')">
                                     </span>
                                 </div>
                             </div>
@@ -83,7 +126,7 @@
                                     @drop='dragFinish($event,topData)'
                                     @touchstart='dragFinish($event,topData)'
                                     @dragover='allowDrop($event)'>
-                                    <div class="layout-info-show" v-if="topData.length<=0">机柜存放区</div>
+                                    <div class="layout-info-show" v-if="topData.length<=0">{{$t("CabinetQ")}}</div>
                                     <draggable class="layout-list-con" 
                                     :list="topData" 
                                     v-bind="dragOptions"
@@ -92,7 +135,7 @@
                                     handle=".panel-conbox">
                                         <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
                                             <template  v-for="(item,tindex) in topData">
-                                            <div class="panel-conbox list-group-item" @click="devClick($event,item,'topData')" :key="tindex" :class="{'list-group-halfitem':item.category=='air'}">
+                                            <div class="panel-conbox list-group-item" @click="devClick($event,item,'topData')" :key="tindex" :class="{'list-group-halfitem':item.category=='AirControl'}">
                                                 <cabinet :background="item.background" :name="item.name" :showClose="true" :index="tindex" @close="remove(tindex,topData)"></cabinet>
                                             </div>
                                             </template>
@@ -106,10 +149,10 @@
                                 @drop='dragDevFinish($event,"devData")'
                                 @touchstart='dragDevFinish($event,"devData")'
                                 @dragover='allowDrop($event)'>
-                                    <div class="layout-info-show" v-if="devData.length<=0">设备存放区</div>
-                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devData" :key="index">
+                                    <div class="layout-info-show" v-if="devData.length<=0">{{$t("DevQ")}}</div>
+                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devData" :key="index" draggable="true" @dragstart="dragDevStart($event,devitem,'devData')">
                                         <i class="el-icon-delete icon-btn" @click="remove(index,devData)"></i>
-                                        <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devData')">
+                                        <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devData')">
                                     </span>
                                 </div>
                                 <div class="panel-cendoor panel-cendoor-right" :class="{'panel-cendoor-close':rightDoor}"></div>
@@ -119,7 +162,7 @@
                                     @drop='dragFinish($event,bottomData)'
                                     @touchstart='dragFinish($event,bottomData)'
                                     @dragover='allowDrop($event)'>
-                                    <div class="layout-info-show" v-if="bottomData.length<=0">机柜存放区</div>
+                                    <div class="layout-info-show" v-if="bottomData.length<=0">{{$t("CabinetQ")}}</div>
                                     <draggable class="layout-list-con" 
                                     :list="bottomData" 
                                     v-bind="dragOptions"
@@ -128,7 +171,7 @@
                                     handle=".panel-conbox">
                                         <transition-group class="layout-list-group" type="transition" :name="!drag ? 'flip-list' : null">
                                             <template  v-for="(item,tindex) in bottomData">
-                                            <div class="panel-conbox list-group-item" @click="devClick($event,item,'bottomData')" :key="tindex" :class="{'list-group-halfitem':item.category=='air'}">
+                                            <div class="panel-conbox list-group-item" @click="devClick($event,item,'bottomData')" :key="tindex" :class="{'list-group-halfitem':item.category=='AirControl'}">
                                                 <cabinet :background="item.background" :name="item.name" :showClose="true" :index="tindex" @close="remove(tindex,bottomData)"></cabinet>
                                             </div>
                                             </template>
@@ -141,53 +184,10 @@
                                 @drop='dragDevFinish($event,"devbottomData")'
                                 @touchstart='dragDevFinish($event,"devbottomData")'
                                 @dragover='allowDrop($event)'>
-                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index">
+                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index" draggable="true" @dragstart="dragDevStart($event,devitem,'devbottomData')">
                                         <i class="el-icon-delete icon-btn" @click="remove(index,devbottomData)"></i>
-                                        <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devbottomData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devbottomData')">
+                                        <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devbottomData')">
                                     </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bipv-box" v-show="editType=='bipv'" @click="hiddenPanel($event)">
-                    <div class="bipv-box-con">
-                        <div class="bipv-box-panel" id="devtopDatabipv" style="background:#000"
-                        @drop='dragDevFinish($event,"devtopData")'
-                        @touchstart='dragDevFinish($event,"devtopData")'
-                        @dragover='allowDrop($event)'>
-                            <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
-                                <i class="el-icon-delete icon-btn" @click="remove(index,devtopData)"></i>
-                                <img :src="devitem.imgsrc" :title="devitem.name" @click="devClick($event,devitem,'devtopData')" draggable="true" @dragstart="dragDevStart($event,devitem,'devtopData')">
-                            </span>
-                        </div>
-                        
-                        <div class="cabinet">
-                            <div class="cabinet-con" v-if="cabinetU.length>0">
-                                <div v-for="(item,index) in cabinetU" class="cabinet-u" :key="index">
-                                    <div class="cabinet-number" :class="{'firstU':index==0,'lastU':index==cabinetU.length-1}">
-                                        <span class="cabinet-number-box">{{item.index}}</span>
-                                        <span class="cabinet-number-box cabinet-number-boxr">
-                                            {{item.index}}
-                                            <em class="radio" :style="getStyle(item.lastvalue)" @click="setColorFn(item)"></em>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="bipv-list-con" id="topDatabipv"
-                                    @drop='dragCabinetFinish($event,"topData")'
-                                    @touchstart='dragCabinetFinish($event,"topData")'
-                                    @dragover='allowDrop($event)'>
-                                    <div class="bipv-list-drag">
-                                        <template  v-for="(item,tindex) in topData">
-                                            <div class="panel-conbox bipv-group-item" :style="cabinetStyle(item)" draggable=true @dragstart="dragDevStart($event,item,'topData')" @click="devClick($event,item,'topData')" :key="tindex">
-                                                <div class="cabinet-con-img" :style="{height:18*Number(item.ubit)+'px'}">
-                                                    <template v-for="index in Number(item.ubit)">
-                                                        <img src="./config/images/U.png" draggable=false :style="{bottom:18*(index-1)+'px'}" :key="index">
-                                                    </template>
-                                                </div>
-                                            </div>
-                                        </template>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -199,26 +199,34 @@
             <div class="side-bar" v-show="isPanel">
                 <el-scrollbar class="scrollbar">
                     <el-collapse v-model="activeItem" accordion>
-                        <el-collapse-item title="动态柜子" name="first" key="first" v-show="editType=='one'||editType=='two'">
+                        <el-collapse-item :title="$t('DynatmicCabinet')" name="first" key="first" v-show="editType=='one'||editType=='two'">
+                            <div class="collapse-con">
+                                <div class="collapse-box" :key="index" v-for="(item,index) in rackList" draggable="true" @dragend="dragEnd()" @dragstart="dragStart($event,item)">{{item.name}}</div>
+                            </div>
+                        </el-collapse-item>
+                        <el-collapse-item :title="$t('PrefCabinet')" name="second" key="second" v-show="editType=='one'||editType=='two'">
                             <div class="collapse-con">
                                 <div class="collapse-box" :key="index" v-for="(item,index) in list" draggable="true" @dragend="dragEnd()" @dragstart="dragStart($event,item)">{{item.name}}</div>
                             </div>
                         </el-collapse-item>
-                        <el-collapse-item title="预置柜子" name="second" key="second" v-show="editType=='one'||editType=='two'">
+                        <el-collapse-item :title="$t('PrefDev')" name="third" key="third">
                             <div class="collapse-con">
-                                <div class="collapse-box" :key="index" v-for="(item,index) in list" draggable="true" @dragend="dragEnd()" @dragstart="dragStart($event,item)">{{item.name}}</div>
-                            </div>
-                        </el-collapse-item>
-                        <el-collapse-item title="环境设备" name="third" key="third">
-                            <div class="collapse-con">
-                                <div class="collapse-boximg" :key="index" v-for="(item,index) in devlist" draggable="true" @dragend="dragDevEnd()" @dragstart="dragDevStart($event,item)">
-                                    <img :src="item.imgsrc" :title="item.name" />
+                                <div class="collapse-boximg" :key="index" v-for="(item,index) in devlist">
+                                    <div class="boximg" draggable="true" @dragstart="dragDevStart($event,item)">
+                                        <img :src="item.imgsrc" :title="item.name" />
+                                    </div>
+                                    <p>{{item.name}}</p>
                                 </div>
                             </div>
                         </el-collapse-item>
-                        <el-collapse-item title="机柜设备" name="fifth" key="fifth" v-show="editType=='bipv'">
+                        <el-collapse-item :title="$t('DynatmicDev')" name="fifth" key="fifth">
                             <div class="collapse-con">
-                                <div class="collapse-box" :key="index" v-for="(item,index) in cabinetList" draggable="true" @dragend="dragDevEnd()" @dragstart="dragDevStart($event,item)">{{item.name}}</div>
+                                <div class="collapse-boximg" :key="index" v-for="(item,index) in devList">
+                                    <div class="boximg" draggable="true" @dragstart="dragDevStart($event,item)">
+                                        <img src="/images/device/device.png" :title="item.devname" />
+                                    </div>
+                                    <p>{{item.devname}}</p>
+                                </div>
                             </div>
                         </el-collapse-item>
                     </el-collapse>
@@ -238,62 +246,88 @@
                                     <div v-if="type=='topData'||type=='bottomData'">
                                         <el-col :span="24">
                                             <el-form-item label='类型' prop="category">
-                                                <el-select v-model="initParams.category" placeholder="请选择">
-                                                    <el-option key="air" label="空调" value="air"></el-option>
-                                                    <el-option key="rack" label="柜子" value="rack"></el-option>
+                                                <el-select v-model="initParams.category" :placeholder="$t('please')">
+                                                    <el-option key="NULL" :label="$t('NULL')" value="NULL"></el-option>
+                                                    <el-option key="HVDC" :label="$t('HVDC')" value="HVDC"></el-option>
+                                                    <el-option key="PowerCabinet" :label="$t('PowerCabinet')" value="PowerCabinet"></el-option>
+                                                    <el-option key="ControlCabinet" :label="$t('ControlCabinet')" value="ControlCabinet"></el-option>
+                                                    <el-option key="ITCabinet" :label="$t('ITCabinet')" value="ITCabinet"></el-option>
+                                                    <el-option key="BatteryCabinet" :label="$t('BatteryCabinet')" value="BatteryCabinet"></el-option>
+                                                    <el-option key="AirControl" :label="$t('AirControl')" value="AirControl"></el-option>
                                                 </el-select>
                                             </el-form-item>
                                         </el-col>
-                                        <el-col :span="24">
-                                            <el-form-item label='背景色' prop="background">
+                                        <el-col :span="12">
+                                            <el-form-item :label='$t("Background")' prop="background">
                                                 <el-color-picker v-model="initParams.background" :predefine="predefineColors"></el-color-picker>
                                             </el-form-item>
                                         </el-col>
+                                        <el-col :span="12">
+                                            <el-form-item :label='$t("backgroundAlarm")' prop="backgroundAlarm">
+                                                <el-color-picker v-model="initParams.backgroundAlarm" :predefine="predefineColors"></el-color-picker>
+                                            </el-form-item>
+                                        </el-col>
                                     </div>
-                                    <div v-else>
+                                    <!-- 一体化柜上面的设备定义死展示的图片 -->
+                                    <div v-else-if="!(editType=='bipv'&&type=='devData')">
                                         <el-col :span="24">
-                                            <el-form-item label='组件图'>
-                                                <el-input v-model="initParams.imgsrc" readonly @focus="changeImg"></el-input>
+                                            <el-form-item :label='$t("imgsrc")'>
+                                                <el-input v-model="initParams.imgsrc" readonly @focus="changeImg('imgsrc')"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="24">
+                                            <el-form-item :label='$t("imgsrcAlarm")'>
+                                                <el-input v-model="initParams.imgsrcAlarm" readonly @focus="changeImg('imgsrcAlarm')"></el-input>
                                             </el-form-item>
                                         </el-col>
                                     </div>
                                     <div v-if="initParams.type&&initParams.type=='video'">
                                         <el-col :span="24">
-                                            <el-form-item label='关联视频通道' prop="pointid" class="height-auto">
+                                            <el-form-item :label='$t("GVideoCh")' prop="pointid" class="height-auto">
                                                 <el-tree
                                                     :data="videoTree"
                                                     show-checkbox
                                                     node-key="id"
-                                                    ref="videotree"
-                                                    :default-checked-keys="initParams.pointid"
-                                                    :props="defaultProps"
-                                                    @check-change="handleCheckChange">
+                                                    ref="tree"
+                                                    check-strictly :default-checked-keys="initParams.pointid"
+				                                    :check-on-click-node="true" @check-change="handleCheckChange">
                                                 </el-tree>
                                             </el-form-item>
                                         </el-col>
                                     </div>
                                     <div v-else>
                                         <el-col :span="24">
-                                            <el-form-item label='关联设备' prop="devid">
+                                            <el-form-item label='设备' prop="devid" v-if="type=='topData'||type=='bottomData'">
                                                 <el-select
                                                     v-model="initParams.devid"
                                                     multiple
                                                     collapse-tags>
                                                     <el-option
-                                                    v-for="item in devOptions"
-                                                    :key="item.id"
-                                                    :label="item.name"
-                                                    :value="item.id">
+                                                    v-for="item in devList"
+                                                    :key="item.devid"
+                                                    :label="item.devname"
+                                                    :value="item.devid">
+                                                    </el-option>
+                                                </el-select>
+                                            </el-form-item>
+                                            <el-form-item label='设备' prop="devid" v-else>
+                                                <el-select
+                                                    v-model="initParams.onedevid">
+                                                    <el-option
+                                                    v-for="item in devList"
+                                                    :key="item.devid"
+                                                    :label="item.devname"
+                                                    :value="item.devid">
                                                     </el-option>
                                                 </el-select>
                                             </el-form-item>
                                         </el-col>
                                         <el-col :span="24">
-                                            <el-form-item label='关联测点' prop="pointid" class="height-auto">
+                                            <el-form-item label='测点' prop="pointid" class="height-auto">
                                                 <el-tree
                                                     :data="pointTree"
                                                     show-checkbox
-                                                    node-key="id"
+                                                    node-key="pointid"
                                                     ref="tree"
                                                     :default-checked-keys="initParams.pointid"
                                                     :props="defaultProps">
@@ -307,13 +341,13 @@
                     </el-scrollbar>
                 </div>
                 <div class="edit-btn">
-                    <el-button type="primary" plain @click="sureEdit()">保存</el-button>
+                    <el-button type="primary" plain @click="sureEdit()">{{$t("Save")}}</el-button>
                 </div>
             </div>
         </div>
         <layout-set v-if="layoutInfo.visible" :dialogInfo="layoutInfo" @backInfo="reset"></layout-set>
-        <rack-dev-set v-if="rackDevInfo.visible" :dialogInfo="rackDevInfo" @backInfo="changeInfo"></rack-dev-set>
-        <img-set v-if="imgInfo.visible" :dialogInfo="imgInfo"></img-set>
+        <!-- <rack-dev-set v-if="rackDevInfo.visible" :dialogInfo="rackDevInfo" @backInfo="changeInfo"></rack-dev-set> -->
+        <img-set v-if="imgInfo.visible" :dialogInfo="imgInfo" @backInfo="backImg"></img-set>
     </div>
 </template>
 <script>
@@ -323,7 +357,7 @@ import LayoutSet from './component/LayoutSet'
 import Cabinet from './component/Cabinet'
 import RackDevSet from './component/RackDevSet'
 import ImgSet from './component/ImgSet'
-import uuid from 'uuid-random'
+import uuid from 'uuid-random';
 export default {
     components: {LayoutSet,Draggable,Cabinet,RackDevSet,ImgSet},
     mixins:[],
@@ -331,58 +365,61 @@ export default {
         
     },
     created() {
-        
+        this.init()
     },
     mounted() {
-        let params = this.$route.query.params;
-        if(params){
-            this.hint="edit";
-            this.init(JSON.parse(params).id)
-        }
-        this.initBIPV(42)
+        
     },
     data(){
         return{
-            hint:"add",
-            name:"test",
+            tempid:"",
+            tempname:"",
             layoutInfo:{
                 visible:false,
+                tempname:'',
+                editType:'',
+                canvasBg:"",
+                ubit:""
             },
-            activeItem:"fifth",
+            activeItem:"",
             isPanel:true,
             predefineColors:["#D8645B","#8CBECF","#F2B747","#588EEA","#75B899","#55A1E2"],
-            type:"",  //类型devData ，devtopData  等等判断用
+            type:"",  //存放 devbottomData、devtopData等 判断用
             initParams:{
-                uuid:'',
+                uuid:"",
                 name:"",
-                isAlarm:false,
+                isalarm:false,
+                onedevid:"",
                 devid:[],
                 pointid:[],
                 devInfo:[],
-
-                category:"rack",  //柜子或空调
+                //柜子属性
+                category:"rack", //分柜子或空调，宽度判断用
                 background:"",
                 backgroundAlarm:"",
-                
-                type:"",  //设备类，比如video
+                //设备属性
+                type:"",  //判断设备类型用，比如video
                 imgsrc:"",
                 imgsrcAlarm:"",
+                ubit:null,
             },
             backParams:{
-                uuid:'',
+                uuid:"",
                 name:"",
-                isAlarm:false,
+                isalarm:false,
+                onedevid:"",
                 devid:[],
                 pointid:[],
                 devInfo:[],
-
-                category:"",  //柜子或空调
+                //柜子属性
+                category:"", //分柜子或空调，宽度判断用
                 background:"",
                 backgroundAlarm:"",
-                
-                type:"",  //设备类，比如video
+                //设备属性
+                type:"",  //判断设备类型用，比如video
                 imgsrc:"",
                 imgsrcAlarm:"",
+                ubit:null,
             },
             rules: {
                 name:[
@@ -392,30 +429,30 @@ export default {
                     { required: true, message: '非空', trigger: 'blur' },
                 ]
             },
+            rackList:[],
             list:[
-                {name:'配电单元',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:""},
-                {name:'整流柜',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:""},
-                {name:'电池柜',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:""},
-                {name:'设备单元',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:""},
-                {name:'精密空调',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:""},
-                {name:'管控单元',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:""},
-                {name:'冷量分配单元',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:""},
+                {name:"柱子",devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",category:"NULL"},
+                {name:this.$t("BatteryCabinet"),devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",category:"BatteryCabinet"},
+                {name:this.$t("HVDC"),devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",category:"HVDC"},
+                {name:this.$t("ControlCabinet"),devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",category:"ControlCabinet"},
+                {name:this.$t("ITCabinet"),devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",category:"ITCabinet"},
+                {name:this.$t("PowerCabinet"),devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",category:"PowerCabinet"},
+                {name:this.$t("AirControl"),devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",category:"AirControl"},
             ],
             devlist:[
                 {
-                    name:'烟感',offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],
+                    name:this.$t("Smoke"),offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],predev:true,
                     imgsrc:"/images/device/smoke.png",imgsrcAlarm:"/images/device/smoke-alarm.png"
                 },
                 {
-                    name:'漏水',offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],
+                    name:this.$t("Thalp"),offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],predev:true,
                     imgsrc:"/images/device/thalposis.png",imgsrcAlarm:"/images/device/thalposis-alarm.png"
                 },
                 {
-                    name:'视频',offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],video:{},type:"video",
+                    name:this.$t("Video"),offsetX:"",devInfo:[],offsetY:"",devid:[],pointid:[],video:{},predev:true,type:"video",
                     imgsrc:"/images/device/webcam.png",imgsrcAlarm:"/images/device/webcam-alarm.png"
-                },
+                }
             ],
-
 
             
             drag: false,
@@ -424,7 +461,7 @@ export default {
             activeDevitemDrag:null,
             activeDevdataDrag:null,
 
-            editType:"bipv",
+            editType:"",
             leftDoor:true,
             rightDoor:false,
             topData:[],
@@ -439,24 +476,25 @@ export default {
                 type:null
             },
 
-            devOptions:[
-                {id:"1",name:"设备1",offsetB:""},{id:"2",name:"设备2",offsetB:""},{id:"3",name:"设备3",offsetB:""},{id:"4",name:"设备4",offsetB:""}
+            devList:[
+                {devid:"1",devname:"设备1",offsetB:""},{devid:"2",devname:"设备2",offsetB:""},{devid:"3",devname:"设备3",offsetB:""},{devid:"4",devname:"设备4",offsetB:""}
             ],
             defaultProps: {
                 children: 'children',
-                label: 'name'
+                label: 'pointname'
             },
             pointTree:[],
-            videoTree:[],
+            videoTree:[ ],
             isVideo:false,
 
             imgInfo:{
-                type:"", //告警图片或正常图片
+                type:"", //正常图还是告警图判断
                 visible:false
             },
 
             zoomPoint:"",//中心点
             zoom:1, //缩放比例
+            canvasBg:"",
             design:null,
             initWidth:"",
             initHeight:"",
@@ -468,12 +506,7 @@ export default {
             cabinetU:[],
             color_list:[],
             color_data:[],
-            cabinetList:[
-                {name:'设备3U',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",ubit:3},
-                {name:'设备8U',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",ubit:8},
-                {name:'设备1U',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",ubit:1},
-                {name:'设备4U',devInfo:[],devid:[],pointid:[],background:"",backgroundAlarm:"",ubit:4},
-            ]
+
         }
     },
     computed: {
@@ -493,7 +526,6 @@ export default {
         },
         panelDevStyle(){
             return function(item){
-                console.log(item)
                 return `left:${item.offsetX}px;top:${item.offsetY}px`;
             }
         },
@@ -509,9 +541,9 @@ export default {
             if(layoutJson){
                 let json=JSON.parse(layoutJson);
                 console.log(json)
+                this.tempname="tempname";
                 this.editType=json.editType;
-                this.name=json.name;
-
+                
                 this.leftDoor=json.leftDoor;
                 this.rightDoor=json.rightDoor;
                 this.topData=json.topData;
@@ -519,76 +551,85 @@ export default {
                 this.devData=json.devData;
                 this.devtopData=json.devtopData;
                 this.devbottomData=json.devbottomData;
-
+                this.ubit=json.ubit;
                 if(this.editType=="auto"){
                     this.$nextTick(()=>{
                         document.getElementById("canvas-box").innerHTML='<canvas id="designCanvas"></canvas>';
                         this.initCanvas(json);
                     })
-                    return;
+                }
+                if(this.editType=="bipv"){
+                    this.initBIPV(json.ubit)
                 }
                 
             }
-            // this.$api.post("",{}).then(res=>{
-
-            // })
         },
         devClick:function(ev,item,type){
             console.log(item)
-            this.type=type;
-            this.initParams=Object.assign(this.backParams,item);
-            this.initParams.type=item.type?item.type:"";
             this.isPanel=false;
             ev.stopPropagation();
             this.$el.querySelector("#detail").style.right="0px";
+            if(item.uuid!=this.initParams.uuid){ //如果为false的时候，侧边已展开，点击切换设备的时候，要拉取测点
+                let info=item.onedevid?[item.onedevid]:item.devid.length>0?item.devid:[];
+                if(info.length>0){
+                    this.changeDev(info)
+                }else{
+                    this.pointTree=[];
+                }
+            }
+            this.type=type;
+            this.initParams=Object.assign({},this.backParams,item);
+            this.initParams.type=item.type?item.type:"";
+            
+            
         },
         changeDev:function(info){
-            console.log(info)
+            console.log("t!!!!!!!!!!!!!!!",info)
             let point=[
                 {
-                    id: "1",
+                    pointid: "1",
                     name: '设备1',
                     children: [
                         {
-                            id: "11",
+                            pointid: "11",
                             name: '测点 1-1',
                         },
                         {
-                            id: "12",
+                            pointid: "12",
                             name: '测点 1-2',
                         }
                     ]
                 }, 
                 {
-                    id: "2",
+                    pointid: "2",
                     name: '设备2',
                     children: [
                         {
-                            id: "21",
+                            pointid: "21",
                             name: '测点 2-1',
                         },
                         {
-                            id: "22",
+                            pointid: "22",
                             name: '测点 2-2',
                         }
                     ]
                 }, 
                 {
-                    id: "3",
+                    pointid: "3",
                     name: '设备3',
                     children: [
                         {
-                            id: "31",
+                            pointid: "31",
                             name: '测点 3-1',
                         }
                     ]
                 }, 
                 {
-                    id: "4",
+                    pointid: "4",
                     name: '设备4',
                     children: [
                         {
-                            id: "41",
+                            pointid: "41",
                             name: '测点 4-1',
                         }
                     ]
@@ -597,45 +638,49 @@ export default {
             let arr=[];
             for(let i=0;i<info.length;i++){
                 for(let j=0;j<point.length;j++){
-                    if(info[i]==point[j].id){
+                    if(info[i]==point[j].pointid){
                         arr.push(point[j]);
                     }
                 }
             }
             this.pointTree=arr;
+            // if(info.length>0){
+            //     this.pointTree=[];
+            //     let arr=[];
+            //     for(let i=0;i<info.length;i++){
+            //         new Promise ((resolve, reject) => {
+            //             // this.$api.post(this.$Api.GetDevPoint,{devid:info[i]}).then(res=>{
+            //             //     if(res.err_code=="0"){
+            //             //         if(res.data&&res.data.length>0){
+            //             //             let obj={
+            //             //                 pointid:res.data[0].devid,
+            //             //                 pointname:res.data[0].devname,
+            //             //                 children:res.data
+            //             //             }
+            //             //             arr.push(obj);
+            //             //             this.$nextTick(()=>{
+            //             //                 this.$refs.tree.setCheckedKeys(this.initParams.pointid);
+            //             //             })
+            //             //         }
+            //             //     }
+            //             //     resolve()
+            //             // })
+            //         })
+            //     }
+            //     this.pointTree=arr;
+            //     console.log(this.pointTree)
+            // }
         },
         handleCheckChange:function(node,checked){
-            if(this.$refs.videotree.getCheckedNodes().length%2===0){
+            if(this.$refs.tree.getCheckedNodes().length%2===0){
                 if(checked){
-                    this.$refs.videotree.setCheckedNodes([node]);
+                    this.$refs.tree.setCheckedNodes([node]);
                 }else{
-                    this.$refs.videotree.setCheckedNodes([]);
+                    this.$refs.tree.setCheckedNodes([]);
                 }        
             }
         },
-        sureEdit:function(){
-            console.log(this.$refs.tree.getCheckedNodes())
-            if(this.initParams.type&&this.initParams.type=="video"){
-                this.initParams.devInfo=this.$refs.videotree.getCheckedNodes();
-            }else{
-                let checkNode=this.$refs.tree.getCheckedNodes(),arr=[];
-                for(let i=0;i<checkNode.length;i++){
-                    if(!checkNode.children||checkNode.children.length==0){
-                        arr.push(checkNode[i]);
-                    }   
-                }
-                this.initParams.pointid=this.$refs.tree.getCheckedKeys();
-                this.initParams.devInfo=arr;
-            }
-            
-            for(let i=0;i<this[this.type].length;i++){
-                if(this.initParams.uuid==this[this.type][i].uuid){
-                    this[this.type][i]=Object.assign(this[this.type][i],this.initParams);
-                }
-            }
-            
-            this.hiddenPanel();
-        },
+        
         changeInfo:function(info){
             for(let i=0;i<this[info.type].length;i++){
                 if(info.uuid==this[info.type][i].uuid){
@@ -644,9 +689,8 @@ export default {
             }
         },
         reset:function(info){
-            this.editType=info.type;
-            this.name=info.name;
-
+            this.tempname=info.tempname;
+            this.editType=info.editType;
             this.leftDoor=true;
             this.rightDoor=false;
             this.topData=[];
@@ -657,6 +701,7 @@ export default {
             this.ubit=info.ubit
 
             if(this.editType=="auto"){
+                this.canvasBg=info.canvasBg;
                 this.$nextTick(()=>{
                     document.getElementById("canvas-box").innerHTML='<canvas id="designCanvas"></canvas>';
                     this.initCanvas();
@@ -664,48 +709,18 @@ export default {
             }else{
                 if(document.getElementById("canvas-box"))document.getElementById("canvas-box").innerHTML="";
             }
-            
-        },
-        handleSure:function(){
-            let json={
-                name:this.name,
-                editType:this.editType,
-                leftDoor:this.leftDoor,
-                rightDoor:this.rightDoor,
-                topData:this.topData,
-                bottomData:this.bottomData,
-                devData:this.devData,
-                devtopData:this.devtopData,
-                devbottomData:this.devbottomData,
-            }
-            if(this.editType=="auto"){
-                json["designCanvas"]=this.design.toDatalessJSON();
-                json["initWidth"]=this.initWidth;
-                json["initHeight"]=this.initHeight;
-            }
             if(this.editType=="bipv"){
-                json["ubit"]=this.ubit;
+                this.initBIPV(info.ubit);
             }
-            sessionStorage.setItem("layoutJson",JSON.stringify(json));
-            console.log(JSON.stringify(json));
-            this.$message.success("保存成功");
-            // this.$api.post("",{json:JSON.stringify(json)}).then(res=>{
-
-            // })
         },
         dragStart:function(evt,item){
-            this.activeDrag=item;
+            this.activeDrag=Object.assign({},this.backParams,item);
         },
         dragEnd:function(){
             this.activeDrag=null;
         },
-        dragDevEnd:function(){
-            this.activeDevDrag=null;
-            this.activeDevitemDrag=null;
-            this.activeDevdataDrag=null;
-        },
         dragFinish:function(evt,data){
-            console.log(this.activeDrag,evt,data)
+            console.log(this.activeDrag)
             if(this.activeDrag){
                 this.activeDrag["uuid"]=uuid();
                 data.push(JSON.parse(JSON.stringify(this.activeDrag)))
@@ -718,13 +733,23 @@ export default {
             ev.stopPropagation();
         },
         dragDevStart:function(evt,item,dataArr){
-            evt.dataTransfer.setData("data",JSON.stringify(item));
+            let dev=item;
+            if(!item.predev&&!item.uuid){
+                //动态的设备用默认的图标；自己上传改变图标
+                dev=JSON.parse(JSON.stringify(this.backParams));
+                dev.name=item.devname;
+                dev.onedevid=item.devid;
+                dev.ubit=item.ubit;
+                dev.imgsrc="/images/device/device.png";
+                dev.imgsrcAlarm="/images/device/device-alarm.png"
+            }
+            evt.dataTransfer.setData("data",JSON.stringify(dev));
             this.activeDevDrag=evt;
-            this.activeDevitemDrag=item;
+            this.activeDevitemDrag=dev;
             this.activeDevdataDrag=dataArr;
         },
         dragDevFinish:function(ev,dataArr){
-            //data是数据源的key也是dom的id-ediType；用的同一个名称
+            //data是数据源的key也是dom-this.editType的id；用的同一个名称
             if(this.activeDevitemDrag){
                 if(this.activeDevdataDrag==undefined){ //初次拖进来
                     this.handleDevFinish(ev,dataArr,this[dataArr]);
@@ -853,13 +878,18 @@ export default {
                     }
                     item.uuid=uuid();
                     devData.push(item)
+                    
                 }
             }
         },
         handleSet:function(){
             this.layoutInfo.visible=true;
+            this.layoutInfo.tempname=this.tempname;
+            this.layoutInfo.editType=this.editType;
+            this.layoutInfo.ubit=this.ubit;
+            this.layoutInfo.canvasBg=this.canvasBg;
         },
-        hiddenPanel:function(ev){
+        hiddenPanel:function(){
             this.$el.querySelector("#detail").style.right="-250px";
         },
         handlePanel:function(ev){
@@ -868,15 +898,15 @@ export default {
             this.$el.querySelector("#detail").style.right="0px";
         },  
         remove:function(index,data){
-            this.$confirm("确定删除？","提示",{
+            this.$confirm("确定删除","提示",{
                 confirmButtonText:"确定",
                 cancelButtonText:"取消",
                 type:"warning"
             }).then(()=>{
                 data.splice(index, 1);
             })
-            
         },
+
         initCanvas:function(json){
             let _this=this;
             this.design =new fabric.Canvas('designCanvas',{backgroundColor:''});
@@ -885,6 +915,15 @@ export default {
                 this.initWidth=json.initWidth;
                 this.initHeight=json.initHeight;
                 this.design.loadFromJSON(json.designCanvas, function() {
+                    _this.design.forEachObject(object=>{
+                        object.toObject = (function (toObject) {//赋值自定义属性
+                            return function (properties) {
+                                return fabric.util.object.extend(toObject.call(this, properties), {
+                                    data: this.data
+                                });
+                            };
+                        })(object.toObject);
+                    })
                     _this.resizeCanvas();
                 });
             }else{
@@ -898,7 +937,10 @@ export default {
                 this.zoomPoint = new fabric.Point(this.panX , this.panY);
                 this.design.absolutePan({x:-this.panX, y:-this.panY});
                 this.design.zoomToPoint(_this.zoomPoint, _this.zoom);
-                this.setCanvasBg();
+                if(this.canvasBg){
+                    this.setCanvasBg();
+                }
+                
             }
             window.onresize=function(){
                 _this.resizeCanvas();
@@ -939,12 +981,6 @@ export default {
                     this.lastPosY = evt.clientY;
                 }
                 if(opt.target){
-                    
-                    // _this.type=opt.target.data.type;
-                    // _this.initParams=Object.assign(_this.initParams,opt.target.data);
-                    // _this.initParams.type=opt.target.data.type?opt.target.data.type:"";
-                    // _this.isPanel=false;
-                    //设备存在devData中
                     _this.devClick(evt,opt.target.data,'devData');
                 }else{
                     _this.hiddenPanel();
@@ -979,7 +1015,7 @@ export default {
         },
         setCanvasBg:function(){
             let _this=this;
-            fabric.Image.fromURL('images/device/room.png', function (oimg) { 
+            fabric.Image.fromURL(this.canvasBg, function (oimg) { 
                 let bgWidth=oimg._element.width;
                 let bgHeight=oimg._element.height;
                 let zoom=1,left=0,top=0;
@@ -990,32 +1026,34 @@ export default {
                     zoom=_this.design.height/oimg._element.height;
                     left=(_this.design.width-bgWidth*zoom)/2
                 }
-                _this.design.setBackgroundImage('images/device/room.png', _this.design.renderAll.bind(_this.design),{
+                _this.design.setBackgroundImage(_this.canvasBg, _this.design.renderAll.bind(_this.design),{
                     scaleX: zoom,
                     scaleY: zoom,
-                    // left:left,
-                    // top:top,
                 });
             });
         },
         drop:function(ev){
-            console.log(this.design)
             let _this=this;
-            // //开始缩放
             this.design.zoomToPoint(this.zoomPoint, this.zoom);
             var json=JSON.parse(ev.dataTransfer.getData("data"));
-            var left=(ev.offsetX-this.panX)/this.zoom;
-            var top=(ev.offsetY-this.panY)/this.zoom;
-            console.log(ev,this.zoomPoint,this.zoom,this.panX)
+            json.uuid=uuid();
             fabric.Image.fromURL(json.imgsrc, function(object){
                 object["data"]=json;
+                let imgWidth=object._element.width;
+                let imgHeight=object._element.height;
+                let scale=40/imgWidth>40/imgHeight?40/imgHeight:40/imgWidth;
+                var left=(ev.offsetX-_this.panX)/_this.zoom;
+                var top=(ev.offsetY-_this.panY)/_this.zoom;
+                object.scaleToWidth(imgWidth*scale);
+                object.scaleToHeight(imgHeight*scale);
+
                 object.set({
                     left: left,
                     top: top,
                 });
+                
                 _this.addObject(object)
             });
-            json.uuid=uuid();
             this.devData.push(json)
         },
         addObject:function(object){
@@ -1031,10 +1069,10 @@ export default {
         },
         removeObject:function(){
             if(this.design.getActiveObject()){
-                this.$confirm("确定删除？","提示",{
-                    confirmButtonText:"确定",
-                    cancelButtonText:"取消",
-                    type:"warning"
+               this.$confirm("确定删除","提示",{
+                confirmButtonText:"确定",
+                cancelButtonText:"取消",
+                type:"warning"
                 }).then(()=>{
                     let obj=this.design.getActiveObject();
                     this.design.remove(this.design.getActiveObject());
@@ -1047,8 +1085,59 @@ export default {
                 })
             }
         },
-        changeImg:function(){
+        changeImg:function(type){
+            this.imgInfo.type=type;
             this.imgInfo.visible=true;
+        },
+        backImg:function(info){
+            console.log(info)
+            this.initParams[info.type]=info.imgsrc;
+        },
+		backWs:function(info){
+            let arr=[];
+            let _this=this;
+            for(let i=0;i<info.length;i++){
+                arr=info[i].key.split("_");  //key是源数据data名称（比如topData）加uuid，订阅的时候，一个设备的多个测点都是用的同一个key，无论哪个测点告警都更新这个key对应的设备告警状态
+                for(let j=0;j<this[arr[0]].length;j++){
+                    if(info[i].key==arr[0]+"_"+this[arr[0]][j].uuid){
+                        //测试告警
+                        // this[arr[0]][j].isalarm=true;
+                        let flag=false;
+                        for(let k=0;k<this[arr[0]][j].devInfo.length;k++){
+                            if(info[i].devid==this[arr[0]][j].devInfo[k].devid&&info[i].pointid==this[arr[0]][j].devInfo[k].pointid){
+                                this[arr[0]][j].devInfo[k].isalarm=info[i].isalarm;
+                            }
+                            if(this[arr[0]][j].devInfo[k].isalarm){
+                                flag=true;
+                            }
+                        }
+                        this[arr[0]][j].isalarm=flag;
+                        if(this.editType=="auto"){
+                            let objects=this.design.getObjects();
+                            let uuid=this[arr[0]][j].uuid;
+                            for(let i=0;i<objects.length;i++){
+                                if(objects[i].data.uuid==uuid){
+                                    let imgsrc=flag?this[arr[0]][j].imgsrcAlarm:this[arr[0]][j].imgsrc;  //测试告警，真实进行判断是否告警进行附图片
+                                    let json=objects[i];
+                                    json.data.imgsrc=imgsrc;
+                                    fabric.Image.fromURL(imgsrc, function(object){
+                                        object["data"]=json.data;
+                                        object.set({
+                                            left: json.left,
+                                            top: json.top,
+                                        });
+                                        object.scaleToWidth(objects[i].width*objects[i].scaleX);
+                                        object.scaleToHeight(objects[i].height*objects[i].scaleY);
+                                        _this.design.remove(json);
+                                        object.set("selectable",false);
+                                        _this.addObject(object);
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         },
         //一体化
         dragCabinetFinish:function(evt,devData){
@@ -1065,14 +1154,11 @@ export default {
                         if(evt.clientY<this.activeDevDrag.clientY){ //向上拖动
                             if(evt.offsetY-this.activeDevDrag.offsetY<0){ //上边拖出地图了，或者向上拖动了一点点
                                 if(evt.y+this.activeDevDrag.offsetY>this.activeDevDrag.y){ //向上移动了一点
-                                    console.log("一点点")
                                     item.offsetY=item.offsetY-(this.activeDevDrag.offsetY-evt.offsetY)<0?0:item.offsetY-(this.activeDevDrag.offsetY-evt.offsetY);
                                 }else{
-                                    console.log("拖出去了")
                                     item.offsetY=0;
                                 }
                             }else{
-                                console.log("很多")
                                 item.offsetY=evt.offsetY-this.activeDevDrag.offsetY;
                             }
                         }else{ //向下拖动
@@ -1082,8 +1168,7 @@ export default {
                                 item.offsetY=evt.offsetY+(item.offsetH-this.activeDevDrag.offsetY)>height?height-item.offsetH:evt.offsetY-this.activeDevDrag.offsetY;
                             }
                         }
-                        console.log("evt",evt,"this.activeDevDrag",this.activeDevDrag,"item",item)
-                        item.offsetB= height - Math.floor(item.offsetY/this.baseHeight)*this.baseHeight-item.offsetH;//以U位的最底部作为offsetY
+                        item.offsetB= height - Math.ceil(item.offsetY/this.baseHeight)*this.baseHeight-item.offsetH;//以U位的最底部作为offsetY
                         let flag=false;
                         if(item.offsetB+item.offsetH>height){
                             flag=true;
@@ -1098,7 +1183,7 @@ export default {
                         if(!flag){
                             this[devData].forEach(element => {
                                 if(item.uuid==element.uuid){
-                                    element.offsetY=Math.floor(item.offsetY/this.baseHeight)*this.baseHeight;
+                                    element.offsetY=Math.ceil(item.offsetY/this.baseHeight)*this.baseHeight;
                                     element.offsetB=item.offsetB;
                                 }
                             });
@@ -1128,12 +1213,15 @@ export default {
                             this.$message.warning("所需U位不足，无法上架")
                         }
                     }
+                }else{
+                    this.$message.warning("没有设置设备所占U位数，无法上架")
                 }
             }
             
             
         },
         initBIPV:function(val){
+            this.cabinetU=[];
             for(let a=1;a<=val;a++){
                 let index=a;
                 if(index<10){
@@ -1172,22 +1260,87 @@ export default {
             }
             return style;
         },
-        checkMove:function(e){
-            console.log(e)
-            // return true;
+        sureEdit:function(){
+            let _this=this;
+            if(this.initParams.type&&this.initParams.type=="video"){
+                this.initParams.devInfo=this.$refs.tree.getCheckedNodes();
+                this.initParams.pointid=[this.$refs.tree.getCheckedNodes()[0].id];
+            }else{
+                let checkNode=this.$refs.tree.getCheckedNodes(),arr=[];
+                for(let i=0;i<checkNode.length;i++){
+                    if(!checkNode[i].children||checkNode[i].children.length==0){
+                        arr.push(checkNode[i]);
+                    }   
+                }
+                this.initParams.pointid=this.$refs.tree.getCheckedKeys();
+                this.initParams.devInfo=arr;
+            }
+            for(let i=0;i<this[this.type].length;i++){
+                if(this.initParams.uuid==this[this.type][i].uuid){
+                    this[this.type][i]=JSON.parse(JSON.stringify(this.initParams));
+                    if(this.editType=="auto"){
+                        let objects=this.design.getObjects();
+                        let uuid=this[this.type][i].uuid;
+                        for(let i=0;i<objects.length;i++){
+                            if(objects[i].data.uuid==uuid){
+                                let imgsrc=this[this.type][i].imgsrc;  //测试告警，真实进行判断是否告警进行附图片
+                                let json=objects[i];
+                                let data=this[this.type][i];
+                                fabric.Image.fromURL(imgsrc, function(object){
+                                    object["data"]=data;
+                                    object.set({
+                                        left: json.left,
+                                        top: json.top,
+                                    });
+                                    object.scaleToWidth(objects[i].width*objects[i].scaleX);
+                                    object.scaleToHeight(objects[i].height*objects[i].scaleY);
+                                    _this.design.remove(json);
+                                    _this.addObject(object);
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            this.hiddenPanel();
         },
-        test:function(){
-            console.log(this.design)
-            console.log(this.design.contextCache)
-            this.design.renderAndResetBound();
-            this.design.calcOffset() //都需要调用calcOffset; 
-            this.design.requestRenderAll();
-
+        handleSure:function(){
+            if(this.tempname==""){
+                return;
+            }
+            let json={
+                editType:this.editType,
+                leftDoor:this.leftDoor,
+                rightDoor:this.rightDoor,
+                topData:this.topData,
+                bottomData:this.bottomData,
+                devData:this.devData,
+                devtopData:this.devtopData,
+                devbottomData:this.devbottomData,
+            }
+            if(this.editType=="auto"){
+                json["designCanvas"]=this.design.toDatalessJSON();
+                json["initWidth"]=this.initWidth;
+                json["initHeight"]=this.initHeight;
+                console.log(this.design)
+            }
+            if(this.editType=="bipv"){
+                json["ubit"]=this.ubit;
+            }
+            sessionStorage.setItem("layoutJson",JSON.stringify(json));
+            
         }
 	},
     watch:{
         "initParams.devid":function(info){
-            this.changeDev(info);
+            if(info){
+                this.changeDev(info);
+            }
+        },
+        "initParams.onedevid":function(info){
+            if(info){
+                this.changeDev([info]);
+            }
         }
     }
 }
@@ -1329,6 +1482,12 @@ export default {
                             .panel-span{
                                 position: absolute;
                                 cursor: move;
+                                width: 40px;
+                                height: 40px;
+                                img{
+                                    max-width: 100%;
+                                    max-height: 100%;
+                                }
                                 .icon-btn{
                                     position: absolute;
                                     top: -8px;
@@ -1364,6 +1523,12 @@ export default {
                             .panel-span{
                                 position: absolute;
                                 cursor: move;
+                                width: 40px;
+                                height: 40px;
+                                img{
+                                    max-width: 100%;
+                                    max-height: 100%;
+                                }
                                 .icon-btn{
                                     position: absolute;
                                     top: -8px;
@@ -1427,6 +1592,7 @@ export default {
             .bipv-box-con{
                 width: 400px;
                 padding: 50px 0;
+                margin: 0 auto;
                 position: relative;
                 .bipv-box-panel{
                     width: 100%;
@@ -1438,6 +1604,12 @@ export default {
                     .panel-span{
                         position: absolute;
                         cursor: move;
+                        width: 40px;
+                        height: 40px;
+                        img{
+                            max-width: 100%;
+                            max-height: 100%;
+                        }
                         .icon-btn{
                             position: absolute;
                             top: -8px;
@@ -1538,17 +1710,40 @@ export default {
                         }
                         .cabinet-con-img{
                             position: relative;
-                            width:178px;
+                            width:180px;
                             border-left: 1px solid transparent;
                             border-right: 1px solid transparent;
                             cursor: move;
+                            .text{
+                                width: 100%;
+                                height: 100%;
+                                position: relative;
+                                z-index: 9;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                font-size: 16px;
+                            }
+                            .icon-btn{
+                                position: absolute;
+                                top: -8px;
+                                right: -8px;
+                                display: none;
+                                cursor: pointer;
+                                color: @color;
+                                z-index: 10;
+                            }
                             &:hover{
                                 border-color: @activeColor;
+                                .icon-btn{
+                                    display: block;
+                                }
                             }
                             img{
                                 width: 100%;
                                 height: 18px;
                                 position: absolute;
+                                left: 0;
                             }
                         }
                     }
@@ -1604,7 +1799,6 @@ export default {
                         margin: 5px 0;
                         padding: 0 10px;
                         color: @color;
-                        cursor: move;
                         &:hover{
                             background: @activeBg;
                             color: @activeColor;
@@ -1613,7 +1807,20 @@ export default {
                     .collapse-boximg{
                         display: inline-block;
                         margin: 5px;
-                        cursor: move;
+                        color: @color;
+                        text-align: center;
+                        .boximg{
+                            width: 40px;
+                            height: 40px;
+                            margin: 0 auto;
+                            display: flex;
+                            align-items: center;
+                            cursor: move;
+                            img{
+                                max-width: 100%;
+                                max-height: 100%;
+                            }
+                        }
                     }
                 }
                 /deep/ .el-collapse{

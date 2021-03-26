@@ -120,12 +120,8 @@ export default {
         },
         //保存的操作
         dialogSure:function(){
-            this.$refs['ValidateForm'].validate((valid) => {
-                if(valid){ //验证通过
-                    this.$emit("backInfo",this.initParams)
-                    this.dialogInfo.visible=false;
-                }
-            })
+            this.$emit("backInfo",{imgsrc:this.imgsrc})
+            this.dialogInfo.visible=false;
         },
 	},
     props:["dialogInfo"]

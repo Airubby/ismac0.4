@@ -13,7 +13,7 @@
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label='设备名' prop="name">
-                        <el-input v-model="initParams.name"></el-input>
+                        <el-input v-model="initParams.name" placeholder="设备名称"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -29,7 +29,7 @@
                 <el-col :span="8">
                     <el-form-item label='维保期限' prop="name">
                         <el-date-picker
-                            is-range
+                            type="datetimerange"
                             v-model="initParams.name"
                             format="yyyy-MM-dd HH:mm:ss"
                             value-format="yyyy-MM-dd HH:mm:ss"

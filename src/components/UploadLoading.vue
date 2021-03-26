@@ -2,13 +2,15 @@
     <el-dialog class="upload-loading" title="" :visible.sync="dialogInfo.visible" fullscreen append-to-body :show-close="false">
         <div>
             <el-progress type="circle" :stroke-width="10" :width="180" :percentage="progress"></el-progress>
-            <p class="loading-info">文件上传中...</p>
+            <p class="loading-info">{{$t("uploadInfo")}}</p>
         </div>
     </el-dialog>
 </template>
 
 <script>
+import language from './config/Language'
 export default {
+    mixins:[language],
     created () {
     },
     mounted() {

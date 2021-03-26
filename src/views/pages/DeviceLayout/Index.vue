@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <div class="layout-top">
-            <el-button type="primary" plain @click="enterEdit">编辑布局</el-button>
+            <el-button type="primary" plain @click="enterEdit" v-permission="['edit']">编辑布局</el-button>
         </div>
         <div class="layout-con">
             <div class="scrollbar" v-scrollBar>
@@ -11,7 +11,7 @@
                             <div class="layout-panel-other">
                                 <div class="layout-panel-othercon">
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
-                                        <img :src="devitem.imgsrc" >
+                                        <img :src="imgsrc(devitem)" >
                                     </span>
                                 </div>
                             </div>
@@ -25,7 +25,7 @@
                                             <transition-group class="layout-list-group" type="transition">
                                                 <template  v-for="(item,tindex) in topData">
                                                     <div class="panel-conbox list-group-item" :key="tindex" :class="{'list-group-halfitem':item.category=='air'}">
-                                                        <cabinet :background="item.background" :name="item.name" :index="tindex"></cabinet>
+                                                        <cabinet :background="background(item)" :name="item.name" :index="tindex"></cabinet>
                                                     </div>
                                                 </template>
                                             </transition-group>
@@ -37,7 +37,7 @@
                             <div class="layout-panel-other">
                                 <div class="layout-panel-othercon">
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index">
-                                        <img :src="devitem.imgsrc">
+                                        <img :src="imgsrc(devitem)">
                                     </span>
                                 </div>
                             </div>
@@ -46,7 +46,7 @@
                             <div class="layout-panel-other">
                                 <div class="layout-panel-othercon">
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
-                                        <img :src="devitem.imgsrc">
+                                        <img :src="imgsrc(devitem)">
                                     </span>
                                 </div>
                             </div>
@@ -59,7 +59,7 @@
                                         <transition-group class="layout-list-group" type="transition">
                                             <template  v-for="(item,tindex) in topData">
                                             <div class="panel-conbox list-group-item" :key="tindex" :class="{'list-group-halfitem':item.category=='air'}">
-                                                <cabinet :background="item.background" :name="item.name" :index="tindex"></cabinet>
+                                                <cabinet :background="background(item)" :name="item.name" :index="tindex"></cabinet>
                                             </div>
                                             </template>
                                         </transition-group>
@@ -70,7 +70,7 @@
                                 <div class="panel-cendoor" :class="{'panel-cendoor-close':leftDoor}"></div>
                                 <div class="panel-cencon">
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devData" :key="index">
-                                        <img :src="devitem.imgsrc">
+                                        <img :src="imgsrc(devitem)">
                                     </span>
                                 </div>
                                 <div class="panel-cendoor panel-cendoor-right" :class="{'panel-cendoor-close':rightDoor}"></div>
@@ -84,7 +84,7 @@
                                         <transition-group class="layout-list-group" type="transition">
                                             <template  v-for="(item,tindex) in bottomData">
                                             <div class="panel-conbox list-group-item" :key="tindex" :class="{'list-group-halfitem':item.category=='air'}">
-                                                <cabinet :background="item.background" :name="item.name" :index="tindex"></cabinet>
+                                                <cabinet :background="background(item)" :name="item.name" :index="tindex"></cabinet>
                                             </div>
                                             </template>
                                         </transition-group>
@@ -94,13 +94,50 @@
                             <div class="layout-panel-other">
                                 <div class="layout-panel-othercon">
                                     <span class="panel-span" :class="{'oglFlip':devitem.oglFlip}" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devbottomData" :key="index">
-                                        <img :src="devitem.imgsrc">
+                                        <img :src="imgsrc(devitem)">
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <div v-if="editType=='auto'" id="canvas-box">
                             <canvas id="designCanvas"></canvas>
+                        </div>
+                        <div class="bipv-box" v-show="editType=='bipv'">
+                            <div class="bipv-box-con">
+                                <div class="bipv-box-panel" id="devtopDatabipv">
+                                    <span class="panel-span" :style='panelDevStyle(devitem)' v-for="(devitem,index) in devtopData" :key="index">
+                                        <i class="el-icon-delete icon-btn"></i>
+                                        <img :src="imgsrc(devitem)" :title="devitem.name" @click="devClick($event,devitem,'devtopData')">
+                                    </span>
+                                </div>
+                                
+                                <div class="cabinet">
+                                    <div class="cabinet-con" v-if="cabinetU.length>0">
+                                        <div v-for="(item,index) in cabinetU" class="cabinet-u" :key="index">
+                                            <div class="cabinet-number" :class="{'firstU':index==0,'lastU':index==cabinetU.length-1}">
+                                                <span class="cabinet-number-box">{{item.index}}</span>
+                                                <span class="cabinet-number-box cabinet-number-boxr">
+                                                    {{item.index}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="bipv-list-con">
+                                            <div class="bipv-list-drag">
+                                                <template  v-for="(item,tindex) in devData">
+                                                    <div class="panel-conbox bipv-group-item" :style="cabinetStyle(item)" @click="devClick($event,item,'devData')" :key="tindex">
+                                                        <div class="cabinet-con-img" :style="{height:baseHeight*Number(item.ubit)+'px'}">
+                                                            <div class="text">{{item.name}}</div>
+                                                            <template v-for="index in Number(item.ubit)">
+                                                                <img :src="img" draggable=false :style="{bottom:baseHeight*(index-1)+'px'}" :key="index">
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="layout-echart">
                             <div class="layout-echart-box" id="pueCon"></div>
@@ -183,6 +220,26 @@ export default {
             return function(item){
                 return `left:${item.offsetX}px;top:${item.offsetY}px`;
             }
+        },
+        cabinetStyle(){
+            return function(item){
+                return `bottom:${item.offsetB}px;`;
+            }
+        },
+        imgsrc(){
+            return function(devitem){
+                return devitem.isalarm?devitem.imgsrcAlarm:devitem.imgsrc;
+            }
+        },
+        background(){
+            return function(item){
+                return item.isalarm?item.backgroundAlarm:item.background;
+            }
+        },
+        img(){
+            return function(devitem){
+                return devitem.isalarm?require('./config/images/UAlarm.png'):require('./config/images/U.png')
+            }
         }
     },
     data(){
@@ -206,7 +263,12 @@ export default {
             initWidth:"",
             initHeight:"",
             panX:0,
-            panY:0
+            panY:0,
+
+            ubit:null,
+            baseHeight:18,
+            cabinetU:[],
+            color_list:[],
             
         }
     },
@@ -229,10 +291,40 @@ export default {
                 this.devData=json.devData;
                 this.devtopData=json.devtopData;
                 this.devbottomData=json.devbottomData;
+                if(this.editType=="bipv"){
+                    this.ubit=json.ubit;
+                    this.initBIPV(json.ubit)
+                }
             }
             // this.$api.post("",{}).then(res=>{
 
             // })
+        },
+        initBIPV:function(val){
+            for(let a=1;a<=val;a++){
+                let index=a;
+                if(index<10){
+                    index="0"+index;
+                }
+                if(this.color_list.length>0){
+                    let flag=false;
+                    for(let i=0;i<this.color_list.length;i++){
+                        if('L'+a===this.color_list[i].pointid){
+                            flag=true;
+                            let obj=Object.assign({},this.color_list[i]);
+                            obj["index"]=index;
+                            obj["show"]=true;
+                            this.cabinetU.push(obj);
+                        }
+                    }
+                    if(!flag){
+                        this.cabinetU.push({index:index,show:false});
+                    }
+                }else{
+                    this.cabinetU.push({index:index,show:false});
+                }
+            }
+            this.cabinetU.reverse();
         },
         initCanvas:function(json){
             let _this=this;
@@ -424,6 +516,52 @@ export default {
                 },0)
             });
             return myChart;
+        },
+        backWs:function(info){
+            let arr=[];
+            let _this=this;
+            for(let i=0;i<info.length;i++){
+                arr=info[i].key.split("_");  //key是源数据data名称（比如topData）加uuid，订阅的时候，一个设备的多个测点都是用的同一个key，无论哪个测点告警都更新这个key对应的设备告警状态
+                for(let j=0;j<this[arr[0]].length;j++){
+                    if(info[i].key==arr[0]+"_"+this[arr[0]][j].uuid){
+                        //测试告警
+                        // this[arr[0]][j].isalarm=true;
+                        let flag=false;
+                        for(let k=0;k<this[arr[0]][j].devInfo.length;k++){
+                            if(info[i].devid==this[arr[0]][j].devInfo[k].devid&&info[i].pointid==this[arr[0]][j].devInfo[k].pointid){
+                                this[arr[0]][j].devInfo[k].isalarm=info[i].isalarm;
+                            }
+                            if(this[arr[0]][j].devInfo[k].isalarm){
+                                flag=true;
+                            }
+                        }
+                        this[arr[0]][j].isalarm=flag;
+                        if(this.editType=="auto"){
+                            let objects=this.design.getObjects();
+                            let uuid=this[arr[0]][j].uuid;
+                            for(let i=0;i<objects.length;i++){
+                                if(objects[i].data.uuid==uuid){
+                                    let imgsrc=flag?this[arr[0]][j].imgsrcAlarm:this[arr[0]][j].imgsrc;  //测试告警，真实进行判断是否告警进行附图片
+                                    let json=objects[i];
+                                    json.data.imgsrc=imgsrc;
+                                    fabric.Image.fromURL(imgsrc, function(object){
+                                        object["data"]=json.data;
+                                        object.set({
+                                            left: json.left,
+                                            top: json.top,
+                                        });
+                                        object.scaleToWidth(objects[i].width*objects[i].scaleX);
+                                        object.scaleToHeight(objects[i].height*objects[i].scaleY);
+                                        _this.design.remove(json);
+                                        object.set("selectable",false);
+                                        _this.addObject(object);
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         },
 	},
     
@@ -676,6 +814,172 @@ export default {
                                 color: @activeColor;
                                 font-size: 24px;
                                 margin: 0 10px;
+                            }
+                        }
+                    }
+                }
+            }
+            .bipv-box{
+                .bipv-box-con{
+                    width: 400px;
+                    padding: 50px 0;
+                    margin: 0 auto;
+                    position: relative;
+                    .bipv-box-panel{
+                        width: 100%;
+                        height: 100%;
+                        position:absolute;
+                        top: 0;
+                        left: 0;
+                        overflow:auto;
+                        .panel-span{
+                            position: absolute;
+                            cursor: move;
+                            .icon-btn{
+                                position: absolute;
+                                top: -8px;
+                                right: -8px;
+                                display: none;
+                                cursor: pointer;
+                                color: @color;
+                            }
+                            &:hover{
+                                .icon-btn{
+                                    display: block;
+                                }
+                            }
+                            &.oglFlip{
+                                transform: rotateX(180deg);
+                            }
+                        }
+                    }
+                    .cabinet{
+                        width: 192px;
+                        padding:6px 6px 15px;
+                        background: #141726;
+                        margin: 0 auto 15px auto;
+                        position: relative;
+                        z-index: 9;
+                        .cabinet-con{
+                            width: 100%;
+                            background: #0B0C14;
+                            position: relative;
+                            .cabinet-u{
+                                position: relative;
+                                width: 100%;
+                                height: 18px;
+                                background: #1E2238;
+                                border-left: 2px solid #414A75;
+                                border-top: 1px solid #0B0C14;
+                                border-bottom: 1px solid #0B0C14; 
+                                .cabinet-number{
+                                    position: absolute;
+                                    width: calc(100% + 86px);
+                                    height: calc(100% + 2px);
+                                    top: -1px;
+                                    left: -44px;
+                                    .cabinet-number-box{
+                                        width: 26px;
+                                        height: 100%;
+                                        background: #353C66;
+                                        color: #6A7498;
+                                        text-align: center;
+                                        display: block;
+                                        position: absolute;
+                                        left: 0;
+                                    }
+                                    .cabinet-number-boxr{
+                                        right: 0;
+                                        left: auto;
+                                        // .radio{
+                                        //     display: block;
+                                        //     width: 14px;
+                                        //     height: 14px;
+                                        //     background: #73B34A;
+                                        //     border-radius: 50%;
+                                        //     position: absolute;
+                                        //     top: 2px;
+                                        //     left: 35px;
+                                        //     cursor: pointer;
+                                        //     &.normal{
+                                        //         background: #0077E9;
+                                        //     }
+                                        //     &.alarm{
+                                        //         background: #FF4A4A;
+                                        //     }
+                                        // }
+                                    }
+                                    &.firstU{
+                                        .cabinet-number-box:before{
+                                            content: "";
+                                            width: 26px;
+                                            height: 6px;
+                                            background: #353C66;
+                                            position: absolute;
+                                            left: 0;
+                                            top: -6px; 
+                                        }
+                                    }
+                                    &.lastU{
+                                        .cabinet-number-box:before{
+                                            content: "";
+                                            width: 26px;
+                                            height: 15px;
+                                            background: #353C66;
+                                            position: absolute;
+                                            left: 0;
+                                            bottom: -15px; 
+                                        }
+                                    }
+                                }
+                            }
+                            .cabinet-con-img{
+                                position: relative;
+                                width:180px;
+                                border-left: 1px solid transparent;
+                                border-right: 1px solid transparent;
+                                cursor: move;
+                                .text{
+                                    width: 100%;
+                                    height: 100%;
+                                    position: relative;
+                                    z-index: 9;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    font-size: 16px;
+                                }
+                                &:hover{
+                                    border-color: @activeColor;
+                                }
+                                img{
+                                    width: 100%;
+                                    height: 18px;
+                                    position: absolute;
+                                    left: 0;
+                                }
+                            }
+                        }
+                        &:before{
+                            content: "";
+                            width: 20px;
+                            height: 100%;
+                            background: #353C66;
+                        }
+                    }
+                    .bipv-list-con{
+                        position: absolute;
+                        top:0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        z-index: 9;
+                        .bipv-list-drag{
+                            width: 100%;
+                            height: 100%;
+                            position: relative;
+                            .bipv-group-item{
+                                position: absolute;
                             }
                         }
                     }

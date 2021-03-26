@@ -37,11 +37,14 @@ service.interceptors.response.use(
 		return response.data;
 	},
 	error => {
-		console.log(error.response)
-		loadingService&&loadingService.close();
-		Notification.error('服务器错误，请联系管理人员！');
-		router.push({path:'/login'});
-		return Promise.reject("重新登录");
+        console.log(error.response,error.request,error.config,error.message)
+        //不return error 信息，这样就可以走catch 回调中
+        if(loadingService){
+            loadingService.close();
+		    Notification.error('服务器错误，请联系管理人员！');
+        }
+		// router.push({path:'/login'});
+		return Promise.reject("服务器错误，请联系管理人员！");
 		
 	}
 );
@@ -57,9 +60,7 @@ const Info={
 export default {
 	get: function (url, params={}, loadInfo) {
 		let info=Object.assign({},Info,loadInfo);
-		if(info.isLoading){
-			loadingService=Loading.service(info)
-		}
+		loadingService=info.isLoading?Loading.service(info):null;
 		return new Promise((resolve,reject)=>{
 			service.get(url,{params:params}).then(response=>{
 				resolve(response)
@@ -70,9 +71,7 @@ export default {
 	},
 	post: function (url, params={}, loadInfo) {
 		let info=Object.assign({},Info,loadInfo);
-		if(info.isLoading){
-			loadingService=Loading.service(info)
-		}
+		loadingService=info.isLoading?Loading.service(info):null;
 		return new Promise((resolve,reject)=>{
 			service.post(url,params).then(response=>{
 				resolve(response)
@@ -84,9 +83,7 @@ export default {
 	//post请求参数放url中
 	postQuery: function (url, params={}, loadInfo) {
 		let info=Object.assign({},Info,loadInfo);
-		if(info.isLoading){
-			loadingService=Loading.service(info)
-		}
+		loadingService=info.isLoading?Loading.service(info):null;
 		return new Promise((resolve,reject)=>{
 			service.post(url,null,{params:params}).then(response=>{
 				resolve(response)
@@ -97,9 +94,7 @@ export default {
 	},
 	exportFile:function(url, params={}, loadInfo){
 		let info=Object.assign({},Info,loadInfo);
-		if(info.isLoading){
-			loadingService=Loading.service(info)
-		}
+		loadingService=info.isLoading?Loading.service(info):null;
 		return new Promise((resolve,reject)=>{
 			service.post(url,params,{responseType:"blob"}).then(response=>{
 				let blob=new Blob([response],{type: "application/vnd.ms-excel;charset=utf-8"});

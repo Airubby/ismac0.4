@@ -14,6 +14,7 @@ const getters = {
     currentConfig:state=>state.user.currentConfig,
     currentComponent:state=>state.user.currentComponent,
     languageApi:state=>state.user.languageApi,
+    limits: state => state.user.limits,
 
     getTheme: state => state.theme.theme,
     showTheme:state=>state.theme.show,

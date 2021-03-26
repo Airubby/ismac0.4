@@ -37,7 +37,7 @@
             <el-tab-pane label='详情' name="second">
                 <Detail></Detail>
             </el-tab-pane>
-            <el-tab-pane label='告警' name="third">
+            <el-tab-pane label='告警' name="third" v-if="checkPermission(['assert'])">
                 <Alarm></Alarm>
             </el-tab-pane>
         </el-tabs>
@@ -47,6 +47,7 @@
 import Overview from './component/Overview'
 import Detail from './component/Detail'
 import Alarm from './component/Alarm'
+import {checkPermission} from '@/utils/Tool'
 export default {
     components: {Overview,Detail,Alarm},
     mixins:[],
@@ -74,7 +75,7 @@ export default {
     computed: {
     },
 	methods: {
-        
+        checkPermission,
 	},
     
 }

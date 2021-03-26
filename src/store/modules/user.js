@@ -5,12 +5,14 @@ const rootPath="/loncom";
 const PageIndex="PageIndex";
 const PageMoreIndex="PageMoreIndex";
 const user = {
+    // namespaced: true,  commit('app/setTempData', {}, {root: true})  //{root: true} 申明这个 mutations 不是当前模块的
     state: {
         token:Cookies.get('token')||'token888',
         config:[], //所有导航
 		currentConfig:{},  //当前导航
         currentComponent:"",  //当前组件
         languageApi:[], //语言及api的路径地址
+        limits:[], //功能权限
     },
     mutations: {
         SET_TOKEN(state,token){
@@ -31,7 +33,7 @@ const user = {
                     redirect:redirect,
                     children:[]
                 }
-                //pathName是动态注入语言及api判断用的
+                //pathName是动态注入语言及api判断用的；可以把关联的组件信息注册到meta中，点击切换导航的时候就不用循环遍历对应的组件了
                 if(data.length>0){
                     let arr=[];
                     for(let i=0;i<data.length;i++){
@@ -41,7 +43,13 @@ const user = {
                                 children.push({
                                     path: `${rootPath}/`+data[i].key+"/"+data[i].children[j].key,
                                     name: data[i].children[j].key,
-                                    meta:{componentName:data[i].children[j].component,pathName:data[i].children[j].component},
+                                    //pathName;注入setLangApi的路径用的
+                                    meta:{
+                                        componentName:data[i].children[j].component,
+                                        pathName:data[i].children[j].component,
+                                        limits:data[i].children[j].limits||[],
+                                        config:data[i]
+                                    },
                                     component: () => import(`@/views/public/${PageIndex}.vue`),
                                 })
                                 if(data[i].children[j].relation&&data[i].children[j].relation.length>0){
@@ -49,7 +57,12 @@ const user = {
                                         children.push({
                                             path: `${rootPath}/`+data[i].key+"/"+data[i].children[j].key+"/"+data[i].children[j].relation[m].key,
                                             name: data[i].children[j].relation[m].key,
-                                            meta:{componentName:data[i].children[j].relation[m].component,pathName:data[i].children[j].component},
+                                            meta:{
+                                                componentName:data[i].children[j].relation[m].component,
+                                                pathName:data[i].children[j].component,
+                                                limits:data[i].children[j].limits||[],
+                                                config:data[i]
+                                            },
                                             component: () => import(`@/views/public/${PageIndex}.vue`),
                                         })
                                     }
@@ -60,7 +73,12 @@ const user = {
                             arr.push({
                                 path: `${rootPath}/`+data[i].key,
                                 name: data[i].key,
-                                meta:{componentName:data[i].component,pathName:data[i].component},
+                                meta:{
+                                    componentName:data[i].component,
+                                    pathName:data[i].component,
+                                    limits:data[i].limits||[],
+                                    config:data[i]
+                                },
                                 component: () => import(`@/views/public/${PageMoreIndex}.vue`),
                                 redirect:children[0].path,
                                 children:children
@@ -69,7 +87,12 @@ const user = {
                             arr.push({
                                 path: `${rootPath}/`+data[i].key,
                                 name: data[i].key,
-                                meta:{componentName:data[i].component,pathName:data[i].component},
+                                meta:{
+                                    componentName:data[i].component,
+                                    pathName:data[i].component,
+                                    limits:data[i].limits||[],
+                                    config:data[i]
+                                },
                                 component: () => import(`@/views/public/${PageIndex}.vue`),
                             });
                             if(data[i].relation&&data[i].relation.length>0){
@@ -77,7 +100,12 @@ const user = {
                                     arr.push({
                                         path: `${rootPath}/`+data[i].key+"/"+data[i].relation[m].key,
                                         name: data[i].relation[m].key,
-                                        meta:{componentName:data[i].relation[m].component,pathName:data[i].component},
+                                        meta:{
+                                            componentName:data[i].relation[m].component,
+                                            pathName:data[i].component,
+                                            limits:data[i].limits||[],
+                                            config:data[i]
+                                        },
                                         component: () => import(`@/views/public/${PageIndex}.vue`),
                                     })
                                 }
@@ -99,7 +127,10 @@ const user = {
         },
         SET_LANGUAGEAPI(state,info){
             state.languageApi=info
-        }
+        },
+        SET_LIMITS(state,limits){
+            state.limits=limits
+        },
     },
     actions: {
         setToken({ commit }, token) {
@@ -119,7 +150,10 @@ const user = {
         },
         setLanguageApi({commit},info){
             commit('SET_LANGUAGEAPI',info);
-        }
+        },
+        setLimits({commit},limits){
+            commit('SET_LIMITS',limits);
+        },
     }
 
 }

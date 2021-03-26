@@ -1,3 +1,4 @@
+import store from '@/store'
 //时间格式化
 export function FormatDate(fmt,value){
   let date=value?new Date(value):new Date();
@@ -33,8 +34,24 @@ export function filterNull (o) {
         }
     }
     return o
-  }
+}
+export function checkPermission(value) {
+    if (value && value instanceof Array && value.length > 0) {
+        const limits = store.getters && store.getters.limits
+        const permissionRoles = value
+    
+        const hasPermission = limits.some(role => {
+            return permissionRoles.includes(role)
+        })
+        return hasPermission
+    } else {
+        console.error(`need roles! Like v-permission="['admin','editor']"`)
+      return false
+    }
+}
+
 export default {
     FormatDate,
-    filterNull
+    filterNull,
+    checkPermission
 }

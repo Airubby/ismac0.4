@@ -68,7 +68,7 @@
                                 </el-row>
                             </el-form>
                         </div>
-                        <div class="content" v-scrollBar>
+                        <div class="content scroll-content" v-scrollBar>
                             <DynamicComponent v-if="pathUrl" :pathUrl="pathUrl+`/Edit.vue`" 
                             @selectUrl="selectUrl"
                             @selectPoint="selectPoint" :dataObject="data" :templateUrl="pathUrl"></DynamicComponent>
@@ -289,7 +289,7 @@ export default {
                 }
                 .config-right-con{
                     width: 100%;
-                    padding-right: 10px;
+                    height: 100%;
                 }
                 .config-form{
                     width: 100%;
@@ -311,6 +311,8 @@ export default {
                 }
             }
         }
-        
+        .scroll-content{
+            height: calc(100% - 110px)
+        }
     }
 </style>

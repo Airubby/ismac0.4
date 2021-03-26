@@ -70,9 +70,9 @@
             </template>
             <template v-slot:preview-handle="scope">
                 <p class="table_handle">
-                    <span v-if="scope.row.h=='1'">关注</span>
-                    <span v-else>取消关注</span>
-                    <span>维护</span>
+                    <span v-if="scope.row.h=='1'" v-permission="['follow']">关注</span>
+                    <span v-else v-permission="['follow']">取消关注</span>
+                    <span v-permission="['assert']">维护</span>
                 </p>
             </template>
         </el-table-pagination>
@@ -80,6 +80,7 @@
 </template>
 <script>
 export default {
+    components:{},
     mixins:[],
     filters:{
         
@@ -123,9 +124,6 @@ export default {
             this.$router.push({name:'deviceStatusDetail',query:{params:JSON.stringify({"id":item.id})}});
         }
 	},
-    components: {
-        
-    }
 }
 </script>
 <style lang="less" scoped>
