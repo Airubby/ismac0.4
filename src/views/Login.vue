@@ -117,7 +117,7 @@ export default {
 						//let params = JSON.parse(this.$route.query.params);
 					}
 				}else{
-					this.$message.error(r.err_msg);
+					this.$message.error(res.err_msg);
 				}
 			})
 		},

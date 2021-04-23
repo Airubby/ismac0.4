@@ -5,13 +5,13 @@
                 <el-form ref="ValidateForm" :model="initParams" :rules="rules" label-position="top">
                     <el-row :gutter="30">
                         <el-col :span="20">
-                            <el-form-item label='名称' prop="name">
-                                <el-input v-model="initParams.name"></el-input>
+                            <el-form-item label='名称' prop="tempname">
+                                <el-input v-model="initParams.tempname"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="20">
-                            <el-form-item label='类型' prop="type">
-                                <el-select v-model="initParams.type" placeholder="请选择">
+                            <el-form-item label='类型' prop="editType">
+                                <el-select v-model="initParams.editType" placeholder="请选择">
                                     <el-option key="one" label="单排" value="one"></el-option>
                                     <el-option key="two" label="双排" value="two"></el-option>
                                     <el-option key="bipv" label="一体化" value="bipv"></el-option>
@@ -19,12 +19,12 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :span="20" v-if="initParams.type=='bipv'">
+                        <el-col :span="20" v-if="initParams.editType=='bipv'">
                             <el-form-item label='U位数' prop="ubit">
                                 <el-input v-model="initParams.ubit"></el-input>
                             </el-form-item>
                         </el-col>
-                        <el-col :span="20" v-if="initParams.type=='auto'">
+                        <el-col :span="20" v-if="initParams.editType=='auto'">
                             <el-form-item label='背景' prop="background">
                                 <span class="input-file">
                                     <el-input v-model="initParams.background">
@@ -67,8 +67,8 @@ export default {
     data(){
         return{
             initParams:{
-                name:"",
-                type:"",
+                tempname:"",
+                editType:"",
                 background:"",
                 ubit:42
             },

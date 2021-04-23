@@ -1,140 +1,115 @@
 <template>
-	<div class="content centermap">
-        <div id="centermap">
-            <img :src="templateUrl+'/images/bg.png'" usemap="#map" id="mapimg">
-            <map name="map" id="map">
-                <div class="mapshow" coords="-100,65,100">
-                    <div class="maparea">
-                        <div class="table-box">
-                            <div class="table-box-list">
-                                <div class="table-box-span">
-                                    <img :src="templateUrl+'/images/panglu.png'" class="img">UPS旁路
-                                </div>
-                                <div class="table-box-span"><span>A</span></div>
-                                <div class="table-box-span"><span>B</span></div>
-                                <div class="table-box-span"><span>C</span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">旁路电压(V)</div>
-                                <div class="table-box-span"><span class="table-value">220</span></div>
-                                <div class="table-box-span"><span class="table-value">220</span></div>
-                                <div class="table-box-span"><span class="table-value">220</span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">旁路电流(A)</div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">旁路频率(Hz)</div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                            </div>
-                        </div>
-                    </div>
+	<div class="content">
+	    <div class="loncom-pubcon">
+            <div class="loncom-public-top">
+                <div class="loncom-public-topnav">
+                    <ul class="scroll_con" id="sysmenu">
+                        <li onclick="enterPage('url1')">
+                            <a><img src="images/home-pd.png">
+                                <div>首页</div>
+                            </a>
+                        </li>
+                        <li onclick="enterPage('url2')">
+                            <img src="images/home-kt.png">
+                            <div>空调系统</div>
+                        </li>
+                        <li onclick="enterPage('url3')">
+                            <img src="images/home-it.png">
+                            <div>配电系统</div>
+                        </li>
+                        <li onclick="enterPage('url4')">
+                            <img src="images/home-hj.png">
+                            <div>安防系统</div>
+                        </li>
+                    </ul>
                 </div>
-                <div class="mapshow" coords="-100,370,100">
-                    <div class="maparea">
-                        <div class="table-box">
-                            <div class="table-box-list">
-                                <div class="table-box-span">
-                                    <img :src="templateUrl+'/images/shuru.png'" class="img">UPS输入
+                <div class="loncom-public-topbox">
+                    <div class="loncom-box">
+                        <em class="topleft"></em>
+                        <em class="topright"><em class="line"></em></em>
+                        <em class="bottomleft"><em class="line"></em></em>
+                        <em class="bottomright"></em>
+                        <ul class="loncom-public-topul loncom-public-topul4">
+                            <li>
+                                <div class="loncom-block">
+                                    <div class="loncom-block-con">
+                                        <div class="num"><span class="numspan" id="zrdwd">4</span></div>
+                                        <div>最热点温度</div>
+                                    </div>
                                 </div>
-                                <div class="table-box-span"><span>A</span></div>
-                                <div class="table-box-span"><span>B</span></div>
-                                <div class="table-box-span"><span>C</span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">旁路电压(V)</div>
-                                <div class="table-box-span"><span class="table-value">220</span></div>
-                                <div class="table-box-span"><span class="table-value">220</span></div>
-                                <div class="table-box-span"><span class="table-value">220</span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">旁路电流(A)</div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">旁路频率(Hz)</div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mapshow" coords="480,425,100">
-                    <div class="maparea">
-                        <div class="table-box">
-                            <div class="table-box-list">
-                                <div class="table-box-span">
-                                    <img :src="templateUrl+'/images/xudianchi.png'" class="img">蓄电池
+                            </li>
+                            <li>
+                                <div class="loncom-block">
+                                    <div class="loncom-block-con">
+                                        <div class="num alarm"><span class="numspan" id="pjwd">23.2</span></div>
+                                        <div>平均温度</div>
+                                    </div>
                                 </div>
-                                <div class="table-box-span"><span></span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">电池电压(V)</div>
-                                <div class="table-box-span"><span class="table-value">220</span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">剩余容量(%)</div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">后备时间(Min)</div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">电池电流(A)</div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">运行状态</div>
-                                <div class="table-box-span"><span>浮充</span></div>
-                            </div>
+                            </li>
+                            <li>
+                                <div class="loncom-block">
+                                    <div class="loncom-block-con">
+                                        <div class="num alarm"><span class="numspan" id="ltdwd">15</span></div>
+                                        <div>冷通道温度</div>
+                                    </div>
+                                </div>
 
-                        </div>
-                    </div>
-                </div>
-                <div class="mapshow" coords="950,370,100">
-                    <div class="maparea">
-                        <div class="table-box">
-                            <div class="table-box-list">
-                                <div class="table-box-span">
-                                    <img :src="templateUrl+'/images/shuru.png'" class="img">UPS输出
+                            </li>
+                            <li>
+                                <div class="loncom-block">
+                                    <div class="loncom-block-con">
+                                        <div class="num"><span class="numspan" id="ltdsd">10</span></div>
+                                        <div>冷通道湿度</div>
+                                    </div>
                                 </div>
-                                <div class="table-box-span"><span>A</span></div>
-                                <div class="table-box-span"><span>B</span></div>
-                                <div class="table-box-span"><span>C</span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">旁路电压(V)</div>
-                                <div class="table-box-span"><span class="table-value">220</span></div>
-                                <div class="table-box-span"><span class="table-value">220</span></div>
-                                <div class="table-box-span"><span class="table-value">220</span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">旁路电流(A)</div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                            </div>
-                            <div class="table-box-list border-top">
-                                <div class="table-box-span">旁路频率(Hz)</div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                                <div class="table-box-span"><span class="table-value">5.0</span></div>
-                            </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="loncom-public-chartbox" style="margin-bottom: 15px;">
+                <div class="loncom-public-chartbox-title">
+                    <div class="loncom-title">
+                        <div class="loncom-title-con">温度柱状图</div>
+                        <div class="loncom-title-line">
+                            <em class="loncom-line-em"></em>
                         </div>
                     </div>
                 </div>
-            </map>
+                <div class="loncom-public-echartbox-con">
+                    <div class="loncom-box">
+                        <em class="topleft"></em>
+                        <em class="topright"><em class="line"></em></em>
+                        <em class="bottomleft"><em class="line"></em></em>
+                        <em class="bottomright"></em>
+                        <div id="wendu" class="content" v-scrollBar>
+                            <div v-for="item in 100">{{item}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="loncom-public-chartbox">
+                <div class="loncom-public-chartbox-title">
+                    <div class="loncom-title">
+                        <div class="loncom-title-con">湿度柱状图</div>
+                        <div class="loncom-title-line">
+                            <em class="loncom-line-em"></em>
+                        </div>
+                    </div>
+                </div>
+                <div class="loncom-public-echartbox-con">
+                    <div class="loncom-box">
+                        <em class="topleft"></em>
+                        <em class="topright"><em class="line"></em></em>
+                        <em class="bottomleft"><em class="line"></em></em>
+                        <em class="bottomright"></em>
+                        <div id="shidu" class="content"></div>
+                    </div>
+                </div>
+            </div>
+        
         </div>
-    </div>
+	</div>
 </template>
 
 <script>
@@ -143,13 +118,6 @@ export default {
         
 	},
 	mounted() {
-        this.adjust();
-        window.onresize = ()=> {  
-            clearTimeout(this.timeout);  
-            this.timeout = setTimeout( () =>{ 
-                this.adjust(); 
-            }, 100);
-        }  
         
     },
 	data(){
@@ -159,68 +127,7 @@ export default {
         }
 	},
 	methods:{
-        adjust(){
-            //这样判断解决刷新有时候不执行的问题
-            if(!document.getElementById("mapimg").complete){
-                clearTimeout(this.timeout);  
-                this.timeout = setTimeout( () =>{ 
-                    this.adjust(); 
-                }, 400);
-                return;
-            }
-            let maplist=document.getElementById("map").getElementsByClassName('mapshow');
-            let mapimg=document.getElementById("mapimg");
-            let centermap=document.getElementById("centermap");
-            let domWidth=centermap.offsetWidth;
-            let domHeight=centermap.offsetHeight;
-            let mapWidth=mapimg.offsetWidth;
-            let mapHeight=mapimg.offsetHeight;
-            let img=new Image();
-            img.src=mapimg.getAttribute("src");
-            let width=img.width;
-            let height=img.height;
-
-            
-            let xdom=domWidth/mapWidth;
-            let ydom=domHeight/mapHeight;
-            let rate=mapHeight/height;  ////宽度有多的 按高度缩放比例
-            let number=domWidth-mapWidth;
-            if(xdom<ydom){   //高度有多的 
-                rate=mapWidth/width;  ////高度有多的 按宽度缩放比例
-                number=domHeight-mapHeight;
-            }
-            if(width<=domWidth&&height<=domHeight){
-                for(let i=0;i<maplist.length;i++){
-                    let oldCoords = maplist[i].getAttribute("coords"); //定义一个初始化的coords 改变浏览器用这个值去计算
-                    let newcoords = this.adjustPosition(oldCoords,rate);  
-                    maplist[i].querySelector(".maparea").setAttribute("coords", newcoords.toString());  
-                    maplist[i].style.left=(domWidth-width)/2+parseFloat(newcoords[0])+"px";
-                    maplist[i].style.top=(domHeight-height)/2+parseFloat(newcoords[1])+"px";
-                    
-                }
-            }else{
-                for(let i=0;i<maplist.length;i++){
-                    let oldCoords = maplist[i].getAttribute("coords"); //定义一个初始化的coords 改变浏览器用这个值去计算
-                    let newcoords = this.adjustPosition(oldCoords,rate);  
-                    maplist[i].querySelector(".maparea").setAttribute("coords", newcoords.toString());  
-                    if(xdom>ydom){  //宽度有多的
-                        maplist[i].style.left=number/2+parseFloat(newcoords[0])+"px";
-                        maplist[i].style.top=newcoords[1]+"px";
-                    }else{  //高度有多的
-                        maplist[i].style.left=newcoords[0]+"px";
-                        maplist[i].style.top=number/2+parseFloat(newcoords[1])+"px";
-                    }
-                    
-                }
-            }
-        },
-		adjustPosition(position,rate){
-            let each = position.split(",");  
-            for (let i = 0; i < each.length; i++) { 
-                each[i] = Math.round(parseFloat(each[i]) * rate).toString();//坐标  
-            }  
-            return each;  
-        },
+        
 	},
 	watch:{
 			
@@ -230,88 +137,325 @@ export default {
 
 <style scoped lang="less">
 	.module-theme(...){
-        .content{
-            width: 100%;
-            height: 100%;
-            min-width: 800px;
-            min-height: 600px;
-            background: #052B62;
-        }
-        .centermap{
-            padding: 20px 100px 150px 100px;
-        }
-        #centermap{
-            text-align: center;
-            width: 100%;
+        .loncom-title{
+        width: 100%;
+        height: 40px;
+        line-height: 50px;
+        color: #B1BFF5;
+        font-size: 16px;
+        position: relative;
+    }
+    .loncom-title .loncom-title-con{
+            width: calc(80% - 10px);
             height: 100%;
             position: relative;
+            text-indent: 18px;
+            float: left;
         }
-        #centermap #mapimg{
+    .loncom-title .loncom-title-con:before{
+            content: "";
+            width: 16px;
+            height: 2px;
             position: absolute;
-            top: 0;
-            left: 0;
+            left: -2px;
+            bottom: 5px;
+            transform: rotate(45deg);
+            background: #243966;
+        }
+    .loncom-title .loncom-title-con:after{
+            content: "";
+            width: calc(100% - 10px);
+            height: 2px;
+            position: absolute;
+            left: 10px;
+            bottom: 0;
+            background: #243966;
+        }
+    .loncom-title .loncom-title-line:before{
+            content: "";
+            width: 16px;
+            height: 2px;
+            position: absolute;
+            left: -3px;
+            bottom: 5px;
+            transform: rotate(-45deg);
+            background: #243966;
+        }
+    .loncom-title .loncom-title-line:after{
+            content: "";
+            width: 100%;
+            height: 2px;
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+            background: #243966;
+        }
+    .loncom-title .loncom-title-line{
+            width: 20%;
+            height: 100%;
+            position: relative;
+            float: left;
+        }
+    .loncom-title .loncom-title-line .loncom-line-em{
+            position: absolute;
+            bottom: 3px;
+            left: -67px;
+            transform: skew(-45deg);
+            width: 70px;
+            height: 9px;
+            background: linear-gradient(to right,#4E6490 50%, transparent 0%);
+            background-size: 6px 100%;
+    }
+    .loncom-box{
+        width: 100%;
+        height: 100%;
+        box-shadow: inset 0px 0px 2px #103c86;
+        background: rgba(2, 17, 71, 0.25);
+        position: relative;
+        overflow: hidden;
+        border-radius: 0 20px 0 20px;
+        
+    }
+    .loncom-box .topleft{
+        width: 10px;
+        height: 10px;
+        border-top: 2px solid #277BDB;
+        border-left: 2px solid #277BDB;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    .loncom-box .bottomright{
+            width: 10px;
+            height: 10px;
+            border-bottom: 2px solid #277BDB;
+            border-right: 2px solid #277BDB;
+            position: absolute;
             right: 0;
             bottom: 0;
-            margin: auto;
-            max-width: 100%;
-            max-height: 100%;
         }
-        #centermap #mapimg{
-            max-width: 100%;
-            max-height: 100%;
-        }
-        #centermap .mapshow{
+    .loncom-box .topright{
+            width: 25px;
+            height: 25px;
             position: absolute;
-            color: #DDE4F6;
-            text-align: center;
+            right: 0;
+            top: 0;
         }
-        .table-box{
-            border: 1px solid #258BC0;
-            border-radius: 5px;
+    .loncom-box .topright .line:before{
+        content: "";
+        width: 10px;
+        height: 2px;
+        top: 0;
+        left: 0;
+        background: #277BDB;
+        position: absolute;
+    }
+    .loncom-box .topright .line:after{
+        content: "";
+        width: 2px;
+        height: 10px;
+        bottom: 0;
+        right: 0;
+        background: #277BDB;
+        position: absolute;
+    }
+    .loncom-box .topright:before{
+            content: "";
+            position: absolute;
+            right: -2px;
+            top: -2px;
+            width: 0;
+            height: 0;
+            border-top: 16px solid transparent;
+            border-left: 16px solid transparent;
         }
-        .table-box-list{
-            display: flex;
-            margin: 5px 0;
-        }
-        .table-box-list .table-box-span{
+    .loncom-box .topright:after{
+            content: "";
             width: 70px;
-            min-height: 30px;
-            line-height: 30px;
+            height: 9px;
+            position: absolute;
+            right: -30px;
+            top: 11px;
+            box-shadow: inset 0px 2px 0px #277bdb;
+            transform: rotate(45deg);
+        }
+    .loncom-box .bottomleft{
+            width: 25px;
+            height: 25px;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+        }
+    .loncom-box .bottomleft .line:before{
+                content: "";
+                width: 10px;
+                height: 2px;
+                bottom: 0;
+                right: 0;
+                background: #277BDB;
+                position: absolute;
+            }
+    .loncom-box .bottomleft .line:after{
+                content: "";
+                width: 2px;
+                height: 10px;
+                top: 0;
+                left: 0;
+                background: #277BDB;
+                position: absolute;
+            }
+    .loncom-box .bottomleft:before{
+            content: "";
+            position: absolute;
+            left: -2px;
+            bottom: -2px;
+            width: 0;
+            height: 0;
+            border-bottom: 16px solid #000d46;
+            border-right: 16px solid transparent;
+        }
+    .loncom-box .bottomleft:after{
+            content: "";
+            width: 70px;
+            height: 9px;
+            position: absolute;
+            right: -12px;
+            top: 11px;
+            box-shadow: inset 0px 2px 0px #277bdb;
+            transform: rotate(45deg);
+        }
+        
+    
+    
+        .loncom-block{
+            width: 100%;
+            height: 100%;
+            display:flex;
+            font-size: 12px;
             text-align: center;
-        }
-        .table-box-list .table-box-span img{
-            max-width: 20px;
-            max-height: 20px;
-            margin-right: 5px;
-        }
-        .table-box-list .table-box-span:nth-of-type(1){
-            width: 120px;
-            display: flex;
-            justify-content: center;
+            background: #030E31;
+            color: #5B6A93;
             align-items: center;
+            justify-content: center;
+        }   
+        .loncom-block .num{
+            color: #B1BFF5;
+            font-size: 28px;
+            font-weight: bold;
         }
-        .table-box-list .table-value{
-            border: 1px solid #258BC0;
-            border-radius: 20px;
-            padding: 0 10px;
+        .loncom-block .num .numspan{
+            position: relative;
+            display: inline-block;
         }
-        // .table-box-list .table-box-span span{
-        //     color: #086BCD;
-        //     font-family: 'Alibaba-PuHuiTi-Bold';
-        //     border: 2px solid #086BCD;
-        //     background: #031944;
-        //     width: 28px;
-        //     height: 28px;
-        //     line-height: 24px;
-        //     display: inline-block;
-        //     margin: 5px 0;
-        //     font-size: 18px;
-        // }
-        // .border-top{
-        //     border-top: 1px solid #121E46;
-        // }
-        // .border-left{
-        //    : 1px solid #121E46;
-        // }
+        .loncom-block .num .numspan:before{
+            content:"";
+            display: block;
+            width: 4px;
+            height: 16px;
+            position: absolute;
+            right: -11px;
+            bottom:12px;
+        }
+        .loncom-block .num .numspan:after{
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            position: absolute;
+            right: -14px;
+        }
+        .loncom-block .up,
+        .loncom-block .alarm{
+            color: #EB8500;
+        }
+        .loncom-block .normal{
+            color: #118913;
+        }
+        .loncom-block .up .numspan:before{
+            background: #EB8500;
+        }
+        .loncom-block .up .numspan:after{
+            border-bottom: 8px solid #eb8513;
+            bottom: 22px;
+        }
+        .loncom-block .down .numspan:before{
+            background: #007DF3;
+        }
+        .loncom-block .down .numspan:after{
+            border-top: 8px solid #007DF3;
+            bottom: 10px;
+        }
+ 
+        .loncom-pubcon{
+            padding: 0 20px;
+            height: 100%;
+        }
+        .loncom-public-top{
+            width: 100%;
+            height: 130px;
+            padding-top: 20px;
+            display: flex;
+        }
+        .loncom-public-topnav{
+            width: 430px;
+            height: 100%;
+        }
+        .loncom-public-topnav ul{
+            display: flex;
+        }
+        .loncom-public-topnav ul li{
+            width: 66px;
+            margin-right: 30px;
+            text-align:center;
+        }
+        .loncom-public-topnav ul li img{
+            height: 66px;
+            margin-top: 10px;
+        }
+        .loncom-public-topnav li div{
+            color: #B1BFF5;
+            height: 25px;
+            line-height: 25px;
+        }
+        .loncom-public-topbox{
+            width: calc(100% - 450px);
+            height: 100%;
+            margin-left:20px;
+        }
+        .loncom-public-topul{
+            display: flex;
+            width: 100%;
+            height: 100%;
+            padding: 10px 0 10px 10px;
+        }
+        .loncom-public-topul li{
+            width: calc(20% - 10px);
+            height: 100%;
+            margin-right: 10px;
+        }
+        .loncom-public-topul4 li{
+            width: calc(25% - 10px);
+        }
+        .loncom-public-topul .loncom-block{
+            background: #031751;
+        }
+
+
+        .loncom-public-chartbox-title{
+            width: 320px;
+            margin-bottom:10px;
+        }
+        .loncom-public-chartbox{
+            width: 100%;
+            height: calc(50% - 75px);
+        }
+        .loncom-public-echartbox-con{
+            width: 100%;
+            height: calc(100% - 50px);
+        }
+
+
+
     }
 </style>

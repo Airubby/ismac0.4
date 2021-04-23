@@ -14,8 +14,8 @@ export default {
     name: 'app',
     mixins:[WebSocket,ParseComponent],
     created () {
-        //store.state.AjaxUrl完成后绑定API全局
-        Request.service.defaults.baseURL=store.state.AjaxUrl;
+        //store.state.AjaxUrl完成后绑定API全局console.log(store.state.app.AjaxUrl)
+        Request.service.defaults.baseURL=store.getters.AjaxUrl;
         // 将API方法绑定到全局
         Vue.prototype.$api = Request
 

@@ -60,7 +60,7 @@
             </div>
             <div class="air-right">
                 <div class="air-right-top">
-                    <div class="air-title">基本信息</div>
+                    <div class="air-title">{{$t("baseInfo")}}</div>
                     <div class="air-right-topicon">
                         <div class="air-right-iconbox">
                             <i :class="['icon','icon-runstatus','active']"></i>
@@ -104,6 +104,22 @@
                 </div>
             </div>
         </div>
+        <el-dialog title='参数设置' :visible.sync="dialogInfo.visible" width="600px" v-dialogDrag :close-on-click-modal="false" :append-to-body="true">
+            <el-scrollbar style="height:200px;" class="scrollbar">
+                <div class="dialog-content">
+                    <el-form ref="ValidateForm" :model="initDialog" :rules="dialgorules" label-position="top">
+                        <el-row :gutter="10">
+                            <el-col :span="12">
+                                <el-form-item label='值设置' prop="value">
+                                    <el-input v-model="initDialog.value"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                    </el-form>
+                </div>
+            </el-scrollbar>
+            <dialog-btn :dialogInfo="dialogInfo" @dialogSure="dialogSure()"></dialog-btn>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -113,6 +129,14 @@ module.exports = {
         
     },
     created() {
+        this.$api.get(this.templateUrl+'/config/Language.json').then(res=>{
+            console.log(res)
+            this.$i18n.setLocaleMessage('zh',Object.assign(this.$i18n.getLocaleMessage('zh'),res.zhLang))
+            this.$i18n.setLocaleMessage('en',Object.assign(this.$i18n.getLocaleMessage('en'),res.enLang))
+        })
+         // this.$i18n.setLocaleMessage('zh',Object.assign(this.$i18n.getLocaleMessage('zh'),zhLang))
+        // this.$i18n.setLocaleMessage('en',Object.assign(this.$i18n.getLocaleMessage('en'),enLang))
+
         this.borderColor="#052B62";
         this.color="#8b9ed4";
         this.lineColor="#0A3B79";
@@ -140,13 +164,18 @@ module.exports = {
                 {id:"3",title:"回风温度设定(℃)",value:"26.5"},
                 {id:"4",title:"回风湿度设定(%)",value:"46.5"},
             ],
-            paramInfo:{
-                visible:false,
-                data:{},
-            },
             initParams:{
                 wendu:"5",
                 shidu:"7",
+            },
+            dialogInfo:{
+                visible:false
+            },
+            initDialog:{
+                value:"",
+            },
+            dialgorules:{
+
             }
         }
     },
@@ -223,6 +252,13 @@ module.exports = {
             myChart.setOption(option, true);
             
             return myChart; 
+        },
+        setParam:function(item){
+            this.initDialog.value=item.value;
+            this.dialogInfo.visible=true;
+        },
+        dialogSure:function(){
+
         },
         selectPoint:function(key){
             this.$emit("selectPoint",key)

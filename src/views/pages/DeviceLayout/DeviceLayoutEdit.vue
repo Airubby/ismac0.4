@@ -689,6 +689,7 @@ export default {
             }
         },
         reset:function(info){
+            console.log(info,"1111111111111")
             this.tempname=info.tempname;
             this.editType=info.editType;
             this.leftDoor=true;
@@ -1328,7 +1329,7 @@ export default {
                 json["ubit"]=this.ubit;
             }
             sessionStorage.setItem("layoutJson",JSON.stringify(json));
-            
+            this.$message.success("保存成功");
         }
 	},
     watch:{

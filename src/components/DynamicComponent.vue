@@ -18,16 +18,32 @@ const tagToUuid = (tpl, id) => {
 }
 const formatStyle = (sty, css, componentId) => {  
     let cssText = css  
-    if (sty.scoped) {    
-        cssText = css.css.replace(/[\.\w\>\s]+{/g, $1 => {     
+    if (sty.scoped) {   
+        // console.log(css)
+        cssText = css.css.replace(/[\.\w\>:,@%\s]+{/g, $1 => {   
+            if(/,/.test($1)){
+                if (/:/.test($1)){
+                    //(?<!:):(?!:)  冒号前后没有冒号挨着的
+                    return $1.replace(/(?<!:):/g, $2 => `[data-u-${componentId}]${$2}`)    
+                } 
+                return $1.replace(/,|\s+{/g,$2=>`[data-u-${componentId}]${$2}`)
+            }
             if (/>>>/.test($1)) return $1.replace(/\s+>>>/, `[data-u-${componentId}]`)  
+            if (/:/.test($1)){
+                return $1.replace(/:/, $2 => `[data-u-${componentId}]${$2}`)    
+            }
+            if(/@|%/.test($1)){
+                return $1;
+            }
             return $1.replace(/\s+{/g, $2 => `[data-u-${componentId}]${$2}`)    
         })  
     }  
+    console.log(cssText)
     return cssText
 }
 const $require = (filepath) => {
     console.log("!!!!!!!!!!!!!!!!!!!!!!",filepath)
+    Dynamic.requireFile(filepath);
     // const filename = path.resolve(__dirname, `./${filepath}`);  
     // const module = { exports: {} }  
     // let code = scriptContext ? scriptContext : fs.readFileSync(filename, 'utf-8')  
@@ -36,6 +52,7 @@ const $require = (filepath) => {
     // eval(code)  
     // return module.exports
 }
+let Dynamic = null;
 export default {
     props:{
         pathUrl:{
@@ -64,7 +81,9 @@ export default {
             default:""
         }
     },
-    components: {},
+    beforeCreate(){
+        Dynamic = this;
+    },
     created() {
         this.Init();
     },
@@ -76,6 +95,19 @@ export default {
         }
     },
 	methods: {
+        requireFile:function(filepath){
+            let filePath=path.resolve(this.templateUrl, `${filepath}`)
+            this.$api.get(filePath).then(res=>{
+                console.log(res)
+                // console.log(require(res))
+            })
+            // this.$api.get(this.templateUrl+'/config/Language.js').then(res=>{
+        //     console.log(res)
+        // })
+         // this.$i18n.setLocaleMessage('zh',Object.assign(this.$i18n.getLocaleMessage('zh'),zhLang))
+        // this.$i18n.setLocaleMessage('en',Object.assign(this.$i18n.getLocaleMessage('en'),enLang))
+
+        },
         selectPoint:function(key){
             this.$emit("selectPoint",key)
         },

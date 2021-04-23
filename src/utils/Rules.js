@@ -1,5 +1,7 @@
 const reqMessage="该字段不能为空";
 const ruleMessage="填写格式错误";
+//import Rules from "@/utils/Rules"
+//{ required: true, trigger: ['blur', 'change'] ,reqMessage:"不能为空",ruleMessage:"手机格式错误",validator: Rules.checkPhone},
 const checkPhone = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){

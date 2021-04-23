@@ -20,6 +20,20 @@ const formatStyle = (sty, css, componentId) => {
             if (/>>>/.test($1)) return $1.replace(/\s+>>>/, `[data-u-${componentId}]`)  
             return $1.replace(/\s+{/g, $2 => `[data-u-${componentId}]${$2}`)    
         })  
+        // cssText = css.css.replace(/[\.\w\>:,@%\s]+{/g, $1 => {   
+        //     if(/,/.test($1)){
+        //         if (/:/.test($1)){
+        //             //(?<!:):(?!:)  冒号前后没有冒号挨着的
+        //             return $1.replace(/(?<!:):/g, $2 => `[data-u-${componentId}]${$2}`)    
+        //         } 
+        //         return $1.replace(/,|\s+{/g,$2=>`[data-u-${componentId}]${$2}`)
+        //     }
+        //     if (/>>>/.test($1)) return $1.replace(/\s+>>>/, `[data-u-${componentId}]`)  
+        //     if (/:/.test($1)){
+        //         return $1.replace(/:/, $2 => `[data-u-${componentId}]${$2}`)    
+        //     } 
+        //     return $1.replace(/\s+{/g, $2 => `[data-u-${componentId}]${$2}`)    
+        // })  
     }  
     return cssText
 }

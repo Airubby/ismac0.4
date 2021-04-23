@@ -1,6 +1,6 @@
 <template>
-    <div class="content">
-        <DynamicComponent :pathUrl="`/template/event.vue`" :templateData="initParams" templateUrl="/template"></DynamicComponent>
+    <div class="content" v-scrollBar>
+        <DynamicComponent :pathUrl="`/template/home/Index.vue`" :templateData="initParams" templateUrl="/template/home"></DynamicComponent>
     </div>
 </template>
 <script>

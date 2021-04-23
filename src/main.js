@@ -22,6 +22,8 @@ import '@/utils/Directive'  //自定义指令
 import './components/Global/index.js'
 
 import './assets/css/basic.less'
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 
 //绑定工具函数到全局
 Vue.prototype.$tool = Tool

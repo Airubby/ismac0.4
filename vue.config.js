@@ -11,11 +11,11 @@ module.exports = {
     lintOnSave: false,
     chainWebpack: config => {
         // 压缩代码
-        config.optimization.minimize(true);
-        // 分割代码
-        config.optimization.splitChunks({
-            chunks: 'all'
-        })
+        // config.optimization.minimize(true);
+        // // 分割代码
+        // config.optimization.splitChunks({
+        //     chunks: 'all'
+        // })
     },
     //公共代码抽离
     configureWebpack: config => {
@@ -26,37 +26,37 @@ module.exports = {
                 //去掉打印console信息
                 minimizer: [new TerserPlugin({ terserOptions: { compress: { drop_console: true } } })],
                 //整合代码
-                splitChunks: {
-                    cacheGroups: {
-                        vendor:{
-                            chunks:"all",
-                            test: /node_modules/,
-                            name:"vendor",
-                            minChunks: 1,
-                            maxInitialRequests: 5,
-                            minSize: 0,
-                            priority:100,
-                        },
-                        common: {
-                            chunks:"all",
-                            test:/[\\/]src[\\/]js[\\/]/,
-                            name: "common",
-                            minChunks: 2,
-                            maxInitialRequests: 5,
-                            minSize: 0,
-                            priority:60
-                        },
-                        styles: {
-                            name: 'styles',
-                            test: /\.(le|sa|sc|c)ss$/,
-                            chunks: 'all',
-                            enforce: true,
-                        },
-                        runtimeChunk: {
-                            name: 'manifest'
-                        }
-                    } 
-                },
+                // splitChunks: {
+                //     cacheGroups: {
+                //         vendor:{
+                //             chunks:"all",
+                //             test: /node_modules/,
+                //             name:"vendor",
+                //             minChunks: 1,
+                //             maxInitialRequests: 5,
+                //             minSize: 0,
+                //             priority:100,
+                //         },
+                //         common: {
+                //             chunks:"all",
+                //             test:/[\\/]src[\\/]js[\\/]/,
+                //             name: "common",
+                //             minChunks: 2,
+                //             maxInitialRequests: 5,
+                //             minSize: 0,
+                //             priority:60
+                //         },
+                //         styles: {
+                //             name: 'styles',
+                //             test: /\.(le|sa|sc|c)ss$/,
+                //             chunks: 'all',
+                //             enforce: true,
+                //         },
+                //         runtimeChunk: {
+                //             name: 'manifest'
+                //         }
+                //     } 
+                // },
                 
             }
             Object.assign(config, {

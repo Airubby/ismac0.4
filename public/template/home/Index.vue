@@ -922,11 +922,81 @@ module.exports = {
 }
 </script>
 <style lang="less" scoped>
-    .loncom_content{
+.loncom-title{
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    height: 40px;
+    line-height: 50px;
+    color: #B1BFF5;
+    font-size: 16px;
     position: relative;
+}
+.loncom-title .loncom-title-con{
+        width: calc(80% - 10px);
+        height: 100%;
+        position: relative;
+        text-indent: 18px;
+        float: left;
+    }
+.loncom-title .loncom-title-con:before{
+        content: "";
+        width: 16px;
+        height: 2px;
+        position: absolute;
+        left: -2px;
+        bottom: 5px;
+        transform: rotate(45deg);
+        background: #243966;
+    }
+.loncom-title .loncom-title-con:after{
+        content: "";
+        width: calc(100% - 10px);
+        height: 2px;
+        position: absolute;
+        left: 10px;
+        bottom: 0;
+        background: #243966;
+    }
+.loncom-title .loncom-title-line:before{
+        content: "";
+        width: 16px;
+        height: 2px;
+        position: absolute;
+        left: -3px;
+        bottom: 5px;
+        transform: rotate(-45deg);
+        background: #243966;
+    }
+.loncom-title .loncom-title-line:after{
+        content: "";
+        width: 100%;
+        height: 2px;
+        position: absolute;
+        left: 10px;
+        bottom: 10px;
+        background: #243966;
+    }
+.loncom-title .loncom-title-line{
+        width: 20%;
+        height: 100%;
+        position: relative;
+        float: left;
+    }
+  .loncom-title .loncom-title-line .loncom-line-em{
+        position: absolute;
+        bottom: 3px;
+        left: -67px;
+        transform: skew(-45deg);
+        width: 70px;
+        height: 9px;
+        background: linear-gradient(to right,#4E6490 50%, transparent 0%);
+        background-size: 6px 100%;
+  }
+    .loncom_content{
+        width: 100%;
+        height: 100%;
+        min-height: 700px;
+        overflow: hidden;
+        position: relative;
     .loncom-index-body{
         width: 100%;
         height: 100%;
@@ -966,7 +1036,7 @@ module.exports = {
             border-bottom: 24px solid transparent;
             border-left: 24px solid #072567;
         }
-        .header .row-side .wk-xz .wk-sj-right:before{
+        .header .row-side .wk-xz .wk-sj-right::before{
             content: "";
             width: 47px;
             height: 1px;
@@ -976,7 +1046,7 @@ module.exports = {
             background: #103c86;
             transform: rotate(57deg);
         }
-        .header .row-side .wk-xz .wk-sj-right:after{
+        .header .row-side .wk-xz .wk-sj-right::after{
             content: "";
             width: 34px;
             height: 1px;
@@ -1053,7 +1123,7 @@ module.exports = {
             bottom: -1px;
             box-shadow: 0 0 24px #ffffff, inset -0.25rem 0 0 0.5rem rgba(14, 10, 10, 0.1);
         }
-        .header .row-cen .title .title-con:before{
+        .header .row-cen .title .title-con::before{
             content:"";
             width: 51%;
             height: 3px;
@@ -1063,7 +1133,7 @@ module.exports = {
             z-index: 9;
             background: linear-gradient(to left, #4170F9, #0C3C7F);
         }
-        .header .row-cen .title .title-con:after{
+        .header .row-cen .title .title-con::after{
             content:"";
             width: 51%;
             height: 3px;
@@ -1082,7 +1152,7 @@ module.exports = {
             border-top: 80px solid #072567;
             border-left: 52px solid transparent;
         }
-        .header .row-cen .title .title-left:before{
+        .header .row-cen .title .title-left::before{
             content: "";
             width: 20px;
             height: 4px;
@@ -1092,7 +1162,7 @@ module.exports = {
             bottom: 0;
             right: -20px;
         }
-        .header .row-cen .title .title-left:after{
+        .header .row-cen .title .title-left::after{
             content: "";
             width: 40px;
             height: 4px;
@@ -1112,7 +1182,7 @@ module.exports = {
             border-top:80px solid #072567;
             border-right:52px solid transparent;
         }
-        .header .row-cen .title .title-right:before{
+        .header .row-cen .title .title-right::before{
             content: "";
             width: 20px;
             height: 4px;
@@ -1122,7 +1192,7 @@ module.exports = {
             bottom: 0;
             right: -1px;
         }
-        .header .row-cen .title .title-right:after{
+        .header .row-cen .title .title-right::after{
             content: "";
             width: 40px;
             height: 4px;
@@ -1133,7 +1203,7 @@ module.exports = {
             right: -21px;
             transform: rotate(-54deg);
         }
-        .header .row-cen .title:before{
+        .header .row-cen .title::before{
             content: "";
             width: 1px;
             height: 100px;
@@ -1146,7 +1216,7 @@ module.exports = {
             transform: rotate(-33deg);
             z-index: 9;
         }
-        .header .row-cen .title:after{
+        .header .row-cen .title::after{
             content: "";
             width: 1px;
             height: 100px;
@@ -1185,7 +1255,7 @@ module.exports = {
             height: calc(100% - 50px);
         }
         .main .loncom-index-box-right{
-            height: calc(100% - 485px);
+            height: 200px;
         }
         .main .main-cen{
             width: 56%;
@@ -1384,7 +1454,7 @@ module.exports = {
             height:100%;
             position: relative;
         }
-        .loncom-radar:after {
+        .loncom-radar::after {
             content: ' ';
             display: block;
             background-image: linear-gradient(45deg, rgba(0, 255, 51, 0) 50%, #026BCE 100%);
@@ -1393,13 +1463,13 @@ module.exports = {
             position: absolute;
             top: 9%;
             left: 9%;
-            animation: radar-beam 5s infinite;
+            animation: radarbeam 5s infinite;
             animation-timing-function: linear;
             transform-origin: bottom right;
             border-radius: 100% 0 0 0;
         }
 
-        @keyframes radar-beam {
+        @keyframes radarbeam {
             0% {
                 transform: rotate(0deg);
             }
@@ -1506,7 +1576,7 @@ border-radius: 0 20px 0 20px;
     right: 0;
     top: 0;
 }
-.loncom-box .topright .line:before{
+.loncom-box .topright .line::before{
  content: "";
  width: 10px;
  height: 2px;
@@ -1515,7 +1585,7 @@ border-radius: 0 20px 0 20px;
  background: #277BDB;
  position: absolute;
 }
-.loncom-box .topright .line:after{
+.loncom-box .topright .line::after{
    content: "";
    width: 2px;
    height: 10px;
@@ -1524,7 +1594,7 @@ border-radius: 0 20px 0 20px;
    background: #277BDB;
    position: absolute;
 }
-.loncom-box .topright:before{
+.loncom-box .topright::before{
     content: "";
     position: absolute;
     right: -2px;
@@ -1534,7 +1604,7 @@ border-radius: 0 20px 0 20px;
     border-top: 16px solid transparent;
     border-left: 16px solid transparent;
 }
-.loncom-box .topright:after{
+.loncom-box .topright::after{
     content: "";
     width: 70px;
     height: 9px;
@@ -1551,7 +1621,7 @@ border-radius: 0 20px 0 20px;
     left: 0;
     bottom: 0;
 }
-.loncom-box .bottomleft .line:before{
+.loncom-box .bottomleft .line::before{
         content: "";
         width: 10px;
         height: 2px;
@@ -1560,7 +1630,7 @@ border-radius: 0 20px 0 20px;
         background: #277BDB;
         position: absolute;
     }
-.loncom-box .bottomleft .line:after{
+.loncom-box .bottomleft .line::after{
         content: "";
         width: 2px;
         height: 10px;
@@ -1569,7 +1639,7 @@ border-radius: 0 20px 0 20px;
         background: #277BDB;
         position: absolute;
     }
-.loncom-box .bottomleft:before{
+.loncom-box .bottomleft::before{
     content: "";
     position: absolute;
     left: -2px;
@@ -1579,7 +1649,7 @@ border-radius: 0 20px 0 20px;
     border-bottom: 16px solid #000d46;
     border-right: 16px solid transparent;
 }
-.loncom-box .bottomleft:after{
+.loncom-box .bottomleft::after{
     content: "";
     width: 70px;
     height: 9px;
@@ -1612,7 +1682,7 @@ font-weight: bold;
 position: relative;
 display: inline-block;
 }
-.loncom-block .num .numspan:before{
+.loncom-block .num .numspan::before{
 content:"";
 display: block;
 width: 4px;
@@ -1621,7 +1691,7 @@ position: absolute;
 right: -11px;
 bottom:12px;
 }
-.loncom-block .num .numspan:after{
+.loncom-block .num .numspan::after{
 content: "";
 width: 0;
 height: 0;
@@ -1637,17 +1707,17 @@ color: #EB8500;
 .loncom-block .normal{
 color: #118913;
 }
-.loncom-block .up .numspan:before{
+.loncom-block .up .numspan::before{
 background: #EB8500;
 }
-.loncom-block .up .numspan:after{
+.loncom-block .up .numspan::after{
 border-bottom: 8px solid #eb8513;
 bottom: 22px;
 }
-.loncom-block .down .numspan:before{
+.loncom-block .down .numspan::before{
 background: #007DF3;
 }
-.loncom-block .down .numspan:after{
+.loncom-block .down .numspan::after{
 border-top: 8px solid #007DF3;
 bottom: 10px;
 }

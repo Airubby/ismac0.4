@@ -18,8 +18,9 @@ const tagToUuid = (tpl, id) => {
 const formatStyle = (sty, css, componentId) => {  
     let cssText = css  
     if (sty.scoped) {    
-        cssText = css.css.replace(/[\.\w\>\s]+{/g, $1 => {     
+        cssText = css.css.replace(/[\.\w\>:\s]+{/g, $1 => {     
             if (/>>>/.test($1)) return $1.replace(/\s+>>>/, `[data-u-${componentId}]`)  
+            if (/::/.test($1)) return `${$1.split("::")[0]}[data-u-${componentId}]::${$1.split("::")[1]}`
             return $1.replace(/\s+{/g, $2 => `[data-u-${componentId}]${$2}`)    
         })  
     }  

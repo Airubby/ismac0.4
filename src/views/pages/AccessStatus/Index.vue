@@ -36,24 +36,7 @@ export default {
         
         for(let i=0;i<30;i++){
             this.list.push(i);
-        }
-        
-        setTimeout(() => {
-            var swiper = new Swiper('.swiper-container', {
-                slidesPerView: 'auto',
-                spaceBetween: 15,
-                initialSlide :0,
-                centeredSlides: false,
-                observer:true,//修改swiper自己或子元素时，自动初始化swiper  动态添加数据的时候用
-                observeParents:true,//修改swiper的父元素时，自动初始化swiper  动态添加数据的时候用
-                // 如果需要前进后退按钮
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-            });
-            // document.getElementsByClassName('swiper-wrapper')[0].style.transform = 'translate3d(0px, 0px, 0px)';
-        }, 1000)   
+        } 
     },
     data(){
         return{
@@ -63,7 +46,26 @@ export default {
     },
 	methods: {
         
-	},
+    },
+    watch:{
+        list:function(){
+            this.$nextTick(()=>{
+                new Swiper('.swiper-container', {
+                    slidesPerView: 'auto',
+                    spaceBetween: 15,
+                    initialSlide :0,
+                    centeredSlides: false,
+                    observer:true,//修改swiper自己或子元素时，自动初始化swiper  动态添加数据的时候用
+                    observeParents:true,//修改swiper的父元素时，自动初始化swiper  动态添加数据的时候用
+                    // 如果需要前进后退按钮
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                });
+            })
+        }
+    }
 }
 </script>
 <style lang="less" scoped>

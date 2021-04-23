@@ -139,7 +139,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="layout-echart">
+                        <!-- <div class="layout-echart">
                             <div class="layout-echart-box" id="pueCon"></div>
                             <div class="layout-echart-box" id="energyCon"></div>
                             <div class="layout-echart-box">
@@ -165,7 +165,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -585,6 +585,9 @@ export default {
             .layout-box-con{
                 height: 100%;
                 text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 .layout-box-panel{
                     min-width: 400px;
                     max-width: 100%;
