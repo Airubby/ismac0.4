@@ -9,8 +9,8 @@ import store from '@/store/index'
 import 'element-ui/lib/theme-chalk/index.css'
 import ElTablePagination from 'el-table-pagination'
 import Tool from '@/utils/Tool'  //工具函数
-import 'promise-polyfill'  //兼容低版本浏览器  
-import 'babel-polyfill' //兼容低版本浏览器  
+// import 'promise-polyfill'  //兼容低版本浏览器  
+// import 'babel-polyfill' //兼容低版本浏览器  
 // import i18n from '@/lang'  //国际化，用下面的做在配置文件中，打包后可修改
 import VueI18n from 'vue-i18n'
 import Cookies from 'js-cookie'
@@ -21,7 +21,7 @@ import '@/utils/Directive'  //自定义指令
 //加载全局组件
 import './components/Global/index.js'
 
-import './assets/css/basic.less'
+// import './assets/css/basic.less'
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 
@@ -78,13 +78,13 @@ function getServerConfig() {
         })
         new Promise ((resolve, reject) => {
             if(config.mock){
-                import(`@/utils/Mock.js`)
+                import(/* webpackChunkName: "utilMock", webpackPrefetch: true */ `@/utils/Mock.js`)
             }
             setTimeout(()=>{
                 resolve();
             },1000)
         }).then(()=>{
-            import(`./permission.js`)
+            import(/* webpackChunkName: "permission", webpackPrefetch: true */ `./permission.js`)
         })
         resolve();
         }).catch((error) => {

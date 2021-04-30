@@ -29,7 +29,7 @@ const user = {
                     path: rootPath,
                     name:'loncom',
                     meta: { title: '首页'},
-                    component: () => import('@/views/Index.vue'),
+                    component: () => import(/* webpackChunkName: "loncom", webpackPrefetch: true */ '@/views/Index.vue'),
                     redirect:redirect,
                     children:[]
                 }
@@ -50,7 +50,7 @@ const user = {
                                         limits:data[i].children[j].limits||[],
                                         config:data[i]
                                     },
-                                    component: () => import(`@/views/public/${PageIndex}.vue`),
+                                    component: () => import(/* webpackChunkName: "test7", webpackPrefetch: true */ `@/views/public/${PageIndex}.vue`),
                                 })
                                 if(data[i].children[j].relation&&data[i].children[j].relation.length>0){
                                     for(let m=0;m<data[i].children[j].relation.length;m++){
@@ -63,7 +63,7 @@ const user = {
                                                 limits:data[i].children[j].limits||[],
                                                 config:data[i]
                                             },
-                                            component: () => import(`@/views/public/${PageIndex}.vue`),
+                                            component: () => import(/* webpackChunkName: "test8", webpackPrefetch: true */ `@/views/public/${PageIndex}.vue`),
                                         })
                                     }
                                 }
@@ -79,7 +79,7 @@ const user = {
                                     limits:data[i].limits||[],
                                     config:data[i]
                                 },
-                                component: () => import(`@/views/public/${PageMoreIndex}.vue`),
+                                component: () => import(/* webpackChunkName: "test9", webpackPrefetch: true */ `@/views/public/${PageMoreIndex}.vue`),
                                 redirect:children[0].path,
                                 children:children
                             });
@@ -93,7 +93,7 @@ const user = {
                                     limits:data[i].limits||[],
                                     config:data[i]
                                 },
-                                component: () => import(`@/views/public/${PageIndex}.vue`),
+                                component: () => import(/* webpackChunkName: "test10", webpackPrefetch: true */ `@/views/public/${PageIndex}.vue`),
                             });
                             if(data[i].relation&&data[i].relation.length>0){
                                 for(let m=0;m<data[i].relation.length;m++){
@@ -106,7 +106,7 @@ const user = {
                                             limits:data[i].limits||[],
                                             config:data[i]
                                         },
-                                        component: () => import(`@/views/public/${PageIndex}.vue`),
+                                        component: () => import(/* webpackChunkName: "test11", webpackPrefetch: true */ `@/views/public/${PageIndex}.vue`),
                                     })
                                 }
                             }

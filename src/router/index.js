@@ -6,27 +6,27 @@ export const syncRouter=[
 	{
 		path:'/',
 		redirect:'/login',
-		component: () => import('@/views/Index.vue'),
+		component: () => import(/* webpackChunkName: "index", webpackPrefetch: true */ '@/views/Index.vue'),
     },
     {
         path: '/login',
         name: 'Login',
-        component: () => import('@/views/Login.vue'),
+        component: () => import(/* webpackChunkName: "login", webpackPrefetch: true */ '@/views/Login.vue'),
     },
     {
         path: '/test',
         name: 'test',
         meta:{ title: '大屏'},
-        component: () => import('@/views/Test.vue'),
+        component: () => import(/* webpackChunkName: "testbigscreen", webpackPrefetch: true */ '@/views/Test.vue'),
     },
     {
         path: '/bigScreen',
         name: 'BigScreen',
         meta:{ title: '大屏'},
-        component: () => import('@/views/BigScreen/Index.vue'),
+        component: () => import(/* webpackChunkName: "bigscreen", webpackPrefetch: true */ '@/views/BigScreen/Index.vue'),
     },
-    { path: '*', component: () => import('@/views/errorPage/Loading') },
-    { path: '/404',name:'404',meta: { title: '404'}, component: () => import('@/views/errorPage/404') },
+    { path: '*', component: () => import(/* webpackChunkName: "404", webpackPrefetch: true */ '@/views/errorPage/Loading') },
+    { path: '/404',name:'404',meta: { title: '404'}, component: () => import(/* webpackChunkName: "404", webpackPrefetch: true */ '@/views/errorPage/404') },
   
 ];
 /**

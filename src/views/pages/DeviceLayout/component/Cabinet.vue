@@ -60,6 +60,7 @@ export default {
             margin: 0 auto;
             color: #fff;
             font-size: 16px;
+            word-wrap: break-word;//英文竖着排
         }
     }
 </style>

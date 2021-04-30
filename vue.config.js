@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+const path = require('path');
 const isProduction = process.env.NODE_ENV === 'production';
 const TerserPlugin = require('terser-webpack-plugin')
 module.exports = {
@@ -7,10 +9,32 @@ module.exports = {
     indexPath: './index.html',
     // 输出文件目录
     outputDir: 'dist',
-    // eslint-loader 是否在保存的时候检查
-    lintOnSave: false,
+    filenameHashing: false, // 生成的静态资源在它们的文件名中包含了 hash 以便更好的控制缓存 想要去除hash 值，置为false
+    lintOnSave: false, // eslint-loader 是否在保存的时候检查
+    productionSourceMap: false, // 生产环境是否生成 sourceMap 文件
     chainWebpack: config => {
-        // 压缩代码
+        //加载svg
+        const svgRule = config.module.rule('svg')   
+        svgRule.uses.clear()    
+        svgRule        
+            .test(/\.svg$/)        
+            .include.add(path.resolve(__dirname, './src/icons'))
+            .end()        
+            .use('svg-sprite-loader')        
+            .loader('svg-sprite-loader')        
+            .options({  symbolId: 'icon-[name]'  })    
+        const fileRule = config.module.rule('file')  
+        fileRule.uses.clear()    
+        fileRule        
+            .test(/\.svg$/)        
+            .exclude.add(path.resolve(__dirname, './src/icons'))        
+            .end()        
+            .use('file-loader')        
+            .loader('file-loader')
+        
+        // config.output.filename('js/[name].js').end()
+        // config.output.chunkFilename('js/[name].js').end();
+        // // 压缩代码
         // config.optimization.minimize(true);
         // // 分割代码
         // config.optimization.splitChunks({
@@ -19,75 +43,71 @@ module.exports = {
     },
     //公共代码抽离
     configureWebpack: config => {
-        const myConfig = {}
-        if (isProduction) {
-            //3.js代码整合
-            let optimization= {
-                //去掉打印console信息
-                minimizer: [new TerserPlugin({ terserOptions: { compress: { drop_console: true } } })],
-                //整合代码
-                // splitChunks: {
-                //     cacheGroups: {
-                //         vendor:{
-                //             chunks:"all",
-                //             test: /node_modules/,
-                //             name:"vendor",
-                //             minChunks: 1,
-                //             maxInitialRequests: 5,
-                //             minSize: 0,
-                //             priority:100,
-                //         },
-                //         common: {
-                //             chunks:"all",
-                //             test:/[\\/]src[\\/]js[\\/]/,
-                //             name: "common",
-                //             minChunks: 2,
-                //             maxInitialRequests: 5,
-                //             minSize: 0,
-                //             priority:60
-                //         },
-                //         styles: {
-                //             name: 'styles',
-                //             test: /\.(le|sa|sc|c)ss$/,
-                //             chunks: 'all',
-                //             enforce: true,
-                //         },
-                //         runtimeChunk: {
-                //             name: 'manifest'
-                //         }
-                //     } 
+        // config.output.filename = 'js/[name].js';
+        // config.output.chunkFilename = 'js/[name].js';
+        config.optimization={
+            namedChunks: true,
+            moduleIds: 'hashed',
+            minimizer: [new TerserPlugin({ terserOptions: { 
+                // compress: { 
+                //     drop_console: true,
+                //     drop_debugger: true,
                 // },
-                
-            }
-            Object.assign(config, {
-                optimization
-            })
-
+                // output:{
+                //     comments: false
+                // } 
+            } })],
+            splitChunks: {
+                chunks: 'all', //initial
+                cacheGroups: {
+                    'vue-relation': {
+                        name: 'vue-relation',
+                        enforce: true,
+                        test: /[\\/]node_modules[\\/](vue|vuex|vue-router|axios|vue-i18n|js-cookie)[\\/]/,
+                    },
+                    'element-ui': {
+                        name: 'element-ui',
+                        enforce: true,
+                        test: /[\\/]node_modules[\\/]element-ui[\\/]/,
+                    },
+                    echarts: {
+                        name: 'echarts',
+                        enforce: true,
+                        test: /[\\/]node_modules[\\/](echarts|echarts-liquidfill)[\\/]/,
+                    },
+                    video:{
+                        name: 'video',
+                        enforce: true,
+                        test: /[\\/]node_modules[\\/](flv.js|video.js|videojs-contrib-hls|videojs-contrib-hls.js|videojs-flash|vue-video-player)[\\/]/,
+                    },
+                    'el-table-pagination': {
+                        name: 'el-table-pagination',
+                        enforce: true,
+                        test: /[\\/]node_modules[\\/]el-table-pagination[\\/]/,
+                    },
+                    'mockjs':{
+                        name:'mockjs',
+                        enforce: true,
+                        test: /[\\/]node_modules[\\/]mockjs[\\/]/,
+                    },
+                    'vendors': {
+                        name: 'vendors',
+                        enforce: true,
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: -20,
+                    },
+                    styles: {
+                        name: 'styles',
+                        test: /\.(le|sa|sc|c)ss$/,
+                        enforce: true,
+                    }
+                }
+            },
+            runtimeChunk: {
+                name: 'manifest'
+            },
         }
-        if (!isProduction) {
-            /**
-             * 关闭host check，方便使用ngrok之类的内网转发工具
-             */
-            myConfig.devServer = {
-                disableHostCheck: true
-            }
-            let optimization={
-                minimizer:[
-                    new TerserPlugin({
-                        cache: true,
-                        // 将多线程关闭  webpack会92%卡住的问题
-                        parallel: false
-                    })
-                ]
-            }
-            Object.assign(config, {
-                optimization
-            })
-        }
-        return myConfig
     },
-    // 生产环境是否生成 sourceMap 文件
-    productionSourceMap: false,
     // css相关配置
     css: {
         // 是否使用css分离插件 ExtractTextPlugin
@@ -104,7 +124,7 @@ module.exports = {
             //vue-cli4中使用less全局变量 为每个css引入公共需要引入的样式 无需安装style-resources-loader
             less:{
                 globalVars: {
-                    hack: `true; @import '~@/assets/css/common.less';`
+                    hack: 'true; @import \'~@/assets/css/common.less\';'
                 }
             }
         },
@@ -119,22 +139,23 @@ module.exports = {
         open: true, 
         compress: false, // 开启压缩
         overlay: {
+            //  当出现编译器错误或警告时，在浏览器中显示全屏覆盖层
             warnings: true,
             errors: true
         },
         host: '0.0.0.0',
         port: 8081,
         https: false,
-        hotOnly: false,
+        hotOnly: false, //热更新
         // 设置代理
         proxy: {
             '/api': {
-            target: 'http://192.168.16.6:8090', // 你接口的域名
+                target: 'http://127.0.0.1:8090', // 你接口的域名
                 secure: false, // 如果是https接口，需要配置这个参数
                 changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
                 ws:false,
                 pathRewrite:{
-                '^/api':'/api'
+                    '^/api':'/api'
                 }
 		    }
         },

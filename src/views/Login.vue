@@ -140,7 +140,7 @@ export default {
         .loncom_login {
             width: 100%;
             height: 220px;
-            background: @contentBg url(@loginBg) no-repeat right bottom;
+            // background: @contentBg url(@loginBg) no-repeat right bottom;
             position: absolute;
             top: 50%;
             margin-top: -110px;
@@ -161,7 +161,7 @@ export default {
         .loncom_login_con .loncom_logo_img {
             height: 60px;
             margin: 0 auto;
-            background: url(@loginLogo) no-repeat center center;
+            // background: url(@loginLogo) no-repeat center center;
             background-size: contain;
         }
         

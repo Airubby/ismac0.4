@@ -414,7 +414,7 @@ const getBigScreen=function(){
         err_msg:"成功",
         data:[
             {
-                "key": "shuileng",
+                "key": "air",
                 "isIndex": true,
                 "pathUrl": "/template/air",
                 "name":"test",

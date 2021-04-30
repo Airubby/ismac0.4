@@ -1,8 +1,7 @@
 {
   "name": "ismac0.4",
   "version": "0.1.0",
-  "private": false, // 设置为true时，则npm会拒绝发布它
-//   "main": "dist/index.js", // 项目入口文件
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
