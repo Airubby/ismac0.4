@@ -1,0 +1,374 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body, #app,.content{
+    height: 100%;
+    width: 100%;
+    font-size: 14px;
+    font-family: "AlibabaPuHuiTiR,Microsoft YaHei,sans-serif";
+}
+.scrollbar{
+    width: 100%;
+    height: 100%;
+}
+.scrollbar .el-scrollbar{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.scrollbar .el-scrollbar__wrap { //给外层class不然element组件自己的会有问题比如下拉选项
+    overflow-x: hidden !important;
+}
+.scrollbar .el-scrollbar__view{
+    height: 100%;
+    min-height: 100%;
+}
+.el-dropdown-menu--small .el-dropdown-menu__item{
+    padding: 0;
+    .el-button{
+        margin: 3px 10px;
+        span{
+            padding: 0;
+        }
+    }
+    span{
+        padding: 0 15px;
+    }
+}
+.el-form--label-top .el-form-item__label{
+    padding: 0;
+}
+.el-range-input{
+    background: transparent;
+}
+
+a{
+    text-decoration: none;
+}
+ul,li{
+    list-style: none;
+}
+em,i{
+    font-style: normal;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+
+@import '~@/assets/css/blueTheme.less';
+@import '~@/assets/css/partysuTheme.less';
+.module-theme(...){
+    color: @color;
+    input::placeholder {
+        color: @placeholderColor;
+    }
+    //table上面的条件筛选
+    .search-top{
+        color: @color;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        white-space: nowrap;
+        .search{
+            width: 100%;
+            display: flex;
+            .form-item{
+                margin-left: @boxMargin;
+            }
+        }
+    }
+    .table_handle{
+        text-align: right;
+        span{
+            color: @activeColor;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    }
+    .card_title{
+        min-height: 32px;
+        line-height: 32px;
+        font-size: 16px;
+        overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        .title{
+            height: 18px;
+            line-height: 18px;
+            display: inline-block;
+            padding-left: 10px;
+            border-left: 3px solid @activeColor; 
+        }
+    }
+    .el-tabs__content{
+        width: 100%;
+        height: calc(100% - 55px);
+        overflow: initial;
+    }
+    .dialog-content{
+        padding: 15px 30px 0 30px;;
+    }
+    .el-notification__content{
+        margin:0;
+    }
+    .el-badge__content{
+        height: 20px;
+        border-color: transparent;
+    }
+    /****/
+    .el-input__prefix{
+        display: flex;
+        align-items: center;
+    }
+    .el-form-item--small .el-form-item__content{
+        min-height: 32px;
+    }
+    .el-form-item--small .el-form-item__content, .el-form-item--small .el-form-item__label{
+        line-height: 30px;
+    }
+    .el-table__header{
+        th{
+            padding: 12px 0;
+        }
+    }
+
+    .el-table thead{
+        color: @bgColor;
+    }
+    .el-table th, .el-table tr{
+        background: @normalBg;
+    } 
+    .el-table th.is-leaf{
+        border-color: @normalBg;
+    }
+    .el-table td{
+        border-color: @lineColor;
+    }
+    .el-table:before{
+        background-color: @lineColor; 
+    }
+    .el-loading-mask,
+    .el-table tr.el-table__row,.el-table--enable-row-hover .el-table__body tr:hover>td,.el-table__expanded-cell,.el-table__empty-block,.showPagination{
+        background-color: @contentBg ;
+    }
+    .el-table,.el-pagination__total,.el-pagination__jump,.el-table__empty-text,
+    .el-form-item__label,
+    .el-dropdown,.el-dropdown-menu__item,
+    .el-select-dropdown__item,
+    .el-date-editor .el-range-separator,.el-date-editor .el-range-input,.el-date-table th,.el-time-spinner__item,.el-time-panel__btn,.el-picker-panel__icon-btn,.el-date-picker__header-label,.el-month-table td .cell,.el-year-table td .cell,
+    .el-checkbox,
+    .el-radio,.el-radio__input.is-checked+.el-radio__label,
+    .el-dialog__headerbtn .el-dialog__close,
+    .el-message-box__content,
+    .el-tree__empty-text{
+        color: @color;
+    }
+    .el-pagination.is-background .btn-next, 
+    .el-pagination.is-background .btn-prev, 
+    .el-pagination.is-background .el-pager li,
+    .el-pagination.is-background .btn-next:disabled:hover,
+    .el-pagination.is-background .btn-prev:disabled:hover,
+    .el-input__inner,.el-textarea__inner{
+        background-color: @boxBg;
+        border: 1px solid @lineColor;
+        color: @color;
+    }
+    .el-pagination.is-background .btn-next:hover,
+    .el-pagination.is-background .btn-prev:hover,
+    .el-pagination.is-background .el-pager li:not(.disabled):hover,
+    .el-pagination.is-background .el-pager li:not(.disabled).active{
+        background-color: transparent;
+        color: @activeColor;
+        border: 1px solid @activeColor;
+    }
+    .el-input__inner:hover{
+        border-color: @activeColor;
+    }
+    .el-dropdown-menu,
+    .el-select-dropdown{
+        background-color: @boxBg;
+        border-color: @lineColor;
+    }
+    .el-checkbox__inner,
+    .el-radio__inner,.el-radio.is-bordered{
+        background-color: transparent;
+        border-color: @color;
+    }
+    .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner,
+    .el-radio__input.is-checked .el-radio__inner{
+        background-color: @activeColor;
+        border-color: @activeColor;
+    }
+    .el-checkbox__input.is-disabled .el-checkbox__inner{
+        background-color: @disabledBg;
+        border-color: @disabledBg;
+    }
+    .el-popper[x-placement^=top] .popper__arrow::after{
+        border-top-color:@boxBg;
+    }
+    .el-popper[x-placement^=bottom] .popper__arrow::after{
+        border-bottom-color:@boxBg;
+    }
+    .el-popper[x-placement^=top] .popper__arrow{
+        border-top-color:@lineColor;
+    }
+    .el-popper[x-placement^=bottom] .popper__arrow{
+        border-bottom-color:@lineColor;
+    }
+    .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover{
+        background-color: transparent;
+        color: @activeColor;
+    }
+    .el-select-dropdown__item.hover,.el-select-dropdown__item.selected,
+    .el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover,
+    .el-select-dropdown.is-multiple .el-select-dropdown__item.selected{
+        background-color:@activeBg;
+        color: @activeColor;
+    }
+    .el-button--primary,.el-button--primary:focus,.el-button--primary:hover{
+        background-color: @activeColor;
+        border-color: @activeColor;
+        color: @bgColor;
+    }
+    
+    .el-time-spinner__item:hover:not(.disabled):not(.active){
+        background: transparent;
+        color: @activeColor;
+    }
+    .el-picker-panel,.el-picker-panel__footer{
+        background: @boxBg;
+        color: @color;
+        border-color: @lineColor;
+    }
+    .el-date-range-picker__time-header,.el-date-table th,
+    .el-date-range-picker__content.is-left,.el-time-panel__footer,.el-time-panel__content::after,
+    .el-time-panel__content::before,.el-date-picker__header--bordered,.el-date-picker__time-header,
+    .el-time-range-picker__body{
+        border-color: @lineColor;
+    }
+    .el-checkbox__input.is-disabled+span.el-checkbox__label{
+        color: @disabledColor;
+    }
+    .el-picker-panel__footer{
+        .el-button.is-plain,.el-button.is-plain:focus, .el-button.is-plain:hover{
+            background-color: @activeColor;
+            border-color: @activeColor;
+            color: @bgColor;
+        }
+    }
+    .el-date-table td.end-date span, .el-date-table td.start-date span{
+        background-color: @activeColor;
+    }
+    .el-date-table td.disabled div,.el-month-table td.disabled .cell,.el-year-table td.disabled .cell,
+    .el-date-table td.in-range div, .el-date-table td.in-range div:hover,.el-date-table td.disabled div,.el-month-table td.disabled .cell,
+    .el-range-editor.is-disabled input{
+        background-color: @disabledBg; 
+        color: @disabledColor;
+    }
+    .el-tag.el-tag--info{
+        background-color: @disabledBg;
+        border-color: @disabledBg; 
+        color: @disabledColor;
+        max-width: 70%;
+        overflow: hidden;
+    }
+    .el-select .el-tag__close.el-icon-close{
+        background-color:@disabledColor;
+    }
+    .el-tag.el-tag--info .el-tag__close{
+        color: @bgColor;
+    }
+    .el-tree-node__content:hover,.el-tree-node:focus>.el-tree-node__content{
+        background-color: @activeBg;
+    }
+    .el-input.is-disabled .el-input__inner{
+        background-color: @disabledBg;
+        color: @color;
+        border-color: @lineColor;
+    }
+    .el-tabs__nav-wrap::after{
+        background-color: @lineColor;
+    }
+    .el-tabs__active-bar{
+        background-color: @activeColor;
+    }
+    .el-tabs__item{
+        color: @color;
+        padding: 0 @boxMargin;
+    }
+    .el-tabs__item.is-active,.el-tabs__item:hover,
+    .el-time-spinner__item.active:not(.disabled),.el-time-panel__btn.confirm,.el-year-table td .cell:hover, .el-year-table td.current:not(.disabled) .cell,.el-month-table td .cell:hover{
+        color: @activeColor;
+    }
+    .el-message-box,
+    .el-time-panel{
+        background: @contentBg;
+        border-color: @contentBg;
+    }
+    .el-button--primary.is-plain,
+    .el-message-box__btns .el-button,
+    .el-color-dropdown__btns .el-button{
+        background-color: transparent;
+        border-color: @activeColor;
+        color: @activeColor;
+    }
+    .el-color-dropdown__btns .el-button--text{
+        border-color: transparent;
+    }
+    .el-message-box__btns .el-button.el-button--primary{
+        background: @activeColor;
+        color: @bgColor;
+    }
+    .el-dialog{
+        margin: 0 auto;
+        background: @contentBg;
+    }
+    .el-dialog__body,
+    .el-message-box__input{
+        padding: 0;
+        color: @color;
+    }
+    .el-dialog__title,
+    .el-message-box__title{
+        color: @color;
+        font-size: 16px;
+    }
+    .dialog-footer{
+        padding: 15px 20px;
+        text-align: right;
+    }
+    
+    .el-form-item--small.el-form-item{
+        margin-bottom: @boxMargin;
+    }
+    .el-color-picker__panel,.el-color-picker__trigger,.el-color-picker__color,
+    .el-input-group__append, .el-input-group__prepend{
+        background-color: transparent;
+        border-color: @lineColor;
+    }
+    .el-tree{
+        background: transparent;
+        color: @color;
+    }
+    .el-divider{
+        background-color:@lineColor;
+    }
+    
+    /*时间下拉*/
+    .el-date-editor--daterange.el-input, 
+    .el-date-editor--daterange.el-input__inner, 
+    .el-date-editor--timerange.el-input, 
+    .el-date-editor--timerange.el-input__inner,
+    .el-date-editor--datetimerange.el-input, 
+    .el-date-editor--datetimerange.el-input__inner,
+    .el-select,
+    .el-date-editor.el-input, .el-date-editor.el-input__inner{
+        width: 100%;
+    }
+
+}
