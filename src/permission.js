@@ -1,87 +1,93 @@
 import {router} from '@/router/index'
 import { Message } from 'element-ui'
 import store from '@/store/index'
-// import NProgress from 'nprogress' // Progress 进度条
-// import 'nprogress/nprogress.css'// Progress 进度条样式
-import { Loading } from 'element-ui'
-import Request from './utils/Request'
-import {Decrypt} from './utils/AEScrypt'
+import { getToken } from '@/utils/auth' // get token from cookie
 
-routerGo();
-
-function filterAsyncRouter(url, roles) {
-    roles.forEach(element => {
-        if(url==element.path){
-            store.dispatch('setLimits',element.meta.limits.split(","));
-            return;
-        }
-        if(element.children&&element.children.length>0){
-            filterAsyncRouter(url,element.children);
-        }
-    });
-}
+routerGo()
 function getInfo(){  //刷新页面重新获取权限
-    return new Promise(function(resolve, reject){
-        console.log(Decrypt(sessionStorage.roleid))
-        Request.get('/getLimit',{"roleid":Decrypt(sessionStorage.roleid)},res=>{
-            if(res.err_code=="0"){
-                if(res.data.length>0){
-                    store.dispatch('setAuthInfo',res.data);
-                    //在导航菜单更新功能权限；
-                }else{
-                    console.log("没有任何权限，跳转到没有任何权限的页面")
-                    router.push({path:'/login'});
+    return new Promise(async function(resolve, reject){
+        store.dispatch("setPageLoading",true)
+        const hasToken = getToken()
+        if(hasToken){
+            try {
+                // get user info
+                const accessRoutes = await store.dispatch('getLimitInfo')
+                console.log(accessRoutes)
+                if(accessRoutes.length<=0){
+                    await store.dispatch('resetToken')
+                    router.replace({ path: '/login?redirect=/'})
                 }
-            }else{
-                Message.warning("权限获取失败");
+            } catch (error) {
+                // remove token and go to login page to re-login
+                await store.dispatch('resetToken')
+                Message.error(error || 'Has Error')
+                router.replace({ path: router.currentRoute.path})
             }
-            resolve()
-        })
+        }else{
+            router.replace({ path: '/login?redirect=/'})
+        }
+        store.dispatch("setPageLoading",false)
+        resolve()
     })
 }
 
 async function routerGo(){
-    if(sessionStorage.roleid){
-        await getInfo();
-    }
-    router.beforeEach((to, from, next) => {
-        // NProgress.start()
-        const whiteList = ['/login','/401','/404','/bigHome','/test'] // 不重定向白名单
-        // let token=store.getters.token;
-        if(sessionStorage.roleid){
-            if (to.path!=="/"&&whiteList.indexOf(to.path) !== -1) {
-                next()
+    
+    await getInfo();
+    const whiteList = ['/login','/lib'] // no redirect whitelist
+    
+    router.beforeEach(async (to, from, next) => {
+        store.dispatch("setPageLoading",true)
+        const hasToken = getToken()
+        if (hasToken) {
+            console.log('hastoken')
+            if (to.path === '/login') {
+                // if is logged in, redirect to the home page
+                next({ path: '/' })
             } else {
-                console.log(to)
-                console.log(from)
-                if(JSON.stringify(to.meta)!="{}"){
-                    if(to.meta.show&&to.meta.show=="true"){
-                        //在导航菜单更新功能权限；不清楚为什么有时不进入路由钩子函数
-                        next()
-                    }else{
-                        next('/401') 
-                        console.log("没有权限访问")
-                    }
+                const permission = store.getters.permission_routes && store.getters.permission_routes.length > 0
+                if(permission){
+                    store.dispatch("setCurrentConfig",to.meta.config)
+                    next()
                 }else{
-                    next('/404') 
-                    console.log("访问的页面不存在")
+                    try {
+                        // get user info
+                        const accessRoutes = await store.dispatch('getLimitInfo')
+                        console.log(accessRoutes)
+                        if(accessRoutes&&accessRoutes.length>0){
+                            next({ ...to, replace: true })
+                        }else{
+                            await store.dispatch('resetToken')
+                            Message.error('此账号没有任何权限')
+                            next({ path:`/login?redirect=${to.path}`, replace: true })
+                        }
+                    } catch (error) {
+                        // remove token and go to login page to re-login
+                        await store.dispatch('resetToken')
+                        Message.error(error || 'Has Error')
+                        next(`/login?redirect=${to.path}`)
+                    }
+                    store.dispatch("setPageLoading",false)
                 }
+                
             }
-            
-        }else{
-            if (to.path!=="/"&&whiteList.indexOf(to.path) !== -1) {
+        } else {
+            /* has no token*/
+            if (whiteList.indexOf(to.path) !== -1) {
+                // in the free login whitelist, go directly
                 next()
             } else {
-                next('/login')
+                // other pages that do not have permission to access are redirected to the login page.
+                next(`/login?redirect=${to.path}`)
+                store.dispatch("setPageLoading",false)
             }
         }
-    
     })
-    
-    router.afterEach((to,from) => {
-        // let title=to.meta.title?`${to.meta.title}`:'小微产品0.4';
-        // window.document.title = title;
-        // NProgress.done() // 结束Progress
+
+    router.afterEach(() => {
+        // finish progress bar
+        store.dispatch("setPageLoading",false)
     })
 }
+
 

@@ -1,18 +1,25 @@
 @font-face {
   font-family: 'loncom';
-  src:  url('fonts/loncom.eot?9ibb6g');
-  src:  url('fonts/loncom.eot?9ibb6g#iefix') format('embedded-opentype'),
-    url('fonts/loncom.ttf?9ibb6g') format('truetype'),
-    url('fonts/loncom.woff?9ibb6g') format('woff'),
-    url('fonts/loncom.svg?9ibb6g#loncom') format('svg');
+  src:
+    url('fonts/loncom.ttf?cpchij') format('truetype'),
+    url('fonts/loncom.woff?cpchij') format('woff'),
+    url('fonts/loncom.svg?cpchij#loncom') format('svg');
   font-weight: normal;
   font-style: normal;
+  font-display: block;
 }
-
+@font-face {
+    font-family:'AlibabaPuHuiTiB';
+    src: url(./fonts/Alibaba-PuHuiTi-Bold.ttf);
+}
+@font-face {
+    font-family:'AlibabaPuHuiTiR';
+    src: url(./fonts/Alibaba-PuHuiTi-Regular.ttf);
+}
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'loncom' !important;
-  speak: none;
+  speak: never;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -24,43 +31,126 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-ic_zhuye:before {
-  content: "\e908";
-  color: #8f9bc0;
+.icon-password:before {
+  content: "\e915";
 }
-.icon-ic_zichan:before {
-  content: "\e909";
-  color: #8f9bc0;
+.icon-user:before {
+  content: "\e916";
+  color: #555;
 }
-.icon-ic_baobiao:before {
+.icon-arefaction:before {
+  content: "\e917";
+  color: #838fa3;
+}
+.icon-fanstatus:before {
+  content: "\e919";
+  color: #3cb2ff;
+}
+.icon-humidification:before {
+  content: "\e91a";
+  color: #838fa3;
+}
+.icon-runstatus:before {
+  content: "\e91b";
+  color: #3cb2ff;
+}
+.icon-cool:before {
+  content: "\e91c";
+  color: #3cb2ff;
+}
+.icon-arrayabinet:before {
+  content: "\e914";
+  color: #8b9ed4;
+}
+.icon-ups:before {
+  content: "\e90c";
+  color: #8b9ed4;
+}
+.icon-ammeter:before {
+  content: "\e90d";
+  color: #8b9ed4;
+}
+.icon-urgency:before {
+  content: "\e90e";
+  color: #f4092a;
+}
+.icon-reminder:before {
+  content: "\e90f";
+  color: #99b1ff;
+}
+.icon-severity:before {
+  content: "\e910";
+  color: #ff5400;
+}
+.icon-general:before {
+  content: "\e911";
+  color: #cfcd11;
+}
+.icon-significance:before {
+  content: "\e912";
+  color: #ffa63a;
+}
+.icon-air:before {
+  content: "\e913";
+  color: #8b9ed4;
+}
+.icon-leakage:before {
+  content: "\e922";
+  color: #ff4b61;
+}
+.icon-humiture:before {
+  content: "\e923";
+  color: #8b9ed4;
+}
+.icon-smoke:before {
+  content: "\e924";
+  color: #8b9ed4;
+}
+.icon-statement:before {
   content: "\e900";
-  color: #8f9bc0;
+  color: #8497ca;
 }
-.icon-ic_jiankong:before {
+.icon-alarm:before {
   content: "\e901";
-  color: #8f9bc0;
+  color: #8497ca;
 }
-.icon-ic_menjin:before {
+.icon-rack:before {
   content: "\e902";
-  color: #8f9bc0;
+  color: #8497ca;
 }
-.icon-ic_nengxiao:before {
+.icon-monitor:before {
   content: "\e903";
-  color: #8f9bc0;
+  color: #8497ca;
 }
-.icon-ic_shipin:before {
+.icon-access:before {
   content: "\e904";
-  color: #8f9bc0;
+  color: #8497ca;
 }
-.icon-ic_xitong:before {
+.icon-energy:before {
   content: "\e905";
-  color: #8f9bc0;
+  color: #8497ca;
 }
-.icon-top_fold:before {
+.icon-video:before {
   content: "\e906";
-  color: #8f9bc0;
+  color: #8497ca;
 }
-.icon-top_unfold:before {
+.icon-assert:before {
   content: "\e907";
-  color: #8f9bc0;
+  color: #8497ca;
+}
+.icon-system:before {
+  content: "\e908";
+  color: #8497ca;
+}
+.icon-screen:before {
+  content: "\e909";
+  color: #8b9ed4;
+}
+.icon-skin:before {
+  content: "\e90a";
+  color: #8b9ed4;
+}
+.icon-acousto:before {
+  content: "\e90b";
+  color: #8b9ed4;
 }

@@ -1,6 +1,8 @@
 const reqMessage="该字段不能为空";
 const ruleMessage="填写格式错误";
-export const checkPhone = (rule, value, callback) => {
+//import Rules from "@/utils/Rules"
+//{ required: true, trigger: ['blur', 'change'] ,reqMessage:"不能为空",ruleMessage:"手机格式错误",validator: Rules.checkPhone},
+const checkPhone = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));
@@ -16,13 +18,13 @@ export const checkPhone = (rule, value, callback) => {
 		callback();
 	}
 };
-export const checkPassword = (rule, value, callback) => {
+const checkPassword = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));
 		}else{
 			/**
-			 * /^([A-Za-z0-9]{6,20})$/; 
+			 * /^[A-Za-z0-9]{6,20}$/; 
 			 * [a-z]/.test(value) && /[A-Z]/.test(value) && /[0-9]/.test(value)&& value.length>7    包含数字字母大小写，且至少8位
 			 */
 			let reg = /^([a-z_A-Z-.+0-9]{6,20})$/;   //. - _ 也可以包含包含
@@ -36,7 +38,7 @@ export const checkPassword = (rule, value, callback) => {
 		callback();
 	}
 };
-export const checkPort = (rule, value, callback) => {
+const checkPort = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));
@@ -51,7 +53,7 @@ export const checkPort = (rule, value, callback) => {
 		callback();
 	}
 };
-export const checkIP = (rule, value, callback) => {
+const checkIP = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));
@@ -68,7 +70,7 @@ export const checkIP = (rule, value, callback) => {
 		callback();
 	}
 };
-export const checkIDCard = (rule, value, callback) => {
+const checkIDCard = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));
@@ -84,13 +86,12 @@ export const checkIDCard = (rule, value, callback) => {
 		callback();
 	}
 };
-export const checkEmail = (rule, value, callback) => {
+const checkEmail = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));
 		}else{
-            // let reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-            let reg=/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
+			let reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
 			if(reg.test(value)){
 				callback()
 			}else{
@@ -101,7 +102,7 @@ export const checkEmail = (rule, value, callback) => {
 		callback();
 	}
 };
-export const checkNumber = (rule, value, callback) => {
+const checkNumber = (rule, value, callback) => {
 	if(rule.required){
 		if(value===""||value===null||value===undefined){
 			callback(new Error(rule.reqMessage||reqMessage));

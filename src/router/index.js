@@ -1,58 +1,38 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
-//要给meta，meta中必须存在键值对
+
 export const syncRouter=[
-    {
-        path: '/',
-        name: 'home',
-        meta: { title: 'home'},
-        component: () => import('@/views/home.vue'),
-        redirect:'/login',
+	{
+        path: '/404',
+        component: () => import(/* webpackChunkName: "public-404" */ '@/views/errorPage/404'),
+        hidden: true
     },
     {
-      path: '/login',
-      name: 'login',
-      meta: { title: 'login'},
-      component: () => import('@/views/login.vue'),
+        path: '/401',
+        component: () => import(/* webpackChunkName: "public-401" */ '@/views/errorPage/401'),
+        hidden: true
     },
     {
-      path: '/bigHome',
-      name: 'bigHome',
-      meta: { title: 'bigHome'},
-      component: () => import('@/views/bigHome.vue'),
+        path: '/login',
+        component: () => import(/* webpackChunkName: "public-login", webpackPrefetch: true */ '@/views/Login'),
+        hidden: true
     },
     {
-      path: '/test',
-      name: 'test',
-      meta: { title: 'test'},
-      component: () => import('@/views/test/index.vue'),
+        path: '/bigScreen',
+        name: 'BigScreen',
+        meta:{ title: '大屏'},
+        component: () => import(/* webpackChunkName: "bigscreen", webpackPrefetch: true */ '@/views/BigScreen/Index.vue'),
     },
     {
-        path: '/test1',
-        name: 'test1',
-        meta: { title: 'test'},
-        component: () => import('@/views/test/index1.vue'),
-      },
-    { path: '*', component: () => import('@/views/errorPage/Loading') }, //这个不要给meta的键值对
-    { path: '/404',name:'404',meta: { title: '404'}, 
-      component: () => import('@/views/errorPage/404') 
+        path: '/lib',
+        component: () => import(/* webpackChunkName: "public-lib", webpackPrefetch: true */ '@/packages/rack/index.vue'),
+        hidden: true
     },
-    { path: '/401',name:'401',meta: { title: '401'}, 
-      component: () => import('@/views/errorPage/401') 
-    },
+    // { path: '*', component: () => import(/* webpackChunkName: "404", webpackPrefetch: true */ '@/views/errorPage/Loading') },
+    // { path: '/404',name:'404',meta: { title: '404'}, component: () => import(/* webpackChunkName: "404", webpackPrefetch: true */ '@/views/errorPage/404') },
+  
 ];
-
-// export const asyncRouter=[
-    
-// ]
-// export const router= new Router({
-//   //mode: 'history',
-//   mode:'hash',
-//   base: process.env.BASE_URL,
-//   routes:syncRouter
-// })
-
 /**
  * 重写路由的push方法  解决 Navigating to current location ("url") is not allowed
  */
@@ -60,15 +40,15 @@ const routerPush = Router.prototype.push
 Router.prototype.push = function push(location) {
   return routerPush.call(this, location).catch(error=> error)
 }
-
+export const asyncRouter=[]
+export function resetRouter () {
+    const newRouter = createRouter()
+    router.matcher = newRouter.matcher
+}
 const createRouter = () => new Router({
     // mode: 'history',  //默认hash
     base: process.env.BASE_URL,
     routes: syncRouter
  })
- 
- export function resetRouter () {
-    const newRouter = createRouter()
-    router.matcher = newRouter.matcher
- }
- export const router = createRouter()
+
+export const router= createRouter()

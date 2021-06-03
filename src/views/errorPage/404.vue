@@ -1,11 +1,11 @@
 <template>
-  <div style="background:#f0f2f5;margin-top: -20px;height:100%;">
+  <div style="background:#f0f2f5;width:100%;height:100%;">
     <div class="wscn-http404">
       <div class="pic-404">
-        <img class="pic-404__parent" :src="require('@/assets/images/'+img_404)" alt="404">
-        <img class="pic-404__child left" :src="require('@/assets/images/'+img_404_cloud)" alt="404">
-        <img class="pic-404__child mid" :src="require('@/assets/images/'+img_404_cloud)" alt="404">
-        <img class="pic-404__child right" :src="require('@/assets/images/'+img_404_cloud)" alt="404">
+        <img class="pic-404__parent" src="/images/error/404.png" alt="404">
+        <img class="pic-404__child left" src="/images/error/404_cloud.png" alt="404">
+        <img class="pic-404__child mid" src="/images/error/404_cloud.png" alt="404">
+        <img class="pic-404__child right" src="/images/error/404_cloud.png" alt="404">
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">OOPS!</div>
@@ -25,8 +25,6 @@ export default {
   name: 'page404',
   data() {
     return {
-      img_404:'404.png',
-      img_404_cloud:'404_cloud.png'
     }
   },
   computed: {

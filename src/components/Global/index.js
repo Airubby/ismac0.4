@@ -4,7 +4,7 @@ import camelCase from 'lodash/camelCase'
 
 const requireComponent = require.context(
   // 其组件目录的相对路径
-  './components',
+  './component',
   // 是否查询其子目录
   false,
   // 匹配基础组件文件名的正则表达式
