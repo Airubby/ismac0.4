@@ -2,16 +2,11 @@
     <component :is="currentComponent" :templateData="templateData" :templateUrl="templateUrl"></component>
 </template>
 <script>
-import Vue from 'vue'
-import axios from 'axios'
-const path = require("path")
-import less from 'less'
 const $require = (filepath, scriptContext) => {
-    const filename = path.resolve(__dirname, `./${filepath}`);  
     const module = { exports: {} }  
-    let code = scriptContext ? scriptContext : fs.readFileSync(filename, 'utf-8')  
+    let code = scriptContext  
     let exports = module.exports  
-    code = `(function($require,module,exports,__dirname,filename){${code}})($require,module,exports,__dirname,filename)`  
+    code = `(function($require,module,exports){${code}})($require,module,exports)`  
     eval(code)  
     return module.exports
 }
@@ -54,7 +49,7 @@ export default {
             if(this.pathType=="remote"){
                 let tempData=null;
                 new Promise ((resolve, reject) => {
-                    axios.get(`${_this.pathUrl}`).then((result) => {
+                    this.$axios.get(`${_this.pathUrl}`).then((result) => {
                         tempData=result;
                         resolve();
                     }).catch((error) => {
@@ -65,9 +60,9 @@ export default {
                         let r=$require(null, tempData)
                         console.log(r)
                         //注册全局组件
-                        this.currentComponent=Vue.component('currentComponent',r.default) 
+                        // this.currentComponent=Vue.component('currentComponent',r.default) 
                         //注册局部组件
-                        // this.currentComponent=r.default
+                        this.currentComponent=r.default
                     }
                 });
             }else{

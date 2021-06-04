@@ -6,11 +6,9 @@ const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const Webpackbar = require('webpackbar');
 const glob = require('glob');
 //glob.sync('./src/packages/**/*.vue')  /**/是packages下面所有的文件夹；/*/是packages下面一级的文件夹
-const files1 = glob.sync('./src/views/pages/DeviceStatus/**/*.vue');
-const files2 = glob.sync('./src/views/pages/User/**/*.vue');
+// const files = glob.sync('./src/views/pages/VideoPlayback/**/*.vue');
+const files = glob.sync('./src/views/pages/**/*.vue');
 let entry={};
-console.log(files1,files2,"1!!!!!!!!!!!!!!!!!!")
-let files=files1.concat(files2)
 
 if(files.length>0){
     files.forEach(str => {
@@ -58,15 +56,7 @@ module.exports = {
             })
         ],
         splitChunks:{
-            chunks: 'all', // chunks: 'async',//默认只作用于异步模块，为`all`时对所有模块生效,`initial`对同步模块有效
-            // cacheGroups: {
-            //     'vendors': {
-            //         name: 'chunk-vendors',
-            //         enforce: true,
-            //         test: /[\\/]node_modules[\\/]/,
-            //         priority: -20,
-            //     },
-            // }
+            chunks: 'async', // chunks: 'async',//默认只作用于异步模块，为`all`时对所有模块生效,`initial`对同步模块有效
         },
         runtimeChunk: {
             name: 'manifest'

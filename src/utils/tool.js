@@ -1,4 +1,4 @@
-import store from '@/store'
+import getters from '@/store/getters'
 //时间格式化
 export function FormatDate(fmt,value){
   let date=value?new Date(value):new Date();
@@ -38,7 +38,7 @@ export function filterNull (o) {
 //import {checkPermission} from '@/utils/Tool'  methods: {checkPermission,}, 界面： v-if="checkPermission(['assert'])"
 export function checkPermission(value) {
     if (value && value instanceof Array && value.length > 0) {
-        const limits = store.getters && store.getters.limits
+        const limits = getters && getters.limits
         const permissionRoles = value
     
         const hasPermission = limits.some(role => {

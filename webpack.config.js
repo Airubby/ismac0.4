@@ -4,7 +4,8 @@ const CopyWebpackPlugin=require('copy-webpack-plugin');
 const Webpackbar = require('webpackbar');
 const glob = require('glob');
 //glob.sync('./src/packages/**/*.vue')  /**/是packages下面所有的文件夹；/*/是packages下面一级的文件夹
-const files = glob.sync('./src/packages/*/*.vue');
+const files = glob.sync('./src/packages/*/*.vue'); //打包所有
+// const files = glob.sync('./src/packages/test/*.vue'); //打包单个
 let entry={},assets=[];
 
 if(files.length>0){

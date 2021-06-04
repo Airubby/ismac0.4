@@ -5,7 +5,6 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import store from '@/store/index'
 export default {
     name:'WebSocket',
     created () {
@@ -65,7 +64,7 @@ export default {
        send:function(){
             if(this.$ws&&this.$ws.readyState==1){
                 // this.$ws.send(JSON.stringify(this.sInfo))
-                store.dispatch('setSendMsg',JSON.stringify(this.sInfo));
+                this.$store.dispatch('setSendMsg',JSON.stringify(this.sInfo));
             }else{
                 setTimeout(()=>{
                     if(this.sendFlag){
