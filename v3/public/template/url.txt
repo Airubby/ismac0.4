@@ -1,2 +1,0 @@
-https://www.cnblogs.com/helloluckworld/p/9858269.html
-https://github.com/luciy/vue-async-component

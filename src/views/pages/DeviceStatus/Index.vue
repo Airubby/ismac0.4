@@ -52,7 +52,7 @@
             </div>
             <div class="searchbox">
                 <el-input v-model="initParams.alarm" placeholder="请输入内容">
-                    <i slot="suffix" class="el-input__icon el-icon-search cursor-pointer"></i>
+                    <i slot="suffix" @click="getTabe()" class="el-input__icon el-icon-search cursor-pointer"></i>
                 </el-input>
             </div>
         </div>
@@ -61,10 +61,11 @@
             total-field="data.total"
             :data="tableData"
             method='post' 
-            type="local"
+            row-key="id"
+            :radio-check="true"
             :params="initParams"
             :columns="tableColumns" ref="thisRef">   
-            <el-table-column slot="prepend" type="selection"></el-table-column>
+            <el-table-column slot="prepend" type="selection" :reserve-selection="true"></el-table-column>
             <template v-slot:preview-name="scope">
                 <span @click="enterDetail(scope.row)" class="item-color">{{scope.row.a}}</span>
             </template>
@@ -87,12 +88,12 @@ export default {
     },
     created() {
         console.log(this.$Api)
-        // this.$api.post(this.$Api.GetList,{}).then(res=>{
-        //     console.log(res)
-        //     if(res.err_code==0){
-        //         this.tableData=res.data.item;
-        //     }
-        // })
+        this.$api.post("",{}).then(res=>{
+            console.log(res)
+            if(res.err_code==0){
+                this.tableData=res.data.item;
+            }
+        })
     },
     mounted() {
         
@@ -104,6 +105,7 @@ export default {
             tableData:[
                 {a:"1号温湿度",b:"温湿度",c:"依米康",d:"2020-10-22",e:"机房222",f:"正常",g:"告警",h:"1",id:"1"},
                 {a:"1号温湿度",b:"温湿度",c:"依米康",d:"2020-10-22",e:"机房222",f:"正常",g:"告警",h:"2",id:"2"},
+                {a:"1号温湿度",b:"温湿度",c:"依米康",d:"2020-10-22",e:"机房222",f:"正常",g:"告警",h:"2",id:"3"},
             ],
             tableColumns:[
                 { prop: 'a', label: '设备名称',slotName:'preview-name',minWidth:10},
@@ -120,6 +122,14 @@ export default {
     computed: {
     },
 	methods: {
+        // checkSelectable:function(row,index){
+        //     console.log(row,index)
+        //     //true可勾选；false不可勾选
+        //     return false
+        // },
+        getTabe:function(){
+            console.log(this.$refs.thisRef.getSelect())
+        },
         renderFn:function(row){
             console.log(row)
         },

@@ -109,7 +109,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="layout-box-panel" :style="panelStyle" v-show="editType=='two'">
+                        <div class="layout-box-panel" id="box-two-canvas" :style="panelStyle" v-show="editType=='two'">
+                            <div class="layout-box-panel-canvas" :style="panelStyle">
+                                <canvas id="twoCanvas"></canvas>
+                            </div>
                             <div class="layout-panel-other">
                                 <div class="layout-panel-othercon" id="devtopDatatwo"
                                 @drop='dragDevFinish($event,"devtopData")'
@@ -351,7 +354,7 @@
     </div>
 </template>
 <script>
-import { fabric } from "fabric";
+import { fabric } from "fabric"
 import Draggable from './component/Draggable'
 import LayoutSet from './component/LayoutSet'
 import Cabinet from './component/Cabinet'
@@ -365,10 +368,10 @@ export default {
         
     },
     created() {
-        this.init()
+        
     },
     mounted() {
-        
+        this.init()
     },
     data(){
         return{
@@ -556,6 +559,11 @@ export default {
                     this.$nextTick(()=>{
                         document.getElementById("canvas-box").innerHTML='<canvas id="designCanvas"></canvas>';
                         this.initCanvas(json);
+                    })
+                }
+                if(this.editType=="two"){
+                    this.$nextTick(()=>{
+                        this.initTwoCanvas(json)
                     })
                 }
                 if(this.editType=="bipv"){
@@ -1330,7 +1338,69 @@ export default {
             }
             sessionStorage.setItem("layoutJson",JSON.stringify(json));
             this.$message.success("保存成功");
-        }
+        },
+        //画漏水绳子
+        setCanvas:function(){
+            let dom=document.getElementById("box-two-canvas");
+            this.design.setWidth(dom.offsetWidth);
+            this.design.setHeight(dom.offsetHeight);
+            console.log(this.design,"1!!!!!!!!!!!!!!!!!!!!!!!")
+        },
+        initTwoCanvas:function(json){
+            console.log("!!!!!!!!!!")
+            let _this=this;
+            this.design =new fabric.Canvas('twoCanvas',{backgroundColor:''});
+            fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
+            if(json){
+                this.design.loadFromJSON(json.designCanvas, function() {
+                    _this.design.forEachObject(object=>{
+                        object.toObject = (function (toObject) {//赋值自定义属性
+                            return function (properties) {
+                                return fabric.util.object.extend(toObject.call(this, properties), {
+                                    data: this.data
+                                });
+                            };
+                        })(object.toObject);
+                    })
+                });
+            }
+            this.setCanvas();
+            document.onkeydown=function(event){
+                if (_this && _this._isDestroyed) {return}  //摧毁组件了就不执行下面了，不然其他地方input框又可能不能输入下面的快捷键
+                var ev = event || window.event || arguments.callee.caller.arguments[0];
+                if(ev){
+                    switch(ev.keyCode){
+                        case 46 :// 点击删除
+                            _this.removeObject();
+                            break;
+                        case 83:
+                            ev.preventDefault(); 
+                            if(ev.ctrlKey){
+                                _this.handleSure();
+                            }
+                            break;
+                    }
+                }
+            }
+            _this.design.on('mouse:down', function(opt) {
+                var evt = opt.e;
+                if (evt.altKey === true) {
+                    this.isDragging = true;
+                    this.selection = false;
+                    this.lastPosX = evt.clientX;
+                    this.lastPosY = evt.clientY;
+                }
+                if(opt.target){
+                    _this.devClick(evt,opt.target.data,'devData');
+                }else{
+                    _this.hiddenPanel();
+                }
+            });
+            _this.design.on('mouse:up', function(opt) {
+                this.isDragging = false;
+                this.selection = true;
+            });
+        },
 	},
     watch:{
         "initParams.devid":function(info){
@@ -1342,6 +1412,9 @@ export default {
             if(info){
                 this.changeDev([info]);
             }
+        },
+        panelStyle:function(){
+            this.setCanvas();
         }
     }
 }
@@ -1870,6 +1943,14 @@ export default {
                 }
                 
             }
+        }
+        .layout-box-panel-canvas{
+            position: absolute;
+            z-index: 99;
+            min-width: 400px;
+            height: 100%;
+            left: 0;
+            top: 0;
         }
     }
 </style>

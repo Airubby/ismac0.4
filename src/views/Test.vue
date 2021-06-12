@@ -1,129 +1,36 @@
 <template>
 	<div class="content">
-	    <div class="loncom-pubcon">
-            <div class="loncom-public-top">
-                <div class="loncom-public-topnav">
-                    <ul class="scroll_con" id="sysmenu">
-                        <li onclick="enterPage('url1')">
-                            <a><img src="images/home-pd.png">
-                                <div>首页</div>
-                            </a>
-                        </li>
-                        <li onclick="enterPage('url2')">
-                            <img src="images/home-kt.png">
-                            <div>空调系统</div>
-                        </li>
-                        <li onclick="enterPage('url3')">
-                            <img src="images/home-it.png">
-                            <div>配电系统</div>
-                        </li>
-                        <li onclick="enterPage('url4')">
-                            <img src="images/home-hj.png">
-                            <div>安防系统</div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="loncom-public-topbox">
-                    <div class="loncom-box">
-                        <em class="topleft"></em>
-                        <em class="topright"><em class="line"></em></em>
-                        <em class="bottomleft"><em class="line"></em></em>
-                        <em class="bottomright"></em>
-                        <ul class="loncom-public-topul loncom-public-topul4">
-                            <li>
-                                <div class="loncom-block">
-                                    <div class="loncom-block-con">
-                                        <div class="num"><span class="numspan" id="zrdwd">4</span></div>
-                                        <div>最热点温度</div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="loncom-block">
-                                    <div class="loncom-block-con">
-                                        <div class="num alarm"><span class="numspan" id="pjwd">23.2</span></div>
-                                        <div>平均温度</div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="loncom-block">
-                                    <div class="loncom-block-con">
-                                        <div class="num alarm"><span class="numspan" id="ltdwd">15</span></div>
-                                        <div>冷通道温度</div>
-                                    </div>
-                                </div>
-
-                            </li>
-                            <li>
-                                <div class="loncom-block">
-                                    <div class="loncom-block-con">
-                                        <div class="num"><span class="numspan" id="ltdsd">10</span></div>
-                                        <div>冷通道湿度</div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="loncom-public-chartbox" style="margin-bottom: 15px;">
-                <div class="loncom-public-chartbox-title">
-                    <div class="loncom-title">
-                        <div class="loncom-title-con">温度柱状图</div>
-                        <div class="loncom-title-line">
-                            <em class="loncom-line-em"></em>
-                        </div>
-                    </div>
-                </div>
-                <div class="loncom-public-echartbox-con">
-                    <div class="loncom-box">
-                        <em class="topleft"></em>
-                        <em class="topright"><em class="line"></em></em>
-                        <em class="bottomleft"><em class="line"></em></em>
-                        <em class="bottomright"></em>
-                        <div id="wendu" class="content" v-scrollBar>
-                            <div v-for="item in 100">{{item}}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="loncom-public-chartbox">
-                <div class="loncom-public-chartbox-title">
-                    <div class="loncom-title">
-                        <div class="loncom-title-con">湿度柱状图</div>
-                        <div class="loncom-title-line">
-                            <em class="loncom-line-em"></em>
-                        </div>
-                    </div>
-                </div>
-                <div class="loncom-public-echartbox-con">
-                    <div class="loncom-box">
-                        <em class="topleft"></em>
-                        <em class="topright"><em class="line"></em></em>
-                        <em class="bottomleft"><em class="line"></em></em>
-                        <em class="bottomright"></em>
-                        <div id="shidu" class="content"></div>
-                    </div>
-                </div>
-            </div>
-        
-        </div>
+        <el-date-picker
+      v-model="value"
+      type="datetime"
+      placeholder="选择日期时间">
+    </el-date-picker>
+        <el-time-select
+      class="showHour"
+    v-model="value1"
+  :picker-options="{
+    start: '00:00',
+    step: '01:00',
+    end: '23:00'
+  }"
+    placeholder="任意时间点">
+  </el-time-select>
 	</div>
 </template>
 
 <script>
+import { fabric } from "fabric"
 export default {
 	created () {
         
 	},
 	mounted() {
-        
+       
     },
 	data(){
 		return{
-            templateUrl:"/template/peidian",
-            timeout:null,
+            value:"",
+           value1:"",
         }
 	},
 	methods:{
