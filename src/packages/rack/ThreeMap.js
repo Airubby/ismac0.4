@@ -13,6 +13,7 @@ import 'imports-loader?THREE=three!threebsp'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
+import {OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2'
 import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
@@ -48,8 +49,7 @@ export default class ThreeMap {
 
         this.progressSuccess=0;
         this.loadtimer=null;
-        this.BASE_PATH=this.props.BASE_PATH;
-
+        this.BASE_PATH=props.BASE_PATH;
         this.commonFunc={
             _this:this,
             //判断对象
@@ -63,7 +63,7 @@ export default class ThreeMap {
             //查找对象
             findObject: function (objname) {
                 var findedobj = null;
-                this._this.objects.forEach(function(obj, index){
+                this.objects.forEach(function(obj, index){
                     if (obj.name != null && obj.name != '' && obj.name == objname) {
                         findedobj = obj;
                         return findedobj;
@@ -75,6 +75,7 @@ export default class ThreeMap {
             getPath: function(file){
                 if(this._this.BASE_PATH) return this._this.BASE_PATH+"/images/"+file;
                 return require("./images/"+file)
+                // return this._this.BASE_PATH+file;
             },
             //生成GUID
             guid:function(){
@@ -83,9 +84,9 @@ export default class ThreeMap {
             guidRandom() { 
                 return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
             }
-        };
-
+        }
     }
+
     init() {
         this.initScene();
         this.initRenderer();
@@ -110,7 +111,7 @@ export default class ThreeMap {
     initCamera() {
         this.camera = new THREE.PerspectiveCamera(45, this.dom.offsetWidth / this.dom.offsetHeight, 1, 100000);
         this.camera.name = 'mainCamera';
-        this.camera.position.set(1000,1000,2800)
+        this.camera.position.set(1000,1800,2800)
         //默认就是以Y轴为上方的
         // this.camera.up.x = 0;
         // this.camera.up.y =1;
@@ -239,11 +240,40 @@ export default class ThreeMap {
                 case 'wall':
                     this.CreateWall(obj,"wall");
                     break;
+                case 'objCamera':  
+                    this.createObjCamera(obj);
+                    break;
                 case 'rack':
                     this.CreateWall(obj,"rack");
                     break;
             }
         }
+    }
+    //摄像头
+    createObjCamera(obj){
+        var _this=this;
+        var mtlLoader = new MTLLoader();
+        mtlLoader.load('./images/camera/camera.mtl', function(materials) {
+            materials.preload();
+            var objLoader = new OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.load('./images/camera/camera.obj', function(object) {
+                obj.childrens.forEach(function(childobj){
+                    var newobj = object.clone();
+                    if(!newobj.objHandle){
+                        if(childobj.objHandle){
+                            newobj.objHandle=childobj.objHandle;
+                        }else if(obj.objHandle){
+                            newobj.objHandle=obj.objHandle;
+                        }
+                    }
+                    newobj=_this.handleObj(newobj);
+                    newobj.position.set(childobj.x||0, childobj.y||0, childobj.z||0);
+                    _this.scene.add( newobj );
+                });
+                _this.progressSuccess+=1;
+            }, _this.onProgress, _this.onError);
+        });
     }
     CreateFace (obj) {
         let _this=this;
@@ -375,7 +405,7 @@ export default class ThreeMap {
                 name:wallobj.name,
                 style: {
                     skinColor: commonSkin,
-                    edgeColor: commonEdgeColor||ladderObj.skin.edgeColor,
+                    edgeColor: commonEdgeColor||wallobj.skin.edgeColor,
                     skin:wallobj.skin,
                     transparent:transparent, 
                     opacity:opacity
@@ -387,7 +417,11 @@ export default class ThreeMap {
                     var newobj ;
                     if(walchildobj.objType=="wireCube"){
                         newobj=_this.CreateWireCube(walchildobj)
-                    }else{
+                    }
+                    else if(walchildobj.objType=="triangle"){
+                        newobj=_this.CreateTriangle(walchildobj)
+                    }
+                    else{
                         newobj = _this.CreateHole(walchildobj);
                     }
                     cube = _this.mergeModel(walchildobj.op, cube, newobj,commonSkin,walchildobj.skin.edgeColor);
@@ -396,7 +430,7 @@ export default class ThreeMap {
             // _this.addObject(cube,type);
 
             if(type=="wall"){
-                _this.addObject(cube,"scene");
+                _this.addObject(cube);
             }else if(type=="rack"){
                 cube.name = wallobj.name;
                 cube.uuid = wallobj.uuid;
@@ -409,6 +443,7 @@ export default class ThreeMap {
     }
     //模型合并 使用ThreeBSP插件mergeOP计算方式 -表示减去 +表示加上 
     mergeModel(mergeOP, fobj, sobj,commonSkin,edgeColor) {
+
         if(!mergeOP){
             this.addObject(sobj,"scene");
             return fobj;
@@ -510,6 +545,9 @@ export default class ThreeMap {
     }
     //挖洞、玻璃、挂东西
     CreateHole ( obj) {
+        // if(obj.name=="TV"){
+        //     debugger
+        // }
         var commonDepth =  40;//厚度
         var commonHeight =  100;//高度
         var commonWidth =  300;//强体高度
@@ -517,17 +555,20 @@ export default class ThreeMap {
         //建立墙面
         var wallWidth = commonWidth;
         var wallDepth = obj.depth || commonDepth;
-        var positionX = ((obj.startDot.x || 0) + (obj.endDot.x || 0)) / 2 || obj.x;
-        var positionY = ((obj.startDot.y || 0) + (obj.endDot.y || 0)) / 2 || obj.y;
-        var positionZ = ((obj.startDot.z || 0) + (obj.endDot.z || 0)) / 2 || obj.z;
-        //z相同 表示x方向为长度
-        if (obj.startDot.z == obj.endDot.z) {
-            wallWidth = Math.abs(obj.startDot.x - obj.endDot.x);
-            wallDepth = obj.depth || commonDepth;
-        } else if (obj.startDot.x == obj.endDot.x) {
-            wallWidth = obj.depth || commonDepth;
-            wallDepth = Math.abs(obj.startDot.z - obj.endDot.z);
+        if(obj.startDot&&obj.endDot){
+            var positionX = ((obj.startDot.x || 0) + (obj.endDot.x || 0)) / 2 ;
+            var positionY = ((obj.startDot.y || 0) + (obj.endDot.y || 0)) / 2 ;
+            var positionZ = ((obj.startDot.z || 0) + (obj.endDot.z || 0)) / 2 ;
+            //z相同 表示x方向为长度
+            if (obj.startDot.z == obj.endDot.z) {
+                wallWidth = Math.abs(obj.startDot.x - obj.endDot.x);
+                wallDepth = obj.depth || commonDepth;
+            } else if (obj.startDot.x == obj.endDot.x) {
+                wallWidth = obj.depth || commonDepth;
+                wallDepth = Math.abs(obj.startDot.z - obj.endDot.z);
+            }
         }
+        
         var cubeobj = {
             width: obj.width || wallWidth,
             height: obj.height || commonHeight,
@@ -536,9 +577,9 @@ export default class ThreeMap {
             uuid: obj.uuid,
             name: obj.name,
             objType: obj.objType,
-            x: positionX,
-            y: positionY,
-            z: positionZ,
+            x: positionX||obj.x,
+            y: positionY||obj.y,
+            z: positionZ||obj.z,
             style: {
                 skinColor: obj.skinColor || commonSkin,
                 edgeColor: obj.skin.edgeColor||"",
@@ -548,6 +589,7 @@ export default class ThreeMap {
         var cube=this.createCube(cubeobj);
         return cube;
     }
+    //设置轮廓线
     setEdgesGeometry(obj,edgeColor){
         let cubeEdges = new THREE.EdgesGeometry(obj.geometry, 1);
         let cubeLine = new THREE.LineSegments(cubeEdges, new THREE.LineBasicMaterial( { color: edgeColor } ));
@@ -580,6 +622,9 @@ export default class ThreeMap {
             skin_left_obj = skin_up_obj,
             skin_right_obj = skin_up_obj;
         var skin_opacity = 1;
+        // if(obj.name=="TV") {
+        //     debugger
+        // }
         if (obj.style != null && typeof (obj.style) != 'undefined'
             && obj.style.skin != null && typeof (obj.style.skin) != 'undefined') {
             //透明度
@@ -703,27 +748,142 @@ export default class ThreeMap {
         }
         return plane;
     }
+    //创建三角体
+    CreateTriangle(obj){
+        /*
+          5____4
+		1/___0/|
+		| 6__|_7
+		2/___3/
+		0: max.x, max.y, max.z
+		1: min.x, max.y, max.z
+		2: min.x, min.y, max.z
+		3: max.x, min.y, max.z
+		4: max.x, max.y, min.z
+		5: min.x, max.y, min.z
+		6: min.x, min.y, min.z
+		7: max.x, min.y, min.z
+		*/
+        //y轴以底面为准
+        let maxX=obj.width/2,maxY=obj.height,maxZ=obj.depth/2,minX=-obj.width/2,minY=0,minZ=-obj.depth/2;
+        var geometry = new THREE.Geometry();
+        var p0 = new THREE.Vector3(maxX, maxY/3, maxZ);
+        var p1 = new THREE.Vector3(minX, maxY/3, maxZ);
+        var p2 = new THREE.Vector3(minX, minY, maxZ);
+        var p3 = new THREE.Vector3(maxX, minY, maxZ);
+        var p4 = new THREE.Vector3(maxX, maxY, minZ);
+        var p5 = new THREE.Vector3(minX, maxY, minZ);
+        var p6 = new THREE.Vector3(minX, minY, minZ);
+        var p7 = new THREE.Vector3(maxX, minY, minZ);
+        //顶点坐标添加到geometry对象
+        geometry.vertices.push(p0,p1, p2, p3,p4,p5,p6,p7);
 
-    // outlineObj( selectedObjects ){
- 
-    //     let composer = new THREE.EffectComposer( this.renderer ); // 特效组件
-     
-    //     var renderPass = new THREE.RenderPass( this.scene, this.camera );
-    //     composer.addPass( renderPass ); // 特效渲染
-     
-    //     let outlinePass = new THREE.OutlinePass( new THREE.Vector2( this.dom.offsetWidth, this.dom.offsetHeight ), this.scene, this.camera );
-    //     composer.addPass( outlinePass ); // 加入高光特效
-     
-    //     outlinePass.pulsePeriod = 2; //数值越大，律动越慢
-    //     outlinePass.visibleEdgeColor.set( 0xff0000 ); // 高光颜色
-    //     outlinePass.hiddenEdgeColor.set( 0x000000 );// 阴影颜色
-    //     outlinePass.usePatternTexture = false; // 使用纹理覆盖？
-    //     outlinePass.edgeStrength = 5; // 高光边缘强度
-    //     outlinePass.edgeGlow = 1; // 边缘微光强度
-    //     outlinePass.edgeThickness = 1; // 高光厚度
-     
-    //     outlinePass.selectedObjects = selectedObjects; // 需要高光的obj
-    // }
+        var face0 = new THREE.Face3(0,3,4);
+        var face1 = new THREE.Face3(3,7,4);
+        var face2 = new THREE.Face3(1,5,2);
+        var face3 = new THREE.Face3(5,6,2);
+        var face4 = new THREE.Face3(0,4,1);
+        var face5 = new THREE.Face3(4,5,1);
+        var face6 = new THREE.Face3(2,6,3);
+        var face7 = new THREE.Face3(6,7,3);
+        var face8 = new THREE.Face3(0,1,3);
+        var face9 = new THREE.Face3(1,2,3);
+        var face10 = new THREE.Face3(5,4,6);
+        var face11 = new THREE.Face3(4,7,6);
+
+        //三角面face1、face2添加到几何体中
+        geometry.faces.push(face0,face1,face2,face3,face4,face5,face6,face7,face8,face9,face10,face11);
+
+        //六面颜色
+        for (var i = 0; i < geometry.faces.length; i += 2) {
+            
+            // var i0 = geometry.faces[i].a,  
+            //     i1 = geometry.faces[i].b, 
+            //     i2 = geometry.faces[i].c;
+
+            //     geometry.faceVertexUvs[0].push([
+            //     new THREE.Vector2(uv[i0][0], uv[i0][1]),
+            //     new THREE.Vector2(uv[i1][0], uv[i1][1]),
+            //     new THREE.Vector2(uv[i2][0], uv[i2][1])
+            // ]);
+
+            let skinColor=Math.random() * 0xff0000;
+            geometry.faces[i].color.setHex(obj.skin.skinColor);
+            geometry.faces[i + 1].color.setHex(obj.skin.skinColor);
+        }
+
+    //     geometry.computeFaceNormals();
+    // geometry.mergeVertices();
+    // geometry.faceVertexUvs[0] = [];
+    // geometry.faces.forEach((face) => {
+    //   const components = ['x', 'y', 'z'].sort((a, b) => {
+    //     return Math.abs(face.normal[a]) > Math.abs(face.normal[b]);
+    //   });
+    //   const v1 = geometry.vertices[face.a];
+    //   const v2 = geometry.vertices[face.b];
+    //   const v3 = geometry.vertices[face.c];
+    //   geometry.faceVertexUvs[0].push([
+    //     new THREE.Vector2(v1[components[0]], v1[components[1]]),
+    //     new THREE.Vector2(v2[components[0]], v2[components[1]]),
+    //     new THREE.Vector2(v3[components[0]], v3[components[1]])
+    //   ]);
+    // });
+    // geometry.uvsNeedUpdate = true;
+        //六面纹理
+        let mats=[];
+        geometry.faceVertexUvs[0] = [];
+        geometry.faces.forEach(face => {
+            const components = ['x', 'y', 'z'].sort((a, b) => {
+                return Math.abs(face.normal[a]) > Math.abs(face.normal[b]);
+            });
+            const v1 = geometry.vertices[face.a];
+            const v2 = geometry.vertices[face.b];
+            const v3 = geometry.vertices[face.c];
+            geometry.faceVertexUvs[0].push([
+                new THREE.Vector2(v1[components[0]], v1[components[1]]),
+                new THREE.Vector2(v2[components[0]], v2[components[1]]),
+                new THREE.Vector2(v3[components[0]], v3[components[1]])
+            ]);
+            //以上循环解决 THREE.DirectGeometry.fromGeometry(): Undefined vertexUv
+            let material = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors});
+            mats.push(material);
+        });
+
+        var cube = new THREE.Mesh(geometry, mats); //网格模型对象Mesh
+
+        cube.castShadow = true;
+        cube.receiveShadow = true;
+        cube.needsUpdate=true;
+        cube.uuid = obj.uuid;
+        cube.name = obj.name;
+        cube.position.set(obj.x, obj.y, obj.z);
+        if (obj.rotation != null && typeof (obj.rotation) != 'undefined' && obj.rotation.length > 0) {
+            obj.rotation.forEach(function(rotation_obj, index){
+                // rotation: [{ direction: 'x', degree: 0.5*Math.PI }], 
+                switch (rotation_obj.direction) {
+                    case 'x':
+                        cube.rotateX(rotation_obj.degree);
+                        break;
+                    case 'y':
+                        cube.rotateY(rotation_obj.degree);
+                        break;
+                    case 'z':
+                        cube.rotateZ(rotation_obj.degree);
+                        break;
+                    case 'arb':  //{ direction: 'arb', degree: [x,y,z,angle] }  x,y,z是向量0,1,0 表示y轴旋转
+                        cube.rotateOnAxis(new THREE.Vector3(rotation_obj.degree[0], rotation_obj.degree[1], rotation_obj.degree[2]), rotation_obj.degree[3]);
+                        break;
+                }
+            });
+        }
+        var edgeColor=obj.skin.hasOwnProperty('edgeColor')?obj.skin.edgeColor : "";
+        if(edgeColor){
+            cube=this.setEdgesGeometry(cube,edgeColor);
+        }
+
+        return cube
+
+    }    
     handleObj(obj){
         if (obj.objHandle != null && typeof (obj.objHandle) != 'undefined' && obj.objHandle.length > 0) {
             obj.objHandle.forEach(function(childobj){
@@ -767,7 +927,7 @@ export default class ThreeMap {
         return obj;
     }
     //进度通知
-    onProgress( xhr) {
+    onProgress ( xhr) {
         if ( xhr.lengthComputable ) {
             var percentComplete = xhr.loaded / xhr.total * 100;
             // console.log( Math.round( percentComplete, 2 ) + '% downloaded' );

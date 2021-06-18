@@ -32,6 +32,8 @@ module.exports = {
             .use('file-loader')        
             .loader('file-loader')
 
+        config.module.rule("file").test(/\.(mtl|obj)(\?.*)?$/);
+
         /**
          * 删除懒加载模块的prefetch，降低带宽压力
          * https://cli.vuejs.org/zh/guide/html-and-static-assets.html#prefetch

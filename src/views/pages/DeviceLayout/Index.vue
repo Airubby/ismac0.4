@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <div class="layout-top">
-            <el-button type="primary" plain @click="enterEdit" v-permission="['edit']">编辑布局</el-button>
+            <el-button type="primary" plain @click="enterEdit" >编辑布局</el-button>
         </div>
         <div class="layout-con">
             <div class="scrollbar" v-scrollBar>

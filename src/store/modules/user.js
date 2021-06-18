@@ -7,7 +7,6 @@ export function filterAsyncRoutes(routes,config) {
     const res = [],routePath="/router"
 
     routes.forEach(route => {
-        console.log(route)
         let path="/pages/"+route.component+"/Index"
         let tmp={
             path: route.key,
@@ -31,7 +30,7 @@ export function filterAsyncRoutes(routes,config) {
                     path: route.key+"/"+element.key,
                     component: () => import(/* webpackChunkName: "[request]" */ `@/views${repath}`),
                     name: element.key,
-                    meta: { componentName:route.component,title: route.title, icon: route.iconfont,limits:route.limits||[] }
+                    meta: { componentName:element.component,title: route.title, icon: route.iconfont,limits:route.limits||[],config:config }
                 }
                 res.push(tmp)
             });

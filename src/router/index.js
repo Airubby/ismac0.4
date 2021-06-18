@@ -29,6 +29,11 @@ export const syncRouter=[
         component: () => import(/* webpackChunkName: "public-lib", webpackPrefetch: true */ '@/packages/rack/index.vue'),
         hidden: true
     },
+    {
+        path: '/test',
+        component: () => import(/* webpackChunkName: "public-lib", webpackPrefetch: true */ '@/packages/test/index.vue'),
+        hidden: true
+    },
     // { path: '*', component: () => import(/* webpackChunkName: "404", webpackPrefetch: true */ '@/views/errorPage/Loading') },
     // { path: '/404',name:'404',meta: { title: '404'}, component: () => import(/* webpackChunkName: "404", webpackPrefetch: true */ '@/views/errorPage/404') },
   

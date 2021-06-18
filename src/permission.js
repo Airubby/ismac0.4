@@ -24,7 +24,8 @@ function getInfo(){  //刷新页面重新获取权限
                 router.replace({ path: router.currentRoute.path})
             }
         }else{
-            router.replace({ path: '/login?redirect=/'})
+            console.log("1")
+            // router.replace({ path: '/login?redirect=/'})
         }
         store.dispatch("setPageLoading",false)
         resolve()

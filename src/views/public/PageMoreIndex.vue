@@ -1,5 +1,5 @@
 <template>
-	<div class="content" v-if="currentConfig.children&&currentConfig.children.length>0">
+	<div class="content" v-if="currentConfig&&currentConfig.children&&currentConfig.children.length>0">
         <ul class="content-nav">
             <template v-for="(item,index) in currentConfig.children">
                 <li :key="index">

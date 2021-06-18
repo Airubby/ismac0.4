@@ -32,10 +32,23 @@ export default {
             /(Language|Api)+\.(js)$/
         )
         this.$store.dispatch('setLanguageApi',requireLang.keys())
-        
-
-
+        Vue.mixin({
+            beforeCreate(){
+                if(this.$route&&this.$route.meta.componentName){
+                    try {
+                        let config=require("@/views/pages/"+this.$route.meta.componentName+"/config/Language.js")
+                        this.$i18n.setLocaleMessage('zh',Object.assign(this.$i18n.getLocaleMessage('zh'),config.zhLang))
+                        this.$i18n.setLocaleMessage('en',Object.assign(this.$i18n.getLocaleMessage('en'),config.enLang))
+                        let apiConfig=require("@/views/pages/"+this.$route.meta.componentName+"/config/Api.js")
+                        Vue.prototype.$Api=apiConfig.defaults
+                    } catch (error) {
+                        
+                    }
+                }
+            }
+        })
     },
+    
     computed:{
         ...mapGetters([
             'getTheme','languageApi','pageLoading'
@@ -65,6 +78,10 @@ export default {
         getTheme:function(val){
             this.switchTheme(val)
         },
+        $route:function(val){
+            this.$store.dispatch('setLimits',val.meta.limits);
+            this.$store.dispatch('setCurrentConfig',val.meta.config);
+        }
         
     }
 }

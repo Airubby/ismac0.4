@@ -49,11 +49,11 @@
             </div>
         </div>
         <el-table-pagination
-            :url='$ajaxUrl+$Api.GetTable'
             list-field="data.item" 
             total-field="data.total"
             :data="tableData"
             method='post' 
+            type="local"
             :webSocketInfo="tableData"
             :params="initParams"
             :columns="tableColumns" ref="thisRef">   
@@ -105,11 +105,12 @@ export default {
         }
     },
     created() {
-        console.log(this.$Api)
         
     },
     mounted() {
-        
+        this.waitOperate(()=>{
+            console.log("未操作")
+        },10000)
     },
     data(){
         return{
@@ -136,6 +137,35 @@ export default {
     computed: {
     },
 	methods: {
+        waitOperate:function(callback, second){
+            let count = 0;
+            let x;
+            let y;
+            let timer;
+            //监听鼠标
+            document.onmousemove = function (event) {
+                const x1 = event.clientX;
+                const y1 = event.clientY;
+                if (x != x1 || y != y1) {
+                    count = 0;
+                }
+                x = x1;
+                y = y1;
+            };
+            //监听键盘
+            document.onkeydown = function () {
+                count = 0;
+            };
+            function countTime() {
+                count+=1000;
+                if(count >=  second){
+                    count = 0;
+                    clearInterval(timer);
+                    callback();
+                }
+            }
+            timer = setInterval(countTime, 1000);
+        },
         handleSureSet:function(){
             this.suresetInfo.visible=true;
         },

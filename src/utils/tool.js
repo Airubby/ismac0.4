@@ -1,4 +1,4 @@
-import getters from '@/store/getters'
+// import getters from '@/store/getters'
 //时间格式化
 export function FormatDate(fmt,value){
   let date=value?new Date(value):new Date();
@@ -36,23 +36,23 @@ export function filterNull (o) {
     return o
 }
 //import {checkPermission} from '@/utils/Tool'  methods: {checkPermission,}, 界面： v-if="checkPermission(['assert'])"
-export function checkPermission(value) {
-    if (value && value instanceof Array && value.length > 0) {
-        const limits = getters && getters.limits
-        const permissionRoles = value
+//写mixin才可以
+// export function checkPermission(value) {
+//     if (value && value instanceof Array && value.length > 0) {
+//         const limits = getters && getters.limits
+//         const permissionRoles = value
     
-        const hasPermission = limits.some(role => {
-            return permissionRoles.includes(role)
-        })
-        return hasPermission
-    } else {
-        console.error(`need roles! Like v-permission="['admin','editor']"`)
-      return false
-    }
-}
+//         const hasPermission = limits.some(role => {
+//             return permissionRoles.includes(role)
+//         })
+//         return hasPermission
+//     } else {
+//         console.error(`need roles! Like v-permission="['admin','editor']"`)
+//       return false
+//     }
+// }
 
 export default {
     FormatDate,
-    filterNull,
-    checkPermission
+    filterNull
 }
