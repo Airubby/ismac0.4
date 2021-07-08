@@ -1,9 +1,13 @@
 <template>
     <div class="content">
         <div class="layout-top">
+            <el-button type="primary" plain @click="enterInit" >重置初始化</el-button>
             <el-button type="primary" plain @click="enterEdit" >编辑布局</el-button>
         </div>
-        <div class="layout-con">
+        <div class="three-content">
+            <div class="content" style="position:relative" id="three-dom"></div>
+        </div>
+        <div class="layout-con" style="display:none;">
             <div class="scrollbar" v-scrollBar>
                 <div class="layout-box">
                     <div class="layout-box-con">
@@ -139,33 +143,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="layout-echart">
-                            <div class="layout-echart-box" id="pueCon"></div>
-                            <div class="layout-echart-box" id="energyCon"></div>
-                            <div class="layout-echart-box">
-                                <div class="layout-box-con">
-                                    <div class="title">温度</div>
-                                    <div class="top">
-                                        <i :class="['icon','icon-humiture']"></i>
-                                        <div class="info">
-                                            <div>平均</div>
-                                            <div>
-                                                <span>24.8</span>℃
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="bottom">
-                                        <div>
-                                            最大<span>25.7</span>℃
-                                        </div>
-                                        <div class="split"> / </div>
-                                        <div>
-                                            最小<span>23.7</span>℃
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -178,6 +155,8 @@ import Draggable from './component/Draggable'
 import Cabinet from './component/Cabinet'
 import echarts from 'echarts'
 import 'echarts-liquidfill';
+import ThreeMap from './component/ThreeMap.js'
+import {ThreeData} from './component/ThreeData.js'
 export default {
     components: {Draggable,Cabinet},
     mixins:[],
@@ -198,8 +177,12 @@ export default {
         }
     },
     mounted() {
-        this.initPue("pueCon");
-        this.initPie("energyCon","能效分布")
+        // this.initPue("pueCon");
+        // this.initPie("energyCon","能效分布")
+
+        let props={domID:"three-dom"}
+        this.map = new ThreeMap(props,ThreeData);
+        this.map.init();
     },
     computed: {
         dragOptions() {
@@ -244,6 +227,7 @@ export default {
     },
     data(){
         return{
+            map:null,
             editType:"",
             leftDoor:false,
             rightDoor:false,
@@ -273,6 +257,9 @@ export default {
         }
     },
 	methods: {
+        enterInit:function(){
+            this.map.resetView();
+        },
         init:function(){
             let layoutJson=sessionStorage.getItem("layoutJson");
             if(layoutJson){
@@ -569,6 +556,10 @@ export default {
 </script>
 <style lang="less" scoped>
     .module-theme(...){
+        .three-content{
+            width: 100%;
+            height:500px;
+        }
         .layout-top{
             display: flex;
             justify-content: flex-end;

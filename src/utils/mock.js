@@ -481,95 +481,95 @@ const getdata = function(){
 //     }
 // }
 
-// const getBigScreen=function(){
-//     return{
-//         err_code:0,
-//         err_msg:"成功",
-//         data:[
-//             {
-//                 "key": "air",
-//                 "isIndex": true,
-//                 "pathUrl": "/template/air",
-//                 "name":"test",
-//                 "desc":"test",
-//                 "data":[
-//                     {"key":"wendu","devid":"","pointid":"","desc":"首页温度","showNamme":"测点绑点"},
-//                     {"key":"shidu","devid":"","pointid":"","desc":"首页湿度","showNamme":"测点绑点"},
-//                 ],
-//                 "url":[
-//                     {"key":"three","pathUrl":"/template/three"}
-//                 ]
-//             },
-//             {
-//                 "key": "fengleng",
-//                 "isIndex": false,
-//                 "pathUrl": "/template/fengleng",
-//                 "name":"风冷",
-//                 "desc":"风冷",
-//                 "data":[
-//                     {"key":"wendu","devid":"","pointid":"","desc":"首页温度","showNamme":"测点绑点"},
-//                     {"key":"shidu","devid":"","pointid":"","desc":"首页湿度","showNamme":"测点绑点"},
-//                 ],
-//                 "url":[
-//                     {"key":"three","pathUrl":"/template/three"}
-//                 ]
-//             },
-//             {
-//                 "key": "ats",
-//                 "isIndex": false,
-//                 "pathUrl": "/template/ats",
-//                 "name":"ATS",
-//                 "desc":"ATS",
-//                 "data":[
-//                     {"key":"wendu","devid":"","pointid":"","desc":"首页温度","showNamme":"测点绑点"},
-//                     {"key":"shidu","devid":"","pointid":"","desc":"首页湿度","showNamme":"测点绑点"},
-//                 ],
-//                 "url":[
-//                     {"key":"three","pathUrl":"/template/three"}
-//                 ]
-//             },
-//             {
-//                 "key": "peidian",
-//                 "isIndex": false,
-//                 "pathUrl": "/template/peidian",
-//                 "name":"配电",
-//                 "desc":"配电",
-//                 "data":[
-//                     {"key":"wendu","devid":"","pointid":"","desc":"首页温度","showNamme":"测点绑点"},
-//                     {"key":"shidu","devid":"","pointid":"","desc":"首页湿度","showNamme":"测点绑点"},
-//                 ],
-//                 "url":[
-//                     {"key":"three","pathUrl":"/template/three"}
-//                 ]
-//             },
-//             {
-//                 "key": "home",
-//                 "isIndex": false,
-//                 "pathUrl": "/template/home",
-//                 "name":"大屏首页",
-//                 "desc":"大屏首页",
-//                 "data":[
-//                     {"key":"wendu","devid":"","pointid":"","desc":"首页温度","showNamme":"测点绑点"},
-//                     {"key":"shidu","devid":"","pointid":"","desc":"首页湿度","showNamme":"测点绑点"},
-//                 ],
-//                 "url":[
-//                     {"key":"three","pathUrl":"/template/three"}
-//                 ]
-//             },
-//             {
-//                 "key": "three",
-//                 "isIndex": false,
-//                 "pathUrl": "/template/three",
-//                 "name":"大屏3D",
-//                 "desc":"大屏3D",
-//                 "data":[
-//                     {"key":"name","devid":"1","pointid":"1-1"},
-//                     {"key":"detail","devid":"2","pointid":"2-1"},
-//                 ],
-//                 "url":[]
-//             },
-//         ]
-//     }
-// }
+const getBigScreen=function(){
+    return{
+        err_code:0,
+        err_msg:"成功",
+        data:[
+            {
+                "key": "air",
+                "isIndex": true,
+                "pathUrl": "/template/air",
+                "name":"test",
+                "desc":"test",
+                "data":[
+                    {"key":"wendu","devid":"","pointid":"","desc":"首页温度","showNamme":"测点绑点"},
+                    {"key":"shidu","devid":"","pointid":"","desc":"首页湿度","showNamme":"测点绑点"},
+                ],
+                "url":[
+                    {"key":"three","pathUrl":"/template/three"}
+                ]
+            },
+            {
+                "key": "fengleng",
+                "isIndex": false,
+                "pathUrl": "/template/fengleng",
+                "name":"风冷",
+                "desc":"风冷",
+                "data":[
+                    {"key":"wendu","devid":"","pointid":"","desc":"首页温度","showNamme":"测点绑点"},
+                    {"key":"shidu","devid":"","pointid":"","desc":"首页湿度","showNamme":"测点绑点"},
+                ],
+                "url":[
+                    {"key":"three","pathUrl":"/template/three"}
+                ]
+            },
+            {
+                "key": "ats",
+                "isIndex": false,
+                "pathUrl": "/template/ats",
+                "name":"ATS",
+                "desc":"ATS",
+                "data":[
+                    {"key":"wendu","devid":"","pointid":"","desc":"首页温度","showNamme":"测点绑点"},
+                    {"key":"shidu","devid":"","pointid":"","desc":"首页湿度","showNamme":"测点绑点"},
+                ],
+                "url":[
+                    {"key":"three","pathUrl":"/template/three"}
+                ]
+            },
+            {
+                "key": "peidian",
+                "isIndex": false,
+                "pathUrl": "/template/peidian",
+                "name":"配电",
+                "desc":"配电",
+                "data":[
+                    {"key":"wendu","devid":"","pointid":"","desc":"首页温度","showNamme":"测点绑点"},
+                    {"key":"shidu","devid":"","pointid":"","desc":"首页湿度","showNamme":"测点绑点"},
+                ],
+                "url":[
+                    {"key":"three","pathUrl":"/template/three"}
+                ]
+            },
+            {
+                "key": "home",
+                "isIndex": false,
+                "pathUrl": "/template/home",
+                "name":"大屏首页",
+                "desc":"大屏首页",
+                "data":[
+                    {"key":"wendu","devid":"","pointid":"","desc":"首页温度","showNamme":"测点绑点"},
+                    {"key":"shidu","devid":"","pointid":"","desc":"首页湿度","showNamme":"测点绑点"},
+                ],
+                "url":[
+                    {"key":"three","pathUrl":"/template/three"}
+                ]
+            },
+            {
+                "key": "three",
+                "isIndex": false,
+                "pathUrl": "/template/three",
+                "name":"大屏3D",
+                "desc":"大屏3D",
+                "data":[
+                    {"key":"name","devid":"1","pointid":"1-1"},
+                    {"key":"detail","devid":"2","pointid":"2-1"},
+                ],
+                "url":[]
+            },
+        ]
+    }
+}
 Mock.mock(RegExp('/getMockData' + ".*"), /get|post/i,getdata) 
-// Mock.mock(RegExp('/getBigInfo' + ".*"), /get|post/i,getBigScreen) 
+Mock.mock(RegExp('/getBigInfo' + ".*"), /get|post/i,getBigScreen) 

@@ -251,7 +251,7 @@ export const ThreeData={
                                 skinColor:edgeColor,
                                 edgeColor:edgeColor,
                                 skin_right: {
-                                    imgurl: "tv.png",
+                                    imgurl: "three/tv.png",
                                 },
                             }
                         },
@@ -444,14 +444,14 @@ export const ThreeData={
                             },
                             skin: {
                                 skin_up: {
-                                    imgurl: "glass.png",
+                                    imgurl: "three/glass.png",
                                     transparent: true,
                                     opacity: 0.25,
                                     repeatx: true,
                                     repeaty: true,
                                 },
                                 skin_down: {
-                                    imgurl: "glass.png",
+                                    imgurl: "three/glass.png",
                                     transparent: true,
                                     opacity: 0.25,
                                     repeatx: true,
@@ -825,21 +825,21 @@ ThreeData.objects[2].childrens[2].childrens=topLineArrAfter.concat(ThreeData.obj
 
 
 // 如果需要传参过来，
-export const ThreeDataFn=(data)=>{
-    //data是传过来的机柜列表信息，然后根据这个信息赋值给width为实际的宽度；然后动态生成机柜，然后return ThreeData
-    let width=2000,depth=1200,height=90,ladderWidth=40,ladderDepth=400,wallDepth=10,wallHeight=800,
-    doorWidth=20,wireWidth=0.1,wireHeight=10,spoolDepth=80,spoolHeight=40,
-    skinColor=0x062062,edgeColor=0x155CAC;
+// export const ThreeDataFn=(data)=>{
+//     //data是传过来的机柜列表信息，然后根据这个信息赋值给width为实际的宽度；然后动态生成机柜，然后return ThreeData
+//     let width=2000,depth=1200,height=90,ladderWidth=40,ladderDepth=400,wallDepth=10,wallHeight=800,
+//     doorWidth=20,wireWidth=0.1,wireHeight=10,spoolDepth=80,spoolHeight=40,
+//     skinColor=0x062062,edgeColor=0x155CAC;
 
-    const ThreeData={}
+//     const ThreeData={}
 
-    //处理机柜信息
+//     //处理机柜信息
 
-    //返回 使用   import {ThreeDataFn} from './ThreeData.js'  let ThreeData=ThreeDataFn(data);  
-    // let props={domID:"three-dom",BASE_PATH:this.templateUrl}  this.map = new ThreeMap(props,ThreeData);
-    return ThreeData;
+//     //返回 使用   import {ThreeDataFn} from './ThreeData.js'  let ThreeData=ThreeDataFn(data);  
+//     // let props={domID:"three-dom",BASE_PATH:this.templateUrl}  this.map = new ThreeMap(props,ThreeData);
+//     return ThreeData;
 
-}
+// }
 
 
 

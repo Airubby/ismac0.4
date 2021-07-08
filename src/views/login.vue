@@ -21,11 +21,14 @@
 				</div>
 			</div>
         </div>
+		<!-- <screenfull></screenfull> -->
     </div>
 </template>
 
 <script>
+import screenfull from '@/components/Screenfull'
 export default {
+	components:{screenfull},
 	created () {
 	},
 	mounted() {

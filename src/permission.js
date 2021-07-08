@@ -24,8 +24,7 @@ function getInfo(){  //刷新页面重新获取权限
                 router.replace({ path: router.currentRoute.path})
             }
         }else{
-            console.log("1")
-            // router.replace({ path: '/login?redirect=/'})
+            router.push({ path: '/login?redirect=/'})
         }
         store.dispatch("setPageLoading",false)
         resolve()
@@ -40,6 +39,9 @@ async function routerGo(){
     router.beforeEach(async (to, from, next) => {
         store.dispatch("setPageLoading",true)
         const hasToken = getToken()
+        if(to.path=="/lib"){
+          next();
+        }
         if (hasToken) {
             console.log('hastoken')
             if (to.path === '/login') {

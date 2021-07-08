@@ -49,7 +49,7 @@ export default class ThreeMap {
 
         this.progressSuccess=0;
         this.loadtimer=null;
-        this.BASE_PATH=props.BASE_PATH;
+        this.BASE_PATH="./";
         this.commonFunc={
             _this:this,
             //判断对象
@@ -73,9 +73,7 @@ export default class ThreeMap {
             },
             //获取路径
             getPath: function(file){
-                if(this._this.BASE_PATH) return this._this.BASE_PATH+"/images/"+file;
-                return require("./images/"+file)
-                // return this._this.BASE_PATH+file;
+                return this._this.BASE_PATH+"images/"+file;
             },
             //生成GUID
             guid:function(){
@@ -100,7 +98,11 @@ export default class ThreeMap {
         this.renderer.domElement.addEventListener('mousedown', this.onDocumentMouseDown.bind(this), false);
         this.renderer.domElement.addEventListener('mousemove',this.onDocumentMouseMove.bind(this), false);
     }
-
+    //重置初始化状态
+    resetView(){
+        this.initCamera();
+        this.setControl();
+    }
     //初始化渲染场景
     initRenderer() {
         this.renderer = new THREE.WebGLRenderer({ antialias: true ,alpha:true });
@@ -1162,14 +1164,18 @@ export default class ThreeMap {
     }
     //鼠标移动
     onDocumentMouseMove(event){
-        
         let _this=this;
         var currentElement = null;
-        // let getBoundingClientRect = this.dom.getBoundingClientRect()
+        event.preventDefault();
+        // 通过鼠标点击位置,计算出 raycaster 所需点的位置,以屏幕为中心点,范围 -1 到 1
+        //这里的container就是画布所在的div，也就是说，这个是要拿整个scene所在的容器来界定的
+        let getBoundingClientRect = this.dom.getBoundingClientRect()
+        //this.dom元素被一个dom包裹，这个dom只能有this.dom一个子元素，且不能有padding
         this.mouseClick.x = (event.offsetX / this.dom.offsetWidth) * 2 - 1;
         this.mouseClick.y = -(event.offsetY / this.dom.offsetHeight) * 2 + 1;
         this.raycaster.setFromCamera(this.mouseClick, this.camera);
         var intersects = this.raycaster.intersectObjects(this.objects);
+
         if(intersects.length>0){
             let SELECTED = intersects[0].object;
             if(SELECTED.name.toString().indexOf("Rack")!=-1){
@@ -1180,13 +1186,7 @@ export default class ThreeMap {
         this.lastEvent = event;
         if (this.lastElement != currentElement ) {
             clearTimeout(this.tipTimer);
-            // if(this.lastElement){
-            //     this.updateCube(this.lastElement,false)
-            // }
             if(currentElement){
-                
-                // this.updateCube(currentElement,true);
-                
                 this.tipTimer = setTimeout(function(){
                     let tipInfo="";
                     if(currentElement.name.toString().indexOf("Rack")!=-1){
@@ -1197,11 +1197,11 @@ export default class ThreeMap {
                     }
                     let tiplen=tipInfo.length;
                     _this.tooltip.querySelector("#tipdiv").innerHTML=tipInfo
-                    _this.tooltip.style.width=tiplen*16+20+"px";
+                    _this.tooltip.style.width=tiplen*16+20+"px";  //20 为pading10px；
                     _this.tooltip.style.display = 'block';
-                    console.log(_this.lastEvent,_this.tooltip.clientWidth,_this.tooltip.clientHeight)
+                    console.log(_this.lastEvent,getBoundingClientRect,_this.tooltip.clientWidth,_this.tooltip.clientHeight)
                     _this.tooltip.style.left = (_this.lastEvent.offsetX  -  _this.tooltip.clientWidth/2) + 'px';
-                    _this.tooltip.style.top = (_this.lastEvent.offsetY  -  _this.tooltip.clientHeight- 10) + 'px';
+                    _this.tooltip.style.top = (_this.lastEvent.offsetY - _this.tooltip.clientHeight -10 ) + 'px';
                     
                     
                 },300); 

@@ -58,6 +58,11 @@
             <div class="index-right-top-list" @click="enterBigScreen">
                 <i class="icon-screen"></i>{{$t("BigScreen")}}
             </div>
+            <screenfull>
+                <div class="index-right-top-list">
+                    <i class="el-icon-full-screen"></i>全屏
+                </div>
+            </screenfull>
             <div class="index-right-top-list">
                 <i class="icon-acousto"></i>{{$t("AcoustoOptic")}}
             </div>
@@ -82,10 +87,11 @@
 <script>
 // import { mapGetters } from 'vuex'
 import Vue from 'vue'
+import screenfull from '@/components/Screenfull'
 import AlarmVideo from '@/components/AlarmVideo'
 export default {
     name: 'index',
-    components: { AlarmVideo},
+    components: { AlarmVideo,screenfull},
     created () {
         console.log(this.$theme)
         this.date=this.setClock();
@@ -94,6 +100,7 @@ export default {
         setInterval(()=>{
             this.date=this.setClock();
         },1000);
+        
     },
     computed:{
         getLanguage:function(){
@@ -124,6 +131,7 @@ export default {
         }
     },
     methods: {
+        
         setLanguage:function(language){
             this.$i18n.locale = language
             this.$store.dispatch('setLanguage', language);
